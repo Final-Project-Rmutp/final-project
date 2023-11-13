@@ -1,0 +1,66 @@
+// Home.scss
+.eiei {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #8c7e7e;
+  height: 100vh;
+}
+
+.controls {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+label {
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+.roomLayout {
+  margin-top: 20px;
+}
+
+.bedroomContainer {
+  padding: 10px;
+  background-color: #2ecc71;
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 10px;  // เพิ่มช่องว่างระหว่าง grid items
+}
+
+.bedroomContainer > div {
+  background-color: #34495e;
+  border: 1px solid #fff;
+  color: #020202;
+  padding: 20px 30px;
+  text-align: center;
+}
+
+#floor6 {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 5px;
+  background-color: #fff;
+  width: 100px;
+  text-align: center;
+}
+
+.blank1{
+  grid-column:1/2;
+}
+.blank2{
+  grid-row:2/4;
+}
+.room602{
+  grid-column:2/4;
+}
+.room601{
+  grid-column:2/4;
+}
+.elevator{
+  grid-column:2/5;
+}
