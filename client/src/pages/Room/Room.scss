@@ -1,12 +1,17 @@
-// Home.scss
 .eiei {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #8c7e7e;
+  background: #0f0c29;
+  background: -webkit-linear-gradient(to bottom, #24243e, #302b63, #0f0c29);
+  background: linear-gradient(to bottom, #24243e, #302b63, #0f0c29);
   height: 100vh;
 }
+label{
+  color: #ffffff;
+}
+
 
 .controls {
   margin-top: 20px;
@@ -15,22 +20,45 @@
   align-items: center;
 }
 
-label {
+.label {
   margin-right: 10px;
   font-size: 16px;
 }
 
 .roomLayout {
+  height: 50%;
   margin-top: 20px;
-}
+} 
 
 .bedroomContainer {
-  padding: 10px;
-  background-color: #2ecc71;
+  border-radius: 8px;
+  padding: 20px;
+  // background-image: url('https://image.freepik.com/free-photo/natural-green-grass-background_141793-617.jpg');
+  background-size: cover; 
+  background-position: center;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1)rgba(255, 255, 255, 0));
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   display: grid;
-  grid-template-columns: auto auto;
-  gap: 10px;  // เพิ่มช่องว่างระหว่าง grid items
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
+
+  @media screen and (max-width: 768px) {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+
+  @media screen and (max-width: 300px) {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+
+  @media screen and (max-width: 200px) {
+    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+  }
 }
+
 
 .bedroomContainer > div {
   background-color: #34495e;
@@ -42,25 +70,47 @@ label {
 
 #floor6 {
   border: 1px solid #ccc;
-  padding: 10px;
+  padding: 5px;
   margin: 5px;
   background-color: #fff;
-  width: 100px;
+  width: 100%;
   text-align: center;
 }
 
-.blank1{
-  grid-column:1/2;
+.blank1 {
+  grid-column: 1/2;
 }
-.blank2{
-  grid-row:2/4;
+
+.blank2 {
+  grid-row: 2/4;
 }
-.room602{
-  grid-column:2/4;
+
+.room602 {
+  grid-column: 2/15; 
 }
-.room601{
-  grid-column:2/4;
+
+.room601 {
+  grid-column: 2/15;
 }
-.elevator{
-  grid-column:2/5;
+
+.elevator {
+  grid-column: 3/15;
+}
+
+// Logout button styles
+.logout-button {
+  position: absolute;
+  display: flex;
+  top: 10px;
+  right: 10px;
+  background-color: #ff0000;
+  color: #ffffff;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.logout-button:hover {
+  background-color: #cc0000;
 }
