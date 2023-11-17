@@ -8,14 +8,10 @@ const Login: React.FC = () => {
     const navigate = useNavigate();
 
     const handleLogin = (username: string, password: string) => {
-    // Simulate a login check (replace with your actual authentication logic)
     if (username === 'admin' && password === 'password') {
-      // Login successful
         setErrorMessage('');
-      // Redirect to the home page
         navigate('/room');
     } else {
-      // Login failed
         setErrorMessage('Invalid username or password');
     }
 };
