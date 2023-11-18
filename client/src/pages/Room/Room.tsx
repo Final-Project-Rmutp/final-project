@@ -7,16 +7,15 @@ import Datetime from '../../shared/datetime/Datetime';
 import './Room.scss'
 
 const Room: React.FC = () => {
-  const { user, logout, getUserInfo } = useAuth(); // Add getUserInfo function
+  const { user, logout, getUserInfo } = useAuth();
   const navigate = useNavigate();
 
   if (!user) {
-    // Redirect to login if the user is not logged in
     navigate('/');
     return null;
   }
 
-  const userInfo = getUserInfo(); // Get user information
+  const userInfo = getUserInfo();
 
   return (
     <div className="eiei">
