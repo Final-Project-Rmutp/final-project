@@ -1,5 +1,5 @@
 import React from 'react';
-import './floor6.scss';
+import './Floor6.scss';
 
 const Floor6: React.FC = () => {
   return (
