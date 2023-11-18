@@ -1,7 +1,7 @@
 // App.tsx
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './components/Login/Login';
-import Room from './pages/Room/Room';
+import Room from "./pages/room/Room";
 import { AuthProvider } from './auth/AuthContext';
 import './index.css';
 function App() {

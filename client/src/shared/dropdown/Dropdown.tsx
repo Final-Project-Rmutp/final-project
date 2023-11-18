@@ -1,14 +1,18 @@
-// components/Dropdown.tsx
 import React, { useState } from 'react';
 import './Dropdown.scss';
 
-const Dropdown: React.FC = () => {
+interface DropdownProps {
+  onFloorSelect: (floor: string) => void;
+}
+
+const Dropdown: React.FC<DropdownProps> = ({ onFloorSelect }) => {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
   const handleItemClick = (item: string) => {
     setSelectedItem(item);
-    setIsOpen(false); 
+    setIsOpen(false);
+    onFloorSelect(item); // Notify the parent component about the selected floor
   };
 
   const handleToggleDropdown = () => {
