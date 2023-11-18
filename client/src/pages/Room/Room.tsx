@@ -5,7 +5,6 @@ import Dropdown from '../../shared/dropdown/Dropdown';
 import Datetime from '../../shared/datetime/Datetime';
 import './Room.scss';
 import Floor6 from "../../components/floor6/Floor6";
-import '../../components/floor6/Floor6.scss';
 
 const Room: React.FC = () => {
   const { user, logout, getUserInfo } = useAuth();
