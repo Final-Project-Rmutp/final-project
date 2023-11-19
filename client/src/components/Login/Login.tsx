@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoginForm from './LoginForm';
-import { useAuth } from '../../auth/AuthContext';
+import { useAuth,UserRole } from '../../auth/AuthContext';
 
 const Login: React.FC = () => {
   const { login, validateCredentials } = useAuth();
@@ -11,23 +11,19 @@ const Login: React.FC = () => {
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
   const [generalErrorMessage, setGeneralErrorMessage] = useState('');
 
-  const handleLogin = (username: string, password: string) => {
+  const handleLogin = async (username: string, password: string) => {
     // Reset error messages
     setUsernameErrorMessage('');
     setPasswordErrorMessage('');
     setGeneralErrorMessage('');
 
     // Validate credentials
-    if (validateCredentials({
-        username, password,
-        name: ''
-    })) {
+    const isValidCredentials = validateCredentials({ username, password, name: '', role: UserRole.admin });
+
+    if (isValidCredentials) {
       // Perform authentication logic here
-      // For simplicity, assume successful login
-      login({ 
-        username, password,
-        name: ''
-      });
+      const user = { username, password, name: '', role: UserRole.admin };
+      login(user);
       navigate('/room');
     } else {
       // Display error messages
