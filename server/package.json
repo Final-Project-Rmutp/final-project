@@ -13,7 +13,7 @@
     "body-parser": "*"
   },
   "scripts": {
-    "dev": "nodemon",
-    "start": "node index.js"
+    "dev": "nodemon server.js",
+    "start": "node server.js"
   }
 }
