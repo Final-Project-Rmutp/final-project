@@ -1,43 +1,34 @@
-// .roomLayout {
-//   height: 50%;
-//   margin-top: 20px;
-//   .bedroomContainer {
-//     border-radius: 8px;
-//     padding: 20px;
-//     // background-image: url('https://image.freepik.com/free-photo/natural-green-grass-background_141793-617.jpg');
-//     background-size: cover; 
-//     background-position: center;
-//     background: linear-gradient(135deg, rgba(255, 255, 255, 0.1)rgba(255, 255, 255, 0));
-//     // backdrop-filter: blur(2px);
-//     // -webkit-backdrop-filter: blur(10px);
-//     border: 1px solid rgba(255, 255, 255, 0.18);
-//     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-//     display: grid;
-//     gap: 10px;
-//     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+.roomLayout {
+  .bedroomContainer {
+    border-radius: 8px;
+    padding: 20px;
+    // background-image: url('https://image.freepik.com/free-photo/natural-green-grass-background_141793-617.jpg');
+    background-size: cover; 
+    background-position: center;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1)rgba(255, 255, 255, 0));
+    // backdrop-filter: blur(2px);
+    // -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   
   
-//     @media screen and (max-width: 768px) {
-//       grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-//     }
+    @media screen and (max-width: 768px) {
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
   
-//     @media screen and (max-width: 300px) {
-//       grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-//     }
+    @media screen and (max-width: 300px) {
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    }
   
-//     @media screen and (max-width: 200px) {
-//       grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
-//     }
-//   }
-// } 
+    @media screen and (max-width: 200px) {
+      grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+    }
+  }
+} 
 
-// .bedroomContainer > div {
-//   background-color: #34495e;
-//   border: 1px solid #fff;
-//   color: #020202;
-//   padding: 20px 30px;
-//   text-align: center;
-// }
 #blank1_floor6 {
     border: 1px solid #ccc;
     padding: 5px;

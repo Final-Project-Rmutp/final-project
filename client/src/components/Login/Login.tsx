@@ -1,51 +1,116 @@
 // Login.tsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import LoginForm from './LoginForm';
-import { useAuth,UserRole } from '../../auth/AuthContext';
+import { useAuth, UserRole } from '../../auth/AuthLogin';
+import './Login.scss';
+
+interface ErrorMessages {
+  username: string;
+  password: string;
+  general: string;
+}
 
 const Login: React.FC = () => {
-  const { login, validateCredentials } = useAuth();
+  const { login, validateCredentials, validCredentials } = useAuth();
   const navigate = useNavigate();
-  const [usernameErrorMessage, setUsernameErrorMessage] = useState('');
-  const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
-  const [generalErrorMessage, setGeneralErrorMessage] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessages, setErrorMessages] = useState<ErrorMessages>({
+    username: '',
+    password: '',
+    general: '',
+  });
 
-  const handleLogin = async (username: string, password: string) => {
+  const handleLogin = async () => {
     // Reset error messages
-    setUsernameErrorMessage('');
-    setPasswordErrorMessage('');
-    setGeneralErrorMessage('');
-
+    setErrorMessages({
+      username: '',
+      password: '',
+      general: '',
+    });
+  
     // Validate credentials
     const isValidCredentials = validateCredentials({ username, password, name: '', role: UserRole.admin });
-
+  
     if (isValidCredentials) {
-      // Perform authentication logic here
-      const user = { username, password, name: '', role: UserRole.admin };
-      login(user);
-      navigate('/room');
+      const foundUser = validCredentials.find((cred) => cred.username === username);
+      if (foundUser) {
+        const user = { username, password, name: '', role: foundUser.role };
+        login(user);
+  
+        // Use the navigate function to redirect to the appropriate route
+        switch (user.role) {
+          case UserRole.admin:
+            navigate('/admin');
+            break;
+          case UserRole.teacher:
+            navigate('/teacher'); // You can customize the route for teachers
+            break;
+          case UserRole.student:
+            navigate('/student');
+            break;
+          default:
+            // Navigate to a default route if the role is not recognized
+            navigate('/');
+        }
+      }
     } else {
       // Display error messages
       if (username.trim() === '') {
-        setUsernameErrorMessage('Username is required');
+        setErrorMessages((prev) => ({ ...prev, username: 'Username is required' }));
       }
       if (password.trim() === '') {
-        setPasswordErrorMessage('Password is required');
+        setErrorMessages((prev) => ({ ...prev, password: 'Password is required' }));
       } else {
-        setGeneralErrorMessage('Invalid username or password');
+        setErrorMessages((prev) => ({ ...prev, general: 'Invalid username or password' }));
       }
     }
   };
 
   return (
-    <div>
-      <LoginForm
-        onLogin={handleLogin}
-        usernameErrorMessage={usernameErrorMessage}
-        passwordErrorMessage={passwordErrorMessage}
-        generalErrorMessage={generalErrorMessage}
-      />
+    <div className="login-form">
+      <div className="login-form-container">
+        <h1 className="text-center text-3xl font-semibold mb-6 text-gray-800">Login</h1>
+        <div className="mb-4">
+          <label htmlFor="username" className="text-sm text-gray-600">
+            Username:
+          </label>
+          <input
+            type="text"
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="input-field"
+          />
+          {errorMessages.username && (
+            <p className="error-message">{errorMessages.username}</p>
+          )}
+        </div>
+        <div className="mb-4">
+          <label htmlFor="password" className="text-sm text-gray-600">
+            Password:
+          </label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="input-field"
+          />
+          {errorMessages.password && (
+            <p className="error-message">{errorMessages.password}</p>
+          )}
+        </div>
+        {errorMessages.general && (
+          <p className="error-message mt-2">{errorMessages.general}</p>
+        )}
+        <button
+          onClick={handleLogin}
+          className="login-button"
+        >
+          Login
+        </button>
+      </div>
     </div>
   );
 };

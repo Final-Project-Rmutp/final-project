@@ -2,15 +2,19 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './components/Login/Login';
 import Room from "./pages/room/Room";
-import { AuthProvider } from './auth/AuthContext';
+import Admin from "./pages/admin/Admin";
+import { AuthProvider } from './auth/AuthLogin';
 import './index.css';
+
 function App() {
   return (
     <Router>
       <AuthProvider>
         <Routes>
           <Route path="/" element={<Login />} />
-          <Route path="/room" element={<Room />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/teacher" element={<Room />} />
+          <Route path="/student" element={<Room />} />
         </Routes>
       </AuthProvider>
     </Router>
