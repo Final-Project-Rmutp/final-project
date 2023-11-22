@@ -2,9 +2,9 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 const port = 5000
-const client = require('./configs/databasepg.js');
-const swaggerUi = require('swagger-ui-express');
-const swaggerJsdoc = require('swagger-jsdoc');
+const client = require('./configs/database.js');
+// const swaggerUi = require('swagger-ui-express');
+// const swaggerJsdoc = require('swagger-jsdoc');
 
 app.use(cors());
 app.use(express.json());
@@ -33,13 +33,16 @@ app.get("/", (req, res) => {
     apis: ['routes/*.js'],
   };
   
-const swaggerSpec = swaggerJsdoc(options)
+// const swaggerSpec = swaggerJsdoc(options)
   
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
-  
+// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+
+const UserRoute = require('./routes/user.routes.js');
+app.use("/user", UserRoute)
   
 app.listen(port, () => {
   console.log(`Server is Running On Port ${port}`)
 })
-  
+
+
 client.connect();
