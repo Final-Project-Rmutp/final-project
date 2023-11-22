@@ -23,7 +23,7 @@ export interface AuthContextProps {
   isAdmin: () => boolean;
   isTeacher: () => boolean;
   isStudent: () => boolean;
-  validCredentials: UserModel[];
+  fetchUserInfo: () => Promise<UserModel | null>;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -67,6 +67,35 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     return userInfo || { username: '', password: '', name: '', role: UserRole.admin };
   };
 
+  const fetchUserInfo = async (): Promise<UserModel | null> => {
+    try {
+      const response = await fetch('http://localhost:5000/user/getuser');
+  
+      if (response.ok) {
+        const userDataArray = await response.json();
+  
+        if (userDataArray.length > 0) {
+          const userData = userDataArray[0];
+  
+          return {
+            username: userData.id_card,
+            password: userData.id_student,
+            name: '', // Set the name based on your data structure
+            role: UserRole.student, // Set the role based on your data structure
+          };
+        }
+      }
+  
+      // Handle other cases where the response is not okay
+      console.error('Error fetching user information:', response.statusText);
+      return null;
+    } catch (error) {
+      console.error('Error fetching user information:', error);
+      return null;
+    }
+  };
+  
+
   const value: AuthContextProps = {
     user,
     login,
@@ -76,7 +105,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     isAdmin: () => getUserInfo().role === UserRole.admin,
     isTeacher: () => getUserInfo().role === UserRole.teacher,
     isStudent: () => getUserInfo().role === UserRole.student,
-    validCredentials,
+    fetchUserInfo,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

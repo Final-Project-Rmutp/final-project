@@ -16,7 +16,8 @@ const userController = require('../controller/user.controller.js');
  *             schema:
  *               type: array
  */
-router.get('/getuser', userController.getallusers);
 
+router.get('/getuser', userController.getallusers);
+router.get('/current', userController.getCurrentUser);
 
 module.exports = router;
