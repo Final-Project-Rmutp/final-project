@@ -46,18 +46,6 @@ const Login: React.FC = () => {
     if (userInfo && userInfo.password === password) {
       const user = { username, password, name: userInfo.name, role: userInfo.role };
       login(user);
-    // Validate credentials against the server
-    // const isValidCredentials = await validateCredentials({ username, password, name: '', role: UserRole.admin });
-
-    // if (isValidCredentials) {
-    //   // Fetch user info from the server
-    //   const userInfo = await fetchUserInfo();
-
-    //   if (userInfo) {
-    //     const user = { username, password, name: userInfo.name, role: userInfo.role };
-    //     login(user);
-
-        // Use the navigate function to redirect to the appropriate route
         switch (user.role) {
           case UserRole.admin:
             navigate('/admin');

@@ -46,7 +46,7 @@ const Admin: React.FC = () => {
       setIsEnterPressed(false);
     }
   };
-  const { user, logout, getUserInfo } = useAuth();
+  const { logout, getUserInfo } = useAuth();
   const navigate = useNavigate();
   const userInfo = getUserInfo();
 
@@ -60,7 +60,6 @@ const Admin: React.FC = () => {
 
   return (
     <div className="admin-container">
-      {user && (
         <div
           className="logout-button"
           onClick={() => {
@@ -70,7 +69,6 @@ const Admin: React.FC = () => {
         >
           <p>Welcome, {userInfo.name}!</p>
         </div>
-      )}
       {isEnterPressed && (
         <div>
           <input

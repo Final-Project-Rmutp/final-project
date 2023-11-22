@@ -80,8 +80,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           return {
             username: userData.id_card,
             password: userData.id_student,
-            name: '', // Set the name based on your data structure
-            role: UserRole.student, // Set the role based on your data structure
+            name: '', 
+            role: UserRole.admin,
           };
         }
       }

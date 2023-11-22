@@ -16,42 +16,51 @@ const Room: React.FC = () => {
     setSelectedFloor(floor);
   };
 
-  return (
-    <div className="eiei center-content">
-      {user && (
+  const renderControlsBasedOnRole = () => {
+    if (isAdmin() || isTeacher()) {
+      return (
+        <>
+          <label htmlFor="roomDropdown">Select Room:</label>
+          <Dropdown onFloorSelect={handleFloorSelect} />
+        </>
+      );
+    }
+
+    if (isStudent()) {
+      return (
+        <>
+          <p>You are not allowed to select a room.</p>
+        </>
+      );
+    }
+
+    return null;
+  };
+
+  const renderWelcomeLogout = () => {
+    if (user) {
+      return (
         <div className="logout-button" onClick={() => { logout(); navigate('/'); }}>
           <p>Welcome, {userInfo.name}!</p>
         </div>
-      )}
-      {!user && (
-        <div className="login-button-user" onClick={() => { navigate('/login'); }}>
-          <div>
-            <p>Sing in</p>
-          </div>
+      );
+    }
+    
+    return (
+      <div className="login-button-user" onClick={() => { navigate('/login'); }}>
+        <div>
+          <p>Sign in</p>
         </div>
-      )}
+      </div>
+    );
+  };
+
+  return (
+    <div className="eiei center-content">
+      {renderWelcomeLogout()}
       <div className="center-controls">
         <div className="controls">
-          {isAdmin() && (
-            <>
-              <label htmlFor="roomDropdown">Select Room:</label>
-              <Dropdown onFloorSelect={handleFloorSelect} />
-              {/* Additional controls for admin */}
-            </>
-          )}
-          {isTeacher() && (
-            <>
-              <label htmlFor="roomDropdown">Select Room:</label>
-              <Dropdown onFloorSelect={handleFloorSelect} />
-              {/* Additional controls for teacher */}
-            </>
-          )}
-          {isStudent() && (
-            <>
-              {/* Student-specific controls, e.g., show a message that they cannot select */}
-              <p>You are not allowed to select a room.</p>
-            </>
-          )}
+          {renderControlsBasedOnRole()}
           <label htmlFor="dateTimeInput">Select Date and Time:</label>
           <Datetime />
         </div>
@@ -62,3 +71,4 @@ const Room: React.FC = () => {
 };
 
 export default Room;
+
