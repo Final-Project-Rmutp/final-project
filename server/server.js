@@ -15,18 +15,6 @@ app.get("/", (req, res) => {
     res.json({ message: "API WORK." });
   });
 
-//AuthRoute
-const AuthRoute = require('./routes/auth.routes.js');
-app.use("/auth", AuthRoute)
-
-//AdminRoute
-const AdminRoute = require('./routes/admin.routes.js');
-app.use("/admin", AdminRoute)
-
-//UserRoute
-const UserRoute = require('./routes/user.routes.js');
-app.use("/user", UserRoute)
-
   const options = {
     definition: {
       openapi: '3.0.0', // Specify the OpenAPI version
@@ -35,16 +23,6 @@ app.use("/user", UserRoute)
         version: '1.0.0',
         description: 'API Doc for Room Reservation System',
       },
-      components: {
-        securitySchemes: {
-            Authorization: {
-                type: "http",
-                scheme: "bearer",
-                bearerFormat: "JWT",
-                value: "Bearer <JWT token here>"
-            }
-        }
-    },
       servers: [
         {
           url:'http://localhost:5000',
@@ -58,6 +36,9 @@ app.use("/user", UserRoute)
 const swaggerSpec = swaggerJsdoc(options)
   
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+
+const UserRoute = require('./routes/user.routes.js');
+app.use("/user", UserRoute)
   
 app.listen(port, () => {
   console.log(`Server is Running On Port ${port}`)
