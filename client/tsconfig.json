@@ -7,6 +7,9 @@
     // "module": "ESNext",
     "skipLibCheck": true,
     "baseUrl": "./src",
+    "paths": {
+      "pages/*": ["pages/*"],
+    },
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "node",
@@ -24,8 +27,10 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+    "typeRoots": ["node_modules/@types", "src/@types"]
   },
-  "include": ["src"],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
