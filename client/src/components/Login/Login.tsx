@@ -1,7 +1,7 @@
 // Login.tsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth, UserRole } from '../../auth/AuthLogin';
+import { useAuth, UserRole } from '../../auth/authLogin';
 import './Login.scss';
 
 interface ErrorMessages {
@@ -48,7 +48,7 @@ const Login: React.FC = () => {
       login(user);
         switch (user.role) {
           case UserRole.admin:
-            navigate('/admin');
+            navigate('/student-list');
             break;
           case UserRole.teacher:
             navigate('/teacher');
