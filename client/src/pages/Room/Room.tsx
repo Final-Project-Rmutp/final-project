@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../auth/authLogin';
+import { useAuth } from '../../auth/AuthLogin';
 import Dropdown from '../../shared/dropdown/Dropdown';
 import Datetime from '../../shared/datetime/Datetime';
 import Floor6 from "../../components/floor6/Floor6";
 import './Room.scss';
 
 const Room: React.FC = () => {
-  const { user, logout, getUserInfo, isAdmin, isTeacher, isStudent } = useAuth();
+  const { user, logout, getUserInfo, isAdmin, isUser} = useAuth();
   const navigate = useNavigate();
   const userInfo = getUserInfo();
   const [selectedFloor, setSelectedFloor] = useState<string | null>(null);
@@ -17,7 +17,7 @@ const Room: React.FC = () => {
   };
 
   const renderControlsBasedOnRole = () => {
-    if (isAdmin() || isTeacher()) {
+    if (isAdmin() || isUser()) {
       return (
         <>
           <label htmlFor="roomDropdown">Select Room:</label>
@@ -26,7 +26,7 @@ const Room: React.FC = () => {
       );
     }
 
-    if (isStudent()) {
+    if (isUser()) {
       return (
         <>
           <p>You are not allowed to select a room.</p>
@@ -47,7 +47,7 @@ const Room: React.FC = () => {
     }
     
     return (
-      <div className="login-button-user" onClick={() => { navigate('/login'); }}>
+      <div className="login-button-user" onClick={() => { navigate('/'); }}>
         <div>
           <p>Sign in</p>
         </div>

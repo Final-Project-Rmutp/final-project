@@ -1,23 +1,19 @@
 import React, { useState } from 'react';
 import {
-    Table,
-    TableBody,
-    TableCell,
+
     TableContainer,
-    TableHead,
-    TableRow,
-    Checkbox,
-    Button,
+    // Checkbox,
+    // Button,
     TablePagination,
     Dialog,
     DialogTitle,
     DialogContent,
     DialogActions,
     Typography,
+    Paper,
 } from '@mui/material';
-import UserProfileSidebar from '../../../shared/components/navbar/Navbar';
 import './StudentList.scss';
-
+import '../../../scss/custom.scss'
 interface ListItem {
   id: number;
   name: string;
@@ -97,7 +93,7 @@ const StudentList: React.FC = () => {
     setDeleteDialogOpen(false);
   };
 
-  const handleChangePage = (_: unknown, newPage: number) => {
+  const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
   };
 
@@ -108,93 +104,96 @@ const StudentList: React.FC = () => {
 
   return (
     <>
-      <UserProfileSidebar />
-      <div className='table-container'>
-        <TableContainer className="just-table">
-          <Table stickyHeader>
-            <TableHead style={{ backgroundColor: 'red', color: 'white' }}>
-              <TableRow>
-                <TableCell align="center">No</TableCell>
-                <TableCell align="center">Actions</TableCell>
-                <TableCell align="center">Active</TableCell>
-                <TableCell align="center">Name</TableCell>
-                <TableCell align="center">ID Card</TableCell>
-                <TableCell align="center">Student ID</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              <TableRow>
-                <TableCell align="center"></TableCell>
-                <TableCell align="center">
-                  <Button
-                    variant="outlined"
-                    color="secondary"
-                    size="small"
-                    onClick={handleDeleteAll}
+      <div className="container-list">
+        <div className='table-container'>
+          <Paper className='w-full'>
+            <TableContainer >
+              <table className='table table-auto w-full text-center lg:table-fixed'>
+                <thead className='bg-red-500 text-white'>
+                  <tr>
+                    <th className='py-2'>No</th>
+                    <th className='py-2'>Actions</th>
+                    <th className='py-2'>Active</th>
+                    <th className='py-2'>Name</th>
+                    <th className='py-2'>ID Card</th>
+                    <th className='py-2'>Student ID</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td>
+                      <input type='checkbox' checked={selectAll} onChange={handleSelectAll} />
+                    </td>
+                    <td></td>
+                  </tr>
+                </tbody>
+                <tbody>
+                  {listItems.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((item, index) => (
+                    <tr key={item.id}>
+                      <td>{index + 1 + page * rowsPerPage}</td>
+                      <td>
+                        <button  color='primary'  className='edit'>
+                          Edit
+                        </button>
+                        <button
+                          color='secondary'
+                          onClick={() => handleDelete(item.id)}
+                          className='delete'
+                        >
+                          Delete
+                        </button>
+                      </td>
+                      <td>
+                        <input type='checkbox' checked={selectedItems.includes(item.id)} onChange={() => handleCheckboxChange(item.id)} />
+                      </td>
+                      <td>{item.name}</td>
+                      <td>{item.idCard}</td>
+                      <td>{item.studentId}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <Dialog open={deleteDialogOpen} onClose={handleCloseDeleteDialog}>
+                <DialogTitle>Confirm Delete</DialogTitle>
+                <DialogContent>
+                  <Typography>Are you sure you want to delete the selected item(s)?</Typography>
+                </DialogContent>
+                <DialogActions>
+                  <button onClick={handleCloseDeleteDialog}>Cancel</button>
+                  <button onClick={handleDeleteConfirmed} color='secondary' 
                   >
-                    Delete All
-                  </Button>
-                </TableCell>
-                <TableCell align="center">
-                  <Checkbox checked={selectAll} onChange={handleSelectAll} />
-                </TableCell>
-                <TableCell align="center"></TableCell>
-                <TableCell align="center"></TableCell>
-                <TableCell align="center"></TableCell>
-              </TableRow>
-            </TableBody>
-            <TableBody>
-              {listItems.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((item, index) => (
-                <TableRow key={item.id}>
-                  <TableCell align="center">{index + 1 + page * rowsPerPage}</TableCell>
-                  <TableCell align="center">
-                    <Button variant="outlined" color="primary" size="small">
-                      Edit
-                    </Button>
-                    <Button variant="outlined" color="secondary" size="small" onClick={() => handleDelete(item.id)}>
                     Delete
-                    </Button>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Checkbox
-                      checked={selectedItems.includes(item.id)}
-                      onChange={() => handleCheckboxChange(item.id)}
-                    />
-                  </TableCell>
-                  <TableCell align="center">{item.name}</TableCell>
-                  <TableCell align="center">{item.idCard}</TableCell>
-                  <TableCell align="center">{item.studentId}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-          <Dialog open={deleteDialogOpen} onClose={handleCloseDeleteDialog}>
-          <DialogTitle>Confirm Delete</DialogTitle>
-          <DialogContent>
-            <Typography>Are you sure you want to delete the selected item(s)?</Typography>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseDeleteDialog}>Cancel</Button>
-            <Button onClick={handleDeleteConfirmed} color="secondary">
-              Delete
-            </Button>
-          </DialogActions>
-        </Dialog>
-        </TableContainer>
-        <div className='pagination-container'>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={listItems.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
+                  </button>
+                </DialogActions>
+              </Dialog>
+            </TableContainer>
+          </Paper>
+          <div className='pagination-container'>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25]}
+              component='div'
+              count={listItems.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </div>
+        </div>
+        <div className="container-btn">
+        <button
+          id='delete'
+          color='secondary'
+          className='bg-red-500 text-white p-2'
+          onClick={handleDeleteAll}
+        >
+          Delete All
+        </button>
         </div>
       </div>
     </>
   );
 };
-
 export default StudentList;

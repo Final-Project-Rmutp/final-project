@@ -1,11 +1,9 @@
-import axios from 'axios';
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 // eslint-disable-next-line react-refresh/only-export-components
 export enum UserRole {
   admin = 'admin',
-  teacher = 'teacher',
-  student = 'student',
+  user = 'user',
 }
 
 export interface UserModel {
@@ -22,9 +20,7 @@ export interface AuthContextProps {
   validateCredentials: (userModel: UserModel) => boolean;
   getUserInfo: () => UserModel;
   isAdmin: () => boolean;
-  isTeacher: () => boolean;
-  isStudent: () => boolean;
-  fetchUserInfo: () => Promise<UserModel | null>;
+  isUser: () => boolean;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -37,8 +33,7 @@ const initialUser: string | null = localStorage.getItem('user') || null;
 
 const initialValidCredentials: UserModel[] = [
   { username: 'admin', password: 'admin', name: 'Admin', role: UserRole.admin },
-  { username: 'teacher', password: 'teacher', name: 'Teacher', role: UserRole.teacher },
-  { username: 'student', password: 'student', name: 'Student', role: UserRole.student },
+  { username: 'user', password: 'user', name: 'user', role: UserRole.user },
 ];
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
@@ -67,33 +62,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const userInfo: UserModel | undefined = validCredentials.find((cred) => cred.username === user);
     return userInfo || { username: '', password: '', name: '', role: UserRole.admin };
   };
-  const fetchUserInfo = async (): Promise<UserModel | null> => {
-    try {
-      const response = await axios.get('http://localhost:5000/user/getuser');
-
-      if (response.status === 200) {
-        const userDataArray = response.data;
-
-        if (userDataArray.length > 0) {
-          const userData = userDataArray[0];
-
-          return {
-            username: userData.id_card,
-            password: userData.id_student,
-            name: '', 
-            role: UserRole.admin,
-          };
-        }
-      }
-
-      // Handle other cases where the response is not okay
-      console.error('Error fetching user information:', response.statusText);
-      return null;
-    } catch (error) {
-      console.error('Error fetching user information:', error);
-      return null;
-    }
-  };
+ 
 
   // const fetchUserInfo = async (): Promise<UserModel | null> => {
   //   try {
@@ -131,9 +100,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     validateCredentials,
     getUserInfo,
     isAdmin: () => getUserInfo().role === UserRole.admin,
-    isTeacher: () => getUserInfo().role === UserRole.teacher,
-    isStudent: () => getUserInfo().role === UserRole.student,
-    fetchUserInfo,
+    isUser: () => getUserInfo().role === UserRole.user,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

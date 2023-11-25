@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "types": ["tailwindcss"],
+    "typeRoots": ["node_modules"],
     // "target": "ES2020",
     "useDefineForClassFields": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
@@ -8,6 +9,7 @@
     "skipLibCheck": true,
     "baseUrl": "./src",
     "paths": {
+      
       "pages/*": ["pages/*"],
     },
     "target": "esnext",
@@ -29,7 +31,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
-    "typeRoots": ["node_modules/@types", "src/@types"]
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]

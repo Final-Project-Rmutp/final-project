@@ -11,7 +11,11 @@ export interface UserModel {
   name: string;
   role: UserRole;
 }
-
+export interface User {
+  id: string;
+  citizen_id: string;
+  accountrole: UserRole;
+}
 export interface AuthContextProps {
   user: string | null;
   login: (userModel: UserModel) => void;
