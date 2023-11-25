@@ -9,3 +9,69 @@
   .logo-container {
     margin-left: 10px;
   }
+.container-fluid{
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+.main-navbar{
+  position: relative;
+}
+
+.main-sidebar{
+  position: fixed;
+  left:0;
+  top: 0;
+  background: #fff;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  
+    .navbar-brand{
+      z-index: 9999;  
+    }
+}
+.main-sidebar.hidden {
+  transform: translateX(-100%);
+}
+.nav { 
+  height: 70px;
+}
+.sidebar-nav{
+  position: relative;
+
+}
+.main-navbar{
+  z-index: 9999;
+}
+.main-content{
+  min-height: calc(100vhvh - 7.5rem);
+}
+
+
+
+.main-sidebar .nav .nav-item, .main-sidebar .nav .nav-link {
+  white-space: nowrap;
+  min-width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif;
+  will-change: background-color,box-shadow,color;
+  -webkit-transition: box-shadow .2s ease,color .2s ease,background-color .2s ease;
+  transition: box-shadow .2s ease,color .2s ease,background-color .2s ease;
+  font-size: .85rem;
+}
+
+.main-content-container.full-screen {
+  width: 100%;
+  margin-left: 0;
+}
+// Sidebar.scss
+
+.sidebar.collapsed {
+  width: 0;
+}
+
+.full-height {
+  height: 100vh;
+}

@@ -1,0 +1,46 @@
+.nav-item {
+    li {
+        width: 180px;
+        height: 50px;
+        border-radius: 10px;
+
+        a {
+            font-size: 16px;
+            color: rgb(163, 214, 197);
+            margin-left: 30px;
+            &:hover {
+                color: rgb(251, 251, 251);
+            }
+        }
+    }
+}
+.sidebar {
+    position: relative;
+    background-color: rgb(94, 92, 91);
+    width: 100%;
+    overflow-x: hidden;
+    transition: width 0.3s ease;
+  }
+  
+  .sidebar.w-16 {
+    width: 16px;
+  }
+  
+  .sidebar.collapsed {
+    width: 0;
+  }
+  
+  .sidebar.collapsed .nav-item {
+    display: none;
+  }
+  
+  .toggle-sidebar {
+    position: absolute;
+    right: 15px;
+    left: auto; // Set left to auto by default
+  
+    &[data-collapsed='true'] {
+      left: 0; // Set left to 0 when data-collapsed attribute is true
+    }
+  }
+  

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
 
-    TableContainer,
+    // TableContainer,
     // Checkbox,
     // Button,
     TablePagination,
@@ -10,7 +10,6 @@ import {
     DialogContent,
     DialogActions,
     Typography,
-    Paper,
 } from '@mui/material';
 import './StudentList.scss';
 import '../../../scss/custom.scss'
@@ -104,13 +103,10 @@ const StudentList: React.FC = () => {
 
   return (
     <>
-      <div className="container-list">
         <div className='table-container'>
-          <Paper className='w-full'>
-            <TableContainer >
-              <table className='table table-auto w-full text-center lg:table-fixed'>
-                <thead className='bg-red-500 text-white'>
-                  <tr>
+              <table className='table table mb-0'>
+                <thead className='bg-red-500 text-white' >
+                  <tr className="text-center">
                     <th className='py-2'>No</th>
                     <th className='py-2'>Actions</th>
                     <th className='py-2'>Active</th>
@@ -119,19 +115,21 @@ const StudentList: React.FC = () => {
                     <th className='py-2'>Student ID</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="text-center">
                   <tr>
-                    <td></td>
-                    <td></td>
-                    <td>
+                    <th></th>
+                    <th></th>
+                    <th>
                       <input type='checkbox' checked={selectAll} onChange={handleSelectAll} />
-                    </td>
-                    <td></td>
+                    </th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
                   </tr>
                 </tbody>
                 <tbody>
                   {listItems.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((item, index) => (
-                    <tr key={item.id}>
+                    <tr className="text-center"key={item.id}>
                       <td>{index + 1 + page * rowsPerPage}</td>
                       <td>
                         <button  color='primary'  className='edit'>
@@ -168,8 +166,6 @@ const StudentList: React.FC = () => {
                   </button>
                 </DialogActions>
               </Dialog>
-            </TableContainer>
-          </Paper>
           <div className='pagination-container'>
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
@@ -182,7 +178,7 @@ const StudentList: React.FC = () => {
             />
           </div>
         </div>
-        <div className="container-btn">
+        <div className="card-footer">
         <button
           id='delete'
           color='secondary'
@@ -192,7 +188,6 @@ const StudentList: React.FC = () => {
           Delete All
         </button>
         </div>
-      </div>
     </>
   );
 };
