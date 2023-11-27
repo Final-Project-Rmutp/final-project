@@ -49,6 +49,12 @@ const AdminProfileSidebar: React.FC = () => {
   const toggleSidebar = () => {
     setCollapsed(!collapsed);
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userRole');
+    window.location.href = '/';
+  };
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="fixed">
@@ -90,6 +96,9 @@ const AdminProfileSidebar: React.FC = () => {
             </Box>
             <Divider />
           </Card>
+          <Button color="inherit" onClick={handleLogout}>
+            Logout
+          </Button>
         </Toolbar>
       </AppBar>
       <Box

@@ -6,8 +6,11 @@ import {
   DialogContent,
   DialogActions,
   Typography,
+  TextField,
+  MenuItem,
 } from '@mui/material';
 import styled from 'styled-components';
+import UserService from '../../../auth/service/UserService';
 
 interface ListItem {
   id: string;
@@ -92,33 +95,74 @@ const StudentList: React.FC = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
 
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [editingUser, setEditingUser] = useState<ListItem | null>(null);
+
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [newUser, setNewUser] = useState({
+    id: '',
+    citizen_id: '',
+    firstname: '',
+    lastname: '',
+    accounttype: '',
+  });
+
   useEffect(() => {
     const fetchUserList = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const role = localStorage.getItem('role');
-        const response = await fetch('http://3.1.195.56:5000/admin/user/getalluser', {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${token}`,
-            'Role': role, 
-          },
-        });
-  
-        if (response.ok) {
-          const data = await response.json();
-          setListItems(data);
-        } else {
-          console.error('Error fetching user data:', response.status, response.statusText);
-        }
+        const data = await UserService.getAllUsers();
+        setListItems(data);
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
     };
-  
+
     fetchUserList();
   }, []);
+
+
+  const handleAdd = () => {
+    setAddDialogOpen(true);
+  };
+  const handleEdit = (user: ListItem) => {
+    setEditingUser(user);
+    setEditDialogOpen(true);
+  };
+
+  const handleCloseEditDialog = () => {
+    setEditingUser(null);
+    setEditDialogOpen(false);
+  };
+
+
+  const handleEditConfirmed = async () => {
+    try {
+      const userData = await UserService.getUserById(editingUser?.id || '');
+      console.log('User details:', userData);
+      setEditingUser(null);
+      setEditDialogOpen(false);
+    } catch (error) {
+      console.error('Error fetching user details:', error);
+    }
+  };
+
+
+  const handleCloseAddDialog = () => {
+    setAddDialogOpen(false);
+  };
+
+  const handleAddConfirmed = async () => {
+    try {
+      await UserService.addUser(newUser);
+      // Fetch new data after addition
+      const updatedList = await UserService.getAllUsers();
+      setListItems(updatedList);
+      // Close the Modal
+      setAddDialogOpen(false);
+    } catch (error) {
+      console.error('Error adding user:', error);
+    }
+  };
 
   const handleSelectAll = () => {
     setSelectAll(!selectAll);
@@ -171,6 +215,14 @@ const StudentList: React.FC = () => {
     setPage(0);
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | { name?: string; value: unknown }>) => {
+    const { name, value } = e.target;
+    setNewUser((prevUser) => ({
+      ...prevUser,
+      [name!]: value,
+    }));
+  };
+
   return (
     <HeadStudentList>
       <TableContainer>
@@ -180,7 +232,8 @@ const StudentList: React.FC = () => {
               <th className='py-2'>No</th>
               <th className='py-2'>Actions</th>
               <th className='py-2'>Active</th>
-              <th className='py-2'>Name</th>
+              <th className='py-2'>FirstName</th>
+              <th className='py-2'>LastName</th>
               <th className='py-2'>ID Card</th>
               <th className='py-2'>Student ID</th>
             </tr>
@@ -193,6 +246,7 @@ const StudentList: React.FC = () => {
               <th></th>
               <th></th>
               <th></th>
+              <th></th>
             </tr>
           </StickyHeader>
           <tbody>
@@ -200,7 +254,7 @@ const StudentList: React.FC = () => {
               <tr className="text-center" key={item.id}>
                 <td>{index + 1 + page * rowsPerPage}</td>
                 <td>
-                  <button color='primary' className='edit'>
+                  <button color='primary' className='edit' onClick={() => handleEdit(item)}>
                     Edit
                   </button>
                   <button
@@ -218,7 +272,8 @@ const StudentList: React.FC = () => {
                     onChange={() => handleCheckboxChange(item.id)}
                   />
                 </td>
-                <td>{`${item.firstname} ${item.lastname}`}</td>
+                <td>{item.firstname}</td>
+                <td>{item.lastname}</td>
                 <td>{item.citizen_id}</td>
                 <td>{item.accounttype}</td>
               </tr>
@@ -258,7 +313,100 @@ const StudentList: React.FC = () => {
         >
           Delete All
         </StyledButton>
+        <StyledButton
+          id='add'
+          color='primary'
+          className='bg-blue-500 text-white p-2'
+          onClick={handleAdd}
+        >
+          Add
+        </StyledButton>
       </div>
+      <Dialog open={editDialogOpen} onClose={handleCloseEditDialog}>
+        <DialogTitle>Edit User</DialogTitle>
+        <DialogContent>
+          {/* Display user details for editing */}
+          {editingUser && (
+            <>
+              <Typography>ID: {editingUser.id}</Typography>
+              <TextField
+                label="Citizen ID"
+                name="citizen_id"
+                value={editingUser.citizen_id}
+                onChange={handleInputChange}
+                fullWidth
+              />
+              <TextField
+                label="First Name"
+                name="firstname"
+                value={editingUser.firstname}
+                onChange={handleInputChange}
+                fullWidth
+              />
+              <TextField
+                label="Last Name"
+                name="lastname"
+                value={editingUser.lastname}
+                onChange={handleInputChange}
+                fullWidth
+              />
+              <TextField label="Account Type" name="accounttype" value={editingUser.accounttype} onChange={handleInputChange} select fullWidth>
+                <MenuItem value="student">Student</MenuItem>
+                <MenuItem value="teacher">Teacher</MenuItem>
+              </TextField>
+            </>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <button onClick={handleCloseEditDialog}>Cancel</button>
+          <button onClick={handleEditConfirmed} color='primary'>
+            Save
+          </button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={addDialogOpen} onClose={handleCloseAddDialog}>
+        <DialogTitle>Add New User</DialogTitle>
+        <DialogContent>
+          <TextField
+            label="ID"
+            name="id"
+            value={newUser.id}
+            onChange={handleInputChange}
+            fullWidth
+          />
+          <TextField
+            label="Citizen ID"
+            name="citizen_id"
+            value={newUser.citizen_id}
+            onChange={handleInputChange}
+            fullWidth
+          />
+          <TextField
+            label="First Name"
+            name="firstname"
+            value={newUser.firstname}
+            onChange={handleInputChange}
+            fullWidth
+          />
+          <TextField
+            label="Last Name"
+            name="lastname"
+            value={newUser.lastname}
+            onChange={handleInputChange}
+            fullWidth
+          />
+          <TextField label="Account Type" name="accounttype" value={newUser.accounttype} onChange={handleInputChange} select fullWidth>
+            <MenuItem value="student">Student</MenuItem>
+            <MenuItem value="teacher">Teacher</MenuItem>
+          </TextField>
+        </DialogContent>
+        <DialogActions>
+          <button onClick={handleCloseAddDialog}>Cancel</button>
+          <button onClick={handleAddConfirmed} color='primary'>
+            Add
+          </button>
+        </DialogActions>
+      </Dialog>
     </HeadStudentList>
   );
 };
