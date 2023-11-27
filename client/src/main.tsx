@@ -1,17 +1,13 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import './input.css';
+import { GlobalStyles }  from './styles/global';
 import App from './App';
-import { UserProvider } from './auth/authFetch';
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
-root.render(
+ReactDOM.render(
   <React.StrictMode>
-    <UserProvider>
-      <App />
-    </UserProvider>
+    <GlobalStyles />
+    <App />
   </React.StrictMode>,
+  document.getElementById('root')
 );
-

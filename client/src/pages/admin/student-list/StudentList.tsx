@@ -1,60 +1,131 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-
-    // TableContainer,
-    // Checkbox,
-    // Button,
-    TablePagination,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
-    Typography,
+  TablePagination,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Typography,
 } from '@mui/material';
-import './StudentList.scss';
-import '../../../scss/custom.scss'
+import styled from 'styled-components';
+
 interface ListItem {
-  id: number;
-  name: string;
-  idCard: string;
-  studentId: string;
+  id: string;
+  firstname: string;
+  lastname: string;
+  citizen_id: string;
+  accounttype: string;
+  accountstatus: string;
+  accountrole: string;
 }
 
-const StudentList: React.FC = () => {
-  const [listItems, setListItems] = useState<ListItem[]>([
-    { id: 1, name: 'จตุโชค ชูมา1', idCard: '1102154345848', studentId: '056350201011-1' },
-    { id: 2, name: 'จตุโชค ชูมา2', idCard: '1102154345848', studentId: '056350201011-1' },
-    { id: 3, name: 'จตุโชค ชูมา3', idCard: '1102154345848', studentId: '056350201011-1' },
-    { id: 4, name: 'จตุโชค ชูมา4', idCard: '1102154345848', studentId: '056350201011-1' },
-    { id: 5, name: 'จตุโชค ชูมา5', idCard: '1102154345848', studentId: '056350201011-1' },
-    { id: 6, name: 'จตุโชค ชูมา6', idCard: '1102154345848', studentId: '056350201011-1' },
-    { id: 7, name: 'จตุโชค ชูมา7', idCard: '1102154345848', studentId: '056350201011-1' },
-    { id: 8, name: 'จตุโชค ชูมา8', idCard: '1102154345848', studentId: '056350201011-1' },
-    { id: 9, name: 'จตุโชค ชูมา9', idCard: '1102154345848', studentId: '056350201011-1' },
-    { id: 10, name: 'จตุโชค ชูมา10', idCard: '1102154345848', studentId: '056350201011-1' },
-    { id: 11, name: 'จตุโชค ชูมา11', idCard: '1102154345848', studentId: '056350201011-1' },
-    { id: 12, name: 'จตุโชค ชูมา12', idCard: '1102154345848', studentId: '056350201011-1' },
-    { id: 13, name: 'จตุโชค ชูมา13', idCard: '1102154345848', studentId: '056350201011-1' },
-    { id: 14, name: 'จตุโชค ชูมา14', idCard: '1102154345848', studentId: '056350201011-1' },
-    { id: 15, name: 'จตุโชค ชูมา15', idCard: '1102154345848', studentId: '056350201011-1' },
-    { id: 16, name: 'จตุโชค ชูมา16', idCard: '1102154345848', studentId: '056350201011-1' },
-    { id: 17, name: 'จตุโชค ชูมา17', idCard: '1102154345848', studentId: '056350201011-1' },
-    { id: 18, name: 'จตุโชค ชูมา18', idCard: '1102154345848', studentId: '056350201011-1' },
-  ]);
+const StyledTable = styled.table`
+  overflow: auto;
+  min-width: 925px;
+  border-radius: 20px;
 
+  tbody {
+    overflow: auto;
+    width: 100%;
+    min-width: 925px;
+  }
+
+  th, td {
+    border: 2px solid white;
+    padding: 5px;
+  }
+
+  th {
+    background-color: rgb(87, 90, 87);
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+`;
+
+const StyledButton = styled.button`
+  color: white;
+  padding: 5px;
+  margin-right: 5px;
+  cursor: pointer;
+`;
+
+const HeadStudentList = styled.div`
+  padding: 5rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .card-footer {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+`;
+
+const TableContainer = styled.div`
+  width: 100%;
+  min-width: 100%;
+  max-width: 925px;
+  height: 450px;
+  border: 1px solid rgb(41, 42, 41);
+  margin-top: 10px;
+  padding: 20px;
+  overflow-x: auto;
+`;
+
+const StickyHeader = styled.thead`
+  position: sticky;
+  top: 0;
+  background-color: rgb(0, 0, 0);
+  z-index: 1;
+`;
+
+const StudentList: React.FC = () => {
+  const [listItems, setListItems] = useState<ListItem[]>([]);
   const [selectAll, setSelectAll] = useState(false);
-  const [selectedItems, setSelectedItems] = useState<number[]>([]);
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState<number | null>(null);
+  const [itemToDelete, setItemToDelete] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchUserList = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const role = localStorage.getItem('role');
+        const response = await fetch('http://3.1.195.56:5000/admin/user/getalluser', {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`,
+            'Role': role, 
+          },
+        });
+  
+        if (response.ok) {
+          const data = await response.json();
+          setListItems(data);
+        } else {
+          console.error('Error fetching user data:', response.status, response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+  
+    fetchUserList();
+  }, []);
 
   const handleSelectAll = () => {
     setSelectAll(!selectAll);
     setSelectedItems(selectAll ? [] : listItems.map((item) => item.id));
   };
 
-  const handleCheckboxChange = (itemId: number) => {
+  const handleCheckboxChange = (itemId: string) => {
     setSelectedItems((prevSelected) => {
       if (prevSelected.includes(itemId)) {
         return prevSelected.filter((id) => id !== itemId);
@@ -64,30 +135,29 @@ const StudentList: React.FC = () => {
     });
   };
 
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: string) => {
     setItemToDelete(id);
     setDeleteDialogOpen(true);
   };
 
   const handleDeleteConfirmed = () => {
     if (itemToDelete !== null) {
-      // Individual item deletion
       const updatedList = listItems.filter((item) => item.id !== itemToDelete);
       setListItems(updatedList);
       setItemToDelete(null);
     } else {
-      // Delete all items
       const updatedList = listItems.filter((item) => !selectedItems.includes(item.id));
       setListItems(updatedList);
       setSelectedItems([]);
     }
-  
+
     setDeleteDialogOpen(false);
   };
 
   const handleDeleteAll = () => {
     setDeleteDialogOpen(true);
   };
+
   const handleCloseDeleteDialog = () => {
     setDeleteDialogOpen(false);
   };
@@ -102,93 +172,95 @@ const StudentList: React.FC = () => {
   };
 
   return (
-    <>
-        <div className='table-container'>
-              <table className='table table mb-0'>
-                <thead className='bg-red-500 text-white' >
-                  <tr className="text-center">
-                    <th className='py-2'>No</th>
-                    <th className='py-2'>Actions</th>
-                    <th className='py-2'>Active</th>
-                    <th className='py-2'>Name</th>
-                    <th className='py-2'>ID Card</th>
-                    <th className='py-2'>Student ID</th>
-                  </tr>
-                </thead>
-                <tbody className="text-center">
-                  <tr>
-                    <th></th>
-                    <th></th>
-                    <th>
-                      <input type='checkbox' checked={selectAll} onChange={handleSelectAll} />
-                    </th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                  </tr>
-                </tbody>
-                <tbody>
-                  {listItems.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((item, index) => (
-                    <tr className="text-center"key={item.id}>
-                      <td>{index + 1 + page * rowsPerPage}</td>
-                      <td>
-                        <button  color='primary'  className='edit'>
-                          Edit
-                        </button>
-                        <button
-                          color='secondary'
-                          onClick={() => handleDelete(item.id)}
-                          className='delete'
-                        >
-                          Delete
-                        </button>
-                      </td>
-                      <td>
-                        <input type='checkbox' checked={selectedItems.includes(item.id)} onChange={() => handleCheckboxChange(item.id)} />
-                      </td>
-                      <td>{item.name}</td>
-                      <td>{item.idCard}</td>
-                      <td>{item.studentId}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <Dialog open={deleteDialogOpen} onClose={handleCloseDeleteDialog}>
-                <DialogTitle>Confirm Delete</DialogTitle>
-                <DialogContent>
-                  <Typography>Are you sure you want to delete the selected item(s)?</Typography>
-                </DialogContent>
-                <DialogActions>
-                  <button onClick={handleCloseDeleteDialog}>Cancel</button>
-                  <button onClick={handleDeleteConfirmed} color='secondary' 
+    <HeadStudentList>
+      <TableContainer>
+        <StyledTable className='table mb-0'>
+          <StickyHeader>
+            <tr className="text-center">
+              <th className='py-2'>No</th>
+              <th className='py-2'>Actions</th>
+              <th className='py-2'>Active</th>
+              <th className='py-2'>Name</th>
+              <th className='py-2'>ID Card</th>
+              <th className='py-2'>Student ID</th>
+            </tr>
+            <tr className="text-center">
+              <th></th>
+              <th></th>
+              <th>
+                <input type='checkbox' checked={selectAll} onChange={handleSelectAll} />
+              </th>
+              <th></th>
+              <th></th>
+              <th></th>
+            </tr>
+          </StickyHeader>
+          <tbody>
+            {listItems.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((item, index) => (
+              <tr className="text-center" key={item.id}>
+                <td>{index + 1 + page * rowsPerPage}</td>
+                <td>
+                  <button color='primary' className='edit'>
+                    Edit
+                  </button>
+                  <button
+                    color='secondary'
+                    onClick={() => handleDelete(item.id)}
+                    className='delete'
                   >
                     Delete
                   </button>
-                </DialogActions>
-              </Dialog>
-          <div className='pagination-container'>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component='div'
-              count={listItems.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-          </div>
-        </div>
-        <div className="card-footer">
-        <button
+                </td>
+                <td>
+                  <input
+                    type='checkbox'
+                    checked={selectedItems.includes(item.id)}
+                    onChange={() => handleCheckboxChange(item.id)}
+                  />
+                </td>
+                <td>{`${item.firstname} ${item.lastname}`}</td>
+                <td>{item.citizen_id}</td>
+                <td>{item.accounttype}</td>
+              </tr>
+            ))}
+          </tbody>
+        </StyledTable>
+        <Dialog open={deleteDialogOpen} onClose={handleCloseDeleteDialog}>
+          <DialogTitle>Confirm Delete</DialogTitle>
+          <DialogContent>
+            <Typography>Are you sure you want to delete the selected item(s)?</Typography>
+          </DialogContent>
+          <DialogActions>
+            <button onClick={handleCloseDeleteDialog}>Cancel</button>
+            <button onClick={handleDeleteConfirmed} color='secondary'>
+              Delete
+            </button>
+          </DialogActions>
+        </Dialog>
+      </TableContainer>
+      <div className='pagination-container'>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component='div'
+          count={listItems.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </div>
+      <div className="card-footer">
+        <StyledButton
           id='delete'
           color='secondary'
           className='bg-red-500 text-white p-2'
           onClick={handleDeleteAll}
         >
           Delete All
-        </button>
-        </div>
-    </>
+        </StyledButton>
+      </div>
+    </HeadStudentList>
   );
 };
+
 export default StudentList;

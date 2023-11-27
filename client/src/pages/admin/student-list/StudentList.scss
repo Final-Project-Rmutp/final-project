@@ -8,24 +8,30 @@
 
 .table-container {
   width: 100%;
+  min-width: 100%;
+  max-width: 925px; /* Set the maximum width */
   height: 450px;
   border: 1px solid rgb(41, 42, 41);
   margin-top: 10px;
   padding: 20px;
-  overflow: auto;
+  overflow-x: auto; /* Allow horizontal overflow with a scrollbar */
 }
 
-.card-footer {
-  margin-top: 20px;
-  border: 1px solid red;
+.sticky-header {
+  position: sticky;
+  top: 0;
+  background-color: rgb(0, 0, 0);
+  z-index: 1;
 }
-
 .table {
-  min-width: 450px;
-  background-color: aquamarine;
-  overflow: auto;
-  border-radius: 20px;
-
+    overflow: auto;
+    min-width: 925px;
+    border-radius: 20px;
+    tbody{
+      overflow: auto;
+      width: 100%;
+      min-width: 925px;
+    }
   th, td {
     border: 2px solid white;
     padding: 5px;
@@ -34,5 +40,23 @@
   th {
     background-color: rgb(87, 90, 87);
     color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+
+}
+
+
+.head-studentlist{
+  padding: 5rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  .card-footer {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }

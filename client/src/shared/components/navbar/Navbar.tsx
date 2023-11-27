@@ -7,30 +7,25 @@ import {
   Stack,
   Typography,
   Divider,
+  Button,
+  AppBar,
+  Toolbar,
+  IconButton,
+  Drawer,
 } from '@mui/material';
-// import { useUser } from '../../../auth/authFetch';
-import Sidebar from '../sidebar/Sidebar';
-import StudentList from '../../../pages/admin/student-list/StudentList';
+import MenuIcon from '@mui/icons-material/Menu';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
-const UserProfileSidebar: React.FC = () => {
+import StudentList from '../../../pages/admin/student-list/StudentList';
+import { faBars, faTimes, faChartBar, faUser, faCalendarAlt, faFileAlt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+const AdminProfileSidebar: React.FC = () => {
   const randomImageNumber = Math.floor(Math.random() * 1000) + 1;
   const randomImageUrl = `https://picsum.photos/200/200?random=${randomImageNumber}`;
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 767);
-
-  useEffect(() => {
-    const body = document.body;
-    body.classList.remove(isDarkTheme ? 'light-theme' : 'dark-theme');
-    body.classList.add(isDarkTheme ? 'dark-theme' : 'light-theme');
-
-    return () => {
-      body.style.overflow = 'auto';
-    };
-  }, [isDarkTheme]);
-
-  const toggleTheme = () => {
-    setIsDarkTheme(!isDarkTheme);
-  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -43,53 +38,109 @@ const UserProfileSidebar: React.FC = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  const toggleTheme = () => {
+    setIsDarkTheme(!isDarkTheme);
+  };
+
+
+  const [collapsed, setCollapsed] = useState(false);
+
+  const toggleSidebar = () => {
+    setCollapsed(!collapsed);
+  };
   return (
-    <div className="container-fluid">
-      <div className="row">
-        <aside className={`main-sidebar px-0 col-12 col-md-3 col-lg-2 ${isDarkTheme ? 'dark-theme' : 'light-theme'}`}>
-          <div className="main-navbar w-100">
-            <nav className='nav align-items-stretch bg-black flex-md-nowrap  navbar navbar-light'>
-              <a href="" className='w-100  navbar-brand'>
-                <div className='d-table m-auto'>
-                  <img src="{randomImageUrl}" alt=""  className='d-inline-block align-top mr-1'/>
-                  <span className='d-none d-md-inline ml-1 text-white'>
-                    asdsadasdsa
-                  </span>
-                </div>
-              </a>
-            </nav>
-          </div>
-          {!isMobileView &&  (
-              <Sidebar  />
-              )}
-        </aside>
-        <main className={`main-content p-0 col-sm-12 col-md-9 offset-md-3 col-lg-10 offset-lg-2 ${isMobileView ? 'no-sidebar' : ''}`}>
-          <div className={`main-navbar bg-black sticky-top w-100 ${isDarkTheme ? 'dark-theme' : 'light-theme'}`}>
-            <div className="p-0 container-fluid">
-              <nav className="nav flex-md-nowrap p-0 navbar navbar-light">
-                <button className="btn-primary" onClick={toggleTheme}>
-                  Toggle Theme
-                </button>
-                <Card>
-                  <Box sx={{ p: 1, display: 'flex', alignItems: 'center' }}>
-                    <Avatar variant="rounded" src={randomImageUrl} />
-                    <Stack spacing={0.5} sx={{ marginLeft: 2 }}>
-                      <Typography fontWeight="bold" sx={{paddingRight:10}}>Wisit Moondet</Typography>
-                      <Typography variant="body2" color="text.secondary"></Typography>
-                    </Stack>
-                  </Box>
-                  <Divider /> 
-                </Card>
-              </nav>
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="fixed">
+        <Toolbar>
+          {isMobileView && (
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 0 }}
+              onClick={toggleSidebar}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Your App Name
+          </Typography>
+          <Button color="inherit" onClick={toggleTheme}>
+            <Brightness4Icon />
+          </Button>
+          <Drawer anchor="left" onClose={toggleSidebar} >
+            <div>
+              <IconButton onClick={toggleSidebar}>
+                <ChevronLeftIcon />
+              </IconButton>
             </div>
-          </div>
-          <div className="main-content-container px-4 container-fluid">
-              <StudentList />
-          </div>
-        </main>
-      </div>
+            <Divider />
+          </Drawer>
+          <Card>
+            <Box sx={{ p: 1, display: 'flex', alignItems: 'center' }}>
+              <Avatar variant="rounded" src={randomImageUrl} />
+              <Stack spacing={0.5} sx={{ marginLeft: 2 }}>
+                <Typography fontWeight="bold" sx={{ paddingRight: 2 }}>
+                  Wisit Moondet
+                </Typography>
+              </Stack>
+            </Box>
+            <Divider />
+          </Card>
+        </Toolbar>
+      </AppBar>
+      <Box
+        sx={{
+          marginTop: 6,
+
+        }}
+      >
+      </Box>
+      <div className="d-flex">
+        <div className="sidebar-main">
+          <div className={`sidebar fixed h-screen bg-gray-800 text-white p-4 ${collapsed ? 'collapsed' : ''} ${collapsed ? 'w-16' : 'w-64'}`}>
+          <button className="toggle-sidebar text-white focus:outline-none" onClick={toggleSidebar}>
+            <FontAwesomeIcon icon={collapsed ? faBars : faTimes} size="lg" />
+          </button>
+          <div className={`${collapsed ? 'hidden' : 'block'} mt-4`}>
+          <ul className='nav-item space-y-4'>
+            <li>
+              <a className="block py-2" href="/your-desired-page">
+                <FontAwesomeIcon icon={faChartBar} className="mr-2" />
+                Dashboard
+              </a>
+            </li>
+              <li>
+                <a className="block py-2" href="/your-desired-page">
+                  <FontAwesomeIcon icon={faUser} className="mr-2" />
+                  User
+                </a>
+              </li>
+              <li>
+                <a className="block py-2" href="/your-desired-page">
+                  <FontAwesomeIcon icon={faCalendarAlt} className="mr-2" />
+                  Reserved
+                </a>
+              </li>
+              <li>
+                <a className="block py-2" href="/your-desired-page">
+                  <FontAwesomeIcon icon={faFileAlt} className="mr-2" />
+                  Report
+                </a>
+              </li>
+          </ul>
+        </div>
     </div>
+        </div>
+        <div className="col-lg-12">
+          <StudentList />
+        </div>
+      </div>
+    </Box>
   );
 };
 
-export default UserProfileSidebar;
+export default AdminProfileSidebar;

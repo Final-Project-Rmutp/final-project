@@ -16,8 +16,7 @@
 }
 .sidebar {
     position: relative;
-    background-color: rgb(94, 92, 91);
-    width: 100%;
+    background-color: #1976D2;
     overflow-x: hidden;
     transition: width 0.3s ease;
   }
@@ -37,10 +36,10 @@
   .toggle-sidebar {
     position: absolute;
     right: 15px;
-    left: auto; // Set left to auto by default
+    left: auto;
   
     &[data-collapsed='true'] {
-      left: 0; // Set left to 0 when data-collapsed attribute is true
+      left: 0; 
     }
   }
   

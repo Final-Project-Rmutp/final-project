@@ -1,28 +1,24 @@
 import React, { useState } from 'react';
-import { useAuth, UserRole } from '../../auth/AuthLogin';
+import { useAuth } from '../../auth/AuthContext';
 import './Login.scss';
-import axios, { AxiosInstance } from 'axios'; // Import AxiosInstance
+import axios from 'axios';
 import { environment } from '../../environments/environment';
+import { Link } from 'react-router-dom';
 
 const apiUrl = environment.apiUrl;
-
-interface User {
-  id: string;
-  citizen_id: string;
-  accountrole: UserRole;
-}
 
 const Login: React.FC = () => {
   useAuth();
   const [loginData, setLoginData] = useState({ id: '', citizen_id: '' });
   const [errorMessages, setErrorMessages] = useState({ username: '', password: '', general: '' });
+
   const resetErrorMessages = () => {
     setErrorMessages({ username: '', password: '', general: '' });
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
-    resetErrorMessages(); 
+    resetErrorMessages();
   };
 
   const handleLogin = async () => {
@@ -39,37 +35,14 @@ const Login: React.FC = () => {
       }
 
       const response = await axios.post(`${apiUrl}/auth/login`, loginData);
+      console.log('Request Data:', loginData);
+      console.log('API Response:', response);
 
-      if (response.status === 200) {
-        const token = response.data.token;
-        localStorage.setItem('authToken', token);
-
-        // Create an instance of Axios with the custom configuration
-        const authAxios: AxiosInstance = axios.create({
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          baseURL: apiUrl, // Set the base URL for subsequent requests
-        });
-
-        const responseGetAllUsers = await authAxios.get('/admin/user/getalluser');
-
-        if (responseGetAllUsers.status === 200) {
-          const users: User[] = responseGetAllUsers.data;
-          const user = users[3];
-          if (user) {
-            switch (user.accountrole) {
-              case UserRole.admin:
-                window.location.href = '/student-list';
-                break;
-              case UserRole.user:
-                window.location.href = '/teacher';
-                break;
-              default:
-                window.location.href = '/';
-            }
-          }
-        }
+      if (response.status === 200 && response.data.token) {
+        const { token, role } = response.data;
+        localStorage.setItem('token', token);
+        localStorage.setItem('role', role);
+        window.location.href = '/admin';
       } else {
         setErrorMessages((prevState) => ({
           ...prevState,
@@ -77,7 +50,8 @@ const Login: React.FC = () => {
         }));
       }
     } catch (error) {
-      console.error('Authentication failed:', error);
+      console.error('Login failed:', error);
+
       setErrorMessages({
         username: '',
         password: '',
@@ -108,6 +82,9 @@ const Login: React.FC = () => {
         <button onClick={handleLogin} className="login-button">
           Login
         </button>
+        <Link to="/register" className="register-link">
+          Register
+        </Link>
       </div>
     </div>
   );

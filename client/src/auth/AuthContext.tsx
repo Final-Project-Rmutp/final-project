@@ -115,4 +115,5 @@ const useAuth = (): AuthContextProps => {
 };
 
 // eslint-disable-next-line react-refresh/only-export-components
-export { AuthProvider, useAuth };
+// eslint-disable-next-line react-refresh/only-export-components
+export { AuthProvider, useAuth, AuthContext };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Admin.scss';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../auth/AuthLogin';
+import { useAuth } from '../../auth/AuthContext';
 
 const Admin: React.FC = () => {
     const [selectedRows, setSelectedRows] = useState<number[]>([]);
