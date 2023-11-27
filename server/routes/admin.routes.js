@@ -138,36 +138,4 @@ router.get('/user/getuser/:id',authMiddleware.isAdmin, adminController.getUserBy
 
 router.put('/user/deactivateUser/:id',authMiddleware.isAdmin, adminController.deactivateUser);
 
-/**
- * @swagger
- * /admin/user/activateUser/{id}:
- *   put:
- *     tags:
- *     - Admin
- *     summary: Activate a user
- *     description: Activate user account by user id.
- *     security:
- *       - Authorization: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: User ID to fetch
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: User account activated successfully
- *       401:
- *         description: No token provided/Invalid token
- *       403:
- *         description: You don't have permission to access this resource.
- *       404:
- *         description: User not found
- *       500:
- *         description: Internal server error
- */
-
-router.put('/user/activateUser/:id',authMiddleware.isAdmin, adminController.activateUser);
-
 module.exports = router;

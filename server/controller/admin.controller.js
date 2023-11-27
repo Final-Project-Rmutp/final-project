@@ -68,25 +68,7 @@ async function deactivateUser(req, res) {
     }
 }
 
-// Update user account status to 1
-async function activateUser(req, res) {
-    try {
-        const userId = req.params.id; 
-        // Update query to set accountstatus to 1 for the user with the specified ID
-        const updateQuery = 'UPDATE "User" SET accountstatus = 1 WHERE id = $1';
-        const result = await client.query(updateQuery, [userId]);
-        // console.log(userId)
-        if (result.rowCount === 1) {
-            res.status(200).json({ message: 'User account activated successfully' });
-        } else {
-            res.status(404).json({ message: 'User not found' });
-        }
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).json({ message: 'Internal server error' });
-    }
-}
 
 
 
-module.exports = { adduser, getallusers, getUserById, deactivateUser, activateUser };
+module.exports = { adduser, getallusers, getUserById, deactivateUser };

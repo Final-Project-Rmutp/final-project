@@ -6,9 +6,11 @@ const client = require('./configs/database.js');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
 
-app.use(cors({
-  origin: '*', //remove this part when upload
-}));
+app.use(cors(
+// {
+//   origin: '*', //remove this part when upload
+// }
+));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
@@ -49,7 +51,7 @@ app.use("/user", UserRoute)
     },
       servers: [
         {
-          url:'http://localhost:5000',
+          url:'http://3.1.195.56:5000/',
       },
     ],
     },
