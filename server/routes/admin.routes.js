@@ -38,7 +38,7 @@ const authMiddleware = require('../middleware/authMiddleware.js')
  *               - accounttype
  *     responses:
  *       201:
- *         description: User registration successful. Returns the user's ID.
+ *         description: User registration successful.
  *       400:
  *         description: Bad request (e.g., missing or invalid input data)
  *       401:

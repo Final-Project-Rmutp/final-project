@@ -31,7 +31,7 @@ async function login(req, res) {
 
         // Generate and send a JSON Web Token (JWT) for authentication
         const token = jwt.sign({ id: user.id, citizen_id: user.citizen_id, accounttype: user.accounttype, accountrole: user.accountrole}, jwtSecret);
-        res.status(200).json({ message: 'Authentication successful', token });
+        res.status(200).json({ message: 'Authentication successful', token , accountrole: user.accountrole });
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ message: 'Internal server error' });

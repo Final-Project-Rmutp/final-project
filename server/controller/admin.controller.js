@@ -10,7 +10,7 @@ async function adduser(req, res) {
         const values = [user.id, user.citizen_id, user.firstname, user.lastname, user.accounttype];
     try {
         await client.query(insertQuery, values);
-        res.status(201).json({ message: 'Insertion was successful'});
+        res.status(201).json({ message: 'User registration successful'});
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ message: 'Internal server error' });
