@@ -4,7 +4,7 @@ const client = require('../configs/database.js');
 async function getprofile(req, res) {
     try {
         const userId = req.user.id;
-        const result = await client.query(`SELECT * FROM "User" WHERE id = $1`,[userId]);
+        const result = await client.query(`SELECT firstname,user_img_path FROM "User" WHERE id = $1`,[userId]);
         res.status(200).json(result.rows);
     } catch (err) {
         console.error(err.message);
