@@ -11,16 +11,8 @@ import {
 } from '@mui/material';
 import styled from 'styled-components';
 import UserService from '../../../auth/service/UserService';
-
-interface ListItem {
-  id: string;
-  firstname: string;
-  lastname: string;
-  citizen_id: string;
-  accounttype: string;
-  accountstatus: string;
-  accountrole: string;
-}
+import useUserState from '../../../auth/model/useUserState';
+import { ListItem } from '../../../auth/model/authTypes';
 
 const StyledTable = styled.table`
   overflow: auto;
@@ -91,7 +83,7 @@ const StudentList: React.FC = () => {
   const [selectAll, setSelectAll] = useState(false);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(5);  
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
 
@@ -99,13 +91,7 @@ const StudentList: React.FC = () => {
   const [editingUser, setEditingUser] = useState<ListItem | null>(null);
 
   const [addDialogOpen, setAddDialogOpen] = useState(false);
-  const [newUser, setNewUser] = useState({
-    id: '',
-    citizen_id: '',
-    firstname: '',
-    lastname: '',
-    accounttype: '',
-  });
+  const { newUser,handleInputChange,resetUser } = useUserState();
 
   useEffect(() => {
     const fetchUserList = async () => {
@@ -119,7 +105,6 @@ const StudentList: React.FC = () => {
 
     fetchUserList();
   }, []);
-
 
   const handleAdd = () => {
     setAddDialogOpen(true);
@@ -153,16 +138,21 @@ const StudentList: React.FC = () => {
 
   const handleAddConfirmed = async () => {
     try {
-      await UserService.addUser(newUser);
+      const response = await UserService.addUser(newUser);
+      console.log('API Response:', response);
       // Fetch new data after addition
       const updatedList = await UserService.getAllUsers();
       setListItems(updatedList);
       // Close the Modal
       setAddDialogOpen(false);
+      // Reset the form fields
+      resetUser();
     } catch (error) {
       console.error('Error adding user:', error);
     }
   };
+  
+  
 
   const handleSelectAll = () => {
     setSelectAll(!selectAll);
@@ -184,19 +174,34 @@ const StudentList: React.FC = () => {
     setDeleteDialogOpen(true);
   };
 
-  const handleDeleteConfirmed = () => {
+  const handleDeleteConfirmed = async () => {
     if (itemToDelete !== null) {
-      const updatedList = listItems.filter((item) => item.id !== itemToDelete);
-      setListItems(updatedList);
-      setItemToDelete(null);
+      try {
+        await UserService.deactivateUser(itemToDelete); 
+        const updatedList = listItems.filter((item) => item.id !== itemToDelete);
+        setListItems(updatedList);
+        setItemToDelete(null);
+      } catch (error) {
+        console.error('Error deactivating user:', error);
+      }
     } else {
-      const updatedList = listItems.filter((item) => !selectedItems.includes(item.id));
-      setListItems(updatedList);
-      setSelectedItems([]);
+      try {
+        await Promise.all(
+          selectedItems.map(async (id) => {
+            await UserService.deactivateUser(id);
+          })
+        );
+        const updatedList = listItems.filter((item) => !selectedItems.includes(item.id));
+        setListItems(updatedList);
+        setSelectedItems([]);
+      } catch (error) {
+        console.error('Error deactivating users:', error);
+      }
     }
 
     setDeleteDialogOpen(false);
   };
+
 
   const handleDeleteAll = () => {
     setDeleteDialogOpen(true);
@@ -211,18 +216,13 @@ const StudentList: React.FC = () => {
   };
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+    setRowsPerPage(parseInt(event.target.value, 25));
     setPage(0);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | { name?: string; value: unknown }>) => {
-    const { name, value } = e.target;
-    setNewUser((prevUser) => ({
-      ...prevUser,
-      [name!]: value,
-    }));
-  };
 
+
+    
   return (
     <HeadStudentList>
       <TableContainer>
@@ -281,17 +281,21 @@ const StudentList: React.FC = () => {
           </tbody>
         </StyledTable>
         <Dialog open={deleteDialogOpen} onClose={handleCloseDeleteDialog}>
-          <DialogTitle>Confirm Delete</DialogTitle>
-          <DialogContent>
-            <Typography>Are you sure you want to delete the selected item(s)?</Typography>
-          </DialogContent>
-          <DialogActions>
-            <button onClick={handleCloseDeleteDialog}>Cancel</button>
-            <button onClick={handleDeleteConfirmed} color='secondary'>
-              Delete
-            </button>
-          </DialogActions>
-        </Dialog>
+        <DialogTitle>Confirm Deactivate</DialogTitle>
+        <DialogContent>
+          <Typography>
+            {selectedItems.length > 1
+              ? 'Are you sure you want to deactivate all selected users?'
+              : 'Are you sure you want to deactivate the selected user?'}
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <button onClick={handleCloseDeleteDialog}>Cancel</button>
+          <button onClick={handleDeleteConfirmed} color='secondary'>
+            Delete
+          </button>
+        </DialogActions>
+      </Dialog>
       </TableContainer>
       <div className='pagination-container'>
         <TablePagination

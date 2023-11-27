@@ -34,7 +34,7 @@ const UserService = {
   },
   deactivateUser: async (userId: string) => {
     try {
-      const response = await axiosInstance.put(`/admin/user/deactivateUser/${userId}`);
+      const response = await axiosInstance.delete(`/admin/user/deactivateUser/${userId}`);
       return response.data;
     } catch (error) {
       console.error(`Error deactivating user with ID ${userId}:`, error);
@@ -42,15 +42,15 @@ const UserService = {
     }
   },
 
-  activateUser: async (userId: string) => {
-    try {
-      const response = await axiosInstance.put(`/admin/user/activateUser/${userId}`);
-      return response.data;
-    } catch (error) {
-      console.error(`Error activating user with ID ${userId}:`, error);
-      throw error;
-    }
-  },
+  // activateUser: async (userId: string) => {
+  //   try {
+  //     const response = await axiosInstance.put(`/admin/user/activateUser/${userId}`);
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error(`Error activating user with ID ${userId}:`, error);
+  //     throw error;
+  //   }
+  // },
 };
 
 export default UserService;

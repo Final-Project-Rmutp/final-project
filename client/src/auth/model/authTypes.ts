@@ -6,3 +6,13 @@ export interface UserData {
   lastname: string;
   accounttype: string;
 }
+
+export interface ListItem {
+  id: string;
+  firstname: string;
+  lastname: string;
+  citizen_id: string;
+  accounttype: string;
+  accountstatus: string;
+  accountrole: string;
+}
