@@ -109,7 +109,7 @@ router.get('/user/getuser/:id',authMiddleware.isAdmin, adminController.getUserBy
 /**
  * @swagger
  * /admin/user/deactivateUser/{id}:
- *   put:
+ *   delete:
  *     tags:
  *     - Admin
  *     summary: DeactivateUser a user
@@ -136,6 +136,58 @@ router.get('/user/getuser/:id',authMiddleware.isAdmin, adminController.getUserBy
  *         description: Internal server error
  */
 
-router.put('/user/deactivateUser/:id',authMiddleware.isAdmin, adminController.deactivateUser);
+router.delete('/user/deactivateUser/:id',authMiddleware.isAdmin, adminController.deactivateUser);
+
+/**
+ * @swagger
+ * /admin/user/updateuser/{id}:
+ *   patch:
+ *     tags:
+ *     - Admin
+ *     summary: Edit user information
+ *     description: Edit user information.
+ *     security:
+ *       - Authorization: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: User ID to fetch
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: string
+ *               citizen_id:
+ *                 type: string
+ *               firstname:
+ *                 type: string
+ *               lastname:
+ *                 type: string
+ *             required:
+ *               - id
+ *               - citizen_id
+ *               - firstname
+ *               - lastname
+ *     responses:
+ *       200:
+ *         description: User data updated successfully.
+ *       400:
+ *         description: Bad request (e.g., missing or invalid input data)
+ *       401:
+ *         description: No token provided/Invalid token
+ *       403:
+ *         description: You don't have permission to access this resource.
+ *       500:
+ *         description: Internal server error
+ */
+
+router.patch('/user/updateuser/:id',authMiddleware.isAdmin, adminController.updateUser);
 
 module.exports = router;
