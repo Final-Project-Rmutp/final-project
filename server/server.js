@@ -6,9 +6,7 @@ const client = require('./configs/database.js');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
 
-app.use(cors({
-  origin: '*',
-}));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
