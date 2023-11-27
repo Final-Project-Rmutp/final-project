@@ -6,6 +6,8 @@ const authController = require('../controller/auth.controller.js');
  * @swagger
  * /auth/login:
  *   post:
+ *     tags:
+ *     - Auth
  *     summary: User login
  *     description: Authenticate a user by providing valid credentials (id and citizen_id).
  *     requestBody:

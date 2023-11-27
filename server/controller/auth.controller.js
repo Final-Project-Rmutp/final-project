@@ -10,7 +10,8 @@ async function login(req, res) {
     const query = `
         SELECT id, citizen_id, accounttype , accountrole
         FROM "User"
-        WHERE id = $1`;
+        WHERE id = $1
+        AND accountstatus = '1'`;
 
     try {
         const result = await client.query(query, [id]);
