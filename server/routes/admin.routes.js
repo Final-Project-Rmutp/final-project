@@ -356,7 +356,7 @@ router.delete('/user/deactivateUser/:id',authMiddleware.isAdmin, adminController
  *               - lastname
  *     responses:
  *       200:
- *         description: User deleted successfully
+ *         description: User Edit successfully
  *         content:
  *           application/json:
  *             schema:
@@ -364,7 +364,7 @@ router.delete('/user/deactivateUser/:id',authMiddleware.isAdmin, adminController
  *               properties:
  *                  message:
  *                    type: string
- *                    example: User deleted successfully
+ *                    example: User Edit successfully
  *       401:
  *         description: No token provided/Invalid token
  *         content:
