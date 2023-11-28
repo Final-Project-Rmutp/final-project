@@ -36,7 +36,7 @@ app.use("/user", UserRoute)
       openapi: '3.0.0', // Specify the OpenAPI version
       info: {
         title: 'Final-Project API Doc',
-        version: '1.0.0',
+        version: '1.1.0',
         description: 'API Doc for Room Reservation System',
       },
       components: {
