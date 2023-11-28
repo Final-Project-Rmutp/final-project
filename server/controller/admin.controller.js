@@ -3,16 +3,21 @@ const jwt =  require('jsonwebtoken');
 
 // Add a new user
 async function adduser(req, res) {
-    const user = req.body;
+    const { id, citizen_id, firstname, lastname, accounttype, use_img_path } = req.body;
+
+    // Check for missing or empty values (except user_img_path)
+    if(!id || !citizen_id || !firstname || !lastname || !accounttype){
+        return res.status(400).json({ message: 'All fields are required' });
+    }
 
     // Check if id and citizen_id are numbers
-    if (isNaN(user.id) || isNaN(user.citizen_id)) {
+    if (isNaN(id) || isNaN(citizen_id)) {
         return res.status(400).json({ message: 'ID and Citizen ID must be numbers' });
     }
 
-        let insertQuery = `insert into "User" (id, citizen_id, firstname, lastname, accounttype) 
-                            VALUES ($1, $2, $3, $4 ,$5)`;
-        const values = [user.id, user.citizen_id, user.firstname, user.lastname, user.accounttype];
+        let insertQuery = `insert into "User" (id, citizen_id, firstname, lastname, accounttype, user_img_path) 
+                            VALUES ($1, $2, $3, $4, $5, $6)`;
+        const values = [id, citizen_id, firstname, lastname, accounttype, use_img_path];
     try {
         await client.query(insertQuery, values);
         res.status(201).json({ message: 'User registration successful'});
@@ -25,8 +30,8 @@ async function adduser(req, res) {
 // Get all users
 async function getallusers(req, res) {
     try {
-        const result = await client.query(`SELECT * FROM "User"`);
-        res.status(200).json(result.rows);
+        const result = await client.query(`SELECT firstname,lastname,citizen_id,id,user_img_path FROM "User" WHERE accountrole = 'user'`);
+        res.status(200).json(result.rows); 
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ message: 'Internal server error' });
@@ -37,7 +42,7 @@ async function getUserById(req, res) {
     try {
         const userId = req.params.id;
         // Query to retrieve user details by ID
-        const query = 'SELECT * FROM "User" WHERE id = $1';
+        const query = `SELECT firstname,lastname,citizen_id,id,user_img_path FROM "User" WHERE id = $1 AND accountrole = 'user'`; // select แค่จำเป็น
         const result = await client.query(query, [userId]);
 
         if (result.rows.length === 1) {

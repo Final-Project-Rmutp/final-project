@@ -16,10 +16,37 @@ const authMiddleware = require('../middleware/authMiddleware.js')
  *     responses:
  *       200:
  *         description: authenticate successful. Returns the users profile.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  firstname:
+ *                    type: string
+ *                    example: "admin"
+ *                  user_img_path:
+ *                    type: string
+ *                    example: "null"
  *       401:
  *         description: No token provided , Invalid token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: No token provided , Invalid token
  *       500:
  *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Internal server error
  */
 
 
