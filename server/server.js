@@ -51,9 +51,11 @@ app.use("/user", UserRoute)
     },
       servers: [
         {
-          // url:'http://localhost:5000/', //change ip before upload 
+          url:'http://localhost:5000/',
+        },
+        {
           url:'http://3.1.195.56:5000/',
-      },
+        },
     ],
     },
     // Paths to API docs and output format
