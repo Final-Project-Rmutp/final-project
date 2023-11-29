@@ -36,7 +36,7 @@ app.use("/user", UserRoute)
       openapi: '3.0.0', // Specify the OpenAPI version
       info: {
         title: 'Final-Project API Doc',
-        version: '1.0.0',
+        version: '1.1.0',
         description: 'API Doc for Room Reservation System',
       },
       components: {
@@ -51,9 +51,11 @@ app.use("/user", UserRoute)
     },
       servers: [
         {
-          // url:'http://localhost:5000/', //change ip before upload 
+          url:'http://localhost:5000/',
+        },
+        {
           url:'http://3.1.195.56:5000/',
-      },
+        },
     ],
     },
     // Paths to API docs and output format
