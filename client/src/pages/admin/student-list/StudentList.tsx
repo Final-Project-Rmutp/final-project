@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   TablePagination,
   Dialog,
@@ -9,12 +9,12 @@ import {
   TextField,
   MenuItem,
   Checkbox,
-} from '@mui/material';
-import styled from 'styled-components';
-import UserService from '../../../auth/service/UserService';
-import useUserState from '../../../auth/model/useUserState';
-import { ListItem } from '../../../auth/model/authTypes';
-import './StudentList.scss';
+} from "@mui/material";
+import styled from "styled-components";
+import UserService from "../../../auth/service/UserService";
+import useUserState from "../../../auth/model/useUserState";
+import { ListItem } from "../../../auth/model/authTypes";
+import "./StudentList.scss";
 
 const StyledTable = styled.table`
   overflow: auto;
@@ -27,7 +27,8 @@ const StyledTable = styled.table`
     min-width: 925px;
   }
 
-  th, td {
+  th,
+  td {
     border: 2px solid white;
     padding: 5px;
   }
@@ -85,7 +86,7 @@ const StudentList: React.FC = () => {
   const [selectAll, setSelectAll] = useState(false);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);  
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
 
@@ -100,7 +101,7 @@ const StudentList: React.FC = () => {
       const data = await UserService.getAllUsers();
       setListItems(data);
     } catch (error) {
-      console.error('Error fetching user data:', error);
+      console.error("Error fetching user data:", error);
     }
   };
 
@@ -133,22 +134,25 @@ const StudentList: React.FC = () => {
           accounttype: user.accounttype,
         };
 
-        const response = await UserService.updateUser(editingUser.id, updatedUserData);
+        const response = await UserService.updateUser(
+          editingUser.id,
+          updatedUserData
+        );
 
         if (response.status === 200) {
-          console.log('User updated successfully:', response.data);
+          console.log("User updated successfully:", response.data);
           const updatedList = await UserService.getAllUsers();
           setListItems(updatedList);
           setEditingUser(null);
           setEditDialogOpen(false);
         } else {
-          console.error('Failed to update user:', response.data);
+          console.error("Failed to update user:", response.data);
         }
       } catch (error) {
-        console.error('Error updating user:', error);
+        console.error("Error updating user:", error);
       }
-    setEditDialogOpen(false)
-    await fetchUserList();
+      setEditDialogOpen(false);
+      await fetchUserList();
     }
   };
 
@@ -159,13 +163,13 @@ const StudentList: React.FC = () => {
   const handleAddConfirmed = async () => {
     try {
       const response = await UserService.addUser(user);
-      console.log('API Response:', response);
+      console.log("API Response:", response);
       const updatedList = await UserService.getAllUsers();
       setListItems(updatedList);
       setAddDialogOpen(false);
       resetUser();
     } catch (error) {
-      console.error('Error adding user:', error);
+      console.error("Error adding user:", error);
     }
     await fetchUserList();
   };
@@ -194,12 +198,14 @@ const StudentList: React.FC = () => {
   const handleDeleteConfirmed = async () => {
     if (itemToDelete !== null) {
       try {
-        await UserService.deactivateUser(itemToDelete); 
-        const updatedList = listItems.filter((item) => item.id !== itemToDelete);
+        await UserService.deactivateUser(itemToDelete);
+        const updatedList = listItems.filter(
+          (item) => item.id !== itemToDelete
+        );
         setListItems(updatedList);
         setItemToDelete(null);
       } catch (error) {
-        console.error('Error deactivating user:', error);
+        console.error("Error deactivating user:", error);
       }
     } else {
       try {
@@ -208,11 +214,13 @@ const StudentList: React.FC = () => {
             await UserService.deactivateUser(id);
           })
         );
-        const updatedList = listItems.filter((item) => !selectedItems.includes(item.id));
+        const updatedList = listItems.filter(
+          (item) => !selectedItems.includes(item.id)
+        );
         setListItems(updatedList);
         setSelectedItems([]);
       } catch (error) {
-        console.error('Error deactivating users:', error);
+        console.error("Error deactivating users:", error);
       }
     }
     await fetchUserList();
@@ -231,33 +239,40 @@ const StudentList: React.FC = () => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setRowsPerPage(parseInt(event.target.value, 25));
     setPage(0);
   };
-  
+
   return (
     <HeadStudentList>
       <TableContainer>
-        <StyledTable className='table mb-0'>
+        <StyledTable className="table mb-0">
           <StickyHeader>
             <tr className="text-center">
-              <th className='py-2'>No</th>
-              <th className='py-2'>IMG</th>
-              <th className='py-2'>Actions</th>
-              <th className='py-2'>Active</th>
-              <th className='py-2'>FirstName</th>
-              <th className='py-2'>LastName</th>
-              <th className='py-2'>ID Card</th>
-              <th className='py-2'>Student ID</th>
-              <th className='py-2'>Account Type</th>
+              <th className="py-2">No</th>
+              <th className="py-2">IMG</th>
+              <th className="py-2">Actions</th>
+              <th className="py-2">Active</th>
+              <th className="py-2">FirstName</th>
+              <th className="py-2">LastName</th>
+              <th className="py-2">ID Card</th>
+              <th className="py-2">Student ID</th>
+              <th className="py-2">Account Type</th>
             </tr>
             <tr className="text-center">
               <th></th>
               <th></th>
               <th></th>
               <th>
-                <Checkbox  checked={selectAll} onChange={handleSelectAll} defaultChecked color="success" />
+                <Checkbox
+                  checked={selectAll}
+                  onChange={handleSelectAll}
+                  defaultChecked
+                  color="success"
+                />
               </th>
               <th></th>
               <th></th>
@@ -267,66 +282,72 @@ const StudentList: React.FC = () => {
             </tr>
           </StickyHeader>
           <tbody>
-            {listItems.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((item, index) => (
-              <tr className="text-center" key={item.id}>
-                <td>{index + 1 + page * rowsPerPage}</td>
-                <td>
-                  <img
-                    src={`https://picsum.photos/50/50?random=${item.id}`}
-                    alt={`User ${item.id}`}
-                    width="50"
-                    height="50"
-                  />
-                </td>
-                <td>
-                  <button color='primary' className='edit' onClick={() => handleEdit(item)}>
-                    Edit
-                  </button>
-                  <button
-                    color='secondary'
-                    onClick={() => handleDelete(item.id)}
-                    className='delete'
-                  >
-                    Delete
-                  </button>
-                </td>
-                <td>
-                  <input
-                    type='checkbox'
-                    checked={selectedItems.includes(item.id)}
-                    onChange={() => handleCheckboxChange(item.id)}
-                  />
-                </td>
-                <td>{item.firstname}</td>
-                <td>{item.lastname}</td>
-                <td>{item.id}</td>
-                <td>{item.citizen_id}</td>
-                <td>{item.accounttype}</td>
-              </tr>
-            ))}
+            {listItems
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((item, index) => (
+                <tr className="text-center" key={item.id}>
+                  <td>{index + 1 + page * rowsPerPage}</td>
+                  <td>
+                    <img
+                      src={`https://picsum.photos/50/50?random=${item.id}`}
+                      alt={`User ${item.id}`}
+                      width="50"
+                      height="50"
+                    />
+                  </td>
+                  <td>
+                    <button
+                      color="primary"
+                      className="edit"
+                      onClick={() => handleEdit(item)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      color="secondary"
+                      onClick={() => handleDelete(item.id)}
+                      className="delete"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                  <td>
+                    <input
+                      type="checkbox"
+                      checked={selectedItems.includes(item.id)}
+                      onChange={() => handleCheckboxChange(item.id)}
+                    />
+                  </td>
+                  <td>{item.firstname}</td>
+                  <td>{item.lastname}</td>
+                  <td>{item.id}</td>
+                  <td>{item.citizen_id}</td>
+                  <td>{item.accounttype}</td>
+                </tr>
+              ))}
           </tbody>
         </StyledTable>
         <Dialog open={deleteDialogOpen} onClose={handleCloseDeleteDialog}>
-        <DialogTitle>Confirm Deactivate</DialogTitle>
-        <DialogContent>
-          <Typography>
-            {selectedItems.length > 1
-              ? 'Are you sure you want to deactivate all selected users?'
-              : 'Are you sure you want to deactivate the selected user?'}
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <button onClick={handleCloseDeleteDialog}>Cancel</button>
-          <button onClick={handleDeleteConfirmed} color='secondary'>
-            Delete
-          </button>
-        </DialogActions>
-      </Dialog>
+          <DialogTitle>Confirm Deactivate</DialogTitle>
+          <DialogContent>
+            <Typography>
+              {selectedItems.length > 1
+                ? "Are you sure you want to deactivate all selected users?"
+                : "Are you sure you want to deactivate the selected user?"}
+            </Typography>
+          </DialogContent>
+          <DialogActions>
+            <button onClick={handleCloseDeleteDialog}>Cancel</button>
+            <button onClick={handleDeleteConfirmed} color="secondary">
+              Delete
+            </button>
+          </DialogActions>
+        </Dialog>
       </TableContainer>
-      <div className='pagination-container'>
+      <div className="pagination-container">
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
-          component='div'
+          component="div"
           count={listItems.length}
           rowsPerPage={rowsPerPage}
           page={page}
@@ -336,17 +357,17 @@ const StudentList: React.FC = () => {
       </div>
       <div className="card-footer">
         <StyledButton
-          id='delete'
-          color='secondary'
-          className='bg-red-500 text-white p-2'
+          id="delete"
+          color="secondary"
+          className="bg-red-500 text-white p-2"
           onClick={handleDeleteAll}
         >
           Delete All
         </StyledButton>
         <StyledButton
-          id='add'
-          color='primary'
-          className='bg-blue-500 text-white p-2'
+          id="add"
+          color="primary"
+          className="bg-blue-500 text-white p-2"
           onClick={handleAdd}
         >
           Add
@@ -354,7 +375,7 @@ const StudentList: React.FC = () => {
       </div>
       <Dialog open={editDialogOpen} onClose={handleCloseEditDialog}>
         <DialogTitle>Edit User</DialogTitle>
-        <DialogContent sx={{ padding:'20px' }}>
+        <DialogContent sx={{ padding: "20px" }}>
           {editingUser && (
             <>
               <TextField
@@ -364,7 +385,7 @@ const StudentList: React.FC = () => {
                 onChange={handleInputChange}
                 fullWidth
                 sx={{ marginBottom: 2 }}
-                inputProps={{ inputMode: 'numeric' }}
+                inputProps={{ inputMode: "numeric" }}
               />
               <TextField
                 label="Citizen ID"
@@ -390,11 +411,15 @@ const StudentList: React.FC = () => {
                 fullWidth
                 sx={{ marginBottom: 2 }}
               />
-              <TextField label="Account Type" name="accounttype" 
-              value={user.accounttype} 
-              onChange={handleInputChange} 
-              select fullWidth
-              sx={{ marginBottom: 2 }}>
+              <TextField
+                label="Account Type"
+                name="accounttype"
+                value={user.accounttype}
+                onChange={handleInputChange}
+                select
+                fullWidth
+                sx={{ marginBottom: 2 }}
+              >
                 <MenuItem value="student">Student</MenuItem>
                 <MenuItem value="teacher">Teacher</MenuItem>
               </TextField>
@@ -403,7 +428,7 @@ const StudentList: React.FC = () => {
         </DialogContent>
         <DialogActions>
           <button onClick={handleCloseEditDialog}>Cancel</button>
-          <button onClick={handleEditConfirmed} color='primary'>
+          <button onClick={handleEditConfirmed} color="primary">
             Save
           </button>
         </DialogActions>
@@ -418,7 +443,7 @@ const StudentList: React.FC = () => {
             onChange={handleInputChange}
             fullWidth
             sx={{ marginBottom: 2 }}
-            inputProps={{ inputMode: 'numeric' }}
+            inputProps={{ inputMode: "numeric" }}
           />
           <TextField
             label="Citizen ID"
@@ -427,7 +452,7 @@ const StudentList: React.FC = () => {
             onChange={handleInputChange}
             fullWidth
             sx={{ marginBottom: 2 }}
-            inputProps={{ inputMode: 'numeric' }}
+            inputProps={{ inputMode: "numeric" }}
           />
           <TextField
             label="First Name"
@@ -445,14 +470,21 @@ const StudentList: React.FC = () => {
             fullWidth
             sx={{ marginBottom: 2 }}
           />
-          <TextField label="Account Type" name="accounttype" value={user.accounttype} onChange={handleInputChange} select fullWidth>
+          <TextField
+            label="Account Type"
+            name="accounttype"
+            value={user.accounttype}
+            onChange={handleInputChange}
+            select
+            fullWidth
+          >
             <MenuItem value="student">Student</MenuItem>
             <MenuItem value="teacher">Teacher</MenuItem>
           </TextField>
         </DialogContent>
         <DialogActions>
           <button onClick={handleCloseAddDialog}>Cancel</button>
-          <button onClick={handleAddConfirmed} color='primary'>
+          <button onClick={handleAddConfirmed} color="primary">
             Add
           </button>
         </DialogActions>

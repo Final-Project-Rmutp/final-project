@@ -3,10 +3,12 @@ import { useAuth } from '../../auth/AuthContext';
 import './Login.scss';
 import axios from 'axios';
 import { environment } from '../../environments/environment';
-
+import { toast } from 'sonner'
+import { useNavigate } from 'react-router';
 const apiUrl = environment.apiUrl;
 
 const Login: React.FC = () => {
+  const navigate = useNavigate();
   useAuth();
   const [loginData, setLoginData] = useState({ id: '', citizen_id: '' });
   const [errorMessages, setErrorMessages] = useState({ username: '', password: '', general: '' });
@@ -25,6 +27,15 @@ const Login: React.FC = () => {
 
     try {
       if (!loginData.id.trim() || !loginData.citizen_id.trim()) {
+        if (!loginData.id.trim()) {
+          toast.error('ID Card is required');
+        }
+        if (!loginData.citizen_id.trim()){
+        toast.error('ID Student is required');
+        }
+        // if (!loginData.id.trim() && !loginData.citizen_id.trim()) {
+        //   toast.error('Username and password are required');
+        // }
         setErrorMessages({
           username: !loginData.id.trim() ? 'ID Card is required' : '',
           password: !loginData.citizen_id.trim() ? 'ID Student is required' : '',
@@ -39,10 +50,12 @@ const Login: React.FC = () => {
         const { token, accountrole } = response.data;
         localStorage.setItem('token', token);
         localStorage.setItem('role', accountrole);
+        toast.success('Login Success');
+
         if (accountrole === 'admin') {
-          window.location.href = '/admin';
+          navigate('/admin');
         } else {
-          window.location.href = '/user';
+          navigate('/user');
         }
       } else {
         setErrorMessages((prevState) => ({
@@ -52,7 +65,7 @@ const Login: React.FC = () => {
       }
     } catch (error) {
       console.error('Login failed:', error);
-
+      toast.error('Invalid username or password');
       setErrorMessages({
         username: '',
         password: '',

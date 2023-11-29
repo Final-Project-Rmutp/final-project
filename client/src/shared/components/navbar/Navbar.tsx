@@ -1,11 +1,22 @@
-import React, { useState, MouseEvent } from 'react';
-import { Avatar, Box, Button, Card, Divider, Stack, Typography } from '@mui/material';
-import Home from '../sidebar/Home';
-import { MenuItems, MenuItemLinks } from '../../../styles/global';
-import { SidebarData } from '../sidebar/SidebarData';
-import Team from '../sidebar/Team';
-import StudentList from '../../../pages/admin/student-list/StudentList';
-import './Navbar.scss';
+import React, { useState, MouseEvent } from "react";
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  Divider,
+  Stack,
+  Typography,
+} from "@mui/material";
+// import Home from '../sidebar/Home';
+import { MenuItems, MenuItemLinks } from "../../../styles/global";
+import { SidebarData } from "../sidebar/SidebarData";
+// import Team from '../sidebar/Team';
+// import StudentList from '../../../pages/admin/student-list/StudentList';
+import "./Navbar.scss";
+import { Outlet, useNavigate } from "react-router";
+import { toast } from 'sonner'
+
 interface LayoutState {
   leftOpen: boolean;
   rightOpen: boolean;
@@ -13,10 +24,12 @@ interface LayoutState {
 }
 
 const AdminProfileSidebar: React.FC = () => {
+  const navigate = useNavigate();
+
   const [state, setState] = useState<LayoutState>({
     leftOpen: true,
     rightOpen: true,
-    selectedTab: 'Team',
+    selectedTab: "Team",
   });
 
   const toggleSidebar = (event: MouseEvent<HTMLDivElement>) => {
@@ -38,56 +51,61 @@ const AdminProfileSidebar: React.FC = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('userRole');
-    window.location.href = '/login';
+    localStorage.removeItem("token");
+    localStorage.removeItem("userRole");
+    navigate("/login");
+    toast.error('Invalid username or password');
+
   };
 
-  const renderTabContent = () => {
-    switch (state.selectedTab) {
-      case 'dashboard':
-        return <Team />;
-      case 'user':
-        return <StudentList />;
-      case 'reserved':
-        return <Home />;
-      default:
-        return null;
-    }
-  };
+  // const renderTabContent = () => {
+  //   switch (state.selectedTab) {
+  //     case 'dashboard':
+  //       return <Team />;
+  //     case 'student-list':
+  //       return <StudentList />;
+  //     case 'reserved':
+  //       return <Home />;
+  //     default:
+  //       return null;
+  //   }
+  // };
 
-  const leftOpen = state.leftOpen ? 'open' : 'closed';
+  const leftOpen = state.leftOpen ? "open" : "closed";
   const randomImageNumber = Math.floor(Math.random() * 1000) + 1;
   const randomImageUrl = `https://picsum.photos/200/200?random=${randomImageNumber}`;
   return (
-    <div id='layout'>
-      <div id='left' className={leftOpen}>
-        <div className='icon' onClick={toggleSidebar}>
+    <div id="layout">
+      <div id="left" className={leftOpen}>
+        <div className="icon" onClick={toggleSidebar}>
           &equiv;
         </div>
         <div className={`sidebar ${leftOpen}`}>
-          <div className='header'>
-            <div className='logo-header'>
+          <div className="header">
+            <div className="logo-header">
               <img src={randomImageUrl} alt="" />
             </div>
           </div>
-                <Card>
-                  <Box sx={{ p: 1, display: 'flex', alignItems: 'center', }}>
-                    <Avatar variant="rounded" src={randomImageUrl} />
-                    <Stack spacing={0.5} sx={{ marginLeft: 2 }}>
-                      <Typography fontWeight="bold" sx={{ paddingRight: 2 }}>
-                        Wisit Moondet
-                      </Typography>
-                    </Stack>
-                  </Box>
-                  <Divider />
-                </Card>
-          <div className='content'>
+          <Card>
+            <Box sx={{ p: 1, display: "flex", alignItems: "center" }}>
+              <Avatar variant="rounded" src={randomImageUrl} />
+              <Stack spacing={0.5} sx={{ marginLeft: 2 }}>
+                <Typography fontWeight="bold" sx={{ paddingRight: 2 }}>
+                  Wisit Moondet
+                </Typography>
+              </Stack>
+            </Box>
+            <Divider />
+          </Card>
+          <div className="content">
             {SidebarData.map((item, index) => (
               <MenuItems key={index}>
-                <MenuItemLinks to={item.path} onClick={() => handleTabChange(item.title)}>
+                <MenuItemLinks
+                  to={item.path}
+                  onClick={() => handleTabChange(item.title)}
+                >
                   {item.icon}
-                  <span style={{ marginLeft: '16px' }}>{item.title}</span>
+                  <span style={{ marginLeft: "16px" }}>{item.title}</span>
                 </MenuItemLinks>
               </MenuItems>
             ))}
@@ -95,23 +113,28 @@ const AdminProfileSidebar: React.FC = () => {
         </div>
       </div>
 
-      <div id='main'>
-        <div className='header'>
-          <div className="profile-right">
-
-          </div>
+      <div id="main">
+        <div className="header">
+          <div className="profile-right"></div>
           <div className="profile-left">
-          <Card>
-            <Box sx={{ p: 1, display: 'flex', alignItems: 'center', height:'45px', }}>
+            <Card>
+              <Box
+                sx={{
+                  p: 1,
+                  display: "flex",
+                  alignItems: "center",
+                  height: "45px",
+                }}
+              >
                 <Avatar variant="rounded" src={randomImageUrl} />
-                  <Stack spacing={0.5} sx={{ marginLeft: 2 }}>
-                    <Typography fontWeight="bold" sx={{ paddingRight: 2 }}>
-                      Wisit Moondet
-                    </Typography>
-                  </Stack>
-                </Box>
+                <Stack spacing={0.5} sx={{ marginLeft: 2 }}>
+                  <Typography fontWeight="bold" sx={{ paddingRight: 2 }}>
+                    Wisit Moondet
+                  </Typography>
+                </Stack>
+              </Box>
               <Divider />
-          </Card>
+            </Card>
           </div>
           <div className="btn-loggout">
             <Button color="inherit" onClick={handleLogout}>
@@ -119,8 +142,9 @@ const AdminProfileSidebar: React.FC = () => {
             </Button>
           </div>
         </div>
-        <div className='content'>
-          {renderTabContent()}
+        <div className="content">
+          <Outlet></Outlet>
+          {/* {renderTabContent()} */}
         </div>
       </div>
     </div>

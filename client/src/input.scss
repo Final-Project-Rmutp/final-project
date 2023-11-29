@@ -124,7 +124,7 @@ body {
   }
   .sidebar { transition: transform var(--secs); // <-- Portrait AND landscape!
     @media (orientation: portrait) { width: var(--portrait-width); }
-    @media (orientation: landscape) { width: calc(20px * var(--landscape-width)); }
+    @media (orientation: landscape) { width: calc(1vw * var(--landscape-width)); }
     .header { width: calc(50% - var(--header-height)); }
   }
 }

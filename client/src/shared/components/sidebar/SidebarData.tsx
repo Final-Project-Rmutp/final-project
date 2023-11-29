@@ -8,7 +8,7 @@ export const SidebarData = [
     },
     {
         title: 'user',
-        path: '',
+        path: 'student-list',
         icon: <FaIcons.FaTasks />
     },
     {
