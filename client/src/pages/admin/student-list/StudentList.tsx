@@ -8,6 +8,7 @@ import {
   Typography,
   TextField,
   MenuItem,
+  Checkbox,
 } from '@mui/material';
 import styled from 'styled-components';
 import UserService from '../../../auth/service/UserService';
@@ -230,19 +231,23 @@ const StudentList: React.FC = () => {
           <StickyHeader>
             <tr className="text-center">
               <th className='py-2'>No</th>
+              <th className='py-2'>IMG</th>
               <th className='py-2'>Actions</th>
               <th className='py-2'>Active</th>
               <th className='py-2'>FirstName</th>
               <th className='py-2'>LastName</th>
               <th className='py-2'>ID Card</th>
               <th className='py-2'>Student ID</th>
+              <th className='py-2'>Account Type</th>
             </tr>
             <tr className="text-center">
               <th></th>
               <th></th>
+              <th></th>
               <th>
-                <input type='checkbox' checked={selectAll} onChange={handleSelectAll} />
+                <Checkbox  checked={selectAll} onChange={handleSelectAll} defaultChecked color="success" />
               </th>
+              <th></th>
               <th></th>
               <th></th>
               <th></th>
@@ -253,6 +258,15 @@ const StudentList: React.FC = () => {
             {listItems.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((item, index) => (
               <tr className="text-center" key={item.id}>
                 <td>{index + 1 + page * rowsPerPage}</td>
+                {/* <td>{item.user_img_path}</td> */}
+                <td >
+                  <img
+                    src={`https://picsum.photos/50/50?random=${item.id}`}
+                    alt={`User ${item.id}`}
+                    width="50"
+                    height="50"
+                  />
+                </td>
                 <td>
                   <button color='primary' className='edit' onClick={() => handleEdit(item)}>
                     Edit
@@ -274,6 +288,7 @@ const StudentList: React.FC = () => {
                 </td>
                 <td>{item.firstname}</td>
                 <td>{item.lastname}</td>
+                <td>{item.id}</td>
                 <td>{item.citizen_id}</td>
                 <td>{item.accounttype}</td>
               </tr>

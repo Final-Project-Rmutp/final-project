@@ -52,7 +52,7 @@ export const MenuItems = styled.li`
   justify-content: start;
   width: 100%;
   height: 90px;
-  padding: 1rem 0 1.25rem;
+  padding: 2rem 0 1.25rem;
 `;
 
 export const MenuItemLinks = styled(Link)`

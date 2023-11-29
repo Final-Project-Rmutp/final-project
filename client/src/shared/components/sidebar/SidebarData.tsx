@@ -2,28 +2,28 @@ import * as FaIcons from 'react-icons/fa'
 
 export const SidebarData = [
     {
-        title: 'Home',
-        path: '/home',
+        title: 'dashboard',
+        path: '',
         icon: <FaIcons.FaHome />
     },
     {
-        title: 'Team',
-        path: '/team',
+        title: 'user',
+        path: '',
         icon: <FaIcons.FaTasks />
     },
     {
-        title: 'User',
-        path: '/student-list',
+        title: 'reserved',
+        path: '',
         icon: <FaIcons.FaUsers />
     },
     {
         title: 'Chats',
-        path: '/chats',
+        path: '',
         icon: <FaIcons.FaRocketchat />
     },
     {
         title: 'Analytics',
-        path: '/analytics',
+        path: '',
         icon: <FaIcons.FaRegChartBar />
     }
 ]

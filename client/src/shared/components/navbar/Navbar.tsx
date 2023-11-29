@@ -1,154 +1,129 @@
-import React, { useState, useEffect } from 'react';
-import './Navbar.scss';
-import {
-  Card,
-  Box,
-  Avatar,
-  Stack,
-  Typography,
-  Divider,
-  Button,
-  AppBar,
-  Toolbar,
-  IconButton,
-  Drawer,
-} from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-
+import React, { useState, MouseEvent } from 'react';
+import { Avatar, Box, Button, Card, Divider, Stack, Typography } from '@mui/material';
+import Home from '../sidebar/Home';
+import { MenuItems, MenuItemLinks } from '../../../styles/global';
+import { SidebarData } from '../sidebar/SidebarData';
+import Team from '../sidebar/Team';
 import StudentList from '../../../pages/admin/student-list/StudentList';
-import { faBars, faTimes, faChartBar, faUser, faCalendarAlt, faFileAlt } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import './Navbar.scss';
+interface LayoutState {
+  leftOpen: boolean;
+  rightOpen: boolean;
+  selectedTab: string;
+}
 
 const AdminProfileSidebar: React.FC = () => {
-  const randomImageNumber = Math.floor(Math.random() * 1000) + 1;
-  const randomImageUrl = `https://picsum.photos/200/200?random=${randomImageNumber}`;
-  const [isDarkTheme, setIsDarkTheme] = useState(false);
-  const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 767);
+  const [state, setState] = useState<LayoutState>({
+    leftOpen: true,
+    rightOpen: true,
+    selectedTab: 'Team',
+  });
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobileView(window.innerWidth <= 767);
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  const toggleTheme = () => {
-    setIsDarkTheme(!isDarkTheme);
+  const toggleSidebar = (event: MouseEvent<HTMLDivElement>) => {
+    const parentNode = event.currentTarget.parentNode as HTMLElement | null;
+    if (parentNode) {
+      const key = `${parentNode.id}Open` as keyof LayoutState;
+      setState((prevState) => ({
+        ...prevState,
+        [key]: !prevState[key],
+      }));
+    }
   };
 
-
-  const [collapsed, setCollapsed] = useState(false);
-
-  const toggleSidebar = () => {
-    setCollapsed(!collapsed);
+  const handleTabChange = (tab: string) => {
+    setState((prevState) => ({
+      ...prevState,
+      selectedTab: tab,
+    }));
   };
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userRole');
-    window.location.href = '/';
+    window.location.href = '/login';
   };
-  return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed">
-        <Toolbar>
-          {isMobileView && (
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 0 }}
-              onClick={toggleSidebar}
-            >
-              <MenuIcon />
-            </IconButton>
-          )}
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Your App Name
-          </Typography>
-          <Button color="inherit" onClick={toggleTheme}>
-            <Brightness4Icon />
-          </Button>
-          <Drawer anchor="left" onClose={toggleSidebar} >
-            <div>
-              <IconButton onClick={toggleSidebar}>
-                <ChevronLeftIcon />
-              </IconButton>
-            </div>
-            <Divider />
-          </Drawer>
-          <Card>
-            <Box sx={{ p: 1, display: 'flex', alignItems: 'center' }}>
-              <Avatar variant="rounded" src={randomImageUrl} />
-              <Stack spacing={0.5} sx={{ marginLeft: 2 }}>
-                <Typography fontWeight="bold" sx={{ paddingRight: 2 }}>
-                  Wisit Moondet
-                </Typography>
-              </Stack>
-            </Box>
-            <Divider />
-          </Card>
-          <Button color="inherit" onClick={handleLogout}>
-            Logout
-          </Button>
-        </Toolbar>
-      </AppBar>
-      <Box
-        sx={{
-          marginTop: 6,
 
-        }}
-      >
-      </Box>
-      <div className="d-flex">
-        <div className="sidebar-main">
-          <div className={`sidebar fixed h-screen bg-gray-800 text-white p-4 ${collapsed ? 'collapsed' : ''} ${collapsed ? 'w-16' : 'w-64'}`}>
-          <button className="toggle-sidebar text-white focus:outline-none" onClick={toggleSidebar}>
-            <FontAwesomeIcon icon={collapsed ? faBars : faTimes} size="lg" />
-          </button>
-          <div className={`${collapsed ? 'hidden' : 'block'} mt-4`}>
-          <ul className='nav-item space-y-4'>
-            <li>
-              <a className="block py-2" href="/your-desired-page">
-                <FontAwesomeIcon icon={faChartBar} className="mr-2" />
-                Dashboard
-              </a>
-            </li>
-              <li>
-                <a className="block py-2" href="/your-desired-page">
-                  <FontAwesomeIcon icon={faUser} className="mr-2" />
-                  User
-                </a>
-              </li>
-              <li>
-                <a className="block py-2" href="/your-desired-page">
-                  <FontAwesomeIcon icon={faCalendarAlt} className="mr-2" />
-                  Reserved
-                </a>
-              </li>
-              <li>
-                <a className="block py-2" href="/your-desired-page">
-                  <FontAwesomeIcon icon={faFileAlt} className="mr-2" />
-                  Report
-                </a>
-              </li>
-          </ul>
+  const renderTabContent = () => {
+    switch (state.selectedTab) {
+      case 'dashboard':
+        return <Team />;
+      case 'user':
+        return <StudentList />;
+      case 'reserved':
+        return <Home />;
+      default:
+        return null;
+    }
+  };
+
+  const leftOpen = state.leftOpen ? 'open' : 'closed';
+  const randomImageNumber = Math.floor(Math.random() * 1000) + 1;
+  const randomImageUrl = `https://picsum.photos/200/200?random=${randomImageNumber}`;
+  return (
+    <div id='layout'>
+      <div id='left' className={leftOpen}>
+        <div className='icon' onClick={toggleSidebar}>
+          &equiv;
         </div>
-    </div>
-        </div>
-        <div className="col-lg-12">
-          <StudentList />
+        <div className={`sidebar ${leftOpen}`}>
+          <div className='header'>
+            <div className='logo-header'>
+              <img src={randomImageUrl} alt="" />
+            </div>
+          </div>
+                <Card>
+                  <Box sx={{ p: 1, display: 'flex', alignItems: 'center', }}>
+                    <Avatar variant="rounded" src={randomImageUrl} />
+                    <Stack spacing={0.5} sx={{ marginLeft: 2 }}>
+                      <Typography fontWeight="bold" sx={{ paddingRight: 2 }}>
+                        Wisit Moondet
+                      </Typography>
+                    </Stack>
+                  </Box>
+                  <Divider />
+                </Card>
+          <div className='content'>
+            {SidebarData.map((item, index) => (
+              <MenuItems key={index}>
+                <MenuItemLinks to={item.path} onClick={() => handleTabChange(item.title)}>
+                  {item.icon}
+                  <span style={{ marginLeft: '16px' }}>{item.title}</span>
+                </MenuItemLinks>
+              </MenuItems>
+            ))}
+          </div>
         </div>
       </div>
-    </Box>
+
+      <div id='main'>
+        <div className='header'>
+          <div className="profile-right">
+
+          </div>
+          <div className="profile-left">
+          <Card>
+            <Box sx={{ p: 1, display: 'flex', alignItems: 'center', height:'45px', }}>
+                <Avatar variant="rounded" src={randomImageUrl} />
+                  <Stack spacing={0.5} sx={{ marginLeft: 2 }}>
+                    <Typography fontWeight="bold" sx={{ paddingRight: 2 }}>
+                      Wisit Moondet
+                    </Typography>
+                  </Stack>
+                </Box>
+              <Divider />
+          </Card>
+          </div>
+          <div className="btn-loggout">
+            <Button color="inherit" onClick={handleLogout}>
+              Logout
+            </Button>
+          </div>
+        </div>
+        <div className='content'>
+          {renderTabContent()}
+        </div>
+      </div>
+    </div>
   );
 };
 

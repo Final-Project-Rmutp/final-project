@@ -1,0 +1,147 @@
+/* styles.css or your preferred file name */
+
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* Dark theme */
+.dark-theme {
+  --bg-color: rgb(29, 27, 27);
+  --text-color: white;
+  --primary-color: #3498db; /* You can customize your color palette */
+  /* Add more theme-specific variables as needed */
+}
+
+/* Light theme */
+.light-theme {
+  --bg-color: white;
+  --text-color: black;
+  --primary-color: #3498db; /* You can customize your color palette */
+  /* Add more theme-specific variables as needed */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body  {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+/* Define your color palette for each theme */
+.dark-theme .primary-button {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.light-theme .primary-button {
+  background-color: var(--primary-color);
+  color: black;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// div {
+//   // outline: 1px solid red;
+// }
+
+:root {
+  --landscape-width: 18; // % OR vw for responsive window resizing!
+  --portrait-width: 250px;
+  --header-height: 4rem;
+  --secs: 0.4s;
+  --bg-left: springgreen;
+  --bg-right: cyan;
+  --bg-main: lemonchiffon;
+}
+
+body {
+  min-height: 100vh;
+  max-width: 100vw;
+  margin: 0;
+  overflow: hidden; // Disable scrolling on body
+}
+
+#layout {
+  display: flex; // Flexbox definition
+  overflow: hidden; // Disable scrolling on layout
+
+  // Style in common for sidebars and main area:
+  .header {
+    position: relative;
+    height: var(--header-height);
+    text-align: center; // Horizontal center
+    .title { position: absolute; left: 0; right: 0; }
+  }
+  .content {
+    overflow: auto;
+    box-sizing: border-box;
+    height: calc(100vh - var(--header-height));
+    padding: 1rem;
+  }
+}
+
+// Main area specific style:
+#main { background: var(--bg-main); flex-grow: 1;
+  .header { background: linear-gradient(to right, var(--bg-left), var(--bg-right));
+    @media (orientation: landscape) {
+      .title { transition: left var(--secs), right var(--secs);
+        &.left-closed { left: var(--header-height); }
+        &.right-closed { right: var(--header-height); }
+      }
+    }
+  }
+}
+
+// Style in common for both sidebars:
+#left, #right { transition: width var(--secs); width: 0;
+  @media (orientation: landscape) {
+    &.open { width: calc(1% * var(--landscape-width)); }
+  } // <-- Landscape ONLY sidebars
+  .icon { position: fixed; z-index: 10;
+    width: var(--header-height); height: var(--header-height);
+    line-height: var(--header-height); font-size: var(--header-height);
+    text-align: center; user-select: none; cursor: pointer;
+    top: -6px;
+  }
+  .sidebar { transition: transform var(--secs); // <-- Portrait AND landscape!
+    @media (orientation: portrait) { width: var(--portrait-width); }
+    @media (orientation: landscape) { width: calc(20px * var(--landscape-width)); }
+    .header { width: calc(50% - var(--header-height)); }
+  }
+}
+
+// Left sidebar specific style:
+#left { z-index: 5;
+  .sidebar { background: var(--bg-left);
+    &.closed { transform: translateX(-100%); } // <-- Left portrait AND landscape!
+    .header { left: var(--header-height); }
+  }
+}
+
+// Right sidebar specific style:
+#right { .icon { right: 0; }
+  .sidebar { background: var(--bg-right);
+    @media (orientation: portrait) {
+      &.open { transform: translateX(-100%); }
+    } // <-- Right portrait sidebar ONLY!
+  }
+}

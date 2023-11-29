@@ -12,6 +12,7 @@ export interface ListItem {
   firstname: string;
   lastname: string;
   citizen_id: string;
+  user_img_path:string;
   accounttype: string;
   accountstatus: string;
   accountrole: string;
