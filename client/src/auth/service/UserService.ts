@@ -41,6 +41,15 @@ const UserService = {
       throw error;
     }
   },
+  updateUser: async (userId: string, userData: UserData) => {
+    try {
+      const response = await axiosInstance.patch(`/admin/user/updateuser/${userId}`, userData);
+      return response.data;
+    } catch (error) {
+      console.error(`Error updating user with ID ${userId}:`, error);
+      throw error;
+    }
+  },
 
   // activateUser: async (userId: string) => {
   //   try {

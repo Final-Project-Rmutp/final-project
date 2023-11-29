@@ -14,6 +14,7 @@ import styled from 'styled-components';
 import UserService from '../../../auth/service/UserService';
 import useUserState from '../../../auth/model/useUserState';
 import { ListItem } from '../../../auth/model/authTypes';
+import './StudentList.scss';
 
 const StyledTable = styled.table`
   overflow: auto;
@@ -92,24 +93,25 @@ const StudentList: React.FC = () => {
   const [editingUser, setEditingUser] = useState<ListItem | null>(null);
 
   const [addDialogOpen, setAddDialogOpen] = useState(false);
-  const { newUser,handleInputChange,resetUser } = useUserState();
+  const { user, handleInputChange, resetUser } = useUserState();
+
+  const fetchUserList = async () => {
+    try {
+      const data = await UserService.getAllUsers();
+      setListItems(data);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchUserList = async () => {
-      try {
-        const data = await UserService.getAllUsers();
-        setListItems(data);
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    };
-
     fetchUserList();
   }, []);
-
   const handleAdd = () => {
+    resetUser();
     setAddDialogOpen(true);
   };
+
   const handleEdit = (user: ListItem) => {
     setEditingUser(user);
     setEditDialogOpen(true);
@@ -120,18 +122,35 @@ const StudentList: React.FC = () => {
     setEditDialogOpen(false);
   };
 
-
   const handleEditConfirmed = async () => {
-    try {
-      const userData = await UserService.getUserById(editingUser?.id || '');
-      console.log('User details:', userData);
-      setEditingUser(null);
-      setEditDialogOpen(false);
-    } catch (error) {
-      console.error('Error fetching user details:', error);
+    if (editingUser) {
+      try {
+        const updatedUserData = {
+          id: editingUser.id,
+          citizen_id: user.citizen_id,
+          firstname: user.firstname,
+          lastname: user.lastname,
+          accounttype: user.accounttype,
+        };
+
+        const response = await UserService.updateUser(editingUser.id, updatedUserData);
+
+        if (response.status === 200) {
+          console.log('User updated successfully:', response.data);
+          const updatedList = await UserService.getAllUsers();
+          setListItems(updatedList);
+          setEditingUser(null);
+          setEditDialogOpen(false);
+        } else {
+          console.error('Failed to update user:', response.data);
+        }
+      } catch (error) {
+        console.error('Error updating user:', error);
+      }
+    setEditDialogOpen(false)
+    await fetchUserList();
     }
   };
-
 
   const handleCloseAddDialog = () => {
     setAddDialogOpen(false);
@@ -139,21 +158,17 @@ const StudentList: React.FC = () => {
 
   const handleAddConfirmed = async () => {
     try {
-      const response = await UserService.addUser(newUser);
+      const response = await UserService.addUser(user);
       console.log('API Response:', response);
-      // Fetch new data after addition
       const updatedList = await UserService.getAllUsers();
       setListItems(updatedList);
-      // Close the Modal
       setAddDialogOpen(false);
-      // Reset the form fields
       resetUser();
     } catch (error) {
       console.error('Error adding user:', error);
     }
+    await fetchUserList();
   };
-  
-  
 
   const handleSelectAll = () => {
     setSelectAll(!selectAll);
@@ -170,7 +185,8 @@ const StudentList: React.FC = () => {
     });
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
+    await fetchUserList();
     setItemToDelete(id);
     setDeleteDialogOpen(true);
   };
@@ -199,10 +215,9 @@ const StudentList: React.FC = () => {
         console.error('Error deactivating users:', error);
       }
     }
-
+    await fetchUserList();
     setDeleteDialogOpen(false);
   };
-
 
   const handleDeleteAll = () => {
     setDeleteDialogOpen(true);
@@ -220,10 +235,7 @@ const StudentList: React.FC = () => {
     setRowsPerPage(parseInt(event.target.value, 25));
     setPage(0);
   };
-
-
-
-    
+  
   return (
     <HeadStudentList>
       <TableContainer>
@@ -258,8 +270,7 @@ const StudentList: React.FC = () => {
             {listItems.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((item, index) => (
               <tr className="text-center" key={item.id}>
                 <td>{index + 1 + page * rowsPerPage}</td>
-                {/* <td>{item.user_img_path}</td> */}
-                <td >
+                <td>
                   <img
                     src={`https://picsum.photos/50/50?random=${item.id}`}
                     alt={`User ${item.id}`}
@@ -343,33 +354,47 @@ const StudentList: React.FC = () => {
       </div>
       <Dialog open={editDialogOpen} onClose={handleCloseEditDialog}>
         <DialogTitle>Edit User</DialogTitle>
-        <DialogContent>
-          {/* Display user details for editing */}
+        <DialogContent sx={{ padding:'20px' }}>
           {editingUser && (
             <>
-              <Typography>ID: {editingUser.id}</Typography>
+              <TextField
+                label="ID"
+                name="id"
+                value={user.id}
+                onChange={handleInputChange}
+                fullWidth
+                sx={{ marginBottom: 2 }}
+                inputProps={{ inputMode: 'numeric' }}
+              />
               <TextField
                 label="Citizen ID"
                 name="citizen_id"
-                value={editingUser.citizen_id}
+                value={user.citizen_id}
                 onChange={handleInputChange}
                 fullWidth
+                sx={{ marginBottom: 2 }}
               />
               <TextField
                 label="First Name"
                 name="firstname"
-                value={editingUser.firstname}
+                value={user.firstname}
                 onChange={handleInputChange}
                 fullWidth
+                sx={{ marginBottom: 2 }}
               />
               <TextField
                 label="Last Name"
                 name="lastname"
-                value={editingUser.lastname}
+                value={user.lastname}
                 onChange={handleInputChange}
                 fullWidth
+                sx={{ marginBottom: 2 }}
               />
-              <TextField label="Account Type" name="accounttype" value={editingUser.accounttype} onChange={handleInputChange} select fullWidth>
+              <TextField label="Account Type" name="accounttype" 
+              value={user.accounttype} 
+              onChange={handleInputChange} 
+              select fullWidth
+              sx={{ marginBottom: 2 }}>
                 <MenuItem value="student">Student</MenuItem>
                 <MenuItem value="teacher">Teacher</MenuItem>
               </TextField>
@@ -389,32 +414,38 @@ const StudentList: React.FC = () => {
           <TextField
             label="ID"
             name="id"
-            value={newUser.id}
+            value={user.id}
             onChange={handleInputChange}
             fullWidth
+            sx={{ marginBottom: 2 }}
+            inputProps={{ inputMode: 'numeric' }}
           />
           <TextField
             label="Citizen ID"
             name="citizen_id"
-            value={newUser.citizen_id}
+            value={user.citizen_id}
             onChange={handleInputChange}
             fullWidth
+            sx={{ marginBottom: 2 }}
+            inputProps={{ inputMode: 'numeric' }}
           />
           <TextField
             label="First Name"
             name="firstname"
-            value={newUser.firstname}
+            value={user.firstname}
             onChange={handleInputChange}
             fullWidth
+            sx={{ marginBottom: 2 }}
           />
           <TextField
             label="Last Name"
             name="lastname"
-            value={newUser.lastname}
+            value={user.lastname}
             onChange={handleInputChange}
             fullWidth
+            sx={{ marginBottom: 2 }}
           />
-          <TextField label="Account Type" name="accounttype" value={newUser.accounttype} onChange={handleInputChange} select fullWidth>
+          <TextField label="Account Type" name="accounttype" value={user.accounttype} onChange={handleInputChange} select fullWidth>
             <MenuItem value="student">Student</MenuItem>
             <MenuItem value="teacher">Teacher</MenuItem>
           </TextField>

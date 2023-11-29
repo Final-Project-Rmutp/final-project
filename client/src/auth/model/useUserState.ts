@@ -1,15 +1,8 @@
+// useUserState.ts
 import { useState } from 'react';
 
-interface NewUser {
-  id: string;
-  citizen_id: string;
-  firstname: string;
-  lastname: string;
-  accounttype: string;
-}
-
 const useUserState = () => {
-  const [newUser, setNewUser] = useState<NewUser>({
+  const [user, setUser] = useState({
     id: '',
     citizen_id: '',
     firstname: '',
@@ -17,16 +10,19 @@ const useUserState = () => {
     accounttype: '',
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | { name?: string; value: unknown }>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setNewUser((prevUser) => ({
+    
+    setUser((prevUser) => ({
       ...prevUser,
-      [name!]: value,
+      [name]: value,
+      
     }));
+    
   };
 
   const resetUser = () => {
-    setNewUser({
+    setUser({
       id: '',
       citizen_id: '',
       firstname: '',
@@ -35,11 +31,7 @@ const useUserState = () => {
     });
   };
 
-  return {
-    newUser,
-    handleInputChange,
-    resetUser,
-  };
+  return { user, handleInputChange, resetUser };
 };
 
 export default useUserState;
