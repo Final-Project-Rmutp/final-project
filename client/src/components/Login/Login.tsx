@@ -3,7 +3,6 @@ import { useAuth } from '../../auth/AuthContext';
 import './Login.scss';
 import axios from 'axios';
 import { environment } from '../../environments/environment';
-import { Link } from 'react-router-dom';
 
 const apiUrl = environment.apiUrl;
 
@@ -35,14 +34,16 @@ const Login: React.FC = () => {
       }
 
       const response = await axios.post(`${apiUrl}/auth/login`, loginData);
-      console.log('Request Data:', loginData);
-      console.log('API Response:', response);
 
       if (response.status === 200 && response.data.token) {
-        const { token, role } = response.data;
+        const { token, accountrole } = response.data;
         localStorage.setItem('token', token);
-        localStorage.setItem('role', role);
-        window.location.href = '/admin';
+        localStorage.setItem('role', accountrole);
+        if (accountrole === 'admin') {
+          window.location.href = '/admin';
+        } else {
+          window.location.href = '/user';
+        }
       } else {
         setErrorMessages((prevState) => ({
           ...prevState,
@@ -82,9 +83,6 @@ const Login: React.FC = () => {
         <button onClick={handleLogin} className="login-button">
           Login
         </button>
-        <Link to="/register" className="register-link">
-          Register
-        </Link>
       </div>
     </div>
   );

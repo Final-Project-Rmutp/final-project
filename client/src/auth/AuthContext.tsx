@@ -10,7 +10,7 @@ export interface UserModel {
   username: string;
   password: string;
   name: string;
-  role: UserRole;
+  accountrole: UserRole;
 }
 
 export interface AuthContextProps {
@@ -32,8 +32,8 @@ interface AuthProviderProps {
 const initialUser: string | null = localStorage.getItem('user') || null;
 
 const initialValidCredentials: UserModel[] = [
-  { username: 'admin', password: 'admin', name: 'Admin', role: UserRole.admin },
-  { username: 'user', password: 'user', name: 'user', role: UserRole.user },
+  { username: 'admin', password: 'admin', name: 'Admin', accountrole: UserRole.admin },
+  { username: 'user', password: 'user', name: 'user', accountrole: UserRole.user },
 ];
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
@@ -60,7 +60,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const getUserInfo = (): UserModel => {
     const userInfo: UserModel | undefined = validCredentials.find((cred) => cred.username === user);
-    return userInfo || { username: '', password: '', name: '', role: UserRole.admin };
+    return userInfo || { username: '', password: '', name: '', accountrole: UserRole.admin };
   };
  
 
@@ -99,8 +99,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     logout,
     validateCredentials,
     getUserInfo,
-    isAdmin: () => getUserInfo().role === UserRole.admin,
-    isUser: () => getUserInfo().role === UserRole.user,
+    isAdmin: () => getUserInfo().accountrole === UserRole.admin,
+    isUser: () => getUserInfo().accountrole === UserRole.user,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

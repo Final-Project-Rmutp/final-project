@@ -10,8 +10,8 @@ import './input.scss';
 // import StudentList from './pages/admin/student-list/StudentList';
 import AdminProfileSidebar from './shared/components/navbar/Navbar';
 import Sidebar from './shared/components/sidebar/Sidebar';
-import AuthenticatedRoute from './auth/authCore';
-import UnAuthenticatedRoute from './auth/authFetch';
+import AuthenticatedRoute from './auth/AuthenticatedRoute';
+import UnAuthenticatedRoute from './auth/UnAuthenticatedRoute';
 // import StudentList from './pages/admin/student-list/StudentList';
 
 const App: React.FC = () => {
@@ -26,7 +26,11 @@ const App: React.FC = () => {
             } />
           <Route path="/sidebar" element={<Sidebar />} />
           <Route path="/teacher" element={<Room />} />
-          <Route path="/student" element={<Room />} />
+          <Route path="/user" element={
+              <AuthenticatedRoute>
+                <Room />
+              </AuthenticatedRoute>
+              } />
             <Route path="/admin" element={ 
               <AuthenticatedRoute>
                 <AdminProfileSidebar />
