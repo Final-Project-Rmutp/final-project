@@ -54,7 +54,7 @@ const AdminProfileSidebar: React.FC = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userRole");
     navigate("/login");
-    toast.error('Invalid username or password');
+    toast.success('Logout Successful');
 
   };
 

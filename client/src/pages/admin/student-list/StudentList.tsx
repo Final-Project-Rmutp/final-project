@@ -296,6 +296,7 @@ const StudentList: React.FC = () => {
                     />
                   </td>
                   <td>
+                    
                     <button
                       color="primary"
                       className="edit"
@@ -375,7 +376,7 @@ const StudentList: React.FC = () => {
       </div>
       <Dialog open={editDialogOpen} onClose={handleCloseEditDialog}>
         <DialogTitle>Edit User</DialogTitle>
-        <DialogContent sx={{ padding: "20px" }}>
+        <DialogContent sx={{ }}>
           {editingUser && (
             <>
               <TextField
@@ -384,7 +385,7 @@ const StudentList: React.FC = () => {
                 value={user.id}
                 onChange={handleInputChange}
                 fullWidth
-                sx={{ marginBottom: 2 }}
+                sx={{ marginBottom: 2, marginTop:2 }}
                 inputProps={{ inputMode: "numeric" }}
               />
               <TextField
@@ -442,7 +443,7 @@ const StudentList: React.FC = () => {
             value={user.id}
             onChange={handleInputChange}
             fullWidth
-            sx={{ marginBottom: 2 }}
+            sx={{ marginBottom: 2, marginTop:2 }}
             inputProps={{ inputMode: "numeric" }}
           />
           <TextField

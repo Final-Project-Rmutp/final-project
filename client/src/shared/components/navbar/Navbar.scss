@@ -1,25 +1,55 @@
-  img{
-    display: flex;
-    margin-right: auto;
-    margin-left: auto;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-  }
-  .content{
+/* Reset styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Your existing Tailwind CSS imports here */
+
+/* Add this CSS for responsiveness */
+@media (max-width: 600px) {
+  .header {
     width: 100%;
   }
-  .header{
-    display: flex;
-    align-items: center;
-    justify-content: end;
+
+  #main {
+    width: 100%;
+    margin-left: 0;
   }
-  .logo-header{
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
+
+  .icon {
+    margin-bottom: 0;
   }
-.btn-loggout{
+}
+
+/* Your existing styles */
+img {
+  display: flex;
+  margin-right: auto;
+  margin-left: auto;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.content {
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.logo-header {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.btn-loggout {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -30,9 +60,8 @@
   border: 2.5px solid red;
   background-color: rgb(245, 134, 134);
 }
-.profile-right{
-  margin-right: 4.2rem;
-}
-.icon{
+
+
+.icon {
   margin-bottom: 100px;
 }

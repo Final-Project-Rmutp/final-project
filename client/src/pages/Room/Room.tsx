@@ -6,6 +6,7 @@ import Datetime from '../../shared/datetime/Datetime';
 import Floor6 from "../../components/floor6/Floor6";
 import './Room.scss';
 import { Button } from '@mui/material';
+import { toast } from 'sonner';
 
 const Room: React.FC = () => {
   const { user, logout, getUserInfo, isAdmin, isUser} = useAuth();
@@ -17,9 +18,11 @@ const Room: React.FC = () => {
     setSelectedFloor(floor);
   };
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('userRole');
-    window.location.href = '/login';
+    localStorage.removeItem("token");
+    localStorage.removeItem("userRole");
+    navigate("/login");
+    toast.success('Logout Successful');
+
   };
   const renderControlsBasedOnRole = () => {
     if (isAdmin() || isUser()) {
@@ -52,9 +55,9 @@ const Room: React.FC = () => {
     }
     
     return (
-      <div className="login-button-user" onClick={() => { navigate('/'); }}>
+      <div className="login-button-user" onClick={handleLogout}>
         <div>
-            <Button color="inherit" onClick={handleLogout}>
+            <Button color="inherit" >
               Logout
             </Button>
         </div>
