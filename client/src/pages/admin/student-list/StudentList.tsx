@@ -316,11 +316,12 @@ const StudentList: React.FC = () => {
                       </button>
                     </td>
                     <td>
-                      <input
-                        type="checkbox"
-                        checked={selectedItems.includes(item.id)}
-                        onChange={() => handleCheckboxChange(item.id)}
-                      />
+                    <Checkbox
+                      checked={selectedItems.includes(item.id)}
+                      onChange={() => handleCheckboxChange(item.id)}
+                      defaultChecked
+                      color="success"
+                    />
                     </td>
                     <td>{item.firstname}</td>
                     <td>{item.lastname}</td>

@@ -43,7 +43,7 @@
   box-shadow: 15px 18px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.2rem;
   transform-style: preserve-3d;
 
 
@@ -67,7 +67,7 @@ h1 {
 }
 .input-login{
   label{
-    color: #fff;
+    color: #efefef;
   }
   input{
     background-color: rgba(17, 25, 40, 0.65);
@@ -179,10 +179,10 @@ h1 {
     position: absolute;
     top: 53px;
     right: 20px;
-    color: #fff7f7;
+    color: #D0A2F7;
 
     &:hover {
-      transform: scale(1.4);
+      transform: scale(1.3);
     }
   }
 }

@@ -7,6 +7,7 @@ import { useNavigate } from "react-router";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import Preloader from "./Preloader";
+import { Checkbox } from "@mui/material";
 
 const apiUrl = environment.apiUrl;
 
@@ -44,28 +45,31 @@ const Login: React.FC = () => {
   };
   const handleLogin = async () => {
     resetErrorMessages();
-    setLoading(true);
     try {
-      if (!loginData.id.trim() || !loginData.citizen_id.trim()) {
+      if (!loginData.citizen_id.trim() || !loginData.id.trim()) {
+        if (!loginData.citizen_id.trim()) {
+          
+          toast.error("ID Student is required");
+        }
         if (!loginData.id.trim()) {
           toast.error("ID Card is required");
         }
-        if (!loginData.citizen_id.trim()) {
-          toast.error("ID Student is required");
-        }
         setErrorMessages({
-          username: !loginData.id.trim() ? "ID Card is required" : "",
-          password: !loginData.citizen_id.trim()
-            ? "ID Student is required"
+          username: !loginData.citizen_id.trim() ? "ID Student is required" : "",
+          password: !loginData.id.trim()
+            ? "ID Card is required"
             : "",
           general: "Username and password are required",
         });
+        setLoading(false);
         return;
       }
+      
 
       const response = await axios.post(`${apiUrl}/auth/login`, loginData);
 
-      if (response.status === 200 && response.data.token) {
+      if (response.status === 200  && response.data.token) {
+        setLoading(true);
         const { token, accountrole } = response.data;
         localStorage.setItem("token", token);
         localStorage.setItem("role", accountrole);
@@ -84,7 +88,7 @@ const Login: React.FC = () => {
 
         /////////////////// check role
         setTimeout(() => {
-          setLoading(false); // Hide preloader
+          setLoading(false);
           if (accountrole === "admin") {
             navigate("/admin");
           } else {
@@ -92,6 +96,7 @@ const Login: React.FC = () => {
           }
         }, 1000);
       } else {
+        setLoading(false);
         setErrorMessages((prevState) => ({
           ...prevState,
           general: "Invalid username or password",
@@ -125,8 +130,8 @@ const Login: React.FC = () => {
 
   return (
     <React.Fragment>
-    {!loading && (
-    <div className="login-form">
+    {!loading &&  (
+      <div className="login-form">
       <div className="login-logo text-center text-3xl font-semibold mb-6 text-gray-800 text-white">
         <img src="../../../dist/assets/img/rmutp-logo.png" alt="" />
           <h1>
@@ -139,14 +144,14 @@ const Login: React.FC = () => {
         </h1>
         <div className={`input-login ${errorMessages.username ? "error" : ""}`}>
           <label htmlFor="citizen_id" className="text-sm text-gray-600">
-            ID Card
+            ID Student
           </label>
           <input
             type="text"
             name="citizen_id"
             value={loginData.citizen_id}
             onChange={handleInputChange}
-            placeholder="ID Card"
+            placeholder="ID Student"
             className={`input-field ${errorMessages.username ? "error" : ""}`}
           />
           {errorMessages.username && (
@@ -155,14 +160,14 @@ const Login: React.FC = () => {
         </div>
         <div className={`input-login login-password ${errorMessages.username ? "error" : ""}`}>
           <label htmlFor="id" className="text-sm text-gray-600">
-            ID Student
+            ID Card
           </label>
           <input
             type={showPassword ? "text" : "password"}
             name="id"
             value={loginData.id}
             onChange={handleInputChange}
-            placeholder="ID Student"
+            placeholder="ID Card"
             className={`input-field ${errorMessages.password ? "error" : ""}`}
           />
           <div className="password-toggle" onClick={togglePasswordVisibility}>
@@ -176,21 +181,22 @@ const Login: React.FC = () => {
         )}
         </div>
         <div className="remember-me">
-          <input
-            type="checkbox"
+          <Checkbox
             id="rememberMe"
             checked={loginData.rememberMe}
             onChange={handleCheckboxChange}
+            defaultChecked
+            style={{color: "#D0A2F7"}}
           />
           <label htmlFor="rememberMe">Remember Me</label>
         </div>
-        <button onClick={handleLogin} className="login-button">
+        <button  onClick={handleLogin} className="login-button">
           Login
         </button>
       </div>
       </div>
       )}
-    {loading && <Preloader />} {/* Show preloader if loading */}
+    {loading && <Preloader />}
     </React.Fragment>
   );
 };
