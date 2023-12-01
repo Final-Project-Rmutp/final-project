@@ -7,7 +7,6 @@ import Floor6 from "../../components/floor6/Floor6";
 import './Room.scss';
 import { Button } from '@mui/material';
 import { toast } from 'sonner';
-
 const Room: React.FC = () => {
   const { user, logout, getUserInfo, isAdmin, isUser} = useAuth();
   const navigate = useNavigate();
@@ -22,7 +21,6 @@ const Room: React.FC = () => {
     localStorage.removeItem("userRole");
     navigate("/login");
     toast.success('Logout Successful');
-
   };
   const renderControlsBasedOnRole = () => {
     if (isAdmin() || isUser()) {

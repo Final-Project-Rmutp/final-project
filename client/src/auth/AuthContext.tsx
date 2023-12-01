@@ -64,34 +64,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
  
 
-  // const fetchUserInfo = async (): Promise<UserModel | null> => {
-  //   try {
-  //     const response = await fetch('http://localhost:5000/user/getuser');
-  
-  //     if (response.ok) {
-  //       const userDataArray = await response.json();
-  
-  //       if (userDataArray.length > 0) {
-  //         const userData = userDataArray[0];
-  
-  //         return {
-  //           username: userData.id_card,
-  //           password: userData.id_student,
-  //           name: '', 
-  //           role: UserRole.admin,
-  //         };
-  //       }
-  //     }
-  
-  //     // Handle other cases where the response is not okay
-  //     console.error('Error fetching user information:', response.statusText);
-  //     return null;
-  //   } catch (error) {
-  //     console.error('Error fetching user information:', error);
-  //     return null;
-  //   }
-  // };
-  
 
   const value: AuthContextProps = {
     user,

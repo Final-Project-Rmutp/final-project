@@ -9,12 +9,14 @@ import {
   TextField,
   MenuItem,
   Checkbox,
+  ThemeProvider,
 } from "@mui/material";
 import styled from "styled-components";
 import UserService from "../../../auth/service/UserService";
 import useUserState from "../../../auth/model/useUserState";
 import { ListItem } from "../../../auth/model/authTypes";
 import "./StudentList.scss";
+import theme from "../../../styles/theme";
 
 const StyledTable = styled.table`
   overflow: auto;
@@ -247,250 +249,252 @@ const StudentList: React.FC = () => {
   };
 
   return (
-    <HeadStudentList>
-      <TableContainer>
-        <StyledTable className="table mb-0">
-          <StickyHeader>
-            <tr className="text-center">
-              <th className="py-2">No</th>
-              <th className="py-2">IMG</th>
-              <th className="py-2">Actions</th>
-              <th className="py-2">Active</th>
-              <th className="py-2">FirstName</th>
-              <th className="py-2">LastName</th>
-              <th className="py-2">ID Card</th>
-              <th className="py-2">Student ID</th>
-              <th className="py-2">Account Type</th>
-            </tr>
-            <tr className="text-center">
-              <th></th>
-              <th></th>
-              <th></th>
-              <th>
-                <Checkbox
-                  checked={selectAll}
-                  onChange={handleSelectAll}
-                  defaultChecked
-                  color="success"
+    <ThemeProvider theme={theme}>
+      <HeadStudentList>
+        <TableContainer>
+          <StyledTable className="table mb-0">
+            <StickyHeader>
+              <tr className="text-center">
+                <th className="py-2">No</th>
+                <th className="py-2">IMG</th>
+                <th className="py-2">Actions</th>
+                <th className="py-2">Active</th>
+                <th className="py-2">FirstName</th>
+                <th className="py-2">LastName</th>
+                <th className="py-2">ID Card</th>
+                <th className="py-2">Student ID</th>
+                <th className="py-2">Account Type</th>
+              </tr>
+              <tr className="text-center">
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>
+                  <Checkbox
+                    checked={selectAll}
+                    onChange={handleSelectAll}
+                    defaultChecked
+                    color="success"
+                  />
+                </th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+            </StickyHeader>
+            <tbody>
+              {listItems
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((item, index) => (
+                  <tr className="text-center" key={item.id}>
+                    <td>{index + 1 + page * rowsPerPage}</td>
+                    <td>
+                      <img
+                        src={`https://picsum.photos/50/50?random=${item.id}`}
+                        alt={`User ${item.id}`}
+                        width="50"
+                        height="50"
+                      />
+                    </td>
+                    <td>
+                      
+                      <button
+                        color="primary"
+                        className="edit"
+                        onClick={() => handleEdit(item)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        color="secondary"
+                        onClick={() => handleDelete(item.id)}
+                        className="delete"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        checked={selectedItems.includes(item.id)}
+                        onChange={() => handleCheckboxChange(item.id)}
+                      />
+                    </td>
+                    <td>{item.firstname}</td>
+                    <td>{item.lastname}</td>
+                    <td>{item.id}</td>
+                    <td>{item.citizen_id}</td>
+                    <td>{item.accounttype}</td>
+                  </tr>
+                ))}
+            </tbody>
+          </StyledTable>
+          <Dialog open={deleteDialogOpen} onClose={handleCloseDeleteDialog}>
+            <DialogTitle>Confirm Deactivate</DialogTitle>
+            <DialogContent>
+              <Typography>
+                {selectedItems.length > 1
+                  ? "Are you sure you want to deactivate all selected users?"
+                  : "Are you sure you want to deactivate the selected user?"}
+              </Typography>
+            </DialogContent>
+            <DialogActions>
+              <button onClick={handleCloseDeleteDialog}>Cancel</button>
+              <button onClick={handleDeleteConfirmed} color="secondary">
+                Delete
+              </button>
+            </DialogActions>
+          </Dialog>
+        </TableContainer>
+        <div className="pagination-container">
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={listItems.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </div>
+        <div className="card-footer">
+          <StyledButton
+            id="delete"
+            color="secondary"
+            className="bg-red-500 text-white p-2"
+            onClick={handleDeleteAll}
+          >
+            Delete All
+          </StyledButton>
+          <StyledButton
+            id="add"
+            color="primary"
+            className="bg-blue-500 text-white p-2"
+            onClick={handleAdd}
+          >
+            Add
+          </StyledButton>
+        </div>
+        <Dialog open={editDialogOpen} onClose={handleCloseEditDialog}>
+          <DialogTitle>Edit User</DialogTitle>
+          <DialogContent sx={{ }}>
+            {editingUser && (
+              <>
+                <TextField
+                  label="ID"
+                  name="id"
+                  value={user.id}
+                  onChange={handleInputChange}
+                  fullWidth
+                  sx={{ marginBottom: 2, marginTop:2 }}
+                  inputProps={{ inputMode: "numeric" }}
                 />
-              </th>
-              <th></th>
-              <th></th>
-              <th></th>
-              <th></th>
-              <th></th>
-            </tr>
-          </StickyHeader>
-          <tbody>
-            {listItems
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((item, index) => (
-                <tr className="text-center" key={item.id}>
-                  <td>{index + 1 + page * rowsPerPage}</td>
-                  <td>
-                    <img
-                      src={`https://picsum.photos/50/50?random=${item.id}`}
-                      alt={`User ${item.id}`}
-                      width="50"
-                      height="50"
-                    />
-                  </td>
-                  <td>
-                    
-                    <button
-                      color="primary"
-                      className="edit"
-                      onClick={() => handleEdit(item)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      color="secondary"
-                      onClick={() => handleDelete(item.id)}
-                      className="delete"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                  <td>
-                    <input
-                      type="checkbox"
-                      checked={selectedItems.includes(item.id)}
-                      onChange={() => handleCheckboxChange(item.id)}
-                    />
-                  </td>
-                  <td>{item.firstname}</td>
-                  <td>{item.lastname}</td>
-                  <td>{item.id}</td>
-                  <td>{item.citizen_id}</td>
-                  <td>{item.accounttype}</td>
-                </tr>
-              ))}
-          </tbody>
-        </StyledTable>
-        <Dialog open={deleteDialogOpen} onClose={handleCloseDeleteDialog}>
-          <DialogTitle>Confirm Deactivate</DialogTitle>
-          <DialogContent>
-            <Typography>
-              {selectedItems.length > 1
-                ? "Are you sure you want to deactivate all selected users?"
-                : "Are you sure you want to deactivate the selected user?"}
-            </Typography>
+                <TextField
+                  label="Citizen ID"
+                  name="citizen_id"
+                  value={user.citizen_id}
+                  onChange={handleInputChange}
+                  fullWidth
+                  sx={{ marginBottom: 2 }}
+                />
+                <TextField
+                  label="First Name"
+                  name="firstname"
+                  value={user.firstname}
+                  onChange={handleInputChange}
+                  fullWidth
+                  sx={{ marginBottom: 2 }}
+                />
+                <TextField
+                  label="Last Name"
+                  name="lastname"
+                  value={user.lastname}
+                  onChange={handleInputChange}
+                  fullWidth
+                  sx={{ marginBottom: 2 }}
+                />
+                <TextField
+                  label="Account Type"
+                  name="accounttype"
+                  value={user.accounttype}
+                  onChange={handleInputChange}
+                  select
+                  fullWidth
+                  sx={{ marginBottom: 2 }}
+                >
+                  <MenuItem value="student">Student</MenuItem>
+                  <MenuItem value="teacher">Teacher</MenuItem>
+                </TextField>
+              </>
+            )}
           </DialogContent>
           <DialogActions>
-            <button onClick={handleCloseDeleteDialog}>Cancel</button>
-            <button onClick={handleDeleteConfirmed} color="secondary">
-              Delete
+            <button onClick={handleCloseEditDialog}>Cancel</button>
+            <button onClick={handleEditConfirmed} color="primary">
+              Save
             </button>
           </DialogActions>
         </Dialog>
-      </TableContainer>
-      <div className="pagination-container">
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={listItems.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </div>
-      <div className="card-footer">
-        <StyledButton
-          id="delete"
-          color="secondary"
-          className="bg-red-500 text-white p-2"
-          onClick={handleDeleteAll}
-        >
-          Delete All
-        </StyledButton>
-        <StyledButton
-          id="add"
-          color="primary"
-          className="bg-blue-500 text-white p-2"
-          onClick={handleAdd}
-        >
-          Add
-        </StyledButton>
-      </div>
-      <Dialog open={editDialogOpen} onClose={handleCloseEditDialog}>
-        <DialogTitle>Edit User</DialogTitle>
-        <DialogContent sx={{ }}>
-          {editingUser && (
-            <>
-              <TextField
-                label="ID"
-                name="id"
-                value={user.id}
-                onChange={handleInputChange}
-                fullWidth
-                sx={{ marginBottom: 2, marginTop:2 }}
-                inputProps={{ inputMode: "numeric" }}
-              />
-              <TextField
-                label="Citizen ID"
-                name="citizen_id"
-                value={user.citizen_id}
-                onChange={handleInputChange}
-                fullWidth
-                sx={{ marginBottom: 2 }}
-              />
-              <TextField
-                label="First Name"
-                name="firstname"
-                value={user.firstname}
-                onChange={handleInputChange}
-                fullWidth
-                sx={{ marginBottom: 2 }}
-              />
-              <TextField
-                label="Last Name"
-                name="lastname"
-                value={user.lastname}
-                onChange={handleInputChange}
-                fullWidth
-                sx={{ marginBottom: 2 }}
-              />
-              <TextField
-                label="Account Type"
-                name="accounttype"
-                value={user.accounttype}
-                onChange={handleInputChange}
-                select
-                fullWidth
-                sx={{ marginBottom: 2 }}
-              >
-                <MenuItem value="student">Student</MenuItem>
-                <MenuItem value="teacher">Teacher</MenuItem>
-              </TextField>
-            </>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <button onClick={handleCloseEditDialog}>Cancel</button>
-          <button onClick={handleEditConfirmed} color="primary">
-            Save
-          </button>
-        </DialogActions>
-      </Dialog>
-      <Dialog open={addDialogOpen} onClose={handleCloseAddDialog}>
-        <DialogTitle>Add New User</DialogTitle>
-        <DialogContent>
-          <TextField
-            label="ID"
-            name="id"
-            value={user.id}
-            onChange={handleInputChange}
-            fullWidth
-            sx={{ marginBottom: 2, marginTop:2 }}
-            inputProps={{ inputMode: "numeric" }}
-          />
-          <TextField
-            label="Citizen ID"
-            name="citizen_id"
-            value={user.citizen_id}
-            onChange={handleInputChange}
-            fullWidth
-            sx={{ marginBottom: 2 }}
-            inputProps={{ inputMode: "numeric" }}
-          />
-          <TextField
-            label="First Name"
-            name="firstname"
-            value={user.firstname}
-            onChange={handleInputChange}
-            fullWidth
-            sx={{ marginBottom: 2 }}
-          />
-          <TextField
-            label="Last Name"
-            name="lastname"
-            value={user.lastname}
-            onChange={handleInputChange}
-            fullWidth
-            sx={{ marginBottom: 2 }}
-          />
-          <TextField
-            label="Account Type"
-            name="accounttype"
-            value={user.accounttype}
-            onChange={handleInputChange}
-            select
-            fullWidth
-          >
-            <MenuItem value="student">Student</MenuItem>
-            <MenuItem value="teacher">Teacher</MenuItem>
-          </TextField>
-        </DialogContent>
-        <DialogActions>
-          <button onClick={handleCloseAddDialog}>Cancel</button>
-          <button onClick={handleAddConfirmed} color="primary">
-            Add
-          </button>
-        </DialogActions>
-      </Dialog>
-    </HeadStudentList>
+        <Dialog open={addDialogOpen} onClose={handleCloseAddDialog}>
+          <DialogTitle>Add New User</DialogTitle>
+          <DialogContent>
+            <TextField
+              label="ID"
+              name="id"
+              value={user.id}
+              onChange={handleInputChange}
+              fullWidth
+              sx={{ marginBottom: 2, marginTop:2 }}
+              inputProps={{ inputMode: "numeric" }}
+            />
+            <TextField
+              label="Citizen ID"
+              name="citizen_id"
+              value={user.citizen_id}
+              onChange={handleInputChange}
+              fullWidth
+              sx={{ marginBottom: 2 }}
+              inputProps={{ inputMode: "numeric" }}
+            />
+            <TextField
+              label="First Name"
+              name="firstname"
+              value={user.firstname}
+              onChange={handleInputChange}
+              fullWidth
+              sx={{ marginBottom: 2 }}
+            />
+            <TextField
+              label="Last Name"
+              name="lastname"
+              value={user.lastname}
+              onChange={handleInputChange}
+              fullWidth
+              sx={{ marginBottom: 2 }}
+            />
+            <TextField
+              label="Account Type"
+              name="accounttype"
+              value={user.accounttype}
+              onChange={handleInputChange}
+              select
+              fullWidth
+            >
+              <MenuItem value="student">Student</MenuItem>
+              <MenuItem value="teacher">Teacher</MenuItem>
+            </TextField>
+          </DialogContent>
+          <DialogActions>
+            <button onClick={handleCloseAddDialog}>Cancel</button>
+            <button onClick={handleAddConfirmed} color="primary">
+              Add
+            </button>
+          </DialogActions>
+        </Dialog>
+      </HeadStudentList>
+      </ThemeProvider>
   );
 };
 

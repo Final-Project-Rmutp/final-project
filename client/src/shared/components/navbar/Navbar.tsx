@@ -8,11 +8,8 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-// import Home from '../sidebar/Home';
 import { MenuItems, MenuItemLinks } from "../../../styles/global";
-import { SidebarData } from "../sidebar/SidebarData";
-// import Team from '../sidebar/Team';
-// import StudentList from '../../../pages/admin/student-list/StudentList';
+import { SidebarData } from "./SidebarData";
 import "./Navbar.scss";
 import { Outlet, useNavigate } from "react-router";
 import { toast } from 'sonner'
@@ -58,19 +55,6 @@ const AdminProfileSidebar: React.FC = () => {
 
   };
 
-  // const renderTabContent = () => {
-  //   switch (state.selectedTab) {
-  //     case 'dashboard':
-  //       return <Team />;
-  //     case 'student-list':
-  //       return <StudentList />;
-  //     case 'reserved':
-  //       return <Home />;
-  //     default:
-  //       return null;
-  //   }
-  // };
-
   const leftOpen = state.leftOpen ? "open" : "closed";
   const randomImageNumber = Math.floor(Math.random() * 1000) + 1;
   const randomImageUrl = `https://picsum.photos/200/200?random=${randomImageNumber}`;
@@ -78,7 +62,7 @@ const AdminProfileSidebar: React.FC = () => {
     <div id="layout">
       <div id="left" className={leftOpen}>
         <div className="icon" onClick={toggleSidebar}>
-          &equiv;
+          <p>&equiv;</p>
         </div>
         <div className={`sidebar ${leftOpen}`}>
           <div className="header">
@@ -144,7 +128,6 @@ const AdminProfileSidebar: React.FC = () => {
         </div>
         <div className="content">
           <Outlet></Outlet>
-          {/* {renderTabContent()} */}
         </div>
       </div>
     </div>

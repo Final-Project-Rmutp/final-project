@@ -5,6 +5,13 @@
   box-sizing: border-box;
 }
 
+body {
+  min-height: 100vh;
+  max-width: 100vw;
+  margin: 0;
+  overflow: hidden;
+}
+
 /* Your existing Tailwind CSS imports here */
 
 /* Add this CSS for responsiveness */
@@ -18,7 +25,13 @@
     margin-left: 0;
   }
 
+  #left.open .sidebar,
+  #right.open .sidebar {
+    transform: translateX(0);
+  }
+
   .icon {
+    color: aliceblue;
     margin-bottom: 0;
   }
 }
@@ -57,11 +70,130 @@ img {
   height: 35px;
   margin: 10px 20px;
   border-radius: 10px;
-  border: 2.5px solid red;
-  background-color: rgb(245, 134, 134);
+  border: 1px solid red;
+  color: red;
+  background-color: rgb(232, 153, 153);
 }
-
 
 .icon {
+  margin-top: 10px;
   margin-bottom: 100px;
+  color: white;
+  cursor: pointer;
+  user-select: none;
 }
+.icon p {
+  margin: 0;
+  font-size: 40px;
+}
+
+
+:root {
+  --landscape-width: 18; // % OR vw for responsive window resizing!
+  --portrait-width: 250px;
+  --header-height: 4rem;
+  --secs: 0.4s;
+  --bg-left: rgb(51, 7, 83);
+  --bg-right: rgba(179, 58, 188, 0.248);
+  --bg-main: rgb(245, 219, 253);
+}
+
+body {
+  min-height: 100vh;
+  max-width: 100vw;
+  margin: 0;
+  overflow: hidden; // Disable scrolling on body
+}
+
+#layout {
+  display: flex;
+  overflow: hidden;
+
+  .header {
+    position: relative;
+    height: var(--header-height);
+    text-align: center;
+    .title {
+      position: absolute;
+      left: 0;
+      right: 0;
+    }
+  }
+
+  .content {
+    overflow: auto;
+    box-sizing: border-box;
+    height: calc(100vh - var(--header-height));
+    padding: 1rem;
+  }
+}
+
+#main {
+  background: var(--bg-main);
+  flex-grow: 1;
+  .header {
+    background: linear-gradient(to right, var(--bg-left), var(--bg-right));
+    @media (orientation: landscape) {
+      .title {
+        transition:
+          left var(--secs),
+          right var(--secs);
+        &.left-closed {
+          left: var(--header-height);
+        }
+        &.right-closed {
+          right: var(--header-height);
+        }
+      }
+    }
+  }
+}
+
+#left,
+#right {
+  transition: width var(--secs);
+  width: 0;
+  @media (orientation: landscape) {
+    &.open {
+      width: calc(1% * var(--landscape-width));
+    }
+  } // <-- Landscape ONLY sidebars
+  .icon {
+    position: fixed;
+    z-index: 10;
+    width: var(--header-height);
+    height: var(--header-height);
+    line-height: var(--header-height);
+    font-size: var(--header-height);
+    text-align: center;
+    user-select: none;
+    cursor: pointer;
+    top: -6px;
+  }
+  .sidebar {
+    transition: transform var(--secs); // <-- Portrait AND landscape!
+    @media (orientation: portrait) {
+      width: var(--portrait-width);
+    }
+    @media (orientation: landscape) {
+      width: calc(1vw * var(--landscape-width));
+    }
+    .header {
+      width: calc(50% - var(--header-height));
+    }
+  }
+}
+
+#left {
+  z-index: 5;
+  .sidebar {
+    background: var(--bg-left);
+    &.closed {
+      transform: translateX(-84%);
+    }
+    .header {
+      left: var(--header-height);
+    }
+  }
+}
+
