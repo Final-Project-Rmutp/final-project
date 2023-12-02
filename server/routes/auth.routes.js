@@ -17,7 +17,7 @@ const authController = require('../controller/auth.controller.js');
  *           schema:
  *             type: object
  *             properties:
- *               id:
+ *               pin:
  *                 type: string
  *                 example: admin
  *               citizen_id:

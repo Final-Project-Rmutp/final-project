@@ -20,7 +20,7 @@ const authMiddleware = require('../middleware/authMiddleware.js')
  *           schema:
  *             type: object
  *             properties:
- *               id:
+ *               pin:
  *                 type: string
  *                 example: "056000000000-0"
  *               citizen_id:
@@ -39,7 +39,7 @@ const authMiddleware = require('../middleware/authMiddleware.js')
  *                 type: string
  *                 example: ""
  *             required:
- *               - id
+ *               - pin
  *               - citizen_id
  *               - firstname
  *               - lastname
@@ -117,7 +117,7 @@ router.post('/user/add',authMiddleware.isAdmin, adminController.adduser);
  *             schema:
  *               type: object
  *               properties:
- *                  id:
+ *                  pin:
  *                    type: string
  *                    example: 056000000000-0
  *                  citizen_id:
@@ -204,7 +204,7 @@ router.get('/user/getalluser',authMiddleware.isAdmin, adminController.getalluser
  *                  citizen_id:
  *                    type: string
  *                    example: 1119900000000
- *                  id:
+ *                  pin:
  *                    type: string
  *                    example: 056000000000-0
  *                  user_img_path:
@@ -341,7 +341,7 @@ router.delete('/user/deactivateUser/:id',authMiddleware.isAdmin, adminController
  *           schema:
  *             type: object
  *             properties:
- *               id:
+ *               pin:
  *                 type: string
  *               citizen_id:
  *                 type: string
@@ -350,7 +350,7 @@ router.delete('/user/deactivateUser/:id',authMiddleware.isAdmin, adminController
  *               lastname:
  *                 type: string
  *             required:
- *               - id
+ *               - pin
  *               - citizen_id
  *               - firstname
  *               - lastname
