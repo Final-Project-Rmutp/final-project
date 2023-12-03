@@ -3,7 +3,7 @@ const client = require('../configs/database.js');
 // Get all logs
 async function getlogs(req, res) {
     try {
-        const query = `SELECT logs.log_id, logs.action_type, "user".pin, "user".citizen_id, "user".firstname, logs.log_status, logs.timestamp
+        let query = `SELECT logs.log_id, logs.action_type, "user".pin, "user".citizen_id, "user".firstname, logs.log_status, logs.timestamp
         FROM action_logs AS logs
         LEFT JOIN "user" ON logs.user_id = "user".id`;
 
@@ -29,7 +29,7 @@ async function getlogs(req, res) {
 // Get login logs
 async function loginlogs(req, res) {
     try {
-        const query = `SELECT logs.log_id, logs.action_type, "user".pin, "user".citizen_id, "user".firstname, logs.log_status, logs.timestamp
+        let query = `SELECT logs.log_id, logs.action_type, "user".pin, "user".citizen_id, "user".firstname, logs.log_status, logs.timestamp
         FROM action_logs AS logs
         LEFT JOIN "user" ON logs.user_id = "user".id
         WHERE logs.action_type like '%login%'
@@ -56,7 +56,7 @@ async function loginlogs(req, res) {
 // Get adduser logs
 async function adduserlogs(req, res) {
     try {
-        const query = `SELECT logs.log_id, logs.action_type, "user".pin, "user".citizen_id, "user".firstname, logs.log_status, logs.timestamp
+        let query = `SELECT logs.log_id, logs.action_type, "user".pin, "user".citizen_id, "user".firstname, logs.log_status, logs.timestamp
         FROM action_logs AS logs
         LEFT JOIN "user" ON logs.user_id = "user".id
         WHERE logs.action_type like '%adduser%'
@@ -83,7 +83,7 @@ async function adduserlogs(req, res) {
 // Get updateuser logs
 async function updateuserlogs(req, res) {
     try {
-        const query = `SELECT logs.log_id, logs.action_type, "user".pin, "user".citizen_id, "user".firstname, logs.log_status, logs.timestamp
+        let query = `SELECT logs.log_id, logs.action_type, "user".pin, "user".citizen_id, "user".firstname, logs.log_status, logs.timestamp
         FROM action_logs AS logs
         LEFT JOIN "user" ON logs.user_id = "user".id
         WHERE logs.action_type like '%update%'
