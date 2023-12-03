@@ -10,6 +10,19 @@ const logsController = require('../controller/logs.controller.js');
  *     - Logs
  *     summary: Get Logs 
  *     description: Retrieve a list of all Logs
+ *     parameters:
+ *       - in: query
+ *         name: startDate
+ *         description: "Start date for filtering (format: YYYY-MM-DD)"
+ *         schema:
+ *           type: string
+ *           format: date-time
+ *       - in: query
+ *         name: endDate
+ *         description: "End date for filtering (format: YYYY-MM-DD)"
+ *         schema:
+ *           type: string
+ *           format: date-time
  *     responses:
  *       200:
  *         description: Returns the list of all Logs.
@@ -71,6 +84,19 @@ router.get('/', logsController.getlogs);
  *     - Logs
  *     summary: Get loginlogs Logs 
  *     description: Retrieve a list of login logs
+ *     parameters:
+ *       - in: query
+ *         name: startDate
+ *         description: "Start date for filtering (format: YYYY-MM-DD)"
+ *         schema:
+ *           type: string
+ *           format: date-time
+ *       - in: query
+ *         name: endDate
+ *         description: "End date for filtering (format: YYYY-MM-DD)"
+ *         schema:
+ *           type: string
+ *           format: date-time
  *     responses:
  *       200:
  *         description: Returns the list of login logs.
@@ -132,6 +158,19 @@ router.get('/loginlogs', logsController.loginlogs);
  *     - Logs
  *     summary: Get adduserlogs Logs 
  *     description: Retrieve a list of adduser logs
+ *     parameters:
+ *       - in: query
+ *         name: startDate
+ *         description: "Start date for filtering (format: YYYY-MM-DD)"
+ *         schema:
+ *           type: string
+ *           format: date-time
+ *       - in: query
+ *         name: endDate
+ *         description: "End date for filtering (format: YYYY-MM-DD)"
+ *         schema:
+ *           type: string
+ *           format: date-time
  *     responses:
  *       200:
  *         description: Returns the list of adduserlogs.
@@ -193,6 +232,19 @@ router.get('/adduserlogs', logsController.adduserlogs);
  *     - Logs
  *     summary: Get updateuserlogs
  *     description: Retrieve a list of updateuser logs.
+ *     parameters:
+ *       - in: query
+ *         name: startDate
+ *         description: "Start date for filtering (format: YYYY-MM-DD)"
+ *         schema:
+ *           type: string
+ *           format: date-time
+ *       - in: query
+ *         name: endDate
+ *         description: "End date for filtering (format: YYYY-MM-DD)"
+ *         schema:
+ *           type: string
+ *           format: date-time
  *     responses:
  *       200:
  *         description: Returns the list of updateuser logs.

@@ -22,7 +22,7 @@ const authMiddleware = require('../middleware/authMiddleware.js')
  *             properties:
  *               pin:
  *                 type: string
- *                 example: "056000000000-0"
+ *                 example: "000000000000-0"
  *               citizen_id:
  *                 type: string
  *                 example: "1119900000000"
@@ -117,21 +117,24 @@ router.post('/user/add',authMiddleware.isAdmin, adminController.adduser);
  *             schema:
  *               type: object
  *               properties:
- *                  pin:
+ *                  id:
  *                    type: string
- *                    example: 056000000000-0
- *                  citizen_id:
- *                    type: string
- *                    example: 1119900000000
+ *                    example: 1
  *                  firstname:
  *                    type: string
  *                    example: user
  *                  lastname:
  *                    type: string
  *                    example: user
+ *                  citizen_id:
+ *                    type: string
+ *                    example: 1119900000000
+ *                  pin:
+ *                    type: string
+ *                    example: 056000000000-0
  *                  accounttype:
  *                    type: string
- *                    example: user / admin
+ *                    example: student
  *                  user_img_path:
  *                    type: string
  *                    example: /uploads/user123.jpg can be null
@@ -195,6 +198,9 @@ router.get('/user/getalluser',authMiddleware.isAdmin, adminController.getalluser
  *             schema:
  *               type: object
  *               properties:
+ *                  id:
+ *                    type: string
+ *                    example: 1
  *                  firstname:
  *                    type: string
  *                    example: user
@@ -207,6 +213,9 @@ router.get('/user/getalluser',authMiddleware.isAdmin, adminController.getalluser
  *                  pin:
  *                    type: string
  *                    example: 056000000000-0
+ *                  accounttype:
+ *                    type: string
+ *                    example: student
  *                  user_img_path:
  *                    type: string
  *                    example: /uploads/user123.jpg can be null

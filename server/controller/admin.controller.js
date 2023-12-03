@@ -49,7 +49,7 @@ async function adduser(req, res) {
 // Get all users
 async function getallusers(req, res) {
     try {
-        const result = await client.query(`SELECT id,firstname,lastname,citizen_id,pin,user_img_path FROM "user" WHERE accountrole = 'user'`);
+        const result = await client.query(`SELECT id,firstname,lastname,citizen_id,pin,accounttype,user_img_path FROM "user" WHERE accountrole = 'user' AND accountstatus = '1'`);
         res.status(200).json(result.rows); 
     } catch (err) {
         console.error(err.message);
@@ -61,7 +61,7 @@ async function getUserById(req, res) {
     try {
         const userId = req.params.id;
         // Query to retrieve user details by ID
-        const query = `SELECT id,firstname,lastname,citizen_id,pin,user_img_path FROM "user" WHERE id = $1 AND accountrole = 'user'`; // select แค่จำเป็น
+        const query = `SELECT id,firstname,lastname,citizen_id,pin,accounttype,user_img_path FROM "user" WHERE id = $1 AND accountrole = 'user'`; // select แค่จำเป็น
         const result = await client.query(query, [userId]);
 
         if (result.rows.length === 1) {
