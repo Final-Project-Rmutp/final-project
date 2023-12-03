@@ -8,7 +8,7 @@ const AuthenticatedRoute = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (!localStorage.getItem('token')) {
-      navigate("/login");
+      navigate("/");
     }
   }, [navigate]);
 

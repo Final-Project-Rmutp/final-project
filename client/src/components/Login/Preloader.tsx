@@ -65,10 +65,12 @@ const shimmer = keyframes`
 
 // Styled Components
 const SpinnerContainer = styled.div`
+  background-color: #000;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100vh;
+  gap:10px
 `;
 
 const SpinnerCircle = styled.div`
@@ -84,9 +86,9 @@ const SpinnerText = styled.div`
   display: flex;
   justify-content: space-between;
   border-radius: 50%;
+  border:none;
   padding: 10px;
-  animation: ${moveText} 2s infinite, ${bounce} 1s infinite, ${shimmer} 1s infinite;
-  animation-delay: 2s;
+
 `;
 
 const SpinnerTextSpan = styled.span`
@@ -100,7 +102,8 @@ const SpinnerTextSpan = styled.span`
   align-items: center;
   font-weight: bold;
   font-size: 30px;
-  color: black;
+  color: white;
+  margin-right:10px;
 `;
 const Preloader = () => (
   <SpinnerContainer>

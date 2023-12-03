@@ -23,7 +23,7 @@ const App: React.FC = () => {
       <AuthProvider>
         <Routes>
           <Route
-            path="/login"
+            path="/"
             element={
               <UnAuthenticatedRoute>
                 <Login />

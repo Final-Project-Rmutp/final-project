@@ -10,6 +10,7 @@ import {
   MenuItem,
   Checkbox,
   ThemeProvider,
+  Button,
 } from "@mui/material";
 import styled from "styled-components";
 import UserService from "../../../auth/service/UserService";
@@ -129,18 +130,17 @@ const StudentList: React.FC = () => {
     if (editingUser) {
       try {
         const updatedUserData = {
-          id: editingUser.id,
+          pin: user.pin,
           citizen_id: user.citizen_id,
           firstname: user.firstname,
           lastname: user.lastname,
-          accounttype: user.accounttype,
         };
-
+  
         const response = await UserService.updateUser(
           editingUser.id,
           updatedUserData
         );
-
+  
         if (response.status === 200) {
           console.log("User updated successfully:", response.data);
           const updatedList = await UserService.getAllUsers();
@@ -153,7 +153,6 @@ const StudentList: React.FC = () => {
       } catch (error) {
         console.error("Error updating user:", error);
       }
-      setEditDialogOpen(false);
       await fetchUserList();
     }
   };
@@ -165,17 +164,22 @@ const StudentList: React.FC = () => {
   const handleAddConfirmed = async () => {
     try {
       const response = await UserService.addUser(user);
-      console.log("API Response:", response);
-      const updatedList = await UserService.getAllUsers();
-      setListItems(updatedList);
-      setAddDialogOpen(false);
-      resetUser();
+  
+      if (response.status === 201) {
+        const updatedList = await UserService.getAllUsers();
+        setListItems(updatedList);
+        setAddDialogOpen(false);
+        resetUser();
+      } else {
+        console.error("Failed to add user:", response.data);
+      }
     } catch (error) {
       console.error("Error adding user:", error);
     }
+  
     await fetchUserList();
   };
-
+  
   const handleSelectAll = () => {
     setSelectAll(!selectAll);
     setSelectedItems(selectAll ? [] : listItems.map((item) => item.id));
@@ -300,20 +304,22 @@ const StudentList: React.FC = () => {
                     </td>
                     <td>
                       
-                      <button
-                        color="primary"
+                      <Button
+                        variant="outlined"
+                        color="secondary"
                         className="edit"
                         onClick={() => handleEdit(item)}
                       >
                         Edit
-                      </button>
-                      <button
-                        color="secondary"
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        color="error"
                         onClick={() => handleDelete(item.id)}
                         className="delete"
                       >
                         Delete
-                      </button>
+                      </Button>
                     </td>
                     <td>
                     <Checkbox
@@ -325,7 +331,7 @@ const StudentList: React.FC = () => {
                     </td>
                     <td>{item.firstname}</td>
                     <td>{item.lastname}</td>
-                    <td>{item.id}</td>
+                    <td>{item.pin}</td>
                     <td>{item.citizen_id}</td>
                     <td>{item.accounttype}</td>
                   </tr>
@@ -380,13 +386,13 @@ const StudentList: React.FC = () => {
         </div>
         <Dialog open={editDialogOpen} onClose={handleCloseEditDialog}>
           <DialogTitle>Edit User</DialogTitle>
-          <DialogContent sx={{ }}>
+          <DialogContent>
             {editingUser && (
               <>
                 <TextField
-                  label="ID"
-                  name="id"
-                  value={user.id}
+                  label="PIN"
+                  name="pin"
+                  value={user.pin}
                   onChange={handleInputChange}
                   fullWidth
                   sx={{ marginBottom: 2, marginTop:2 }}
@@ -416,7 +422,7 @@ const StudentList: React.FC = () => {
                   fullWidth
                   sx={{ marginBottom: 2 }}
                 />
-                <TextField
+                {/* <TextField
                   label="Account Type"
                   name="accounttype"
                   value={user.accounttype}
@@ -427,7 +433,7 @@ const StudentList: React.FC = () => {
                 >
                   <MenuItem value="student">Student</MenuItem>
                   <MenuItem value="teacher">Teacher</MenuItem>
-                </TextField>
+                </TextField> */}
               </>
             )}
           </DialogContent>
@@ -442,9 +448,9 @@ const StudentList: React.FC = () => {
           <DialogTitle>Add New User</DialogTitle>
           <DialogContent>
             <TextField
-              label="ID"
-              name="id"
-              value={user.id}
+              label="PIN"
+              name="pin"
+              value={user.pin}
               onChange={handleInputChange}
               fullWidth
               sx={{ marginBottom: 2, marginTop:2 }}

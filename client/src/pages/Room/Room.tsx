@@ -19,7 +19,7 @@ const Room: React.FC = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userRole");
-    navigate("/login");
+    navigate("/");
     toast.success('Logout Successful');
   };
   const renderControlsBasedOnRole = () => {

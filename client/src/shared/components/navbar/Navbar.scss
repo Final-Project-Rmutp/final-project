@@ -189,7 +189,7 @@ body {
   .sidebar {
     background: var(--bg-left);
     &.closed {
-      transform: translateX(-84%);
+      transform: translateX(-100%);
     }
     .header {
       left: var(--header-height);

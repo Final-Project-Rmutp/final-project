@@ -15,9 +15,8 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [loginData, setLoginData] = useState({ 
-    id: "", 
+    pin: "",
     citizen_id: "",
-    password: "",
     rememberMe: false,
   });
   const [errorMessages, setErrorMessages] = useState({
@@ -46,17 +45,17 @@ const Login: React.FC = () => {
   const handleLogin = async () => {
     resetErrorMessages();
     try {
-      if (!loginData.citizen_id.trim() || !loginData.id.trim()) {
+      if (!loginData.citizen_id.trim() || !loginData.pin.trim()) {
         if (!loginData.citizen_id.trim()) {
           
           toast.error("ID Student is required");
         }
-        if (!loginData.id.trim()) {
+        if (!loginData.pin.trim()) {
           toast.error("ID Card is required");
         }
         setErrorMessages({
           username: !loginData.citizen_id.trim() ? "ID Student is required" : "",
-          password: !loginData.id.trim()
+          password: !loginData.pin.trim()
             ? "ID Card is required"
             : "",
           general: "Username and password are required",
@@ -76,8 +75,8 @@ const Login: React.FC = () => {
 
 
         /////////// remember
-        if (loginData.rememberMe && loginData.id.trim() && loginData.citizen_id.trim()) {
-          localStorage.setItem("username", loginData.id);
+        if (loginData.rememberMe && loginData.pin.trim() && loginData.citizen_id.trim()) {
+          localStorage.setItem("username", loginData.pin);
           localStorage.setItem("password", loginData.citizen_id);
         } else {
           localStorage.removeItem("username");
@@ -114,14 +113,33 @@ const Login: React.FC = () => {
     }
   };
 
+  // const handleLogin = async () => {
+  //   resetErrorMessages();
+  //   setLoading(true); // Simulate loading
 
+  //   // Simulate successful login
+  //   if (loginData.id.trim() && loginData.citizen_id.trim()) {
+  //     // You can add additional conditions if needed
+  //     toast.success("Login Success");
+
+  //     // Simulate delay before redirecting
+  //     setTimeout(() => {
+  //       setLoading(false);
+  //       navigate("/user"); // Redirect to user page
+  //     }, 100000);
+  //   } else {
+  //     // Simulate login failure
+  //     setLoading(false);
+
+  //   }
+  // };
   useEffect(() => {
     const storedUsername = localStorage.getItem("username");
     const storedPassword = localStorage.getItem("password");
     if (storedUsername && storedPassword) {
       setLoginData((prevData) => ({
         ...prevData,
-        id: storedUsername,
+        pin: storedUsername,
         citizen_id: storedPassword,
         rememberMe: true,
       }));
@@ -159,13 +177,13 @@ const Login: React.FC = () => {
           )}
         </div>
         <div className={`input-login login-password ${errorMessages.username ? "error" : ""}`}>
-          <label htmlFor="id" className="text-sm text-gray-600">
+          <label htmlFor="pin" className="text-sm text-gray-600">
             ID Card
           </label>
           <input
             type={showPassword ? "text" : "password"}
-            name="id"
-            value={loginData.id}
+            name="pin"
+            value={loginData.pin}
             onChange={handleInputChange}
             placeholder="ID Card"
             className={`input-field ${errorMessages.password ? "error" : ""}`}
