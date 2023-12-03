@@ -31,6 +31,10 @@ app.use("/admin", AdminRoute)
 const UserRoute = require('./routes/user.routes.js');
 app.use("/user", UserRoute)
 
+//LogsRoute
+const LogsRoute = require('./routes/logs.routes.js');
+app.use("/logs", LogsRoute)
+
   const options = {
     definition: {
       openapi: '3.0.0', // Specify the OpenAPI version
@@ -61,11 +65,10 @@ app.use("/user", UserRoute)
     // Paths to API docs and output format
     apis: ['routes/*.js'],
   };
-  
+
 const swaggerSpec = swaggerJsdoc(options)
-  
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
-  
+
 app.listen(port, () => {
   console.log(`Server is Running On Port ${port}`)
 })

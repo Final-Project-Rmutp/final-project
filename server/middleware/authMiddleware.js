@@ -14,7 +14,8 @@ function authenticateToken(req, res, next) {
     if (error) {
       return res.status(401).json({ message: 'Invalid token' });
     }
-    req.user = decoded;
+    const { id } = decoded;
+    req.user = {decoded, id};
     next();
   });
 }
@@ -34,8 +35,9 @@ function isAdmin(req, res, next) {
     }
     const accountrole = decoded.accountrole;
     if(accountrole === 'admin'){
+      const { id } = decoded;
+      req.user = {decoded, id};
       next();
-      req.user = decoded;
     }
     else if (accountrole === 'user'){
       return res.status(403).json({ message: "You don't have permission to access this resource." });
