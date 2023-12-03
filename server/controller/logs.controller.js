@@ -12,7 +12,6 @@ async function getlogs(req, res) {
             const startDate = `${req.query.startDate} 00:00:00`;
             const endDate = `${req.query.endDate} 23:59:59`;
             query += ` WHERE logs.timestamp >= $1 AND logs.timestamp <= $2`;
-            console.log(query, [startDate, endDate]);
             const result = await client.query(query, [startDate, endDate]);
             const totalLogs = result.rowCount;
             res.status(200).json({ totalLogs, logs: result.rows });
