@@ -65,7 +65,7 @@ const shimmer = keyframes`
 
 // Styled Components
 const SpinnerContainer = styled.div`
-  background-color: #000;
+  background-color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -102,7 +102,7 @@ const SpinnerTextSpan = styled.span`
   align-items: center;
   font-weight: bold;
   font-size: 30px;
-  color: white;
+  color: black;
   margin-right:10px;
 `;
 const Preloader = () => (
