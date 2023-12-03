@@ -107,10 +107,10 @@ const StudentList: React.FC = () => {
       console.error("Error fetching user data:", error);
     }
   };
-
   useEffect(() => {
     fetchUserList();
   }, []);
+  
   const handleAdd = () => {
     resetUser();
     setAddDialogOpen(true);
@@ -164,15 +164,13 @@ const StudentList: React.FC = () => {
   const handleAddConfirmed = async () => {
     try {
       const response = await UserService.addUser(user);
-  
-      if (response.status === 201) {
-        const updatedList = await UserService.getAllUsers();
-        setListItems(updatedList);
-        setAddDialogOpen(false);
-        resetUser();
-      } else {
-        console.error("Failed to add user:", response.data);
-      }
+      console.log("API Response:", response);
+      const updatedList = await UserService.getAllUsers();
+      setListItems(updatedList);
+      setAddDialogOpen(false);
+      resetUser();
+        await fetchUserList();
+      
     } catch (error) {
       console.error("Error adding user:", error);
     }

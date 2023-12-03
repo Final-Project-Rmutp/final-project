@@ -89,7 +89,7 @@ const SpinnerText = styled.div`
   border:none;
   padding: 10px;
 
-`;
+`;  
 
 const SpinnerTextSpan = styled.span`
   width: 100%;

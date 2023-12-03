@@ -67,7 +67,7 @@ const Login: React.FC = () => {
 
       const response = await axios.post(`${apiUrl}/auth/login`, loginData);
 
-      if (response.status === 200  && response.data.token) {
+      if (response.data && response.data.token) {
         setLoading(true);
         const { token, accountrole } = response.data;
         localStorage.setItem("token", token);
