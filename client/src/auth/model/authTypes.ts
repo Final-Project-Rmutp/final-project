@@ -1,5 +1,6 @@
 //authTypes.ts
 export interface UserData {
+  id:string;
   pin: string;
   citizen_id: string;
   firstname: string;

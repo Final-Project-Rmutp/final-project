@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { ListItem } from './authTypes';
+import { ListItem, UserData } from './authTypes';
 
 const useUserState = () => {
   const [user, setUser] = useState<ListItem>({
-    id: '', // Add the id property
-    accountstatus: '', // Add the accountstatus property
+    id: '',
+    accountstatus: '',
     accountrole: '',
     pin: '',
     citizen_id: '',
@@ -14,11 +14,24 @@ const useUserState = () => {
     user_img_path: '' || null,
   });
 
-  const [editingUser] = useState<ListItem | null>(null);
+  const [editingUser,setEditUser] = useState<UserData>({
+    id: '',
+    pin: '',
+    citizen_id: '',
+    firstname: '',
+    lastname: '',
+  });
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setUser((prevUser) => ({
+      ...prevUser,
+      [name]: value,
+    }));
+  };
+  const handleInputEditChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setEditUser((prevUser) => ({
       ...prevUser,
       [name]: value,
     }));
@@ -38,7 +51,7 @@ const useUserState = () => {
     });
   };
 
-  return { user, editingUser, handleInputChange, resetUser };
+  return { user, editingUser,setEditUser, handleInputChange, resetUser,handleInputEditChange,setUser };
 };
 
 export default useUserState;

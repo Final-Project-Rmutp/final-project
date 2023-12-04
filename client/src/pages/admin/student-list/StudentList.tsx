@@ -15,7 +15,7 @@ import {
 import styled from "styled-components";
 import UserService from "../../../auth/service/UserService";
 import useUserState from "../../../auth/model/useUserState";
-import { ListItem } from "../../../auth/model/authTypes";
+import { ListItem, UserData } from "../../../auth/model/authTypes";
 import "./StudentList.scss";
 import theme from "../../../styles/theme";
 
@@ -94,10 +94,9 @@ const StudentList: React.FC = () => {
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
 
   const [editDialogOpen, setEditDialogOpen] = useState(false);
-  const [editingUser, setEditingUser] = useState<ListItem | null>(null);
 
   const [addDialogOpen, setAddDialogOpen] = useState(false);
-  const { user, handleInputChange, resetUser } = useUserState();
+  const { user, editingUser, setEditUser, handleInputChange, resetUser,handleInputEditChange } = useUserState();
 
   const fetchUserList = async () => {
     try {
@@ -116,13 +115,19 @@ const StudentList: React.FC = () => {
     setAddDialogOpen(true);
   };
 
-  const handleEdit = (user: ListItem) => {
-    setEditingUser(user);
+  const handleEdit = (user: UserData) => {
+    setEditUser(user);
     setEditDialogOpen(true);
   };
 
   const handleCloseEditDialog = () => {
-    setEditingUser(null);
+    setEditUser({
+      id: '',
+      pin: '',
+      citizen_id: '',
+      firstname: '',
+      lastname: '',
+    });
     setEditDialogOpen(false);
   };
 
@@ -130,10 +135,11 @@ const StudentList: React.FC = () => {
     if (editingUser) {
       try {
         const updatedUserData = {
-          pin: user.pin,
-          citizen_id: user.citizen_id,
-          firstname: user.firstname,
-          lastname: user.lastname,
+          id: editingUser.id,
+          pin: editingUser.pin,
+          citizen_id: editingUser.citizen_id,
+          firstname: editingUser.firstname,
+          lastname: editingUser.lastname,
         };
   
         const response = await UserService.updateUser(
@@ -145,7 +151,13 @@ const StudentList: React.FC = () => {
           console.log("User updated successfully:", response.data);
           const updatedList = await UserService.getAllUsers();
           setListItems(updatedList);
-          setEditingUser(null);
+          setEditUser({
+            id: '',
+            pin: '',
+            citizen_id: '',
+            firstname: '',
+            lastname: '',
+          });
           setEditDialogOpen(false);
         } else {
           console.error("Failed to update user:", response.data);
@@ -390,8 +402,8 @@ const StudentList: React.FC = () => {
                 <TextField
                   label="PIN"
                   name="pin"
-                  value={user.pin}
-                  onChange={handleInputChange}
+                  value={editingUser.pin}
+                  onChange={handleInputEditChange}
                   fullWidth
                   sx={{ marginBottom: 2, marginTop:2 }}
                   inputProps={{ inputMode: "numeric" }}
@@ -399,24 +411,24 @@ const StudentList: React.FC = () => {
                 <TextField
                   label="Citizen ID"
                   name="citizen_id"
-                  value={user.citizen_id}
-                  onChange={handleInputChange}
+                  value={editingUser.citizen_id}
+                  onChange={handleInputEditChange}
                   fullWidth
                   sx={{ marginBottom: 2 }}
                 />
                 <TextField
                   label="First Name"
                   name="firstname"
-                  value={user.firstname}
-                  onChange={handleInputChange}
+                  value={editingUser.firstname}
+                  onChange={handleInputEditChange}
                   fullWidth
                   sx={{ marginBottom: 2 }}
                 />
                 <TextField
                   label="Last Name"
                   name="lastname"
-                  value={user.lastname}
-                  onChange={handleInputChange}
+                  value={editingUser.lastname}
+                  onChange={handleInputEditChange}
                   fullWidth
                   sx={{ marginBottom: 2 }}
                 />
