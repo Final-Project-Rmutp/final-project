@@ -6,7 +6,7 @@ import {
   Outlet,
 } from "react-router-dom";
 import Login from "./components/Login/Login";
-import Room from "./pages/room/Room";
+import Room from "./pages/Room/Room";
 import { AuthProvider } from "./auth/AuthContext";
 // import Sidebar from './shared/components/sidebar/Sidebar';
 import "./input.scss";
