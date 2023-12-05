@@ -32,7 +32,7 @@ const authMiddleware = require('../middleware/authMiddleware.js')
  *               lastname:
  *                 type: string
  *                 example: "user"
- *               accounttype:
+ *               account_type:
  *                 type: string
  *                 example: "user"
  *               user_img_path:
@@ -43,7 +43,7 @@ const authMiddleware = require('../middleware/authMiddleware.js')
  *               - citizen_id
  *               - firstname
  *               - lastname
- *               - accounttype
+ *               - account_type
  *     responses:
  *       201:
  *         description: User registration successful.
@@ -132,7 +132,7 @@ router.post('/user/add',authMiddleware.isAdmin, adminController.adduser);
  *                  pin:
  *                    type: string
  *                    example: 056000000000-0
- *                  accounttype:
+ *                  account_type:
  *                    type: string
  *                    example: student
  *                  user_img_path:
@@ -213,7 +213,7 @@ router.get('/user/getalluser',authMiddleware.isAdmin, adminController.getalluser
  *                  pin:
  *                    type: string
  *                    example: 056000000000-0
- *                  accounttype:
+ *                  account_type:
  *                    type: string
  *                    example: student
  *                  user_img_path:
