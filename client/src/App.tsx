@@ -6,7 +6,7 @@ import {
   Outlet,
 } from "react-router-dom";
 import Login from "./components/Login/Login";
-import Room from "./pages/room/Room";
+// import Room from "./pages/room/Room";
 import { AuthProvider } from "./auth/AuthContext";
 // import Sidebar from './shared/components/sidebar/Sidebar';
 import "./input.scss";
@@ -22,6 +22,7 @@ import {
   THEME_ID as MATERIAL_THEME_ID} from '@mui/material/styles';
 import { CssVarsProvider as JoyCssVarsProvider } from '@mui/joy/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import User from "./pages/student/student";
 
 const materialTheme = materialExtendTheme();
 const App: React.FC = () => {
@@ -45,7 +46,7 @@ const App: React.FC = () => {
               path="/user"
               element={
                 <AuthenticatedRoute>
-                  <Room />
+                  <User />
                 </AuthenticatedRoute>
               }
             />

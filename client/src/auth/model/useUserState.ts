@@ -5,12 +5,12 @@ const useUserState = () => {
   const [user, setUser] = useState<ListItem>({
     id: '',
     accountstatus: '',
-    accountrole: '',
+    account_role: '',
     pin: '',
     citizen_id: '',
     firstname: '',
     lastname: '',
-    accounttype: '',
+    account_type: '',
     user_img_path: '' || null,
   });
 
@@ -41,12 +41,12 @@ const useUserState = () => {
     setUser({
       id: '',
       accountstatus: '',
-      accountrole: '',
+      account_role: '',
       pin: '',
       citizen_id: '',
       firstname: '',
       lastname: '',
-      accounttype: '',
+      account_type: '',
       user_img_path: '' || null,
     });
   };

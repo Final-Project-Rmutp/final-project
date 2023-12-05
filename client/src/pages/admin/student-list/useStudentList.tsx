@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import UserService from "../../../auth/service/UserService";
 import useUserState from "../../../auth/model/useUserState";
 import { ListItem, UserData } from "../../../auth/model/authTypes";
-
 const useStudentList = () => {
   const [listItems, setListItems] = useState<ListItem[]>([]);
   const [selectAll, setSelectAll] = useState(false);
@@ -76,7 +75,6 @@ const useStudentList = () => {
             firstname: "",
             lastname: "",
           });
-          setEditDialogOpen(false);
         } else {
           console.error("Failed to update user:", response.data);
         }
@@ -84,6 +82,7 @@ const useStudentList = () => {
         console.error("Error updating user:", error);
       }
       await fetchUserList();
+      setEditDialogOpen(false);
     }
   };
 

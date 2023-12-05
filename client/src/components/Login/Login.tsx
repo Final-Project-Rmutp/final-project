@@ -69,9 +69,9 @@ const Login: React.FC = () => {
 
       if (response.data && response.data.token) {
         setLoading(true);
-        const { token, accountrole } = response.data;
+        const { token, account_role } = response.data;
         localStorage.setItem("token", token);
-        localStorage.setItem("role", accountrole);
+        localStorage.setItem("role", account_role);
 
 
         /////////// remember
@@ -88,7 +88,7 @@ const Login: React.FC = () => {
         /////////////////// check role
         setTimeout(() => {
           setLoading(false);
-          if (accountrole === "admin") {
+          if (account_role === "admin") {
             navigate("/admin");
           } else {
             navigate("/user");

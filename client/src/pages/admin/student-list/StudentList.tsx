@@ -5,7 +5,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Typography,
+  // Typography,
   TextField,
   MenuItem,
   // Checkbox,
@@ -16,9 +16,9 @@ import {
 // import useUserState from "../../../auth/model/useUserState";
 // import { ListItem, UserData } from "../../../auth/model/authTypes";
 import theme from "../../../styles/theme";
-import { 
-  Checkbox, Button, Sheet, Table } from '@mui/joy';
-
+import { Checkbox, Button, Sheet, Table, ModalDialog, Modal, Divider, FormControl, FormLabel, Stack, Input } from '@mui/joy';
+import DeleteForever from '@mui/icons-material/DeleteForever';
+import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import {
   // StyledTable,
   Tbody,
@@ -162,6 +162,7 @@ const StudentList: React.FC = () => {
                                 <Button
                                   color="danger"
                                   variant="outlined"
+                                  endDecorator={<DeleteForever />}
                                   onClick={() => handleDelete(item.id)}
                                   className="delete"
                                 >
@@ -180,12 +181,34 @@ const StudentList: React.FC = () => {
                             <td>{item.lastname}</td>
                             <td>{item.pin}</td>
                             <td>{item.citizen_id}</td>
-                            <td>{item.accounttype}</td>
+                            <td>{item.account_type}</td>
                           </tr>
                         ))}
                     </Tbody>
                   </Table>
-                  <Dialog open={deleteDialogOpen} onClose={handleCloseDeleteDialog}>
+                  <Modal open={deleteDialogOpen} onClose={handleCloseDeleteDialog}>
+                    <ModalDialog variant="outlined" role="alertdialog">
+                      <DialogTitle>
+                        <WarningRoundedIcon />
+                        Confirmation
+                      </DialogTitle>
+                      <Divider />
+                      <DialogContent>
+                        {selectedItems.length > 1
+                          ? "Are you sure you want to deactivate all selected users?"
+                          : "Are you sure you want to deactivate the selected user?"}
+                      </DialogContent>
+                      <DialogActions>
+                        <Button variant="plain" color="neutral" onClick={handleCloseDeleteDialog}>
+                          Cancel
+                        </Button>
+                        <Button variant="solid"  color="danger" onClick={handleDeleteConfirmed}>
+                          Confirm Delete
+                        </Button>
+                      </DialogActions>
+                    </ModalDialog>
+                  </Modal>
+                  {/* <Dialog open={deleteDialogOpen} onClose={handleCloseDeleteDialog}>
                     <DialogTitle>Confirm Deactivate</DialogTitle>
                     <DialogContent>
                       <Typography>
@@ -206,10 +229,9 @@ const StudentList: React.FC = () => {
                         Delete
                       </Button>
                     </DialogActions>
-                  </Dialog>
+                  </Dialog> */}
               </Sheet>
                 <div className="pagination-container">
-
                     <TablePagination
                       rowsPerPageOptions={[5, 10, 25]}
                       component="div"
@@ -245,7 +267,73 @@ const StudentList: React.FC = () => {
                 </Button>
                 </div>
             </div>
-            <Dialog open={editDialogOpen} onClose={handleCloseEditDialog}>
+            <Modal open={editDialogOpen} onClose={handleCloseEditDialog}>
+              <ModalDialog
+                size="lg"
+                variant="outlined"
+                layout="center"
+                color="primary"
+                sx={{width:450}}>  
+                <DialogTitle>Edit User</DialogTitle>
+                <form
+                  onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
+                    event.preventDefault();
+                  }}
+                >
+                  <Stack spacing={3}>
+                  {editingUser && (
+                    <>
+                    <FormControl>
+                      <FormLabel>ID Card</FormLabel>
+                      <Input autoFocus required 
+                        name="pin"
+                        value={editingUser.pin}
+                        onChange={handleInputEditChange}
+                        fullWidth
+                        size="lg"
+                      />
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel>Student ID</FormLabel>
+                      <Input required 
+                        name="citizen_id"
+                        value={editingUser.citizen_id}
+                        onChange={handleInputEditChange}
+                        fullWidth
+                        size="lg"
+                      />
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel>FirstName</FormLabel>
+                      <Input required 
+                        name="firstname"
+                        value={editingUser.firstname}
+                        onChange={handleInputEditChange}
+                        fullWidth
+                        size="lg"
+                      />
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel>LastName</FormLabel>
+                      <Input required 
+                        name="lastname"
+                        value={editingUser.lastname}
+                        onChange={handleInputEditChange}
+                        fullWidth
+                        size="lg"
+                      />
+                    </FormControl>
+                    </>
+                    )}
+                    <DialogActions>
+                      <Button type="cancel" onClick={handleCloseEditDialog}>Cancel</Button>
+                      <Button type="submit" onClick={handleEditConfirmed}>Confirm</Button>
+                    </DialogActions>
+                  </Stack>
+                </form>
+              </ModalDialog>
+            </Modal>
+            {/* <Dialog open={editDialogOpen} onClose={handleCloseEditDialog}>
               <DialogTitle>Edit User</DialogTitle>
               <DialogContent>
                 {editingUser && (
@@ -253,8 +341,8 @@ const StudentList: React.FC = () => {
                     <TextField
                         label="PIN"
                         name="pin"
-                        value={user.pin}
-                        onChange={handleInputChange}
+                        value={editingUser.pin}
+                        onChange={handleInputEditChange}
                         fullWidth
                         sx={{ marginBottom: 2, marginTop: 2 }}
                       />
@@ -291,7 +379,7 @@ const StudentList: React.FC = () => {
                   Save
                 </button>
               </DialogActions>
-            </Dialog>
+            </Dialog> */}
             <Dialog open={addDialogOpen} onClose={handleCloseAddDialog}>
               <DialogTitle>Add New User</DialogTitle>
               <DialogContent>
@@ -332,7 +420,7 @@ const StudentList: React.FC = () => {
                 <TextField
                   label="Account Type"
                   name="accounttype"
-                  value={user.accounttype}
+                  value={user.account_type}
                   onChange={handleInputChange}
                   select
                   fullWidth

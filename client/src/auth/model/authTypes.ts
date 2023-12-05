@@ -20,7 +20,7 @@ export interface ListItem {
   lastname: string;
   citizen_id: string;
   user_img_path:string | null;
-  accounttype: string;
+  account_type: string;
   accountstatus: string;
-  accountrole: string;
+  account_role: string;
 }
