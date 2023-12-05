@@ -4,23 +4,23 @@ const { logging } = require('../middleware/loggingMiddleware.js');
 
 // Add a new user
 async function adduser(req, res) {
-    const { pin, citizen_id, firstname, lastname, accounttype, use_img_path } = req.body;
+    const { pin, citizen_id, firstname, lastname, account_type, use_img_path } = req.body;
 
     // Check for missing or empty values (except user_img_path)
-    if(!pin || !citizen_id || !firstname || !lastname || !accounttype){
+    if(!pin || !citizen_id || !firstname || !lastname || !account_type){
         return res.status(400).json({ message: 'All fields are required' });
     }
     const pinRegex = /^\d{12}-\d$/; // Regex to match "000000000000-0" format
     // Check if id and citizen_id are numbers
     if (!pinRegex.test(pin)  || isNaN(citizen_id)) {
-        console.log(pin);
-        return res.status(400).json({ message: 'ID and Citizen ID must be numbers' });
+        // console.log(pin);
+        return res.status(400).json({ message: 'ID and Citizen ID must be numbers in correct format' });
     }
 
-        let insertQuery = `insert into "user" (pin, citizen_id, firstname, lastname, accounttype, user_img_path) 
+        let insertQuery = `insert into "user" (pin, citizen_id, firstname, lastname, account_type, user_img_path) 
                             VALUES ($1, $2, $3, $4, $5, $6)
                             RETURNING id`;
-        const values = [pin, citizen_id, firstname, lastname, accounttype, use_img_path];
+        const values = [pin, citizen_id, firstname, lastname, account_type, use_img_path];
         
     try {
 
@@ -49,7 +49,9 @@ async function adduser(req, res) {
 // Get all users
 async function getallusers(req, res) {
     try {
-        const result = await client.query(`SELECT id,firstname,lastname,citizen_id,pin,accounttype,user_img_path FROM "user" WHERE accountrole = 'user' AND accountstatus = '1'`);
+        const result = await client.query(`SELECT id,firstname,lastname,citizen_id,pin,account_type,user_img_path FROM "user" 
+        WHERE account_role = 'user' AND account_status = '1'
+        ORDER BY id`);
         res.status(200).json(result.rows); 
     } catch (err) {
         console.error(err.message);
@@ -61,7 +63,7 @@ async function getUserById(req, res) {
     try {
         const userId = req.params.id;
         // Query to retrieve user details by ID
-        const query = `SELECT id,firstname,lastname,citizen_id,pin,accounttype,user_img_path FROM "user" WHERE id = $1 AND accountrole = 'user'`; // select แค่จำเป็น
+        const query = `SELECT id,firstname,lastname,citizen_id,pin,account_type,user_img_path FROM "user" WHERE id = $1 AND account_role = 'user'`; // select แค่จำเป็น
         const result = await client.query(query, [userId]);
 
         if (result.rows.length === 1) {
@@ -83,7 +85,7 @@ async function deactivateUser(req, res) {
     try {
         const userId = req.params.id; 
         // Update query to set accountstatus to 0 for the user with the specified ID
-        const updateQuery = 'UPDATE "user" SET accountstatus = 0 WHERE id = $1';
+        const updateQuery = 'UPDATE "user" SET account_status = 0 WHERE id = $1';
         const result = await client.query(updateQuery, [userId]);
         const id = req.user.id;
         // console.log(userId)
@@ -106,11 +108,18 @@ async function updateUser(req, res) {
     try {
         const userId = req.params.id;
         const updatedUserData = req.body; 
-        
+
+            // Check for missing or empty values (except user_img_path)
+        if(!updatedUserData.firstname || !updatedUserData.lastname || !updatedUserData.citizen_id || !updatedUserData.pin){
+            return res.status(400).json({ message: 'All fields are required' });
+        }
+        const pinRegex = /^\d{12}-\d$/; // Regex to match "000000000000-0" format
         // Check if id and citizen_id are numbers
-         if (isNaN(updatedUserData.pin) || isNaN(updatedUserData.citizen_id)) {
-        return res.status(400).json({ message: 'ID and Citizen ID must be numbers' });
-         }
+        if (!pinRegex.test(updatedUserData.pin)  || isNaN(updatedUserData.citizen_id)) {
+            // console.log(pin);
+            return res.status(400).json({ message: 'ID and Citizen ID must be numbers in correct format' });
+        }
+        
         // Extract updated fields from the request body
         const { firstname, lastname, citizen_id, pin } = updatedUserData;
         // Update query to set accountstatus to 0 for the user with the specified ID
