@@ -1,13 +1,17 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import './input.scss';
-import { GlobalStyles }  from './styles/global';
+import { GlobalStyles } from './styles/global';
 import App from './App';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <GlobalStyles />
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const rootElement = document.getElementById('root');
+
+if (rootElement) {
+  const root = createRoot(rootElement);
+  root.render(
+    <React.StrictMode>
+      <GlobalStyles />
+      <App />
+    </React.StrictMode>
+  );
+}

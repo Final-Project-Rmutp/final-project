@@ -1,13 +1,17 @@
 import React, { useState, MouseEvent } from "react";
 import {
-  Avatar,
+  // Avatar,
   Box,
-  Button,
+  // Button,
   Card,
   Divider,
   Stack,
   Typography,
 } from "@mui/material";
+import {
+  Button,
+  Avatar,
+} from "@mui/joy";
 import { MenuItems, MenuItemLinks } from "../../../styles/global";
 import { SidebarData } from "./SidebarData";
 import "./Navbar.scss";
@@ -65,12 +69,12 @@ const AdminProfileSidebar: React.FC = () => {
           <p>&equiv;</p>
         </div>
         <div className={`sidebar ${leftOpen}`}>
-          <div className="header">
+          <div className="header-left">
             <div className="logo-header">
               <img src={randomImageUrl} alt="" />
             </div>
           </div>
-          <Card>
+          {/* <Card>
             <Box sx={{ p: 1, display: "flex", alignItems: "center" }}>
               <Avatar variant="rounded" src={randomImageUrl} />
               <Stack spacing={0.5} sx={{ marginLeft: 2 }}>
@@ -80,7 +84,7 @@ const AdminProfileSidebar: React.FC = () => {
               </Stack>
             </Box>
             <Divider />
-          </Card>
+          </Card> */}
           <div className="content">
             {SidebarData.map((item, index) => (
               <MenuItems key={index}>
@@ -110,7 +114,7 @@ const AdminProfileSidebar: React.FC = () => {
                   height: "45px",
                 }}
               >
-                <Avatar variant="rounded" src={randomImageUrl} />
+                <Avatar src={randomImageUrl} />
                 <Stack spacing={0.5} sx={{ marginLeft: 2 }}>
                   <Typography fontWeight="bold" sx={{ paddingRight: 2 }}>
                     Wisit Moondet
@@ -121,7 +125,7 @@ const AdminProfileSidebar: React.FC = () => {
             </Card>
           </div>
           <div className="btn-loggout">
-            <Button color="inherit" onClick={handleLogout}>
+            <Button color="danger" variant="soft" onClick={handleLogout}>
               Logout
             </Button>
           </div>

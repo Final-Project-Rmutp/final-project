@@ -1,7 +1,57 @@
 // theme.ts
-import { createTheme } from "@mui/material";
+import { createTheme, ThemeOptions } from "@mui/material";
+
+interface CustomThemeOptions extends ThemeOptions {
+  colorSchemes: {
+    light: {
+      palette: {
+        primary: {
+          solidBg: string;
+          solidColor: string;
+          solidHoverBg: string;
+          solidActiveBg: string;
+        };
+        neutral: {
+          solidBg: string;
+          solidColor: string;
+          solidHoverBg: string;
+          solidActiveBg: string;
+        };
+      };
+    };
+    dark: {
+      // Define properties for the dark color scheme if needed
+    };
+  };
+}
 
 const theme = createTheme({
+  colorSchemes: {
+    light: {
+      palette: {
+        primary: {
+          solidBg: 'var(--joy-palette-primary-600)',
+          solidColor: '#fff',
+          solidHoverBg: 'var(--joy-palette-primary-700)',
+          solidActiveBg: 'var(--joy-palette-primary-800)',
+          // ...other tokens
+        },
+        neutral: {
+          solidBg: 'var(--joy-palette-primary-700)',
+          solidColor: '#fff',
+          solidHoverBg: 'var(--joy-palette-primary-800)',
+          solidActiveBg: 'var(--joy-palette-primary-900)',
+          // ...other tokens
+        },
+        // ...other palettes
+      },
+    },
+    dark: {
+      palette: {
+        // similar structure but different values
+      },
+    },
+  },
   palette: {
     mode: "light",
     primary: {
@@ -17,6 +67,13 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           backgroundColor: "#D0A2F7",
+        },
+      },
+    },
+    MuiBox: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#D0A2F7", // Change the background color for MuiBox
         },
       },
     },
@@ -37,6 +94,6 @@ const theme = createTheme({
       },
     },
   },
-});
+} as CustomThemeOptions);
 
 export default theme;

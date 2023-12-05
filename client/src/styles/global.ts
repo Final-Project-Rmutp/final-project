@@ -64,12 +64,13 @@ export const MenuItemLinks = styled(Link)`
   color: #ffffff;
 
   &:hover {
-    background-color: #ffffff;
-    color: #000080;
+    background-color: #A6B1E1;
+    color: #424874;
+    border:1px solid #424874;
     width: 100%;
     height: 45px;
     text-align: center;
-    border-radius: 5px;
+    border-radius: 15px;
     margin: 0 2rem;
   }
 `;
