@@ -33,13 +33,13 @@ function isAdmin(req, res, next) {
     if (error) {
       return res.status(401).json({ message: 'Invalid token' });
     }
-    const accountrole = decoded.accountrole;
-    if(accountrole === 'admin'){
+    const account_role = decoded.account_role;
+    if(account_role === 'admin'){
       const { id } = decoded;
       req.user = {decoded, id};
       next();
     }
-    else if (accountrole === 'user'){
+    else if (account_role === 'user'){
       return res.status(403).json({ message: "You don't have permission to access this resource." });
     }
     else{

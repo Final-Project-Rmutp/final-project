@@ -40,7 +40,7 @@ const authController = require('../controller/auth.controller.js');
  *                  token:
  *                    type: string
  *                    example: "token"
- *                  accountrole:
+ *                  account_role:
  *                    type: string
  *                    example: "user"
  *       401:

@@ -15,7 +15,7 @@ async function login(req, res) {
 
             // Check if the user with the provided username or email exists in the database
             const query = `
-            SELECT id, pin, citizen_id, accounttype, accountrole, accountstatus 
+            SELECT id, pin, citizen_id, account_type, account_role, account_status 
             FROM "user"
             WHERE pin = $1`;
 
@@ -38,9 +38,9 @@ async function login(req, res) {
             }
     
             // Generate and send a JSON Web Token (JWT) for authentication
-            const token = jwt.sign({ id: user.id, pin: user.pin, citizen_id: user.citizen_id, accounttype: user.accounttype, accountrole: user.accountrole }, jwtSecret);
+            const token = jwt.sign({ id: user.id, pin: user.pin, citizen_id: user.citizen_id, account_type: user.account_type, account_role: user.account_role }, jwtSecret);
             logging("login", user.id, 'Authentication successful');
-            res.status(200).json({ message: 'Authentication successful', token, accountrole: user.accountrole });
+            res.status(200).json({ message: 'Authentication successful', token, account_role: user.account_role });
         } catch (err) {
             console.error(err.message);
             logging("error login", "1", err.message);
