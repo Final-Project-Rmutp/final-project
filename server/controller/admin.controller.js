@@ -93,6 +93,8 @@ async function deactivateUser(req, res) {
             logging("deactivate",id,"User deactivate successfully id: "+userId)
             res.status(200).json({ message: 'User deactivate successfully' });
         } else {
+            const id = req.user.id;
+            logging("error deactivateUser", id, "User not found id: "+userId);
             res.status(404).json({ message: 'User not found' });
         }
     } catch (err) {
@@ -116,7 +118,7 @@ async function updateUser(req, res) {
         const pinRegex = /^\d{12}-\d$/; // Regex to match "000000000000-0" format
         // Check if id and citizen_id are numbers
         if (!pinRegex.test(updatedUserData.pin)  || isNaN(updatedUserData.citizen_id)) {
-            // console.log(pin);
+            //console.log(pin);
             return res.status(400).json({ message: 'ID and Citizen ID must be numbers in correct format' });
         }
         
@@ -130,6 +132,8 @@ async function updateUser(req, res) {
             logging("updateuser", id,"User data updated successfully id: "+userId)
             res.status(200).json({ message: 'User data updated successfully' });
         } else {
+            const id = req.user.id;
+            logging("error updateuser", id, "User not found id: "+userId);
             res.status(404).json({ message: 'User not found' });
         }
     } catch (err) {
@@ -140,5 +144,7 @@ async function updateUser(req, res) {
     }
 }
 
+// TODO: Seach from pin,citizen_id
+// TODO: Upload img
 
 module.exports = { adduser, getallusers, getUserById, deactivateUser, updateUser };

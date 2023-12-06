@@ -8,7 +8,7 @@ async function login(req, res) {
     const { pin, citizen_id } = req.body;
 
     // Check if the provided pin and citizen_id are numbers
-    if (isNaN(pin) || isNaN(citizen_id)) {
+    if (isNaN(citizen_id)) {
         return res.status(400).json({ message: 'PIN and Citizen ID must be numbers' });
     }
         try {
