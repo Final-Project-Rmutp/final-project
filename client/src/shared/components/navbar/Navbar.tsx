@@ -74,17 +74,6 @@ const AdminProfileSidebar: React.FC = () => {
               <img src={randomImageUrl} alt="" />
             </div>
           </div>
-          {/* <Card>
-            <Box sx={{ p: 1, display: "flex", alignItems: "center" }}>
-              <Avatar variant="rounded" src={randomImageUrl} />
-              <Stack spacing={0.5} sx={{ marginLeft: 2 }}>
-                <Typography fontWeight="bold" sx={{ paddingRight: 2 }}>
-                  Wisit Moondet
-                </Typography>
-              </Stack>
-            </Box>
-            <Divider />
-          </Card> */}
           <div className="content">
             {SidebarData.map((item, index) => (
               <MenuItems key={index}>

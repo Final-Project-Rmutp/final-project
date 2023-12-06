@@ -228,6 +228,8 @@ body {
     cursor: pointer;
     top: -6px;
     left: var(--icon-left);
+    transition: 0.4s;
+
   }
   .sidebar {
     border-radius: 20px;

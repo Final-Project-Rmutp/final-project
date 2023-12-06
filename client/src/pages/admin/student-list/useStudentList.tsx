@@ -10,11 +10,12 @@ const useStudentList = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
+  const [userImage, setUserImage] = useState<File | null>(null);
 
   const [editDialogOpen, setEditDialogOpen] = useState(false);
 
   const [addDialogOpen, setAddDialogOpen] = useState(false);
-  const { user, editingUser, setEditUser, handleInputChange, resetUser, handleInputEditChange } = useUserState();
+  const { user, editingUser,AddUser, setEditUser, handleInputChange, resetUser, handleInputEditChange } = useUserState();
 
   const fetchUserList = async () => {
     try {
@@ -31,6 +32,7 @@ const useStudentList = () => {
 
   const handleAdd = () => {
     resetUser();
+    setUserImage(null);
     setAddDialogOpen(true);
   };
 
@@ -88,20 +90,37 @@ const useStudentList = () => {
 
   const handleCloseAddDialog = () => {
     setAddDialogOpen(false);
+    setUserImage(null);
   };
 
   const handleAddConfirmed = async () => {
     try {
-      const response = await UserService.addUser(user);
+      const formData = new FormData();
+      formData.append("pin", user.pin);
+      formData.append("citizen_id", user.citizen_id);
+      formData.append("firstname", user.firstname);
+      formData.append("lastname", user.lastname);
+      formData.append("account_type", user.account_type);
+      if (userImage) {
+      formData.append("image", userImage);
+    }
+      const response = await UserService.addUser(AddUser);
       console.log("API Response:", response);
       await fetchUserList();
       setAddDialogOpen(false);
       resetUser();
+      setUserImage(null); 
     } catch (error) {
       console.error("Error adding user:", error);
     }
   };
-
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      setUserImage(files[0]);
+    }
+  };
+  
   const handleSelectAll = () => {
     setSelectAll(!selectAll);
     setSelectedItems(selectAll ? [] : listItems.map((item) => item.id));
@@ -185,9 +204,11 @@ const useStudentList = () => {
     editDialogOpen,
     addDialogOpen,
     user,
+    AddUser,
     editingUser,
     setEditUser,
     handleInputChange,
+    handleImageChange,
     resetUser,
     handleInputEditChange,
     fetchUserList,

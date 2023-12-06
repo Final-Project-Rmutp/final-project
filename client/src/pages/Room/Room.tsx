@@ -26,7 +26,7 @@ const Room: React.FC = () => {
     if (isAdmin() || isUser()) {
       return (
         <>
-          <label htmlFor="roomDropdown">Select Room:</label>
+          <label>Select Room:</label>
           <Dropdown onFloorSelect={handleFloorSelect} />
         </>
       );
@@ -69,7 +69,7 @@ const Room: React.FC = () => {
       <div className="center-controls">
         <div className="controls">
           {renderControlsBasedOnRole()}
-          <label htmlFor="dateTimeInput">Select Date and Time:</label>
+          <label>Select Date and Time:</label>
           <Datetime />
         </div>
       </div>

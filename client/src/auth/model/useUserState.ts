@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ListItem, UserData } from './authTypes';
+import { AdduserListItem, ListItem, UserData } from './authTypes';
 
 const useUserState = () => {
   const [user, setUser] = useState<ListItem>({
@@ -21,10 +21,18 @@ const useUserState = () => {
     firstname: '',
     lastname: '',
   });
+  const [AddUser,setAddUser] = useState<AdduserListItem>({
+    pin: '',
+    citizen_id: '',
+    firstname: '',
+    lastname: '',
+    account_type: '',
+    user_img_path: '' || null,
+  });
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setUser((prevUser) => ({
+    setAddUser((prevUser) => ({
       ...prevUser,
       [name]: value,
     }));
@@ -51,7 +59,7 @@ const useUserState = () => {
     });
   };
 
-  return { user, editingUser,setEditUser, handleInputChange, resetUser,handleInputEditChange,setUser };
+  return { user, editingUser, AddUser,setAddUser, setEditUser, handleInputChange, resetUser,handleInputEditChange,setUser };
 };
 
 export default useUserState;

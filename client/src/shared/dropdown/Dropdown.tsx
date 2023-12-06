@@ -22,7 +22,7 @@ const Dropdown: React.FC<DropdownProps> = ({ onFloorSelect }) => {
   return (
     <div className="dropdown">
       <input type="checkbox" id="dropdown" checked={isOpen} onChange={handleToggleDropdown} />
-      <label className="dropdown__face" htmlFor="dropdown">
+      <label className="dropdown__face" >
         <div className="dropdown__text">
           {selectedItem || 'Select Floor'} {/* Display selected item or default text */}
         </div>

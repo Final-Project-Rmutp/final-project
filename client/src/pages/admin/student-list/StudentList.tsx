@@ -40,9 +40,11 @@ const StudentList: React.FC = () => {
     deleteDialogOpen,
     editDialogOpen,
     addDialogOpen,
-    user,
+    // user,
+    AddUser,
     editingUser,
     handleInputChange,
+    handleImageChange,
     handleInputEditChange,
     handleAdd,
     handleEdit,
@@ -143,10 +145,11 @@ const StudentList: React.FC = () => {
                             <td>{index + 1 + page * rowsPerPage}</td>
                             <td>
                               <img
-                                src={`https://picsum.photos/60/60?random=${item.id}`}
-                                alt={`User ${item.id}`}
-                                width="50"
-                                height="50"
+                                // src={`https://picsum.photos/60/60?random=${item.id}`}
+                                // alt={`User ${item.id}`}
+                                // width="50"
+                                // height="50"
+                                src={item.user_img_path ?? ''}
                               />
                             </td>
                             <td >
@@ -386,7 +389,7 @@ const StudentList: React.FC = () => {
                 <TextField
                   label="PIN"
                   name="pin"
-                  value={user.pin}
+                  value={AddUser.pin}
                   onChange={handleInputChange}
                   fullWidth
                   sx={{ marginBottom: 2, marginTop:2 }}
@@ -395,7 +398,7 @@ const StudentList: React.FC = () => {
                 <TextField
                   label="Citizen ID"
                   name="citizen_id"
-                  value={user.citizen_id}
+                  value={AddUser.citizen_id}
                   onChange={handleInputChange}
                   fullWidth
                   sx={{ marginBottom: 2 }}
@@ -404,7 +407,7 @@ const StudentList: React.FC = () => {
                 <TextField
                   label="First Name"
                   name="firstname"
-                  value={user.firstname}
+                  value={AddUser.firstname}
                   onChange={handleInputChange}
                   fullWidth
                   sx={{ marginBottom: 2 }}
@@ -412,22 +415,31 @@ const StudentList: React.FC = () => {
                 <TextField
                   label="Last Name"
                   name="lastname"
-                  value={user.lastname}
+                  value={AddUser.lastname}
                   onChange={handleInputChange}
                   fullWidth
                   sx={{ marginBottom: 2 }}
                 />
                 <TextField
                   label="Account Type"
-                  name="accounttype"
-                  value={user.account_type}
+                  name="account_type"
+                  value={AddUser.account_type}
                   onChange={handleInputChange}
                   select
                   fullWidth
                 >
-                  <MenuItem value="student">Student</MenuItem>
+                  <MenuItem value="student" className="text-dark">Student</MenuItem>
                   <MenuItem value="teacher">Teacher</MenuItem>
                 </TextField>
+                <TextField
+                  type="file"
+                  label="User Image"
+                  name="image"
+                  value={AddUser.user_img_path}
+                  onChange={handleImageChange}
+                  fullWidth
+                  sx={{ marginBottom: 2, marginTop: 2 }}
+                />
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleCloseAddDialog}>Cancel</Button>

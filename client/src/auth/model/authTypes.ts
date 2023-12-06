@@ -24,3 +24,12 @@ export interface ListItem {
   accountstatus: string;
   account_role: string;
 }
+
+export interface AdduserListItem {
+  pin: string;
+  firstname: string;
+  lastname: string;
+  citizen_id: string;
+  user_img_path:string | null;
+  account_type: string;
+}

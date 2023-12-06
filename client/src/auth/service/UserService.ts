@@ -1,6 +1,6 @@
 // UserService.ts
 import axiosInstance from '../../environments/axiosInstance';
-import { UserData } from '../model/authTypes';
+import { AdduserListItem, UserData } from '../model/authTypes';
 
 
 const token = localStorage.getItem('token');
@@ -30,7 +30,7 @@ const UserService = {
     }
   },
 
-  addUser: async (userData: UserData) => {
+  addUser: async (userData: AdduserListItem) => {
     try {
       const response = await axiosInstance.post('/admin/user/add', userData,{headers});
       return response.data;
