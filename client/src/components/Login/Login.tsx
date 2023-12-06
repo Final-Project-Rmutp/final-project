@@ -161,7 +161,7 @@ const Login: React.FC = () => {
           Login
         </h1>
         <div className={`input-login ${errorMessages.username ? "error" : ""}`}>
-          <label htmlFor="citizen_id" className="text-sm text-gray-600">
+          <label className="text-sm text-gray-600">
             ID Student
           </label>
           <input
@@ -177,7 +177,7 @@ const Login: React.FC = () => {
           )}
         </div>
         <div className={`input-login login-password ${errorMessages.username ? "error" : ""}`}>
-          <label htmlFor="pin" className="text-sm text-gray-600">
+          <label className="text-sm text-gray-600">
             ID Card
           </label>
           <input
@@ -206,7 +206,7 @@ const Login: React.FC = () => {
             defaultChecked
             style={{color: "#D0A2F7"}}
           />
-          <label htmlFor="rememberMe">Remember Me</label>
+          {/* <label>Remember Me</label> */}
         </div>
         <button  onClick={handleLogin} className="login-button">
           Login
