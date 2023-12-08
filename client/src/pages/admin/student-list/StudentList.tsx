@@ -95,7 +95,8 @@ const StudentList: React.FC = () => {
                       '0 var(--TableHeader-height), 0 100%, 0 var(--TableHeader-height), 0 100%',
                     backgroundColor: 'background.surface',
                   }}>
-                  <Table className="table mb-0" stickyHeader>
+                  <Table className="table mb-0" stickyHeader 
+                  >
                       <colgroup>
                         <col style={{ minWidth: '43px' }}/>
                         <col style={{ minWidth: '80px' }}/>
@@ -211,28 +212,6 @@ const StudentList: React.FC = () => {
                       </DialogActions>
                     </ModalDialog>
                   </Modal>
-                  {/* <Dialog open={deleteDialogOpen} onClose={handleCloseDeleteDialog}>
-                    <DialogTitle>Confirm Deactivate</DialogTitle>
-                    <DialogContent>
-                      <Typography>
-                        {selectedItems.length > 1
-                          ? "Are you sure you want to deactivate all selected users?"
-                          : "Are you sure you want to deactivate the selected user?"}
-                      </Typography>
-                    </DialogContent>
-                    <DialogActions>
-                      <Button 
-                        color="neutral"
-                        variant="soft"
-                        onClick={handleCloseDeleteDialog}>Cancel</Button >
-                      <Button 
-                        color="danger"
-                        variant="soft"
-                        onClick={handleDeleteConfirmed} >
-                        Delete
-                      </Button>
-                    </DialogActions>
-                  </Dialog> */}
               </Sheet>
                 <div className="pagination-container">
                     <TablePagination
@@ -249,7 +228,10 @@ const StudentList: React.FC = () => {
             <div className="card-footer">
               <div className="this-btn d-flex justify-center align-center gap-2">
                 <Button
-                  sx={{width:'150px',padding:'15px !important'}}
+                  sx={{width:'150px',padding:'15px !important',":hover": {
+                    boxShadow: '0 1px 20px 1px #A04C4C',
+                    border: '1px solid #A04C4C'
+                  }}}
                   id="delete"
                   color="danger"
                   variant="soft"
@@ -259,7 +241,11 @@ const StudentList: React.FC = () => {
                 Delete All
                 </Button>
                 <Button
-                  sx={{width:'150px',padding:'15px !important'}}
+                  sx={{width:'150px',padding:'15px !important',":hover": {
+                    boxShadow: '0 1px 20px 1px #0D6EFD',
+                    border: '1px solid #0D6EFD'
+                  }}}
+
                   id="add"
                   color="primary"
                   variant="soft"

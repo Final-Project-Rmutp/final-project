@@ -108,9 +108,9 @@ img {
   --portrait-width: 250px;
   --header-height: 4.5rem;
   --secs: 0.4s;
-  --bg-left: rgba(16, 20, 24, 0.8);
-  --bg-right: rgba(16, 20, 24, 0.8);
-  --bg-main: #AA96DA;
+  --bg-left: #212B36;
+  --bg-right: rgba(128, 42, 150, 0.8);
+  --bg-main: #161C24;
   --left-width: 0;
   --left-transform: 0;
   --icon-left: 10;
@@ -150,12 +150,14 @@ body {
     overflow: auto;
     box-sizing: border-box;
     height: calc(100vh - var(--header-height));
+    
   }
 }
 
 #main {
   background: var(--bg-main);
   flex-grow: 1;
+  
   .header {
     background: linear-gradient(to right, var(--bg-left), var(--bg-right));
     @media (orientation: landscape) {
@@ -233,8 +235,9 @@ body {
   }
   .sidebar {
     border-radius: 20px;
+    // border: 2px solid #C684FF;
     // background: var(--bg-left);
-    background-color: rgb(36, 34, 34);
+    background-color:#212B36;
     &.closed {
       transform: translateX(-97%);
       .icon {

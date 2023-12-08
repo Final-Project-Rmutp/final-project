@@ -8,10 +8,8 @@ import {
 import Login from "./components/Login/Login";
 // import Room from "./pages/room/Room";
 import { AuthProvider } from "./auth/AuthContext";
-// import Sidebar from './shared/components/sidebar/Sidebar';
 import "./input.scss";
 
-import StudentList from "./pages/admin/student-list/StudentList";
 import AdminProfileSidebar from "./shared/components/navbar/Navbar";
 import AuthenticatedRoute from "./auth/AuthenticatedRoute";
 import UnAuthenticatedRoute from "./auth/UnAuthenticatedRoute";
@@ -23,6 +21,11 @@ import {
 import { CssVarsProvider as JoyCssVarsProvider } from '@mui/joy/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import User from "./pages/student/student";
+
+
+////admin
+import StudentList from "./pages/admin/student-list/StudentList";
+import ReservedList from "./pages/admin/reserved-list/ReservedList";
 
 const materialTheme = materialExtendTheme();
 const App: React.FC = () => {
@@ -61,6 +64,7 @@ const App: React.FC = () => {
               }
             >
               <Route path="student-list" element={<StudentList />} />
+              <Route path="reserved-list" element={<ReservedList />} />
             </Route>
           </Routes>
         </AuthProvider>

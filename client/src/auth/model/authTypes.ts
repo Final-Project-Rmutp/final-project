@@ -33,3 +33,5 @@ export interface AdduserListItem {
   user_img_path:string | null;
   account_type: string;
 }
+
+

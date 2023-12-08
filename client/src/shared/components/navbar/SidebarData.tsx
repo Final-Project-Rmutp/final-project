@@ -13,7 +13,7 @@ export const SidebarData = [
     },
     {
         title: 'reserved',
-        path: '',
+        path: 'reserved-list',
         icon: <FaIcons.FaUsers />
     },
     {

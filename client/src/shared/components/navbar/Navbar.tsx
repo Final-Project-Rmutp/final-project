@@ -71,7 +71,7 @@ const AdminProfileSidebar: React.FC = () => {
         <div className={`sidebar ${leftOpen}`}>
           <div className="header-left">
             <div className="logo-header">
-              <img src={randomImageUrl} alt="" />
+              <h1>LOGO</h1>
             </div>
           </div>
           <div className="content">

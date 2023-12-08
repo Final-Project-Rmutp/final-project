@@ -166,8 +166,8 @@ const Login: React.FC = () => {
           </label>
           <input
             type="text"
-            name="citizen_id"
-            value={loginData.citizen_id}
+            name="pin"
+            value={loginData.pin}
             onChange={handleInputChange}
             placeholder="ID Student"
             className={`input-field ${errorMessages.username ? "error" : ""}`}
@@ -182,8 +182,8 @@ const Login: React.FC = () => {
           </label>
           <input
             type={showPassword ? "text" : "password"}
-            name="pin"
-            value={loginData.pin}
+            name="citizen_id"
+            value={loginData.citizen_id}
             onChange={handleInputChange}
             placeholder="ID Card"
             className={`input-field ${errorMessages.password ? "error" : ""}`}
@@ -206,7 +206,7 @@ const Login: React.FC = () => {
             defaultChecked
             style={{color: "#D0A2F7"}}
           />
-          {/* <label>Remember Me</label> */}
+          <label>Remember Me</label>
         </div>
         <button  onClick={handleLogin} className="login-button">
           Login
