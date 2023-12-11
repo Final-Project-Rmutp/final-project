@@ -1,36 +1,29 @@
 import React from "react";
 import {
   TablePagination,
-  Dialog,
+
   DialogTitle,
   DialogContent,
   DialogActions,
-  // Typography,
-  TextField,
-  MenuItem,
-  // Checkbox,
   ThemeProvider,
-  // Button,
+  Dialog,
+  MenuItem,
+  TextField,
 } from "@mui/material";
-// import UserService from "../../../auth/service/UserService";
-// import useUserState from "../../../auth/model/useUserState";
-// import { ListItem, UserData } from "../../../auth/model/authTypes";
+
 import theme from "../../../styles/theme";
 import { Checkbox, Button, Sheet, Table, ModalDialog, Modal, Divider, FormControl, FormLabel, Stack, Input } from '@mui/joy';
-import DeleteForever from '@mui/icons-material/DeleteForever';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import {
-  // StyledTable,
   Tbody,
   Theader,
-  // StyledButton,
   HeadStudentList,
   TableContainer,
-  // StickyHeader
-} from "./StudentListStyled";
-import useStudentList from "./useStudentList";
+} from "./RoomListStyled";
+import useRoomList from "./useRoomList";
+import DeleteForever from "@mui/icons-material/DeleteForever";
 
-const StudentList: React.FC = () => {
+const RoomList: React.FC = () => {
   const {
     listItems,
     selectAll,
@@ -38,30 +31,29 @@ const StudentList: React.FC = () => {
     page,
     rowsPerPage,
     deleteDialogOpen,
+    editingRoom,
+    AddRoom,
     editDialogOpen,
     addDialogOpen,
-    // user,
-    AddUser,
-    editingUser,
-    handleInputChange,
-    handleImageChange,
-    handleInputEditChange,
-    handleAdd,
-    handleEdit,
-    handleCloseEditDialog,
-    handleEditConfirmed,
-    handleCloseAddDialog,
+    // room,
     handleAddConfirmed,
+    handleCloseEditDialog,
+    handleCloseAddDialog,
+    handleInputChange,
+    handleInputEditChange,
     handleSelectAll,
     handleCheckboxChange,
-    handleDelete,
     handleDeleteConfirmed,
-    handleDeleteAll,
     handleCloseDeleteDialog,
     handleChangePage,
     handleChangeRowsPerPage,
-  } = useStudentList();
-
+    handleDelete,
+    handleEdit,
+    handleDeleteAll,
+    handleAdd,
+    handleEditConfirmed,
+  } = useRoomList();
+  
   return (
     <ThemeProvider theme={theme}>
           <HeadStudentList>
@@ -105,24 +97,20 @@ const StudentList: React.FC = () => {
                         <col style={{ minWidth: '176px' }}/>
                         <col style={{ minWidth: '176px' }}/>
                         <col style={{ minWidth: '220px' }}/>
-                        <col style={{ minWidth: '220px' }}/>
-                        <col style={{ minWidth: '146px' }}/>
                       </colgroup>
                     <Theader >
                       <tr >
                         <th className="py-2 ">No</th>
-                        <th className="py-2 ">IMG</th>
-                        <th className="py-2 ">Actions</th>
-                        <th className="py-2 ">Active</th>
-                        <th className="py-2 ">FirstName</th>
-                        <th className="py-2 ">LastName</th>
-                        <th className="py-2 ">ID Card</th>
-                        <th className="py-2 ">Student ID</th>
-                        <th className="py-2 ">Account Type</th>
+                        <th className="py-2 "></th>
+                        <th className="py-2 "></th>
+                        <th className="py-2 ">Number</th>
+                        <th className="py-2 ">Type</th>
+                        <th className="py-2 ">Capacity</th>
+                        <th className="py-2 ">Facilities</th>
+                        <th className="py-2 ">Floor</th>
+                        <th className="py-2 ">Stauts</th>
                       </tr>
                       <tr>
-                        <th></th>
-                        <th></th>
                         <th></th>
                         <th>
                           <Checkbox
@@ -131,6 +119,8 @@ const StudentList: React.FC = () => {
                             color="primary"
                           />
                         </th>
+                        <th></th>
+                        <th></th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -145,15 +135,13 @@ const StudentList: React.FC = () => {
                           <tr className="text-center" key={item.id}>
                             <td>{index + 1 + page * rowsPerPage}</td>
                             <td>
-                              <img
-                                // src={`https://picsum.photos/60/60?random=${item.id}`}
-                                // alt={`User ${item.id}`}
-                                // width="50"
-                                // height="50"
-                                src={item.user_img_path ?? ''}
-                              />
+                            <Checkbox
+                              checked={selectedItems.includes(item.room_id)}
+                              onChange={() => handleCheckboxChange(item.room_id)}
+                              color="primary"
+                            />
                             </td>
-                            <td >
+                            <td>
                               <div className="d-flex gap-1 justify-center">
                                 <Button
                                   variant="outlined"
@@ -167,7 +155,7 @@ const StudentList: React.FC = () => {
                                   color="danger"
                                   variant="outlined"
                                   endDecorator={<DeleteForever />}
-                                  onClick={() => handleDelete(item.id)}
+                                  onClick={() => handleDelete(item.room_id)}
                                   className="delete"
                                 >
                                   Delete
@@ -175,17 +163,13 @@ const StudentList: React.FC = () => {
                               </div>
                             </td>
                             <td>
-                            <Checkbox
-                              checked={selectedItems.includes(item.id)}
-                              onChange={() => handleCheckboxChange(item.id)}
-                              color="primary"
-                            />
+                                {item.room_number}
                             </td>
-                            <td>{item.firstname}</td>
-                            <td>{item.lastname}</td>
-                            <td>{item.pin}</td>
-                            <td>{item.citizen_id}</td>
-                            <td>{item.account_type}</td>
+                            <td>{item.room_type}</td>
+                            <td>{item.room_capacity}</td>
+                            <td>{item.room_facilities}</td>
+                            <td>{item.room_level}</td>
+                            <td>{item.room_status}</td>
                           </tr>
                         ))}
                     </Tbody>
@@ -199,8 +183,8 @@ const StudentList: React.FC = () => {
                       <Divider />
                       <DialogContent>
                         {selectedItems.length > 1
-                          ? "Are you sure you want to deactivate all selected users?"
-                          : "Are you sure you want to deactivate the selected user?"}
+                          ? "Are you sure you want to delete all selected rooms?"
+                          : "Are you sure you want to delete the selected room?"}
                       </DialogContent>
                       <DialogActions>
                         <Button variant="plain" color="neutral" onClick={handleCloseDeleteDialog}>
@@ -263,50 +247,70 @@ const StudentList: React.FC = () => {
                 layout="center"
                 color="primary"
                 sx={{width:450}}>  
-                <DialogTitle>Edit User</DialogTitle>
+                <DialogTitle>Edit Room</DialogTitle>
                 <form
                   onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
                     event.preventDefault();
                   }}
                 >
                   <Stack spacing={3}>
-                  {editingUser && (
+                  {editingRoom && (
                     <>
                     <FormControl>
-                      <FormLabel>ID Card</FormLabel>
+                      <FormLabel>Number</FormLabel>
                       <Input autoFocus required 
-                        name="pin"
-                        value={editingUser.pin}
+                        name="room_number"
+                        value={editingRoom.room_number}
                         onChange={handleInputEditChange}
                         fullWidth
                         size="lg"
                       />
                     </FormControl>
                     <FormControl>
-                      <FormLabel>Student ID</FormLabel>
+                      <FormLabel>Type</FormLabel>
                       <Input required 
-                        name="citizen_id"
-                        value={editingUser.citizen_id}
+                        name="room_type"
+                        value={editingRoom.room_type}
                         onChange={handleInputEditChange}
                         fullWidth
                         size="lg"
                       />
                     </FormControl>
                     <FormControl>
-                      <FormLabel>FirstName</FormLabel>
+                      <FormLabel>Capacity</FormLabel>
                       <Input required 
-                        name="firstname"
-                        value={editingUser.firstname}
+                        name="room_capacity"
+                        value={editingRoom.room_capacity}
                         onChange={handleInputEditChange}
                         fullWidth
                         size="lg"
                       />
                     </FormControl>
                     <FormControl>
-                      <FormLabel>LastName</FormLabel>
+                      <FormLabel>Facilities</FormLabel>
                       <Input required 
-                        name="lastname"
-                        value={editingUser.lastname}
+                        name="room_facilities"
+                        value={editingRoom.room_facilities}
+                        onChange={handleInputEditChange}
+                        fullWidth
+                        size="lg"
+                      />
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel>Floor</FormLabel>
+                      <Input required 
+                        name="room_level"
+                        value={editingRoom.room_level}
+                        onChange={handleInputEditChange}
+                        fullWidth
+                        size="lg"
+                      />
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel>Status</FormLabel>
+                      <Input required 
+                        name="room_status"
+                        value={editingRoom.room_status}
                         onChange={handleInputEditChange}
                         fullWidth
                         size="lg"
@@ -323,62 +327,60 @@ const StudentList: React.FC = () => {
               </ModalDialog>
             </Modal>
             <Dialog open={addDialogOpen} onClose={handleCloseAddDialog}>
-              <DialogTitle>Add New User</DialogTitle>
+              <DialogTitle>Add New Room</DialogTitle>
               <DialogContent>
                 <TextField
-                  label="PIN"
-                  name="pin"
-                  value={AddUser.pin}
+                  label="Number"
+                  name="room_number"
+                  value={AddRoom.room_number}
                   onChange={handleInputChange}
                   fullWidth
                   sx={{ marginBottom: 2, marginTop:2 }}
                   inputProps={{ inputMode: "numeric" }}
                 />
                 <TextField
-                  label="Citizen ID"
-                  name="citizen_id"
-                  value={AddUser.citizen_id}
+                  label="Type"
+                  name="room_type"
+                  value={AddRoom.room_type}
                   onChange={handleInputChange}
                   fullWidth
                   sx={{ marginBottom: 2 }}
                   inputProps={{ inputMode: "numeric" }}
                 />
                 <TextField
-                  label="First Name"
-                  name="firstname"
-                  value={AddUser.firstname}
+                  label="Capacity"
+                  name="room_capacity"
+                  value={AddRoom.room_capacity}
                   onChange={handleInputChange}
                   fullWidth
                   sx={{ marginBottom: 2 }}
                 />
                 <TextField
-                  label="Last Name"
-                  name="lastname"
-                  value={AddUser.lastname}
+                  label="Facilities"
+                  name="room_facilities"
+                  value={AddRoom.room_facilities}
                   onChange={handleInputChange}
                   fullWidth
                   sx={{ marginBottom: 2 }}
                 />
                 <TextField
-                  label="Account Type"
-                  name="account_type"
-                  value={AddUser.account_type}
+                  label="Floor"
+                  name="room_level"
+                  value={AddRoom.room_level}
                   onChange={handleInputChange}
                   select
                   fullWidth
                 >
-                  <MenuItem value="student" className="text-dark">Student</MenuItem>
-                  <MenuItem value="teacher">Teacher</MenuItem>
+                  <MenuItem value="1" >1</MenuItem>
+                  <MenuItem value="2">2</MenuItem>
+                  <MenuItem value="3">3</MenuItem>
+                  <MenuItem value="4">4</MenuItem>
+                  <MenuItem value="5">5</MenuItem>
+                  <MenuItem value="6">6</MenuItem>
+                  <MenuItem value="7">7</MenuItem>
+                  <MenuItem value="8">8</MenuItem>
+                  <MenuItem value="9">9</MenuItem>
                 </TextField>
-                <TextField
-                  type="file"
-                  label="User Image"
-                  name="image"
-                  value={AddUser.user_img_path}
-                  onChange={handleImageChange}
-                  fullWidth
-                  sx={{ marginBottom: 2, marginTop: 2 }}
-                />
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleCloseAddDialog}>Cancel</Button>
@@ -392,4 +394,4 @@ const StudentList: React.FC = () => {
   );
 };
 
-export default StudentList;
+export default RoomList;

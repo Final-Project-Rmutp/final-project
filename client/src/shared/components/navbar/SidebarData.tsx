@@ -17,8 +17,8 @@ export const SidebarData = [
         icon: <FaIcons.FaUsers />
     },
     {
-        title: 'Chats',
-        path: '',
+        title: 'room',
+        path: 'room-list',
         icon: <FaIcons.FaRocketchat />
     },
     {

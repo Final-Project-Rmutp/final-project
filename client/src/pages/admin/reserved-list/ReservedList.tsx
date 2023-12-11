@@ -44,7 +44,6 @@ const ReservedList: React.FC = () => {
     handleChangePage,
     handleChangeRowsPerPage,
   } = useReservedList();
-
   return (
     <ThemeProvider theme={theme}>
           <HeadStudentList>

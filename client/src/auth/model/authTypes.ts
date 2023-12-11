@@ -6,12 +6,6 @@ export interface UserData {
   firstname: string;
   lastname: string;
 }
-// export interface UpdateUserData {
-//   pin: string;
-//   citizen_id: string;
-//   firstname: string;
-//   lastname: string;
-// }
 
 export interface ListItem {
   id: string;

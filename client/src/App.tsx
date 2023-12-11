@@ -26,6 +26,7 @@ import User from "./pages/student/student";
 ////admin
 import StudentList from "./pages/admin/student-list/StudentList";
 import ReservedList from "./pages/admin/reserved-list/ReservedList";
+import RoomList from "./pages/admin/room-list/RoomList";
 
 const materialTheme = materialExtendTheme();
 const App: React.FC = () => {
@@ -65,6 +66,7 @@ const App: React.FC = () => {
             >
               <Route path="student-list" element={<StudentList />} />
               <Route path="reserved-list" element={<ReservedList />} />
+              <Route path="room-list" element={<RoomList />} />
             </Route>
           </Routes>
         </AuthProvider>
