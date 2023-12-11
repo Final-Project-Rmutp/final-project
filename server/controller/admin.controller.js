@@ -78,8 +78,6 @@ async function getUserById(req, res) {
     }
 }
 
-
-
 // Update user account status to 0
 async function deactivateUser(req, res) {
     try {
@@ -144,7 +142,27 @@ async function updateUser(req, res) {
     }
 }
 
-// TODO: Seach from pin,citizen_id
+// Search from pin,citizen_id
+async function seachuser(req, res) {
+    const seach = req.body.seach;
+    try 
+    {
+     const Query = `SELECT id, firstname, lastname, citizen_id, pin, account_type, user_img_path
+                    FROM "user"
+                    WHERE pin LIKE '%' || $1 || '%' OR citizen_id LIKE '%' || $1 || '%'
+                    `;
+    const values = [seach];   
+    const result = await client.query(Query, values);
+    res.status(200).json(result.rows); 
+    } catch (err) 
+    {
+     console.error(err.message);
+     res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
 // TODO: Upload img
 
-module.exports = { adduser, getallusers, getUserById, deactivateUser, updateUser };
+
+
+module.exports = { adduser, getallusers, getUserById, deactivateUser, updateUser, seachuser };
