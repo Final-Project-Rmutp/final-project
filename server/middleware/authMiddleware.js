@@ -48,4 +48,31 @@ function isAdmin(req, res, next) {
   });
 }
 
-module.exports = { authenticateToken, isAdmin };
+// Middleware to authenticate account type permission
+function isTeacher(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1]; // Extract the token from the Authorization header
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+
+  jwt.verify(token, jwtSecret, (error, decoded) => {
+    if (error) {
+      return res.status(401).json({ message: 'Invalid token' });
+    }
+    const account_type = decoded.account_type;
+    if(account_type === 'teacher'){
+      const { id } = decoded;
+      req.user = {decoded, id};
+      next();
+    }
+    else if (account_type === 'student'){
+      return res.status(403).json({ message: "You don't have permission to access this resource." });
+    }
+    else{
+      res.status(500).json({ message: 'Internal server error',error});
+    }
+  });
+}
+
+module.exports = { authenticateToken, isAdmin, isTeacher };

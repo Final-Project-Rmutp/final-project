@@ -110,6 +110,24 @@ router.post('/user/add',authMiddleware.isAdmin, adminController.adduser);
  *     description: Retrieve a list of all users (authentication required).
  *     security:
  *       - Authorization: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *           minimum: 1
+ *           description: The page number to retrieve
+ *       - in: query
+ *         name: pageSize
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *           minimum: 1
+ *           maximum: 100
+ *           description: Number of items per page
  *     responses:
  *       200:
  *         description: authenticate successful. Returns the list of users.
@@ -598,6 +616,24 @@ router.post('/room/add',authMiddleware.isAdmin, roomController.addroom);
  *     description: Retrieve a list of all users (authentication required).
  *     security:
  *       - Authorization: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *           minimum: 1
+ *           description: The page number to retrieve
+ *       - in: query
+ *         name: pageSize
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *           minimum: 1
+ *           maximum: 100
+ *           description: Number of items per page
  *     responses:
  *       200:
  *         description: authenticate successful. Returns the list of users.

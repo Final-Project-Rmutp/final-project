@@ -1,7 +1,7 @@
 const client = require('../configs/database.js');
 const jwt =  require('jsonwebtoken');
 const { logging } = require('../middleware/loggingMiddleware.js');
-
+// TODO:code review
 // Add a new user
 async function adduser(req, res) {
     const { pin, citizen_id, firstname, lastname, account_type, use_img_path } = req.body;
@@ -49,15 +49,24 @@ async function adduser(req, res) {
 // Get all users
 async function getallusers(req, res) {
     try {
-        const result = await client.query(`SELECT id,firstname,lastname,citizen_id,pin,account_type,user_img_path FROM "user" 
-        WHERE account_role = 'user' AND account_status = '1'
-        ORDER BY id`);
-        res.status(200).json(result.rows); 
+        const page = parseInt(req.query.page) || 1;
+        const pageSize = parseInt(req.query.pageSize) || 10;
+        const offset = (page - 1) * pageSize;
+        
+        const query = `SELECT id, firstname, lastname, citizen_id, pin, account_type, user_img_path 
+                       FROM "user" 
+                       WHERE account_role = $1 AND account_status = $2
+                       ORDER BY id
+                       LIMIT $3 OFFSET $4`;
+        const values = ['user', '1', pageSize, offset];
+        const result = await client.query(query, values);
+        res.status(200).json(result.rows);
     } catch (err) {
         console.error(err.message);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ message: 'Error fetching users' });
     }
 }
+
 // Get user by ID
 async function getUserById(req, res) {
     try {

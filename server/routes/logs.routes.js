@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const logsController = require('../controller/logs.controller.js');
 
+
 /**
  * @swagger
  * /logs:
@@ -10,6 +11,8 @@ const logsController = require('../controller/logs.controller.js');
  *     - Logs - user
  *     summary: Get Logs 
  *     description: Retrieve a list of all Logs
+ *     security:
+ *       - Authorization: []
  *     parameters:
  *       - in: query
  *         name: startDate
