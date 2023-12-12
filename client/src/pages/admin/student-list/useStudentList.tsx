@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import UserService from "../../../auth/service/UserService";
 import useUserState from "../../../auth/model/useUserState";
 import { ListItem, UserData } from "../../../auth/model/authTypes";
@@ -17,18 +17,21 @@ const useStudentList = () => {
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const { user, editingUser,AddUser, setEditUser, handleInputChange, resetUser, handleInputEditChange } = useUserState();
 
-  const fetchUserList = async () => {
+
+  
+
+  const fetchUserList = useCallback(async () => {
     try {
-      const data = await UserService.getAllUsers();
-      setListItems(data);
+      const response = await UserService.getAllUsers({ page, pageSize: rowsPerPage });
+      setListItems(response);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
-  };
+  }, [page, rowsPerPage]);
 
   useEffect(() => {
     fetchUserList();
-  }, []);
+  }, [fetchUserList]);
 
   const handleAdd = () => {
     resetUser();
@@ -182,16 +185,16 @@ const useStudentList = () => {
     setDeleteDialogOpen(false);
   };
 
-  const handleChangePage = (_event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
+  // const handleChangePage = (_event: unknown, newPage: number) => {
+  //   setPage(newPage);
+  // };
 
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  // const handleChangeRowsPerPage = (
+  //   event: React.ChangeEvent<HTMLInputElement>
+  // ) => {
+  //   setRowsPerPage(parseInt(event.target.value, 10));
+  //   setPage(0);
+  // };
 
   return {
     listItems,
@@ -224,8 +227,8 @@ const useStudentList = () => {
     handleDeleteConfirmed,
     handleDeleteAll,
     handleCloseDeleteDialog,
-    handleChangePage,
-    handleChangeRowsPerPage,
+    handleChangePage: (newPage: number) => setPage(newPage),
+    handleChangeRowsPerPage: (newRowsPerPage: number) => setRowsPerPage(newRowsPerPage),
   };
 };
 
