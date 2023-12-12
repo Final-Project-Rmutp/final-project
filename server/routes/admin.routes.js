@@ -35,7 +35,7 @@ const roomController = require('../controller/room.controller.js');
  *                 example: "user"
  *               account_type:
  *                 type: string
- *                 example: "user"
+ *                 example: "student"
  *               user_img_path:
  *                 type: string
  *                 example: ""
@@ -440,11 +440,11 @@ router.patch('/user/updateuser/:id',authMiddleware.isAdmin, adminController.upda
 
 /**
  * @swagger
- * /admin/user/seach:
+ * /admin/user/search:
  *   post:
  *     tags:
  *     - Admin - user
- *     summary: Seach user data (authentication required).
+ *     summary: Search user data (authentication required).
  *     description: Retrieve a data of users (authentication required).
  *     security:
  *       - Authorization: []
@@ -455,7 +455,7 @@ router.patch('/user/updateuser/:id',authMiddleware.isAdmin, adminController.upda
  *           schema:
  *             type: object
  *             properties:
- *               seach:
+ *               search:
  *                 type: string
  *                 example: "000000000000-0"
  *     responses:
@@ -511,7 +511,7 @@ router.patch('/user/updateuser/:id',authMiddleware.isAdmin, adminController.upda
  *                    example: Internal server error
  */
 
-router.post('/user/seach',authMiddleware.isAdmin, adminController.seachuser);
+router.post('/user/search',authMiddleware.isAdmin, adminController.searchuser);
 
 /**
  * @swagger

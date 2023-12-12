@@ -1,15 +1,17 @@
 const client = require('../configs/database.js');
 const { logging } = require('../middleware/loggingMiddleware.js');
-// TODO:code review
+
 //Create room
 async function addroom(req, res) {
     const { room_number, room_type, room_capacity, room_facilities, room_level } = req.body;
 
-    if (!room_number || !room_type || !room_capacity || !room_facilities || !room_level) {
+    const missingFields = !room_number || !room_type || !room_capacity || !room_facilities || !room_level;
+    if (missingFields) {
         return res.status(400).json({ message: 'All fields are required' });
     }
 
-    if (isNaN(room_capacity) || isNaN(room_level)) {
+    const areNumbersInvalid = isNaN(room_capacity) || isNaN(room_level);
+    if (areNumbersInvalid) {
         return res.status(400).json({ message: 'Room Capacity and Room Level must be numbers' });
     }
 
@@ -21,17 +23,19 @@ async function addroom(req, res) {
             return res.status(400).json({ message: 'Room Number already exists' });
         }
 
-        const insertQuery = `INSERT INTO "rooms" (room_number, room_type, room_capacity, room_facilities, room_level) 
-                            VALUES ($1, $2, $3, $4, $5)
-                            RETURNING room_id`;
-        const values = [room_number, room_type, room_capacity, room_facilities, room_level];
+        const insertQuery = `
+            INSERT INTO "rooms" (room_number, room_type, room_capacity, room_facilities, room_level) 
+            VALUES ($1, $2, $3, $4, $5)
+            RETURNING room_id`;
 
+        const values = [room_number, room_type, room_capacity, room_facilities, room_level];
         const result = await client.query(insertQuery, values);
+
         const insertedId = result.rows[0].room_id;
         const id = req.user.id;
+        logging("addroom", id, `Room addition successful, room_id: ${insertedId}`);
 
-        logging("addroom", id, `Room additional successful room_id: ${insertedId}`);
-        res.status(201).json({ message: 'Room additional successful' });
+        res.status(201).json({ message: 'Room addition successful' });
     } catch (err) {
         const id = req.user.id;
         console.error(err.message);
@@ -39,6 +43,7 @@ async function addroom(req, res) {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
+
 
 
 //Read room data
@@ -63,15 +68,16 @@ async function getallroom(req, res) {
 async function getroomById(req, res) {
     try {
         const roomId = req.params.room_id;
-        // Query to retrieve user details by ID
-        const query = `SELECT room_id, room_number, room_type, room_capacity, room_facilities, room_level, room_status FROM "rooms"
-        WHERE room_id = $1 
-        ORDER BY room_id`; // select แค่จำเป็น
+        const query = `
+            SELECT room_id, room_number, room_type, room_capacity, room_facilities, room_level, room_status 
+            FROM "rooms"
+            WHERE room_id = $1`;
+            
         const result = await client.query(query, [roomId]);
 
         if (result.rows.length === 1) {
-            const user = result.rows[0];
-            res.status(200).json(user);
+            const room = result.rows[0];
+            res.status(200).json({ room });
         } else {
             res.status(404).json({ message: 'Room not found' });
         }
@@ -80,31 +86,40 @@ async function getroomById(req, res) {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
+
+
 //Update room data
 async function updateroom(req, res) {
     try {
         const roomId = req.params.room_id;
         const updatedRoomData = req.body; 
-        // Extract updated fields from the request body
+
         const { room_number, room_type, room_capacity, room_facilities, room_level, room_status} = updatedRoomData;
 
-        if(!room_number || !room_type || !room_capacity || !room_facilities || !room_level || !room_status){
+        const missingFields = !room_number || !room_type || !room_capacity || !room_facilities || !room_level || !room_status;
+        if (missingFields) {
             return res.status(400).json({ message: 'All fields are required' });
         }
 
-        if (isNaN(room_capacity)  || isNaN(room_level)) {
+        const areNumbersInvalid = isNaN(room_capacity) || isNaN(room_level);
+        if (areNumbersInvalid) {
             return res.status(400).json({ message: 'Room Capacity and Room Level must be numbers' });
         }
 
-        const updateQuery = 'UPDATE "rooms" SET room_number = $1, room_type =$2 , room_capacity = $3, room_facilities = $4, room_level = $5, room_status = $6  WHERE room_id = $7';
+        const updateQuery = `
+            UPDATE "rooms" 
+            SET room_number = $1, room_type = $2, room_capacity = $3, room_facilities = $4, room_level = $5, room_status = $6
+            WHERE room_id = $7`;
+
         const result = await client.query(updateQuery, [room_number, room_type, room_capacity, room_facilities, room_level, room_status, roomId]);
+
         if (result.rowCount === 1) {
             const id = req.user.id;
-            logging("updateroom", id,"Room data updated successfully id: "+roomId)
+            logging("updateroom", id, `Room data updated successfully id: ${roomId}`);
             res.status(200).json({ message: 'Room data updated successfully' });
         } else {
             const id = req.user.id;
-            logging("error updateroom", id, "Room not found id: "+roomId);
+            logging("error updateroom", id, `Room not found, id: ${roomId}`);
             res.status(404).json({ message: 'Room not found' });
         }
     } catch (err) {
@@ -114,6 +129,8 @@ async function updateroom(req, res) {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
+
+
 //Delete room
 async function deleteroom(req, res) {
     try {
@@ -121,13 +138,12 @@ async function deleteroom(req, res) {
         const updateQuery = 'DELETE FROM "rooms" WHERE room_id = $1';
         const result = await client.query(updateQuery, [roomId]);
         const id = req.user.id;
-        // console.log(userId)
+
         if (result.rowCount === 1) {
-            logging("deleteroom",id,"Room Delete successfully id: "+roomId)
-            res.status(200).json({ message: 'Room Delete successfully' });
+            logging("deleteroom", id, `Room deleted successfully, id: ${roomId}`);
+            res.status(200).json({ message: 'Room deleted successfully' });
         } else {
-            const id = req.user.id;
-            logging("error deleteroom", id, "Room not found id: "+roomId);
+            logging("error deleteroom", id, `Room not found, id: ${roomId}`);
             res.status(404).json({ message: 'Room not found' });
         }
     } catch (err) {
@@ -137,6 +153,7 @@ async function deleteroom(req, res) {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
+
 
 
 
