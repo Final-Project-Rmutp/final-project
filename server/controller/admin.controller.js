@@ -70,7 +70,7 @@ async function getUserById(req, res) {
     try {
         const userId = req.params.id;
         // Query to retrieve user details by ID
-        const query = `SELECT id,firstname,lastname,citizen_id,pin,account_type,user_img_path FROM "user" WHERE id = $1 AND account_role = 'user'`; // select แค่จำเป็น
+        const query = `SELECT id,firstname,lastname,citizen_id,pin,account_type,user_img_path FROM "user" WHERE id = $1`;
         const result = await client.query(query, [userId]);
 
         if (result.rows.length === 1) {
