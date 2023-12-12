@@ -15,8 +15,8 @@ const useReservedList = () => {
 
   const fetchUserList = async () => {
     try {
-      const data = await UserService.getAllUsers();
-      setListItems(data);
+      // const data = await UserService.getAllUsers();
+      // setListItems(data);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }

@@ -214,15 +214,15 @@ const StudentList: React.FC = () => {
                   </Modal>
               </Sheet>
                 <div className="pagination-container">
-                    <TablePagination
-                      rowsPerPageOptions={[5, 10, 25]}
-                      component="div"
-                      count={listItems.length}
-                      rowsPerPage={rowsPerPage}
-                      page={page}
-                      onPageChange={handleChangePage}
-                      onRowsPerPageChange={handleChangeRowsPerPage}
-                    />
+                  <TablePagination
+                    rowsPerPageOptions={[5, 10, 25]}
+                    component="div"
+                    count={listItems.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={(_event, newPage) => handleChangePage(newPage + 1)}
+                    onRowsPerPageChange={(event) => handleChangeRowsPerPage(+event.target.value)}
+                  />
               </div>
             </TableContainer>
             <div className="card-footer">

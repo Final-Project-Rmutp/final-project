@@ -10,9 +10,12 @@ const headers = {
   'Authorization': `Bearer ${token}`,
 }
 const UserService = {
-  getAllUsers: async () => {
+  getAllUsers: async ({ page, pageSize }: { page: number; pageSize: number }) => {
     try {
-      const response = await axiosInstance.get('/admin/user/getalluser',{headers});
+      const response = await axiosInstance.get('/admin/user/getalluser', {
+        headers,
+        params: { page, pageSize },
+      });
       return response.data;
     } catch (error) {
       console.error('Error fetching user data:', error);

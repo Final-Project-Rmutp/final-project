@@ -10,37 +10,18 @@ body {
   max-width: 100vw;
   margin: 0;
   overflow: hidden;
+  font-family: 'Roboto', sans-serif;
 }
 
 /* Your existing Tailwind CSS imports here */
 
 /* Add this CSS for responsiveness */
-@media (max-width: 600px) {
-  .header {
-    width: 100%;
-  }
 
-  #main {
-    width: 100%;
-    margin-left: 0;
-  }
-
-  #left.open .sidebar,
-  #right.open .sidebar {
-    transform: translateX(0);
-  }
-
-  .icon {
-    color: aliceblue;
-    margin-bottom: 0;
-  }
-}
 
 /* Your existing styles */
 img {
-  display: flex;
-  margin-right: auto;
-  margin-left: auto;
+  display: block; /* Adjust as needed */
+  margin: 0 auto; /* Center the image horizontally */
   width: 50px;
   height: 50px;
   border-radius: 50%;
@@ -48,18 +29,20 @@ img {
 
 .content {
   width: 100%;
+  padding: 1rem;
 }
 
 .header {
   margin-top:10px;
   margin-left: 10px;
-  margin-right:10px ;
+  margin-right:10px;
   padding: 10px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  gap: 1rem;
   border: 3px solid rgb(185, 179, 179);
-  border-radius: 20px;
+  border-radius: 15px;
   backdrop-filter: blur(8px);
   border-style: solid;
   border-color: rgba(194, 224, 255, 0.08);
@@ -155,9 +138,10 @@ body {
 }
 
 #main {
+  width: 100%;
+  margin-left: 0;
   background: var(--bg-main);
   flex-grow: 1;
-  
   .header {
     background: linear-gradient(to right, var(--bg-left), var(--bg-right));
     @media (orientation: landscape) {
@@ -167,9 +151,6 @@ body {
           right var(--secs);
         &.left-closed {
           left: var(--header-height);
-        }
-        &.right-closed {
-          right: var(--header-height);
         }
       }
     }
@@ -249,4 +230,7 @@ body {
     }
   }
 }
-
+.profile-right{
+  margin-right: 10px;
+  margin-left: 100px;
+}
