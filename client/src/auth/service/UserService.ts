@@ -16,6 +16,18 @@ interface GetAllUsersParams {
   offset?: number
 }
 const UserService = {
+
+  fetchUserProfile:async () => {
+    try {
+      const response = await axiosInstance.get('/user/getprofile',{
+      headers,
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+    }
+  },
+
   getAllUsers: async ({ page, pageSize }: GetAllUsersParams) => {
     try {
       const response = await axiosInstance.get('/admin/user/getalluser', {

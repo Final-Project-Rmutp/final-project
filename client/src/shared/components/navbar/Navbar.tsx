@@ -7,7 +7,6 @@ import {
   Card,
   Box,
   Typography,
-  Divider,
   Stack,
   Sheet,
   IconButton,
@@ -29,6 +28,7 @@ import { CssVarsProvider, useColorScheme } from '@mui/joy/styles';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import CssBaseline from '@mui/joy/CssBaseline';
+import UserService from "../../../auth/service/UserService";
 interface LayoutState {
   leftOpen: boolean;
   rightOpen: boolean;
@@ -118,7 +118,23 @@ const AdminProfileSidebar: React.FC = () => {
   const leftOpen = state.leftOpen ? "open" : "closed";
   const randomImageNumber = Math.floor(Math.random() * 1000) + 1;
   const randomImageUrl = `https://picsum.photos/200/200?random=${randomImageNumber}`;
+  const [userProfile, setUserProfile] = useState({
+    firstname: "",
+    user_img_path: "null",
+  });
 
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const profileData = await UserService.fetchUserProfile();
+        setUserProfile(profileData);
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
   function ColorSchemeToggle() {
     const { mode, setMode } = useColorScheme();
     const [mounted, setMounted] = React.useState(false);
@@ -171,10 +187,10 @@ const AdminProfileSidebar: React.FC = () => {
               >
                 <div className="header-left">
                   <div className="logo-header">
-                    <h1>LOGO</h1>
+                    <Typography level="h2">LOGO</Typography>
                   </div>
                 </div>
-                <div className="content">
+                <Sheet className="content">
                   {SidebarData.map((item, index) => (
                     <MenuItems key={index}>
                       <MenuItemLinks
@@ -182,11 +198,11 @@ const AdminProfileSidebar: React.FC = () => {
                         onClick={() => handleTabChange(item.title)}
                       >
                         {item.icon}
-                        <span style={{ marginLeft: "16px" }}>{item.title}</span>
+                        <Typography level="h4" style={{ marginLeft: "16px" }}>{item.title}</Typography>
                       </MenuItemLinks>
                     </MenuItems>
                   ))}
-                </div>
+                </Sheet>
               </Card>
             </div>
 
@@ -198,7 +214,7 @@ const AdminProfileSidebar: React.FC = () => {
                 >
                   <Box
                     sx={{
-                      p: 1,
+                      p: 2,
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -208,11 +224,10 @@ const AdminProfileSidebar: React.FC = () => {
                     <Avatar src={randomImageUrl} />
                     <Stack spacing={0.5} sx={{ marginLeft: 2 }}>
                       <Typography fontWeight="bold" sx={{ paddingRight: 2 }}>
-                        Wisit Moondet
+                        {userProfile.firstname}
                       </Typography>
                     </Stack>
                   </Box>
-                  <Divider />
                 </Card>
                 <Menu
                   id="profile-menu"
