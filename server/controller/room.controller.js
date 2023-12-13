@@ -52,6 +52,13 @@ async function getallroom(req, res) {
         const page = parseInt(req.query.page) || 1;
         const pageSize = parseInt(req.query.pageSize) || 10;
         const offset = (page - 1) * pageSize;
+
+        if (page < 1 || pageSize < 1 || pageSize > 100) {
+            return res.status(400).json({
+                message: 'Page number must be 1 or greater, pageSize must be greater than 0, and not exceed 100'
+            });
+        }
+
         const roomsQuery = `SELECT room_id, room_number, room_type, room_capacity, room_facilities, room_level, room_status 
                             FROM "rooms" 
                             ORDER BY room_id

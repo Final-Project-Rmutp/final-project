@@ -50,7 +50,13 @@ async function getallusers(req, res) {
         const page = parseInt(req.query.page) || 1;
         const pageSize = parseInt(req.query.pageSize) || 10;
         const offset = (page - 1) * pageSize;
-        
+
+        if (page < 1 || pageSize < 1 || pageSize > 100) {
+            return res.status(400).json({
+                message: 'Page number must be 1 or greater, pageSize must be greater than 0, and not exceed 100'
+            });
+        }
+
         const query = `SELECT id, firstname, lastname, citizen_id, pin, account_type, user_img_path 
                        FROM "user" 
                        WHERE account_role = $1 AND account_status = $2
@@ -64,6 +70,7 @@ async function getallusers(req, res) {
         res.status(500).json({ message: 'Error fetching users' });
     }
 }
+
 
 // Get user by ID
 async function getUserById(req, res) {
