@@ -1,5 +1,7 @@
-import styled from "styled-components";
-export const StyledTable = styled.table`
+import { styled } from '@mui/system';
+import { Button, Checkbox, Table, ModalDialog,Sheet } from '@mui/joy';
+
+export const StyledTable = styled(Table)`
   overflow: auto;
   min-width: 925px;
   border-radius: 20px;
@@ -12,27 +14,32 @@ export const StyledTable = styled.table`
 
   th,
   td {
-    border: 2px solid red;
+    border: 2px solid ${({ theme }) => theme.palette.primary.main};
     padding: 5px;
   }
 
   th {
-    background-color: rgb(87, 90, 87);
-    color: white;
+    background-color: ${({ theme }) => theme.palette.primary.main};
+    color: ${({ theme }) => theme.palette.background.default};
     position: sticky;
     top: 0;
     z-index: 1;
   }
 `;
 
-export const StyledButton = styled.button`
-  color: white;
+export const StyledButton = styled(Button)`
+  color: ${({ theme }) => theme.palette.background.default};
   padding: 5px;
   margin-right: 5px;
   cursor: pointer;
+  background-color: ${({ theme }) => theme.palette.primary.main};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.palette.primary.dark};
+  }
 `;
 
-export const HeadStudentList = styled.div`
+export const HeadStudentList = styled('div')`
   padding: 2rem;
   width: 100%;
   display: flex;
@@ -50,43 +57,55 @@ export const HeadStudentList = styled.div`
   }
 `;
 
-export const TableContainer = styled.div`
+export const TableContainer = styled(Sheet)`
   height: 520px;
-  border: 1px solid rgb(41, 42, 41);
-  background-color: white;
-  border-radius:15px;
+  border: 1px solid ${({ theme }) => theme.palette.primary.main};
+  background-color: ${({ theme }) => theme.palette.background.default};
+  border-radius: 15px;
   margin-top: 10px;
   padding: 20px;
-  overflow:auto;
+  overflow: auto;
 `;
 
-export const Theader = styled.thead`
+export const Theader = styled('thead')`
   tr {
-    th{
-      z-index:1 !important;
-      text-align:center;
-      padding:10px;
+    th {
+      z-index: 1 !important;
+      text-align: center;
+      padding: 10px;
     }
-    td{
+    td {
     }
   }
 `;
 
-export const Tbody = styled.tbody`
-img{
-  display:flex;
-  aling-items:center;
-  width:40px;
-  height:40px
-}
+export const Tbody = styled('tbody')`
+  img {
+    display: flex;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+  }
   tr {
-    align-items:center;
-    justify-content:center;
-    th{
-      padding:10px;
+    align-items: center;
+    justify-content: center;
+    th {
+      padding: 10px;
+      align-items: center;
+      text-align: center;
     }
-    td{
-      padding:10px;
+    td {
+      padding: 10px;
     }
   }
-`
+`;
+
+export const StyledCheckbox = styled(Checkbox)`
+  // Add your styles for Checkbox here
+`;
+
+export const StyledModalDialog = styled(ModalDialog)`
+  // Add your styles for ModalDialog here
+`;
+
+// Continue adding styled components for other Material-UI components as needed

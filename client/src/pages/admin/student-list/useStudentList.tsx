@@ -6,7 +6,7 @@ const useStudentList = () => {
   const [listItems, setListItems] = useState<ListItem[]>([]);
   const [selectAll, setSelectAll] = useState(false);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
@@ -22,7 +22,7 @@ const useStudentList = () => {
 
   const fetchUserList = useCallback(async () => {
     try {
-      const response = await UserService.getAllUsers({ page, pageSize: rowsPerPage });
+      const response = await UserService.getAllUsers({ page: page, pageSize: rowsPerPage });
       setListItems(response);
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -185,10 +185,17 @@ const useStudentList = () => {
     setDeleteDialogOpen(false);
   };
 
-  // const handleChangePage = (_event: unknown, newPage: number) => {
-  //   setPage(newPage);
-  // };
-
+  const handleChangePage = async (newPage: number) => {
+    setPage(newPage);
+    await fetchUserList();
+  };
+  
+  const handleChangeRowsPerPage = (newRowsPerPage: number) => {
+    setRowsPerPage(newRowsPerPage);
+    setPage(1); // Reset page to 1 when changing rowsPerPage
+    fetchUserList();
+  };
+  
   // const handleChangeRowsPerPage = (
   //   event: React.ChangeEvent<HTMLInputElement>
   // ) => {
@@ -227,8 +234,8 @@ const useStudentList = () => {
     handleDeleteConfirmed,
     handleDeleteAll,
     handleCloseDeleteDialog,
-    handleChangePage: (newPage: number) => setPage(newPage),
-    handleChangeRowsPerPage: (newRowsPerPage: number) => setRowsPerPage(newRowsPerPage),
+    handleChangePage,
+    handleChangeRowsPerPage,
   };
 };
 

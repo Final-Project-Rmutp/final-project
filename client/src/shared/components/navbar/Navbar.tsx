@@ -1,33 +1,34 @@
-import React, { useState, MouseEvent,useEffect} from "react";
-import {
-  Box,
-  Card,
-  Divider,
-  Stack,
-  Typography,
-  Menu,
-  MenuItem,
-} from "@mui/material"; 
+import React, { useState, MouseEvent, useEffect, useRef } from "react";
 import {
   Button,
   Avatar,
+  Menu,
+  MenuItem,
+  Card,
+  Box,
+  Typography,
+  Divider,
+  Stack,
+  Sheet,
+  IconButton,
 } from "@mui/joy";
 import { MenuItems, MenuItemLinks } from "../../../styles/global";
 import { SidebarData } from "./SidebarData";
 import "./Navbar.scss";
 import { Outlet, useNavigate } from "react-router";
-import { toast } from 'sonner'
-
+import { toast } from 'sonner';
+import theme from "../../../styles/theme";
+import { ThemeProvider } from '@mui/system';
 import {
   experimental_extendTheme as materialExtendTheme,
   Experimental_CssVarsProvider as MaterialCssVarsProvider,
-  THEME_ID as MATERIAL_THEME_ID} from '@mui/material/styles';
+  THEME_ID as MATERIAL_THEME_ID
+} from '@mui/material/styles';
 
-import { CssVarsProvider , useColorScheme} from '@mui/joy/styles';
+import { CssVarsProvider, useColorScheme } from '@mui/joy/styles';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import CssBaseline from '@mui/joy/CssBaseline';
-import IconButton from '@mui/joy/IconButton';
 interface LayoutState {
   leftOpen: boolean;
   rightOpen: boolean;
@@ -49,9 +50,11 @@ const AdminProfileSidebar: React.FC = () => {
     setState({ ...state, anchorEl: event.currentTarget });
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleClose = () => {
     setState({ ...state, anchorEl: null });
   };
+
   const toggleSidebar = (event: MouseEvent<HTMLDivElement>) => {
     const parentNode = event.currentTarget.parentNode as HTMLElement | null;
     if (parentNode) {
@@ -75,7 +78,6 @@ const AdminProfileSidebar: React.FC = () => {
     localStorage.removeItem("userRole");
     navigate("/");
     toast.success('Logout Successful');
-
   };
 
   useEffect(() => {
@@ -90,91 +92,109 @@ const AdminProfileSidebar: React.FC = () => {
     };
 
     window.addEventListener("resize", handleResize);
+
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, [state.leftOpen]);
 
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside: EventListener = (event: Event) => {
+      const mouseEvent = event as unknown as MouseEvent;
+      if (state.anchorEl && !state.anchorEl.contains(mouseEvent.target as Node)) {
+        handleClose();
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [state.anchorEl, handleClose]);
+
   const leftOpen = state.leftOpen ? "open" : "closed";
   const randomImageNumber = Math.floor(Math.random() * 1000) + 1;
   const randomImageUrl = `https://picsum.photos/200/200?random=${randomImageNumber}`;
 
+  function ColorSchemeToggle() {
+    const { mode, setMode } = useColorScheme();
+    const [mounted, setMounted] = React.useState(false);
 
+    React.useEffect(() => {
+      setMounted(true);
+    }, []);
 
+    if (!mounted) {
+      return null;
+    }
 
-  
-function ColorSchemeToggle() {
-  const { mode, setMode } = useColorScheme();
-  const [mounted, setMounted] = React.useState(false);
-
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return null;
+    return (
+      <IconButton
+        id="toggle-mode"
+        size="lg"
+        variant="soft"
+        color="neutral"
+        onClick={() => {
+          if (mode === 'light') {
+            setMode('dark');
+          } else {
+            setMode('light');
+          }
+        }}
+        sx={{
+          zIndex: 999,
+          borderRadius: '50%',
+          boxShadow: 'sm',
+        }}
+      >
+        {mode === 'light' ? <DarkModeRoundedIcon /> : <LightModeRoundedIcon />}
+      </IconButton>
+    );
   }
 
-  return (
-    <IconButton
-      id="toggle-mode"
-      size="lg"
-      variant="soft"
-      color="neutral"
-      onClick={() => {
-        if (mode === 'light') {
-          setMode('dark');
-        } else {
-          setMode('light');
-        }
-      }}
-      sx={{
-        zIndex: 999,
-        borderRadius: '50%',
-        boxShadow: 'sm',
-      }}
-    >
-      {mode === 'light' ? <DarkModeRoundedIcon /> : <LightModeRoundedIcon />}
-    </IconButton>
-  );
-}
-const materialTheme = materialExtendTheme();
-  return (
-    <MaterialCssVarsProvider theme={{ [MATERIAL_THEME_ID]: materialTheme }}>
-    <CssVarsProvider>
-      <CssBaseline />
-    <div id="layout">
-      <div id="left" className={leftOpen}>
-        <div className="icon" onClick={toggleSidebar}>
-          <p>&equiv;</p>
-        </div>
-        <div className={`sidebar ${leftOpen}`}>
-          <div className="header-left">
-            <div className="logo-header">
-              <h1>LOGO</h1>
-            </div>
-          </div>
-          <div className="content">
-            {SidebarData.map((item, index) => (
-              <MenuItems key={index}>
-                <MenuItemLinks
-                  to={item.path}
-                  onClick={() => handleTabChange(item.title)}
-                >
-                  {item.icon}
-                  <span style={{ marginLeft: "16px" }}>{item.title}</span>
-                </MenuItemLinks>
-              </MenuItems>
-            ))}
-          </div>
-        </div>
-      </div>
+  const materialTheme = materialExtendTheme();
 
-      <div id="main">
-        <div className="header">
+  return (
+    <ThemeProvider theme={theme}>
+      <MaterialCssVarsProvider theme={{ [MATERIAL_THEME_ID]: materialTheme }}>
+        <CssVarsProvider>
+          <CssBaseline />
+          <Sheet id={'layout'}>
+            <div id="left" className={leftOpen}>
+              <div className="icon" onClick={toggleSidebar}>
+                <p>&equiv;</p>
+              </div>
+              <Card className={`sidebar ${leftOpen}`}
+              >
+                <div className="header-left">
+                  <div className="logo-header">
+                    <h1>LOGO</h1>
+                  </div>
+                </div>
+                <div className="content">
+                  {SidebarData.map((item, index) => (
+                    <MenuItems key={index}>
+                      <MenuItemLinks
+                        to={item.path}
+                        onClick={() => handleTabChange(item.title)}
+                      >
+                        {item.icon}
+                        <span style={{ marginLeft: "16px" }}>{item.title}</span>
+                      </MenuItemLinks>
+                    </MenuItems>
+                  ))}
+                </div>
+              </Card>
+            </div>
+
+            <Sheet id="main">
+              <div className="header">
                 <Card
-                component="button"
-                onClick={handleMenuClick}
+                  component="button"
+                  onClick={handleMenuClick}
                 >
                   <Box
                     sx={{
@@ -182,7 +202,7 @@ const materialTheme = materialExtendTheme();
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      height: '45px',
+                      height: '0px',
                     }}
                   >
                     <Avatar src={randomImageUrl} />
@@ -194,36 +214,39 @@ const materialTheme = materialExtendTheme();
                   </Box>
                   <Divider />
                 </Card>
-            <Menu
-              id="profile-menu"
-              anchorEl={state.anchorEl}
-              open={Boolean(state.anchorEl)}
-              onClose={handleClose}
-              sx={{
-                width:500
-              }}
-            >
-              <MenuItem 
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-              }}>
-                <ColorSchemeToggle />
-              </MenuItem>
-              <MenuItem >
-                <Button color="danger" variant="soft" onClick={handleLogout}>
-                  Logout
-                </Button>
-              </MenuItem>
-            </Menu>
-        </div>
-        <div className="content">
-          <Outlet></Outlet>
-        </div>
-      </div>
-    </div>
-    </CssVarsProvider>
-    </MaterialCssVarsProvider>
+                <Menu
+                  id="profile-menu"
+                  anchorEl={state.anchorEl}
+                  open={Boolean(state.anchorEl)}
+                  sx={{ width: 230 }}
+                  ref={menuRef}
+                >
+                  <MenuItem
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                    }}>
+                    <ColorSchemeToggle />
+                  </MenuItem>
+                  <MenuItem
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                    }}>
+                    <Button color="danger" variant="soft" onClick={handleLogout}>
+                      Logout
+                    </Button>
+                  </MenuItem>
+                </Menu>
+              </div>
+              <div className="content">
+                <Outlet></Outlet>
+              </div>
+            </Sheet>
+          </Sheet>
+        </CssVarsProvider>
+      </MaterialCssVarsProvider>
+    </ThemeProvider>
   );
 };
 

@@ -1,61 +1,60 @@
-/* Reset styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+import styled from 'styled-components';
 
-body {
-  min-height: 100vh;
-  max-width: 100vw;
-  margin: 0;
-  overflow: hidden;
-  font-family: 'Roboto', sans-serif;
-}
+export const GlobalStyles = styled.div`
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-/* Your existing Tailwind CSS imports here */
+  body {
+    min-height: 100vh;
+    max-width: 100vw;
+    margin: 0;
+    overflow: hidden;
+    font-family: 'Roboto', sans-serif;
+  }
 
-/* Add this CSS for responsiveness */
-@media (max-width: 1500px) {
-  .header {
+  @media (max-width: 1500px) {
+    .header {
+      width: 100%;
+    }
+
+    #main {
+      width: 100%;
+      margin-left: 0;
+      margin-right: 10%;
+    }
+
+    #left.open .sidebar,
+    #right.open .sidebar {
+      transform: translateX(0);
+    }
+
+    .icon {
+      color: aliceblue;
+      margin-bottom: 0;
+    }
+  }
+
+  img {
+    display: block;
+    margin: 0 auto;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+
+  .content {
     width: 100%;
+    padding: 1rem;
   }
+`;
 
-  #main {
-    width: 100%;
-    margin-left: 0;
-    margin-right: 10%;
-  }
-
-  #left.open .sidebar,
-  #right.open .sidebar {
-    transform: translateX(0);
-  }
-
-  .icon {
-    color: aliceblue;
-    margin-bottom: 0;
-  }
-}
-
-/* Your existing styles */
-img {
-  display: block; /* Adjust as needed */
-  margin: 0 auto; /* Center the image horizontally */
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-}
-
-.content {
-  width: 100%;
-  padding: 1rem;
-}
-
-.header {
-  margin-top:10px;
+export const Header = styled.div`
+  margin-top: 10px;
   margin-left: 10px;
-  margin-right:10px;
+  margin-right: 10px;
   padding: 10px;
   display: flex;
   align-items: center;
@@ -71,75 +70,47 @@ img {
   color: rgb(157, 168, 183);
   transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   box-shadow: none;
-}
+`;
 
-.logo-header {
+export const LogoHeader = styled.img`
   margin-top: 20px;
   margin-left: 10px;
   border-radius: 50%;
-}
+`;
 
-.btn-loggout {
+export const LogoutButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  // width: 100px;
   height: 35px;
   margin: 10px 20px;
   border-radius: 10px;
-  // border: 2px solid rgb(223, 217, 217);
-  // color: red;
-  // background-color: rgb(232, 153, 153);
-}
+`;
 
-.icon {
+export const Icon = styled.div`
   margin-top: 20px;
-  margin-left: var(--icon-left);
+  margin-left:  'var(--icon-left-closed)' : 'var(--icon-left)')};
   margin-bottom: 100px;
   color: white;
   cursor: pointer;
   user-select: none;
-}
-.icon p {
-  margin: 0;
-  font-size: 40px;
-}
 
-
-:root {
-  --landscape-width: 18; // % OR vw for responsive window resizing!
-  --portrait-width: 250px;
-  --header-height: 4.5rem;
-  --secs: 0.4s;
-  --bg-left: #212B36;
-  --bg-right: rgba(128, 42, 150, 0.8);
-  --bg-main: #161C24;
-  --left-width: 0;
-  --left-transform: 0;
-  --icon-left: 10;
-  --icon-left-closed: 30px;
-  --icon-left-open: 10px;
-}
-#left.closed {
-  .icon {
-    margin-left: var(--icon-left-closed);
+  p {
+    margin: 0;
+    font-size: 40px;
   }
-}
-body {
-  min-height: 100vh;
-  max-width: 100vw;
-  margin: 0;
-  overflow: hidden; // Disable scrolling on body
-}
+`;
 
-#layout {
+export const Sheet = styled.div`
+  background: var(--bg-main);
   display: flex;
   overflow: hidden;
-  
+
   .header-left {
     position: relative;
     height: var(--header-height);
     text-align: center;
+
     .title {
       position: absolute;
       left: 0;
@@ -152,37 +123,40 @@ body {
     overflow: auto;
     box-sizing: border-box;
     height: calc(100vh - var(--header-height));
-    
   }
-}
+`;
 
-#main {
+export const Main = styled.div`
   width: 100%;
+  background: var(--bg-main);
   flex-grow: 1;
+
   .header {
+    background: linear-gradient(to right, var(--bg-left), var(--bg-right));
+
     @media (orientation: landscape) {
       .title {
-        transition:
-          left var(--secs),
-          right var(--secs);
+        transition: left var(--secs), right var(--secs);
+
         &.left-closed {
           left: var(--header-height);
         }
       }
     }
   }
-}
+`;
 
-#left,
-#right {
+export const LeftRight = styled.div`
   transition: width var(--secs);
   width: 0;
   margin-right: 10px;
+
   @media (orientation: landscape) {
     &.open {
       width: calc(1% * var(--landscape-width));
     }
-  } // <-- Landscape ONLY sidebars
+  }
+
   .icon {
     position: fixed;
     z-index: 10;
@@ -194,27 +168,32 @@ body {
     user-select: none;
     cursor: pointer;
     top: -6px;
-    left: var(--icon-left-open);
+    left:'var(--icon-left-open)' : 'var(--icon-left)')};
     transition: left var(--secs);
   }
+
   .sidebar {
-    transition: transform var(--secs); // <-- Portrait AND landscape!
+    transition: transform var(--secs);
+
     @media (orientation: portrait) {
       width: var(--portrait-width);
     }
+
     @media (orientation: landscape) {
       width: calc(1vw * var(--landscape-width));
     }
+
     .header-left {
       width: calc(50% - var(--header-height));
     }
   }
-}
+`;
 
-#left {
+export const Left = styled.div`
   padding: 10px;
   z-index: 5;
   width: var(--left-width);
+
   .icon {
     position: fixed;
     z-index: 10;
@@ -228,24 +207,36 @@ body {
     top: -6px;
     left: var(--icon-left);
     transition: 0.4s;
-
   }
+
   .sidebar {
     border-radius: 20px;
-    // border: 2px solid #C684FF;
-    // background: var(--bg-left);
+    background-color: #212b36;
+
     &.closed {
       transform: translateX(-97%);
+
       .icon {
         left: 20px;
       }
     }
+
     .header-left {
       left: var(--header-height);
     }
   }
-}
-.profile-right{
+`;
+
+export const ProfileRight = styled.div`
   margin-right: 10px;
   margin-left: 100px;
-}
+`;
+export const StyledImage = styled.img`
+  display: block;
+  margin: 0 auto;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+`;
+
+// Usage

@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  TablePagination,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -9,13 +8,11 @@ import {
   TextField,
   MenuItem,
   // Checkbox,
-  ThemeProvider,
   // Button,
 } from "@mui/material";
 // import UserService from "../../../auth/service/UserService";
 // import useUserState from "../../../auth/model/useUserState";
 // import { ListItem, UserData } from "../../../auth/model/authTypes";
-import theme from "../../../styles/theme";
 import { Checkbox, Button, Sheet, Table, ModalDialog, Modal, Divider, FormControl, FormLabel, Stack, Input } from '@mui/joy';
 import DeleteForever from '@mui/icons-material/DeleteForever';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
@@ -29,7 +26,9 @@ import {
   // StickyHeader
 } from "./StudentListStyled";
 import useStudentList from "./useStudentList";
-
+import theme from "../../../styles/theme";
+import { ThemeProvider } from '@mui/system';
+import CustomPagination from "./Pagination";
 const StudentList: React.FC = () => {
   const {
     listItems,
@@ -63,7 +62,7 @@ const StudentList: React.FC = () => {
   } = useStudentList();
 
   return (
-    <ThemeProvider theme={theme}>
+        <ThemeProvider theme={theme}>
           <HeadStudentList>
             <TableContainer>
               <Sheet sx={{
@@ -97,28 +96,28 @@ const StudentList: React.FC = () => {
                   }}>
                   <Table className="table mb-0" stickyHeader 
                   >
-                      <colgroup>
+                      {/* <colgroup>
                         <col style={{ minWidth: '43px' }}/>
                         <col style={{ minWidth: '80px' }}/>
-                        <col style={{ minWidth: '176px' }}/>
+                        <col style={{ minWidth: '206px' }}/>
                         <col style={{ minWidth: '62px' }}/>
                         <col style={{ minWidth: '176px' }}/>
                         <col style={{ minWidth: '176px' }}/>
                         <col style={{ minWidth: '220px' }}/>
                         <col style={{ minWidth: '220px' }}/>
                         <col style={{ minWidth: '146px' }}/>
-                      </colgroup>
+                      </colgroup> */}
                     <Theader >
                       <tr >
-                        <th className="py-2 ">No</th>
-                        <th className="py-2 ">IMG</th>
-                        <th className="py-2 ">Actions</th>
-                        <th className="py-2 ">Active</th>
-                        <th className="py-2 ">FirstName</th>
-                        <th className="py-2 ">LastName</th>
-                        <th className="py-2 ">ID Card</th>
-                        <th className="py-2 ">Student ID</th>
-                        <th className="py-2 ">Account Type</th>
+                        <th>No</th>
+                        <th>IMG</th>
+                        <th>Actions</th>
+                        <th>Active</th>
+                        <th>FirstName</th>
+                        <th>LastName</th>
+                        <th>ID Card</th>
+                        <th>Student ID</th>
+                        <th>Account Type</th>
                       </tr>
                       <tr>
                         <th></th>
@@ -140,11 +139,10 @@ const StudentList: React.FC = () => {
                     </Theader>
                     <Tbody>
                       {listItems
-                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         .map((item, index) => (
-                          <tr className="text-center" key={item.id}>
-                            <td>{index + 1 + page * rowsPerPage}</td>
-                            <td>
+                          <tr key={item.id}>
+                            <th>{(page - 1) * rowsPerPage + index + 1}</th>
+                            <th>
                               <img
                                 // src={`https://picsum.photos/60/60?random=${item.id}`}
                                 // alt={`User ${item.id}`}
@@ -152,8 +150,8 @@ const StudentList: React.FC = () => {
                                 // height="50"
                                 src={item.user_img_path ?? ''}
                               />
-                            </td>
-                            <td >
+                            </th>
+                            <th >
                               <div className="d-flex gap-1 justify-center">
                                 <Button
                                   variant="outlined"
@@ -173,19 +171,19 @@ const StudentList: React.FC = () => {
                                   Delete
                                 </Button>
                               </div>
-                            </td>
-                            <td>
+                            </th>
+                            <th>
                             <Checkbox
                               checked={selectedItems.includes(item.id)}
                               onChange={() => handleCheckboxChange(item.id)}
                               color="primary"
                             />
-                            </td>
-                            <td>{item.firstname}</td>
-                            <td>{item.lastname}</td>
-                            <td>{item.pin}</td>
-                            <td>{item.citizen_id}</td>
-                            <td>{item.account_type}</td>
+                            </th>
+                            <th>{item.firstname}</th>
+                            <th>{item.lastname}</th>
+                            <th>{item.pin}</th>
+                            <th>{item.citizen_id}</th>
+                            <th>{item.account_type}</th>
                           </tr>
                         ))}
                     </Tbody>
@@ -214,7 +212,7 @@ const StudentList: React.FC = () => {
                   </Modal>
               </Sheet>
                 <div className="pagination-container">
-                  <TablePagination
+                  {/* <TablePagination
                     rowsPerPageOptions={[5, 10, 25]}
                     component="div"
                     count={listItems.length}
@@ -222,6 +220,13 @@ const StudentList: React.FC = () => {
                     page={page}
                     onPageChange={(_event, newPage) => handleChangePage(newPage + 1)}
                     onRowsPerPageChange={(event) => handleChangeRowsPerPage(+event.target.value)}
+                  /> */}
+                  <CustomPagination
+                    count={100}
+                    page={page}
+                    rowsPerPage={rowsPerPage}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
                   />
               </div>
             </TableContainer>
@@ -388,7 +393,7 @@ const StudentList: React.FC = () => {
               </DialogActions>
             </Dialog>
           </HeadStudentList>
-    </ThemeProvider>
+        </ThemeProvider>
   );
 };
 

@@ -178,6 +178,7 @@ const ReservedList: React.FC = () => {
                       page={page}
                       onPageChange={handleChangePage}
                       onRowsPerPageChange={handleChangeRowsPerPage}
+                      style={{color: 'white'}}
                     />
               </div>
             </TableContainer>

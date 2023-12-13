@@ -9,8 +9,14 @@ const headers = {
   'Content-Type': 'application/json',
   'Authorization': `Bearer ${token}`,
 }
+
+interface GetAllUsersParams {
+  page: number;
+  pageSize: number;
+  offset?: number
+}
 const UserService = {
-  getAllUsers: async ({ page, pageSize }: { page: number; pageSize: number }) => {
+  getAllUsers: async ({ page, pageSize }: GetAllUsersParams) => {
     try {
       const response = await axiosInstance.get('/admin/user/getalluser', {
         headers,
