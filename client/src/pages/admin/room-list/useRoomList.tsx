@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import RoomService from "../../../auth/service/RoomService";
 import useRoomState from "../../../auth/model/useRoomState";
 import { RoomListActionItem, RoomListItem } from "../../../auth/model/room-list";
@@ -7,7 +7,7 @@ const useRoomList = () => {
   const [listItems, setListItems] = useState<RoomListItem[]>([]);
   const [selectAll, setSelectAll] = useState(false);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -15,18 +15,18 @@ const useRoomList = () => {
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const { room, editingRoom, AddRoom, setEditRoom, handleInputChange, resetRoom, handleInputEditChange } = useRoomState();
 
-  const fetchRoomList = async () => {
+  const fetchRoomList = useCallback(async () => {
     try {
-      const data = await RoomService.getAllRoom();
-      setListItems(data);
+      const response = await RoomService.getAllRoom({ page: page, pageSize: rowsPerPage });
+      setListItems(response);
     } catch (error) {
-      console.error("Error fetching room data:", error);
+      console.error("Error fetching room response:", error);
     }
-  };
+  }, [page, rowsPerPage]);
 
   useEffect(() => {
     fetchRoomList();
-  }, []);
+  }, [fetchRoomList]);
 
   const handleSelectAll = () => {
     setSelectAll(!selectAll);
@@ -148,16 +148,16 @@ const useRoomList = () => {
     setDeleteDialogOpen(false);
   };
 
-  const handleChangePage = (_event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
+  // const handleChangePage = (_event: unknown, newPage: number) => {
+  //   setPage(newPage);
+  // };
 
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  // const handleChangeRowsPerPage = (
+  //   event: React.ChangeEvent<HTMLInputElement>
+  // ) => {
+  //   setRowsPerPage(parseInt(event.target.value, 10));
+  //   setPage(0);
+  // };
 
   const handleEdit = (room: RoomListActionItem) => {
     setEditRoom(room);
@@ -185,6 +185,17 @@ const useRoomList = () => {
         room_status: "",
     });
     setEditDialogOpen(false);
+  };
+
+  const handleChangePage = async (newPage: number) => {
+    setPage(newPage);
+    await fetchRoomList();
+  };
+  
+  const handleChangeRowsPerPage = (newRowsPerPage: number) => {
+    setRowsPerPage(newRowsPerPage);
+    setPage(1); 
+    fetchRoomList();
   };
   return {
     listItems,

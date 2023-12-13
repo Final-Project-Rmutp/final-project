@@ -9,10 +9,19 @@ const headers = {
   'Content-Type': 'application/json',
   'Authorization': `Bearer ${token}`,
 }
+
+interface GetAllRoomsParams {
+    page: number;
+    pageSize: number;
+    offset?: number
+}
 const RoomService = {
 
-    getAllRoom: async () => {
-        const response = await axiosInstance.get('/admin/room/getallroom',{headers});
+    getAllRoom: async ({ page, pageSize }: GetAllRoomsParams) => {
+        const response = await axiosInstance.get('/admin/room/getallroom',{
+            headers,
+            params: { page, pageSize },
+        });
         return response.data;
     },
 

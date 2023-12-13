@@ -1,7 +1,5 @@
 import React from "react";
 import {
-  TablePagination,
-
   DialogTitle,
   DialogContent,
   DialogActions,
@@ -19,9 +17,10 @@ import {
   Theader,
   HeadStudentList,
   TableContainer,
-} from "./RoomListStyled";
+} from "../student-list/StudentListStyled";
 import useRoomList from "./useRoomList";
 import DeleteForever from "@mui/icons-material/DeleteForever";
+import CustomPagination from "../student-list/Pagination";
 
 const RoomList: React.FC = () => {
   const {
@@ -129,19 +128,17 @@ const RoomList: React.FC = () => {
                       </tr>
                     </Theader>
                     <Tbody>
-                      {listItems
-                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        .map((item, index) => (
+                      {listItems.map((item, index) => (
                           <tr className="text-center" key={item.id}>
-                            <td>{index + 1 + page * rowsPerPage}</td>
-                            <td>
+                            <th>{(page - 1) * rowsPerPage + index + 1}</th>
+                            <th>
                             <Checkbox
                               checked={selectedItems.includes(item.room_id)}
                               onChange={() => handleCheckboxChange(item.room_id)}
                               color="primary"
                             />
-                            </td>
-                            <td>
+                            </th>
+                            <th>
                               <div className="d-flex gap-1 justify-center">
                                 <Button
                                   variant="outlined"
@@ -161,15 +158,15 @@ const RoomList: React.FC = () => {
                                   Delete
                                 </Button>
                               </div>
-                            </td>
-                            <td>
+                            </th>
+                            <th>
                                 {item.room_number}
-                            </td>
-                            <td>{item.room_type}</td>
-                            <td>{item.room_capacity}</td>
-                            <td>{item.room_facilities}</td>
-                            <td>{item.room_level}</td>
-                            <td>{item.room_status}</td>
+                            </th>
+                            <th>{item.room_type}</th>
+                            <th>{item.room_capacity}</th>
+                            <th>{item.room_facilities}</th>
+                            <th>{item.room_level}</th>
+                            <th>{item.room_status}</th>
                           </tr>
                         ))}
                     </Tbody>
@@ -198,12 +195,10 @@ const RoomList: React.FC = () => {
                   </Modal>
               </Sheet>
                 <div className="pagination-container">
-                    <TablePagination
-                      rowsPerPageOptions={[5, 10, 25]}
-                      component="div"
-                      count={listItems.length}
-                      rowsPerPage={rowsPerPage}
+                  <CustomPagination
+                      count={100}
                       page={page}
+                      rowsPerPage={rowsPerPage}
                       onPageChange={handleChangePage}
                       onRowsPerPageChange={handleChangeRowsPerPage}
                     />

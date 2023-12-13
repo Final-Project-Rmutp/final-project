@@ -25,7 +25,7 @@ const useStudentList = () => {
       const response = await UserService.getAllUsers({ page: page, pageSize: rowsPerPage });
       setListItems(response);
     } catch (error) {
-      console.error("Error fetching user data:", error);
+      console.error("Error fetching user response:", error);
     }
   }, [page, rowsPerPage]);
 

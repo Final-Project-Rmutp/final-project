@@ -4,26 +4,17 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  // Typography,
   TextField,
   MenuItem,
-  // Checkbox,
-  // Button,
 } from "@mui/material";
-// import UserService from "../../../auth/service/UserService";
-// import useUserState from "../../../auth/model/useUserState";
-// import { ListItem, UserData } from "../../../auth/model/authTypes";
 import { Checkbox, Button, Sheet, Table, ModalDialog, Modal, Divider, FormControl, FormLabel, Stack, Input } from '@mui/joy';
 import DeleteForever from '@mui/icons-material/DeleteForever';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import {
-  // StyledTable,
   Tbody,
   Theader,
-  // StyledButton,
   HeadStudentList,
   TableContainer,
-  // StickyHeader
 } from "./StudentListStyled";
 import useStudentList from "./useStudentList";
 import theme from "../../../styles/theme";
@@ -138,8 +129,7 @@ const StudentList: React.FC = () => {
                       </tr>
                     </Theader>
                     <Tbody>
-                      {listItems
-                        .map((item, index) => (
+                      {listItems.map((item, index) => (
                           <tr key={item.id}>
                             <th>{(page - 1) * rowsPerPage + index + 1}</th>
                             <th>
@@ -212,15 +202,6 @@ const StudentList: React.FC = () => {
                   </Modal>
               </Sheet>
                 <div className="pagination-container">
-                  {/* <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
-                    component="div"
-                    count={listItems.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={(_event, newPage) => handleChangePage(newPage + 1)}
-                    onRowsPerPageChange={(event) => handleChangeRowsPerPage(+event.target.value)}
-                  /> */}
                   <CustomPagination
                     count={100}
                     page={page}
