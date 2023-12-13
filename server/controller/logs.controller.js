@@ -8,54 +8,55 @@ async function getlogs(req, res) {
         LEFT JOIN "user" ON logs.user_id = "user".id`;
 
         const { startDate, endDate } = req.query;
+        const values = [];
+
         if (startDate && endDate) {
             const startDateTime = `${startDate} 00:00:00`;
             const endDateTime = `${endDate} 23:59:59`;
             query += ` WHERE logs.timestamp >= $1 AND logs.timestamp <= $2`;
-            const result = await client.query(query, [startDateTime, endDateTime]);
-            const totalLogs = result.rowCount;
-            res.status(200).json({ totalLogs, logs: result.rows });
-        } else {
-            const result = await client.query(query);
-            const totalLogs = result.rowCount;
-            res.status(200).json({ totalLogs, logs: result.rows });
+            values.push(startDateTime, endDateTime);
         }
+
+        const result = await client.query(query, values);
+        const totalLogs = result.rowCount;
+        res.status(200).json({ totalLogs, logs: result.rows });
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ message: 'Internal server error' });
     }
 }
+
 
 
 
 // Get login logs
 async function loginlogs(req, res) {
     try {
-        let query = `SELECT logs.log_id, logs.action_type, "user".pin, "user".citizen_id, "user".firstname, logs.log_status, logs.timestamp
-        FROM action_logs AS logs
-        LEFT JOIN "user" ON logs.user_id = "user".id
-        WHERE logs.action_type like '%login%'
-        `;
+        let query = `
+            SELECT logs.log_id, logs.action_type, "user".pin, "user".citizen_id, "user".firstname, logs.log_status, logs.timestamp
+            FROM action_logs AS logs
+            LEFT JOIN "user" ON logs.user_id = "user".id
+            WHERE logs.action_type ILIKE '%login%'`;
 
         const { startDate, endDate } = req.query;
+        const values = [];
 
         if (startDate && endDate) {
             const startDateTime = `${startDate} 00:00:00`;
             const endDateTime = `${endDate} 23:59:59`;
             query += ` AND logs.timestamp >= $1 AND logs.timestamp <= $2`;
-            const result = await client.query(query, [startDateTime, endDateTime]);
-            const totalLogs = result.rowCount;
-            res.status(200).json({ totalLogs, logs: result.rows });
-        } else {
-            const result = await client.query(query);
-            const totalLogs = result.rowCount;
-            res.status(200).json({ totalLogs, logs: result.rows });
+            values.push(startDateTime, endDateTime);
         }
+
+        const result = await client.query(query, values);
+        const totalLogs = result.rowCount;
+        res.status(200).json({ totalLogs, logs: result.rows });
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ message: 'Internal server error' });
     }
 }
+
 
 // Get adduser logs
 async function adduserlogs(req, res) {
@@ -67,19 +68,18 @@ async function adduserlogs(req, res) {
         `;
 
         const { startDate, endDate } = req.query;
+        const values = [];
 
         if (startDate && endDate) {
             const startDateTime = `${startDate} 00:00:00`;
             const endDateTime = `${endDate} 23:59:59`;
             query += ` AND logs.timestamp >= $1 AND logs.timestamp <= $2`;
-            const result = await client.query(query, [startDateTime, endDateTime]);
-            const totalLogs = result.rowCount;
-            res.status(200).json({ totalLogs, logs: result.rows });
-        } else {
-            const result = await client.query(query);
-            const totalLogs = result.rowCount;
-            res.status(200).json({ totalLogs, logs: result.rows });
+            values.push(startDateTime, endDateTime);
         }
+
+        const result = await client.query(query, values);
+        const totalLogs = result.rowCount;
+        res.status(200).json({ totalLogs, logs: result.rows });
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ message: 'Internal server error' });
@@ -96,19 +96,18 @@ async function updateuserlogs(req, res) {
         `;
 
         const { startDate, endDate } = req.query;
+        const values = [];
 
         if (startDate && endDate) {
             const startDateTime = `${startDate} 00:00:00`;
             const endDateTime = `${endDate} 23:59:59`;
             query += ` AND logs.timestamp >= $1 AND logs.timestamp <= $2`;
-            const result = await client.query(query, [startDateTime, endDateTime]);
-            const totalLogs = result.rowCount;
-            res.status(200).json({ totalLogs, logs: result.rows });
-        } else {
-            const result = await client.query(query);
-            const totalLogs = result.rowCount;
-            res.status(200).json({ totalLogs, logs: result.rows });
+            values.push(startDateTime, endDateTime);
         }
+
+        const result = await client.query(query, values);
+        const totalLogs = result.rowCount;
+        res.status(200).json({ totalLogs, logs: result.rows });
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ message: 'Internal server error' });
@@ -125,19 +124,18 @@ async function deactivatelogs(req, res) {
         `;
 
         const { startDate, endDate } = req.query;
+        const values = [];
 
         if (startDate && endDate) {
             const startDateTime = `${startDate} 00:00:00`;
             const endDateTime = `${endDate} 23:59:59`;
             query += ` AND logs.timestamp >= $1 AND logs.timestamp <= $2`;
-            const result = await client.query(query, [startDateTime, endDateTime]);
-            const totalLogs = result.rowCount;
-            res.status(200).json({ totalLogs, logs: result.rows });
-        } else {
-            const result = await client.query(query);
-            const totalLogs = result.rowCount;
-            res.status(200).json({ totalLogs, logs: result.rows });
+            values.push(startDateTime, endDateTime);
         }
+
+        const result = await client.query(query, values);
+        const totalLogs = result.rowCount;
+        res.status(200).json({ totalLogs, logs: result.rows });
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ message: 'Internal server error' });
@@ -154,19 +152,18 @@ async function addroomlogs(req, res) {
         `;
 
         const { startDate, endDate } = req.query;
+        const values = [];
 
         if (startDate && endDate) {
             const startDateTime = `${startDate} 00:00:00`;
             const endDateTime = `${endDate} 23:59:59`;
             query += ` AND logs.timestamp >= $1 AND logs.timestamp <= $2`;
-            const result = await client.query(query, [startDateTime, endDateTime]);
-            const totalLogs = result.rowCount;
-            res.status(200).json({ totalLogs, logs: result.rows });
-        } else {
-            const result = await client.query(query);
-            const totalLogs = result.rowCount;
-            res.status(200).json({ totalLogs, logs: result.rows });
+            values.push(startDateTime, endDateTime);
         }
+
+        const result = await client.query(query, values);
+        const totalLogs = result.rowCount;
+        res.status(200).json({ totalLogs, logs: result.rows });
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ message: 'Internal server error' });
@@ -183,19 +180,18 @@ async function updateroomlogs(req, res) {
         `;
 
         const { startDate, endDate } = req.query;
+        const values = [];
 
         if (startDate && endDate) {
             const startDateTime = `${startDate} 00:00:00`;
             const endDateTime = `${endDate} 23:59:59`;
             query += ` AND logs.timestamp >= $1 AND logs.timestamp <= $2`;
-            const result = await client.query(query, [startDateTime, endDateTime]);
-            const totalLogs = result.rowCount;
-            res.status(200).json({ totalLogs, logs: result.rows });
-        } else {
-            const result = await client.query(query);
-            const totalLogs = result.rowCount;
-            res.status(200).json({ totalLogs, logs: result.rows });
+            values.push(startDateTime, endDateTime);
         }
+
+        const result = await client.query(query, values);
+        const totalLogs = result.rowCount;
+        res.status(200).json({ totalLogs, logs: result.rows });
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ message: 'Internal server error' });
@@ -212,19 +208,18 @@ async function deleteroomlogs(req, res) {
         `;
 
         const { startDate, endDate } = req.query;
+        const values = [];
 
         if (startDate && endDate) {
             const startDateTime = `${startDate} 00:00:00`;
             const endDateTime = `${endDate} 23:59:59`;
             query += ` AND logs.timestamp >= $1 AND logs.timestamp <= $2`;
-            const result = await client.query(query, [startDateTime, endDateTime]);
-            const totalLogs = result.rowCount;
-            res.status(200).json({ totalLogs, logs: result.rows });
-        } else {
-            const result = await client.query(query);
-            const totalLogs = result.rowCount;
-            res.status(200).json({ totalLogs, logs: result.rows });
+            values.push(startDateTime, endDateTime);
         }
+
+        const result = await client.query(query, values);
+        const totalLogs = result.rowCount;
+        res.status(200).json({ totalLogs, logs: result.rows });
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ message: 'Internal server error' });
