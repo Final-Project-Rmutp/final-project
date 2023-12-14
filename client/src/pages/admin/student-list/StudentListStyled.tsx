@@ -3,9 +3,8 @@ import { Button, Checkbox, Table, ModalDialog,Sheet } from '@mui/joy';
 
 export const StyledTable = styled(Table)`
   overflow: auto;
-  min-width: 925px;
   border-radius: 20px;
-
+  table-layout:auto;
   tbody {
     overflow: auto;
     width: 100%;
@@ -58,10 +57,10 @@ export const HeadStudentList = styled('div')`
 `;
 
 export const TableContainer = styled(Sheet)`
-  height: 520px;
+  height: 500px;
   border: 1px solid ${({ theme }) => theme.palette.primary.main};
   background-color: ${({ theme }) => theme.palette.background.default};
-  border-radius: 15px;
+  border-radius: 15px;  
   margin-top: 10px;
   padding: 20px;
   overflow: auto;
@@ -93,6 +92,7 @@ export const Tbody = styled('tbody')`
       padding: 10px;
       align-items: center;
       text-align: center;
+      
     }
     td {
       padding: 10px;

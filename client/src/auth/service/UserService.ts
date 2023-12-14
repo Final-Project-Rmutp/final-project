@@ -15,8 +15,19 @@ interface GetAllUsersParams {
   pageSize: number;
   offset?: number
 }
+
+
 const UserService = {
 
+  searchUsers: async (searchTerm: string) => {
+    try {
+      const response = await axiosInstance.post('/admin/user/search', { search: searchTerm }, { headers });
+      return response.data;
+    } catch (error) {
+      console.error('Error searching users:', error);
+      throw error;
+    }
+  },
   fetchUserProfile:async () => {
     try {
       const response = await axiosInstance.get('/user/getprofile',{

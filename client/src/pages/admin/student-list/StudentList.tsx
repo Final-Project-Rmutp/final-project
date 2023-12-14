@@ -7,7 +7,7 @@ import {
   TextField,
   MenuItem,
 } from "@mui/material";
-import { Checkbox, Button, Sheet, Table, ModalDialog, Modal, Divider, FormControl, FormLabel, Stack, Input } from '@mui/joy';
+import { Checkbox, Button, Sheet, Table, ModalDialog, Modal, Divider, FormControl, FormLabel, Stack, Input, Avatar } from '@mui/joy';
 import DeleteForever from '@mui/icons-material/DeleteForever';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import {
@@ -33,6 +33,8 @@ const StudentList: React.FC = () => {
     // user,
     AddUser,
     editingUser,
+    searchTerm,
+    setSearchTerm,
     handleInputChange,
     handleImageChange,
     handleInputEditChange,
@@ -50,8 +52,11 @@ const StudentList: React.FC = () => {
     handleCloseDeleteDialog,
     handleChangePage,
     handleChangeRowsPerPage,
+   
   } = useStudentList();
 
+
+  
   return (
         <ThemeProvider theme={theme}>
           <HeadStudentList>
@@ -60,8 +65,8 @@ const StudentList: React.FC = () => {
                     '--TableCell-height': '40px',
                     // the number is the amount of the header rows.
                     '--TableHeader-height': 'calc(1 * var(--TableCell-height))',
-                    minWidth:800,
-                    height: 376,
+                    minWidth:600,
+                    height: 400,
                     overflow: 'auto',
                     background: (
                       theme,
@@ -86,63 +91,85 @@ const StudentList: React.FC = () => {
                     backgroundColor: 'background.surface',
                   }}>
                   <Table className="table mb-0" stickyHeader 
+                  hoverRow
+                  sx={{
+                    '& tr > *:first-of-type': {
+                      position: 'sticky',
+                      left: 0,
+                      boxShadow: '1px 0 var(--TableCell-borderColor)',
+                      bgcolor: 'background.surface',
+                    },
+                    '& tr > *:last-child': {
+                      position: 'sticky',
+                      right: 0,
+                      bgcolor: 'var(--TableCell-headBackground)',
+                    },
+                  }}
                   >
-                      {/* <colgroup>
-                        <col style={{ minWidth: '43px' }}/>
-                        <col style={{ minWidth: '80px' }}/>
-                        <col style={{ minWidth: '206px' }}/>
-                        <col style={{ minWidth: '62px' }}/>
-                        <col style={{ minWidth: '176px' }}/>
-                        <col style={{ minWidth: '176px' }}/>
-                        <col style={{ minWidth: '220px' }}/>
-                        <col style={{ minWidth: '220px' }}/>
-                        <col style={{ minWidth: '146px' }}/>
-                      </colgroup> */}
                     <Theader >
                       <tr >
-                        <th>No</th>
-                        <th>IMG</th>
-                        <th>Actions</th>
-                        <th>Active</th>
-                        <th>FirstName</th>
-                        <th>LastName</th>
-                        <th>ID Card</th>
-                        <th>Student ID</th>
-                        <th>Account Type</th>
+                        <th style={{ width: 100 }}>No</th>
+                        <th style={{ width: 80 }}>IMG</th>
+                        <th style={{ width: 200 }}>FirstName</th>
+                        <th style={{ width: 200 }}>LastName</th>
+                        <th style={{ width: 200 }}>ID Card</th>
+                        <th style={{ width: 200 }}>Student ID</th>
+                        <th style={{ width: 200 }}>Account Type</th>
+                        <th style={{ width: 60 }}>Actions</th>
+                        <th style={{ width: 200 }}>Active</th>
                       </tr>
                       <tr>
                         <th></th>
                         <th></th>
                         <th></th>
+                        <th></th>
                         <th>
-                          <Checkbox
+                        <Input
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                          />
+                        </th>
+                        <th>
+                        </th>
+                        <th></th>
+                        <th>
+                        <Checkbox
                             checked={selectAll}
                             onChange={handleSelectAll}
                             color="primary"
                           />
                         </th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
                       </tr>
                     </Theader>
                     <Tbody>
                       {listItems.map((item, index) => (
                           <tr key={item.id}>
                             <th>{(page - 1) * rowsPerPage + index + 1}</th>
-                            <th>
-                              <img
+                            <th >
+                              {/* <img
                                 // src={`https://picsum.photos/60/60?random=${item.id}`}
                                 // alt={`User ${item.id}`}
                                 // width="50"
                                 // height="50"
-                                src={item.user_img_path ?? ''}
-                              />
+                                // src={item.user_img_path ?? ''}
+                              /> */}
+                              <div className="d-flex justify-content-center align-items-center">
+                                <Avatar src={item.user_img_path ?? ''} sx={{zIndex:0}}/>
+                              </div>
                             </th>
-                            <th >
-                              <div className="d-flex gap-1 justify-center">
+                            <th>{item.firstname}</th>
+                            <th>{item.lastname}</th>
+                            <th>{item.pin}</th>
+                            <th>{item.citizen_id}</th>
+                            <th>{item.account_type}</th>
+                            <th>
+                            <Checkbox
+                              checked={selectedItems.includes(item.id)}
+                              onChange={() => handleCheckboxChange(item.id)}
+                              color="primary"
+                            />  
+                            </th>
+                            <th><div className="d-flex gap-1 justify-center">
                                 <Button
                                   variant="outlined"
                                   color="warning"
@@ -160,20 +187,7 @@ const StudentList: React.FC = () => {
                                 >
                                   Delete
                                 </Button>
-                              </div>
-                            </th>
-                            <th>
-                            <Checkbox
-                              checked={selectedItems.includes(item.id)}
-                              onChange={() => handleCheckboxChange(item.id)}
-                              color="primary"
-                            />
-                            </th>
-                            <th>{item.firstname}</th>
-                            <th>{item.lastname}</th>
-                            <th>{item.pin}</th>
-                            <th>{item.citizen_id}</th>
-                            <th>{item.account_type}</th>
+                              </div></th>
                           </tr>
                         ))}
                     </Tbody>
@@ -201,15 +215,13 @@ const StudentList: React.FC = () => {
                     </ModalDialog>
                   </Modal>
               </Sheet>
-                <div className="pagination-container">
-                  <CustomPagination
-                    count={100}
-                    page={page}
-                    rowsPerPage={rowsPerPage}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                  />
-              </div>
+                <CustomPagination
+                      count={100}
+                      page={page}
+                      rowsPerPage={rowsPerPage}
+                      onPageChange={handleChangePage}
+                      onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
             </TableContainer>
             <div className="card-footer">
               <div className="this-btn d-flex justify-center align-center gap-2">

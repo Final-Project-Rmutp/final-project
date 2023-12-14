@@ -10,6 +10,7 @@ import {
   Stack,
   Sheet,
   IconButton,
+  Container,
 } from "@mui/joy";
 import { MenuItems, MenuItemLinks } from "../../../styles/global";
 import { SidebarData } from "./SidebarData";
@@ -65,6 +66,7 @@ const AdminProfileSidebar: React.FC = () => {
       }));
     }
   };
+  
 
   const handleTabChange = (tab: string) => {
     setState((prevState) => ({
@@ -116,8 +118,8 @@ const AdminProfileSidebar: React.FC = () => {
   }, [state.anchorEl, handleClose]);
 
   const leftOpen = state.leftOpen ? "open" : "closed";
-  const randomImageNumber = Math.floor(Math.random() * 1000) + 1;
-  const randomImageUrl = `https://picsum.photos/200/200?random=${randomImageNumber}`;
+  // const randomImageNumber = Math.floor(Math.random() * 1000) + 1;
+  // const randomImageUrl = `https://picsum.photos/200/200?random=${randomImageNumber}`;
   const [userProfile, setUserProfile] = useState({
     firstname: "",
     user_img_path: "null",
@@ -190,7 +192,7 @@ const AdminProfileSidebar: React.FC = () => {
                     <Typography level="h2">LOGO</Typography>
                   </div>
                 </div>
-                <Sheet className="content">
+                <Container className="content">
                   {SidebarData.map((item, index) => (
                     <MenuItems key={index}>
                       <MenuItemLinks
@@ -202,7 +204,7 @@ const AdminProfileSidebar: React.FC = () => {
                       </MenuItemLinks>
                     </MenuItems>
                   ))}
-                </Sheet>
+                </Container>
               </Card>
             </div>
 
@@ -214,14 +216,14 @@ const AdminProfileSidebar: React.FC = () => {
                 >
                   <Box
                     sx={{
-                      p: 2,
+                      p: 1,
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       height: '0px',
                     }}
                   >
-                    <Avatar src={randomImageUrl} />
+                    <Avatar src={userProfile.user_img_path} />
                     <Stack spacing={0.5} sx={{ marginLeft: 2 }}>
                       <Typography fontWeight="bold" sx={{ paddingRight: 2 }}>
                         {userProfile.firstname}

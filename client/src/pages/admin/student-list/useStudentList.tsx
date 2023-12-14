@@ -17,8 +17,17 @@ const useStudentList = () => {
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const { user, editingUser,AddUser, setEditUser, handleInputChange, resetUser, handleInputEditChange } = useUserState();
 
-
+ const [searchTerm, setSearchTerm] = useState('');
   
+    const handleSearch = async () => {
+      await fetchUserList(); // You may want to clear previous search results
+      const searchData = await UserService.searchUsers(searchTerm);
+      setListItems(searchData);
+    };
+
+  useEffect(() => {
+    handleSearch();
+  }, [searchTerm]); 
 
   const fetchUserList = useCallback(async () => {
     try {
@@ -216,6 +225,9 @@ const useStudentList = () => {
     user,
     AddUser,
     editingUser,
+    searchTerm,
+    setSearchTerm,
+    handleSearch,
     setEditUser,
     handleInputChange,
     handleImageChange,
