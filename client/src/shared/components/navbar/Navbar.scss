@@ -13,47 +13,27 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
-/* Your existing Tailwind CSS imports here */
 
-/* Add this CSS for responsiveness */
-@media (max-width: 1500px) {
-  .header {
-    width: 100%;
-  }
-
-  #main {
-    width: 100%;
-  }
-
-  #left.open .sidebar,
-  #right.open .sidebar {
-    transform: translateX(0);
-  }
-
-  .icon {
-    color: aliceblue;
-    margin-bottom: 0;
-  }
-}
-
-/* Your existing styles */
 img {
-  display: block; /* Adjust as needed */
-  margin: 0 auto; /* Center the image horizontally */
+  display: block; 
+  margin: 0 auto;
   width: 50px;
   height: 50px;
   border-radius: 50%;
 }
 
 .content {
-  width: 100%;
-  padding: 1rem;
+  padding-bottom:4rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  max-width:100vw;
+  display: block;
 }
 
 .header {
   margin-top:10px;
   margin-left: 10px;
-  margin-right:10px;
+  margin-right:2.5rem;
   padding: 10px;
   display: flex;
   align-items: center;
@@ -69,6 +49,11 @@ img {
   color: rgb(157, 168, 183);
   transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   box-shadow: none;
+  position: relative;
+  min-height: 4rem;
+  .item-header {
+    position: absolute;
+  }
 }
 
 .logo-header {
@@ -77,18 +62,6 @@ img {
   border-radius: 50%;
 }
 
-.btn-loggout {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  // width: 100px;
-  height: 35px;
-  margin: 10px 20px;
-  border-radius: 10px;
-  // border: 2px solid rgb(223, 217, 217);
-  // color: red;
-  // background-color: rgb(232, 153, 153);
-}
 
 .icon {
   margin-top: 20px;
@@ -105,7 +78,7 @@ img {
 
 
 :root {
-  --landscape-width: 18; // % OR vw for responsive window resizing!
+  --landscape-width: 18;
   --portrait-width: 250px;
   --header-height: 4.5rem;
   --secs: 0.4s;
@@ -114,9 +87,9 @@ img {
   --bg-main: #161C24;
   --left-width: 0;
   --left-transform: 0;
-  --icon-left: 10;
-  --icon-left-closed: 30px;
-  --icon-left-open: 10px;
+  --icon-left:1rem;
+  --icon-left-closed: 50px;
+  --icon-left-open: 20px;
 }
 #left.closed {
   .icon {
@@ -124,15 +97,15 @@ img {
   }
 }
 body {
-  width: 100%;
-  min-height: 100vh;
-  max-width: 100vw;
-  margin: 0;
-  padding: 0;
+  line-height:inherit;
 }
 
 #layout {
-  display: flex;
+  --tw-bg-opacity:1;
+  width: 100%;
+  position: relative;
+  display: grid;
+  grid-auto-columns: max-content auto;
   .header-left {
     position: relative;
     height: var(--header-height);
@@ -149,19 +122,20 @@ body {
     overflow: auto;
     box-sizing: border-box;
     height: calc(100vh - var(--header-height));
-    
   }
 }
 
 #main {
-  width: 100%;
-  flex-grow: 1;
+  grid-column-start: 2;
+  grid-row-start: 1;
+  min-width: 0;
+  overflow: hidden; 
+  transition: margin-left var(--secs);
+  margin-left: var(--left-width);
   .header {
     @media (orientation: landscape) {
       .title {
-        transition:
-          left var(--secs),
-          right var(--secs);
+        transition: left var(--secs), right var(--secs);
         &.left-closed {
           left: var(--header-height);
         }
@@ -172,6 +146,14 @@ body {
 
 #left,
 #right {
+  height: 100dvh;
+  overscroll-behavior: contain;
+  inset-inline-start: 0;
+  top: 0;
+  grid-column-start: 1;
+  // scroll-behavior: smooth;
+  // scroll-padding-top: 5rem;
+  grid-row-start: 1;
   transition: width var(--secs);
   width: 0;
   margin-right: 10px;
@@ -190,18 +172,20 @@ body {
     text-align: center;
     user-select: none;
     cursor: pointer;
-    top: -6px;
     left: var(--icon-left-open);
     transition: left var(--secs);
+    margin-top:27px;
   }
   .sidebar {
+    
+    width: 300px;
     transition: transform var(--secs); // <-- Portrait AND landscape!
     @media (orientation: portrait) {
-      width: var(--portrait-width);
+      // width: var(--portrait-width);
     }
-    @media (orientation: landscape) {
-      width: calc(1vw * var(--landscape-width));
-    }
+    // @media (orientation: landscape) {
+    //   width: calc(20px * var(--landscape-width));
+    // }
     .header-left {
       width: calc(50% - var(--header-height));
     }
@@ -232,7 +216,7 @@ body {
     // border: 2px solid #C684FF;
     // background: var(--bg-left);
     &.closed {
-      transform: translateX(-97%);
+      transform: translateX(-95%);
       .icon {
         left: 20px;
       }

@@ -7,7 +7,7 @@ import {
   TextField,
   MenuItem,
 } from "@mui/material";
-import { Checkbox, Button, Sheet, Table, ModalDialog, Modal, Divider, FormControl, FormLabel, Stack, Input, Avatar } from '@mui/joy';
+import { Checkbox, Button, Sheet, Table, ModalDialog, Modal, Divider, FormControl, FormLabel, Stack, Input, Avatar, Box } from '@mui/joy';
 import DeleteForever from '@mui/icons-material/DeleteForever';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import {
@@ -17,8 +17,6 @@ import {
   TableContainer,
 } from "./StudentListStyled";
 import useStudentList from "./useStudentList";
-import theme from "../../../styles/theme";
-import { ThemeProvider } from '@mui/system';
 import CustomPagination from "./Pagination";
 const StudentList: React.FC = () => {
   const {
@@ -58,13 +56,16 @@ const StudentList: React.FC = () => {
 
   
   return (
-        <ThemeProvider theme={theme}>
           <HeadStudentList>
-            <TableContainer>
-              <Sheet sx={{
-                    '--TableCell-height': '40px',
-                    // the number is the amount of the header rows.
-                    '--TableHeader-height': 'calc(1 * var(--TableCell-height))',
+            <TableContainer >
+              <Sheet 
+              sx={{
+                '--TableCell-height': '40px',
+                '--TableHeader-height': 'calc(1 * var(--TableCell-height))',
+                '--Table-firstColumnWidth': '80px',
+                '--Table-lastColumnWidth': '144px',
+                '--TableRow-stripeBackground': 'rgba(0 0 0 / 0.04)',
+                '--TableRow-hoverBackground': 'rgba(0 0 0 / 0.08)',
                     minWidth:600,
                     height: 400,
                     overflow: 'auto',
@@ -78,26 +79,33 @@ const StudentList: React.FC = () => {
                         rgba(0, 0, 0, 0)
                       ),
                       radial-gradient(
-                          farthest-side at 50% 100%,
-                          rgba(0, 0, 0, 0.12),
-                          rgba(0, 0, 0, 0)
-                        )
-                        0 100%`,
-                    backgroundSize: '100% 40px, 100% 40px, 100% 14px, 100% 14px',
+                        farthest-side at 50% 100%,
+                        rgba(0, 0, 0, 0.12),
+                        rgba(0, 0, 0, 0)
+                      )
+                      0 100%`,
+                      backgroundSize:
+                      '40px calc(100% - var(--TableCell-height)), 40px calc(100% - var(--TableCell-height)), 14px calc(100% - var(--TableCell-height)), 14px calc(100% - var(--TableCell-height))',
                     backgroundRepeat: 'no-repeat',
                     backgroundAttachment: 'local, local, scroll, scroll',
                     backgroundPosition:
-                      '0 var(--TableHeader-height), 0 100%, 0 var(--TableHeader-height), 0 100%',
-                    backgroundColor: 'background.surface',
+                      'var(--Table-firstColumnWidth) var(--TableCell-height), calc(100% - var(--Table-lastColumnWidth)) var(--TableCell-height), var(--Table-firstColumnWidth) var(--TableCell-height), calc(100% - var(--Table-lastColumnWidth)) var(--TableCell-height)',
+                    backgroundColor: 'nav.bg',
                   }}>
-                  <Table className="table mb-0" stickyHeader 
+                  <Table className="table mb-0" 
+                  borderAxis="bothBetween"
+                  stickyHeader 
                   hoverRow
                   sx={{
+                    "--Table-headerUnderlineThickness": "1px",
+                    "--TableCell-paddingX": "10px",
+                    "--TableCell-paddingY": "7px",
                     '& tr > *:first-of-type': {
                       position: 'sticky',
+                      zIndex:1,
                       left: 0,
                       boxShadow: '1px 0 var(--TableCell-borderColor)',
-                      bgcolor: 'background.surface',
+                      // bgcolor: 'background.surface',
                     },
                     '& tr > *:last-child': {
                       position: 'sticky',
@@ -107,9 +115,9 @@ const StudentList: React.FC = () => {
                   }}
                   >
                     <Theader >
-                      <tr >
+                      <tr style={{backgroundColor:'red'}} >
                         <th style={{ width: 100 }}>No</th>
-                        <th style={{ width: 80 }}>IMG</th>
+                        <th style={{ width: 80}}>IMG</th>
                         <th style={{ width: 200 }}>FirstName</th>
                         <th style={{ width: 200 }}>LastName</th>
                         <th style={{ width: 200 }}>ID Card</th>
@@ -139,22 +147,24 @@ const StudentList: React.FC = () => {
                             color="primary"
                           />
                         </th>
+                        <th></th>
                       </tr>
                     </Theader>
                     <Tbody>
                       {listItems.map((item, index) => (
                           <tr key={item.id}>
-                            <th>{(page - 1) * rowsPerPage + index + 1}</th>
+                            <th >{(page - 1) * rowsPerPage + index + 1}</th>
                             <th >
                               {/* <img
-                                // src={`https://picsum.photos/60/60?random=${item.id}`}
-                                // alt={`User ${item.id}`}
-                                // width="50"
-                                // height="50"
-                                // src={item.user_img_path ?? ''}
+                                src={`https://picsum.photos/60/60?random=${item.id}`}
+                                alt={`User ${item.id}`}
+                                width="50"
+                                height="50"
+                                src={item.user_img_path ?? ''}
                               /> */}
                               <div className="d-flex justify-content-center align-items-center">
-                                <Avatar src={item.user_img_path ?? ''} sx={{zIndex:0}}/>
+                                <Avatar src={item.user_img_path ?? ''} sx={{zIndex:0
+                                }}/>
                               </div>
                             </th>
                             <th>{item.firstname}</th>
@@ -169,25 +179,27 @@ const StudentList: React.FC = () => {
                               color="primary"
                             />  
                             </th>
-                            <th><div className="d-flex gap-1 justify-center">
-                                <Button
-                                  variant="outlined"
-                                  color="warning"
-                                  className="edit"
-                                  onClick={() => handleEdit(item)}
-                                >
-                                  Edit
-                                </Button>
-                                <Button
-                                  color="danger"
-                                  variant="outlined"
-                                  endDecorator={<DeleteForever />}
-                                  onClick={() => handleDelete(item.id)}
-                                  className="delete"
-                                >
-                                  Delete
-                                </Button>
-                              </div></th>
+                            <th>
+                              <Box sx={{ display: 'flex', gap: 1 }}>
+                                  <Button
+                                    variant="outlined"
+                                    color="warning"
+                                    className="edit"
+                                    onClick={() => handleEdit(item)}
+                                  >
+                                    Edit
+                                  </Button>
+                                  <Button
+                                    color="danger"
+                                    variant="outlined"
+                                    endDecorator={<DeleteForever />}
+                                    onClick={() => handleDelete(item.id)}
+                                    className="delete"
+                                  >
+                                    Delete
+                                  </Button>
+                                </Box>
+                              </th>
                           </tr>
                         ))}
                     </Tbody>
@@ -386,7 +398,6 @@ const StudentList: React.FC = () => {
               </DialogActions>
             </Dialog>
           </HeadStudentList>
-        </ThemeProvider>
   );
 };
 

@@ -4,21 +4,19 @@ import {
   Avatar,
   Menu,
   MenuItem,
-  Card,
   Box,
   Typography,
   Stack,
-  Sheet,
   IconButton,
   Container,
 } from "@mui/joy";
+import { Icon } from '@iconify/react';
 import { MenuItems, MenuItemLinks } from "../../../styles/global";
 import { SidebarData } from "./SidebarData";
 import "./Navbar.scss";
 import { Outlet, useNavigate } from "react-router";
 import { toast } from 'sonner';
 import theme from "../../../styles/theme";
-import { ThemeProvider } from '@mui/system';
 import {
   experimental_extendTheme as materialExtendTheme,
   Experimental_CssVarsProvider as MaterialCssVarsProvider,
@@ -30,6 +28,8 @@ import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import CssBaseline from '@mui/joy/CssBaseline';
 import UserService from "../../../auth/service/UserService";
+import { CardStyle, Header, Layout, Left, Main, Sidebar } from "./NavbarStyled";
+
 interface LayoutState {
   leftOpen: boolean;
   rightOpen: boolean;
@@ -47,7 +47,7 @@ const AdminProfileSidebar: React.FC = () => {
     anchorEl: null,
   });
 
-  const handleMenuClick = (event: MouseEvent<HTMLButtonElement>) => {
+  const handleMenuClick = (event: MouseEvent<HTMLDivElement>) => {
     setState({ ...state, anchorEl: event.currentTarget });
   };
 
@@ -155,13 +155,7 @@ const AdminProfileSidebar: React.FC = () => {
         size="lg"
         variant="soft"
         color="neutral"
-        onClick={() => {
-          if (mode === 'light') {
-            setMode('dark');
-          } else {
-            setMode('light');
-          }
-        }}
+        onClick={() => setMode(mode === 'dark' ? 'light' : 'dark')}
         sx={{
           zIndex: 999,
           borderRadius: '50%',
@@ -176,16 +170,15 @@ const AdminProfileSidebar: React.FC = () => {
   const materialTheme = materialExtendTheme();
 
   return (
-    <ThemeProvider theme={theme}>
       <MaterialCssVarsProvider theme={{ [MATERIAL_THEME_ID]: materialTheme }}>
-        <CssVarsProvider>
+        <CssVarsProvider theme={theme}>
           <CssBaseline />
-          <Sheet id={'layout'}>
-            <div id="left" className={leftOpen}>
+          <Layout id="layout">
+            <Left id="left" className={leftOpen}>
               <div className="icon" onClick={toggleSidebar}>
-                <p>&equiv;</p>
+                <p><Icon icon="solar:hamburger-menu-bold-duotone" color="#9A9EEC" /></p>
               </div>
-              <Card className={`sidebar ${leftOpen}`}
+              <Sidebar className={`sidebar ${leftOpen}`}
               >
                 <div className="header-left">
                   <div className="logo-header">
@@ -205,16 +198,17 @@ const AdminProfileSidebar: React.FC = () => {
                     </MenuItems>
                   ))}
                 </Container>
-              </Card>
-            </div>
+              </Sidebar>
+            </Left>
 
-            <Sheet id="main">
-              <div className="header">
-                <Card
-                  component="button"
+            <Main id="main">
+              <Header className="header">
+                <div className="item-header">
+                <CardStyle
                   onClick={handleMenuClick}
                 >
                   <Box
+                  
                     sx={{
                       p: 1,
                       display: 'flex',
@@ -230,7 +224,7 @@ const AdminProfileSidebar: React.FC = () => {
                       </Typography>
                     </Stack>
                   </Box>
-                </Card>
+                </CardStyle>
                 <Menu
                   id="profile-menu"
                   anchorEl={state.anchorEl}
@@ -255,15 +249,15 @@ const AdminProfileSidebar: React.FC = () => {
                     </Button>
                   </MenuItem>
                 </Menu>
-              </div>
+                </div>
+              </Header>
               <div className="content">
                 <Outlet></Outlet>
               </div>
-            </Sheet>
-          </Sheet>
+            </Main>
+          </Layout>
         </CssVarsProvider>
       </MaterialCssVarsProvider>
-    </ThemeProvider>
   );
 };
 

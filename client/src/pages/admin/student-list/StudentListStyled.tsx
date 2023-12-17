@@ -13,7 +13,7 @@ export const StyledTable = styled(Table)`
 
   th,
   td {
-    border: 2px solid ${({ theme }) => theme.palette.primary.main};
+
     padding: 5px;
   }
 
@@ -59,7 +59,7 @@ export const HeadStudentList = styled('div')`
 export const TableContainer = styled(Sheet)`
   height: 500px;
   border: 1px solid ${({ theme }) => theme.palette.primary.main};
-  background-color: ${({ theme }) => theme.palette.background.default};
+  background-color: ${({ theme }) => theme.palette.main.bg};
   border-radius: 15px;  
   margin-top: 10px;
   padding: 20px;
@@ -67,39 +67,40 @@ export const TableContainer = styled(Sheet)`
 `;
 
 export const Theader = styled('thead')`
-  tr {
-    th {
-      z-index: 1 !important;
-      text-align: center;
-      padding: 10px;
-    }
-    td {
-    }
+tr {
+  th {
+    position: sticky;
+    left: 0;
+    z-index: 2 !important;
+    text-align: center;
+    padding: 10px;
+    border: none !important;
   }
+  td {
+    z-index: 1 !important;
+  }
+}
 `;
 
 export const Tbody = styled('tbody')`
-  img {
+ img {
     display: flex;
     align-items: center;
-    width: 40px;
-    height: 40px;
   }
   tr {
     align-items: center;
     justify-content: center;
     th {
+      position: sticky;
+      left: 0;
       padding: 10px;
       align-items: center;
       text-align: center;
-      
-    }
-    td {
-      padding: 10px;
+      vertical-align: middle;
+      font-weight: 500;
     }
   }
 `;
-
 export const StyledCheckbox = styled(Checkbox)`
   // Add your styles for Checkbox here
 `;
@@ -108,4 +109,3 @@ export const StyledModalDialog = styled(ModalDialog)`
   // Add your styles for ModalDialog here
 `;
 
-// Continue adding styled components for other Material-UI components as needed

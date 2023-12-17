@@ -17,16 +17,17 @@ const useStudentList = () => {
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const { user, editingUser,AddUser, setEditUser, handleInputChange, resetUser, handleInputEditChange } = useUserState();
 
- const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   
     const handleSearch = async () => {
-      await fetchUserList(); // You may want to clear previous search results
+      await fetchUserList();
       const searchData = await UserService.searchUsers(searchTerm);
       setListItems(searchData);
     };
 
   useEffect(() => {
     handleSearch();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm]); 
 
   const fetchUserList = useCallback(async () => {
