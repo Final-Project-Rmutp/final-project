@@ -71,18 +71,7 @@ const StudentList: React.FC = () => {
                     overflow: 'auto',
                     background: (
                       theme,
-                    ) => `linear-gradient(${theme.vars.palette.background.surface} 30%, rgba(255, 255, 255, 0)),
-                      linear-gradient(rgba(255, 255, 255, 0), ${theme.vars.palette.background.surface} 70%) 0 100%,
-                      radial-gradient(
-                        farthest-side at 50% 0,
-                        rgba(0, 0, 0, 0.12),
-                        rgba(0, 0, 0, 0)
-                      ),
-                      radial-gradient(
-                        farthest-side at 50% 100%,
-                        rgba(0, 0, 0, 0.12),
-                        rgba(0, 0, 0, 0)
-                      )
+                    ) => `linear-gradient(${theme.vars.palette.background.surface} ,
                       0 100%`,
                       backgroundSize:
                       '40px calc(100% - var(--TableCell-height)), 40px calc(100% - var(--TableCell-height)), 14px calc(100% - var(--TableCell-height)), 14px calc(100% - var(--TableCell-height))',
@@ -115,15 +104,15 @@ const StudentList: React.FC = () => {
                   }}
                   >
                     <Theader >
-                      <tr style={{backgroundColor:'red'}} >
-                        <th style={{ width: 100 }}>No</th>
+                      <tr >
+                        <th style={{ width: 50 }}>No</th>
                         <th style={{ width: 80}}>IMG</th>
                         <th style={{ width: 200 }}>FirstName</th>
                         <th style={{ width: 200 }}>LastName</th>
                         <th style={{ width: 200 }}>ID Card</th>
                         <th style={{ width: 200 }}>Student ID</th>
                         <th style={{ width: 200 }}>Account Type</th>
-                        <th style={{ width: 60 }}>Actions</th>
+                        <th style={{ width: 100 }}>Actions</th>
                         <th style={{ width: 200 }}>Active</th>
                       </tr>
                       <tr>
@@ -133,6 +122,10 @@ const StudentList: React.FC = () => {
                         <th></th>
                         <th>
                         <Input
+                            disabled={false}
+                            size="md"
+                            placeholder="Find data here..."
+                            variant="outlined"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                           />
@@ -180,7 +173,7 @@ const StudentList: React.FC = () => {
                             />  
                             </th>
                             <th>
-                              <Box sx={{ display: 'flex', gap: 1 }}>
+                              <Box sx={{ display: 'flex', gap: 1, justifyContent:'center', alignItems:'center' }}>
                                   <Button
                                     variant="outlined"
                                     color="warning"

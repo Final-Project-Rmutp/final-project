@@ -3,14 +3,12 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  ThemeProvider,
   Dialog,
   MenuItem,
   TextField,
 } from "@mui/material";
 
-import theme from "../../../styles/theme";
-import { Checkbox, Button, Sheet, Table, ModalDialog, Modal, Divider, FormControl, FormLabel, Stack, Input } from '@mui/joy';
+import { Checkbox, Button, Sheet, Table, ModalDialog, Modal, Divider, FormControl, FormLabel, Stack, Input, Box } from '@mui/joy';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import {
   Tbody,
@@ -54,76 +52,76 @@ const RoomList: React.FC = () => {
   } = useRoomList();
   
   return (
-    <ThemeProvider theme={theme}>
           <HeadStudentList>
             <TableContainer>
               <Sheet sx={{
                     '--TableCell-height': '40px',
                     // the number is the amount of the header rows.
                     '--TableHeader-height': 'calc(1 * var(--TableCell-height))',
-                    minWidth:800,
-                    height: 376,
+                    minWidth:600,
+                    height: 370,
                     overflow: 'auto',
-                    background: (
+                    ackground: (
                       theme,
-                    ) => `linear-gradient(${theme.vars.palette.background.surface} 30%, rgba(255, 255, 255, 0)),
-                      linear-gradient(rgba(255, 255, 255, 0), ${theme.vars.palette.background.surface} 70%) 0 100%,
-                      radial-gradient(
-                        farthest-side at 50% 0,
-                        rgba(0, 0, 0, 0.12),
-                        rgba(0, 0, 0, 0)
-                      ),
-                      radial-gradient(
-                          farthest-side at 50% 100%,
-                          rgba(0, 0, 0, 0.12),
-                          rgba(0, 0, 0, 0)
-                        )
-                        0 100%`,
-                    backgroundSize: '100% 40px, 100% 40px, 100% 14px, 100% 14px',
+                    ) => `linear-gradient(${theme.vars.palette.background.surface} ,
+                      0 100%`,
+                      backgroundSize:
+                      '40px calc(100% - var(--TableCell-height)), 40px calc(100% - var(--TableCell-height)), 14px calc(100% - var(--TableCell-height)), 14px calc(100% - var(--TableCell-height))',
                     backgroundRepeat: 'no-repeat',
                     backgroundAttachment: 'local, local, scroll, scroll',
                     backgroundPosition:
-                      '0 var(--TableHeader-height), 0 100%, 0 var(--TableHeader-height), 0 100%',
-                    backgroundColor: 'background.surface',
+                      'var(--Table-firstColumnWidth) var(--TableCell-height), calc(100% - var(--Table-lastColumnWidth)) var(--TableCell-height), var(--Table-firstColumnWidth) var(--TableCell-height), calc(100% - var(--Table-lastColumnWidth)) var(--TableCell-height)',
+                    backgroundColor: 'nav.bg',
                   }}>
-                  <Table className="table mb-0" stickyHeader 
+                  <Table className="table mb-0" 
+                  borderAxis="bothBetween"
+                  stickyHeader 
+                  hoverRow
+                  sx={{
+                    "--Table-headerUnderlineThickness": "1px",
+                    "--TableCell-paddingX": "10px",
+                    "--TableCell-paddingY": "7px",
+                    '& tr > *:first-of-type': {
+                      position: 'sticky',
+                      zIndex:1,
+                      left: 0,
+                      boxShadow: '1px 0 var(--TableCell-borderColor)',
+                      // bgcolor: 'background.surface',
+                    },
+                    '& tr > *:last-child': {
+                      position: 'sticky',
+                      right: 0,
+                      bgcolor: 'var(--TableCell-headBackground)',
+                    },
+                  }}
                   >
-                      <colgroup>
-                        <col style={{ minWidth: '43px' }}/>
-                        <col style={{ minWidth: '80px' }}/>
-                        <col style={{ minWidth: '176px' }}/>
-                        <col style={{ minWidth: '62px' }}/>
-                        <col style={{ minWidth: '176px' }}/>
-                        <col style={{ minWidth: '176px' }}/>
-                        <col style={{ minWidth: '220px' }}/>
-                      </colgroup>
                     <Theader >
                       <tr >
-                        <th className="py-2 ">No</th>
-                        <th className="py-2 "></th>
-                        <th className="py-2 "></th>
-                        <th className="py-2 ">Number</th>
-                        <th className="py-2 ">Type</th>
-                        <th className="py-2 ">Capacity</th>
-                        <th className="py-2 ">Facilities</th>
-                        <th className="py-2 ">Floor</th>
-                        <th className="py-2 ">Stauts</th>
+                        <th style={{ width: 50 }}>No</th>
+                        <th style={{ width: 100 }}>Number</th>
+                        <th style={{ width: 100 }}>Type</th>
+                        <th style={{ width: 50 }}>Capacity</th>
+                        <th style={{ width: 100 }}>Facilities</th>
+                        <th style={{ width: 50 }}>Floor</th>
+                        <th style={{ width: 100 }}>Stauts</th>
+                        <th style={{ width: 80 }}>Actions</th>
+                        <th style={{ width: 150 }}>Active</th>
                       </tr>
                       <tr>
                         <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
                         <th>
-                          <Checkbox
+                        <Checkbox
                             checked={selectAll}
                             onChange={handleSelectAll}
                             color="primary"
                           />
                         </th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
                         <th></th>
                       </tr>
                     </Theader>
@@ -132,6 +130,14 @@ const RoomList: React.FC = () => {
                           <tr className="text-center" key={item.id}>
                             <th>{(page - 1) * rowsPerPage + index + 1}</th>
                             <th>
+                                {item.room_number}
+                            </th>
+                            <th>{item.room_type}</th>
+                            <th>{item.room_capacity}</th>
+                            <th>{item.room_facilities}</th>
+                            <th>{item.room_level}</th>
+                            <th>{item.room_status}</th>
+                            <th>
                             <Checkbox
                               checked={selectedItems.includes(item.room_id)}
                               onChange={() => handleCheckboxChange(item.room_id)}
@@ -139,7 +145,7 @@ const RoomList: React.FC = () => {
                             />
                             </th>
                             <th>
-                              <div className="d-flex gap-1 justify-center">
+                            <Box sx={{ display: 'flex', gap: 1, justifyContent:'center', alignItems:'center' }}>
                                 <Button
                                   variant="outlined"
                                   color="warning"
@@ -157,16 +163,8 @@ const RoomList: React.FC = () => {
                                 >
                                   Delete
                                 </Button>
-                              </div>
+                              </Box>
                             </th>
-                            <th>
-                                {item.room_number}
-                            </th>
-                            <th>{item.room_type}</th>
-                            <th>{item.room_capacity}</th>
-                            <th>{item.room_facilities}</th>
-                            <th>{item.room_level}</th>
-                            <th>{item.room_status}</th>
                           </tr>
                         ))}
                     </Tbody>
@@ -385,7 +383,6 @@ const RoomList: React.FC = () => {
               </DialogActions>
             </Dialog>
           </HeadStudentList>
-    </ThemeProvider>
   );
 };
 
