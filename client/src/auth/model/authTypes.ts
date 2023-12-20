@@ -8,6 +8,7 @@ export interface UserData {
 }
 
 export interface ListItem {
+  updated: boolean;
   id: string;
   pin: string;
   firstname: string;
@@ -20,6 +21,7 @@ export interface ListItem {
 }
 
 export interface AdduserListItem {
+  id:string;
   pin: string;
   firstname: string;
   lastname: string;

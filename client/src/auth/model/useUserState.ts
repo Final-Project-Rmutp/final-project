@@ -13,6 +13,7 @@ const useUserState = () => {
     lastname: "",
     account_type: "",
     user_img_path: "" || null,
+    updated: false
   });
 
   const [reservedUser, setReservedUser] = useState<ReservedListItem>({
@@ -35,6 +36,7 @@ const useUserState = () => {
     lastname: "",
   });
   const [AddUser, setAddUser] = useState<AdduserListItem>({
+    id:"",
     pin: "",
     citizen_id: "",
     firstname: "",
@@ -49,7 +51,17 @@ const useUserState = () => {
       ...prevUser,
       [name]: value,
     }));
+    
   };
+
+  const handleSelectChange = (
+    event: React.ChangeEvent<{ value: unknown }>
+  ) => {
+    if (event) {
+      setAddUser({ ...AddUser, account_type: event.target.value as string });
+    }
+  };
+  
   const handleInputEditChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -71,6 +83,7 @@ const useUserState = () => {
       lastname: "",
       account_type: "",
       user_img_path: "" || null,
+      updated: false
     });
   };
 
@@ -83,6 +96,7 @@ const useUserState = () => {
     setAddUser,
     setEditUser,
     handleInputChange,
+    handleSelectChange,
     resetUser,
     handleInputEditChange,
     setUser,

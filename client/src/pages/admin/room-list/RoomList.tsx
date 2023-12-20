@@ -18,7 +18,8 @@ import {
 } from "../student-list/StudentListStyled";
 import useRoomList from "./useRoomList";
 import DeleteForever from "@mui/icons-material/DeleteForever";
-import CustomPagination from "../student-list/Pagination";
+import CustomPagination from "../../../shared/components/pagination/Pagination";
+
 
 const RoomList: React.FC = () => {
   const {

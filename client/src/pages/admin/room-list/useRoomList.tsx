@@ -13,11 +13,20 @@ const useRoomList = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
-  const { room, editingRoom, AddRoom, setEditRoom, handleInputChange, resetRoom, handleInputEditChange } = useRoomState();
+
+  const {
+    room,
+    editingRoom,
+    AddRoom,
+    setEditRoom,
+    handleInputChange,
+    resetRoom,
+    handleInputEditChange,
+  } = useRoomState();
 
   const fetchRoomList = useCallback(async () => {
     try {
-      const response = await RoomService.getAllRoom({ page: page, pageSize: rowsPerPage });
+      const response = await RoomService.getAllRoom({ page, pageSize: rowsPerPage });
       setListItems(response);
     } catch (error) {
       console.error("Error fetching room response:", error);
@@ -32,52 +41,39 @@ const useRoomList = () => {
     setSelectAll(!selectAll);
     setSelectedItems(selectAll ? [] : listItems.map((item) => item.room_id));
   };
-  
+
   const handleCheckboxChange = (itemId: string) => {
-    setSelectedItems((prevSelected) => {
-      if (prevSelected.includes(itemId)) {
-        return prevSelected.filter((id) => id !== itemId);
-      } else {
-        return [...prevSelected, itemId];
-      }
-    });
+    setSelectedItems((prevSelected) =>
+      prevSelected.includes(itemId)
+        ? prevSelected.filter((id) => id !== itemId)
+        : [...prevSelected, itemId]
+    );
   };
-  const handleDelete = async (room_id: string) => {
+
+  const handleDelete = async (roomId: string) => {
     await fetchRoomList();
-    setItemToDelete(room_id);
+    setItemToDelete(roomId);
     setDeleteDialogOpen(true);
   };
 
   const handleDeleteConfirmed = async () => {
-    if (itemToDelete !== null) {
-      try {
+    try {
+      if (itemToDelete !== null) {
         await RoomService.deleteRoom(itemToDelete);
-        const updatedList = listItems.filter(
-          (item) => item.id !== itemToDelete
-        );
+        const updatedList = listItems.filter((item) => item.room_id !== itemToDelete);
         setListItems(updatedList);
         setItemToDelete(null);
-      } catch (error) {
-        console.error("Error deactivating room:", error);
-      }
-    } else {
-      try {
-        await Promise.all(
-          selectedItems.map(async (id) => {
-            await RoomService.deleteRoom(id);
-          })
-        );
-        const updatedList = listItems.filter(
-          (item) => !selectedItems.includes(item.id)
-        );
+      } else {
+        await Promise.all(selectedItems.map(async (id) => RoomService.deleteRoom(id)));
+        const updatedList = listItems.filter((item) => !selectedItems.includes(item.room_id));
         setListItems(updatedList);
         setSelectedItems([]);
-      } catch (error) {
-        console.error("Error deactivating rooms:", error);
       }
+      await fetchRoomList();
+      setDeleteDialogOpen(false);
+    } catch (error) {
+      console.error("Error deactivating room(s):", error);
     }
-    await fetchRoomList();
-    setDeleteDialogOpen(false);
   };
 
   const handleDeleteAll = () => {
@@ -87,27 +83,12 @@ const useRoomList = () => {
   const handleEditConfirmed = async () => {
     if (editingRoom) {
       try {
-        const updatedRoomData = {
-          id: editingRoom.id,
-          room_id: editingRoom.room_id,
-          room_number: editingRoom.room_number,
-          room_type: editingRoom.room_type,
-          room_capacity: editingRoom.room_capacity,
-          room_facilities: editingRoom.room_facilities,
-          room_level: editingRoom.room_level,
-          room_status: editingRoom.room_status,
-        };
-
-        const response = await RoomService.updateRoom(
-          editingRoom.room_id,
-          updatedRoomData
-        );
-
+        const response = await RoomService.updateRoom(editingRoom.room_id, { ...editingRoom });
         if (response.status === 200) {
           console.log("Room updated successfully:", response.data);
           setEditRoom({
             id: "",
-            room_id:"",
+            room_id: "",
             room_number: "",
             room_type: "",
             room_capacity: "",
@@ -125,16 +106,9 @@ const useRoomList = () => {
       setEditDialogOpen(false);
     }
   };
+
   const handleAddConfirmed = async () => {
     try {
-      const formData = new FormData();
-      formData.append("room_number", room.room_number);
-      formData.append("room_type", room.room_type);
-      formData.append("room_capacity", room.room_capacity);
-      formData.append("room_facilities", room.room_facilities);
-      formData.append("room_levele", room.room_level);
-      formData.append("room_status", room.room_status);
-
       const response = await RoomService.addRoom(AddRoom);
       console.log("API Response:", response);
       await fetchRoomList();
@@ -144,20 +118,10 @@ const useRoomList = () => {
       console.error("Error adding room:", error);
     }
   };
+
   const handleCloseDeleteDialog = () => {
     setDeleteDialogOpen(false);
   };
-
-  // const handleChangePage = (_event: unknown, newPage: number) => {
-  //   setPage(newPage);
-  // };
-
-  // const handleChangeRowsPerPage = (
-  //   event: React.ChangeEvent<HTMLInputElement>
-  // ) => {
-  //   setRowsPerPage(parseInt(event.target.value, 10));
-  //   setPage(0);
-  // };
 
   const handleEdit = (room: RoomListActionItem) => {
     setEditRoom(room);
@@ -175,14 +139,14 @@ const useRoomList = () => {
 
   const handleCloseEditDialog = () => {
     setEditRoom({
-        id: "",
-        room_id:"",
-        room_number: "",
-        room_type: "",
-        room_capacity: "",
-        room_facilities: "",
-        room_level: "",
-        room_status: "",
+      id: "",
+      room_id: "",
+      room_number: "",
+      room_type: "",
+      room_capacity: "",
+      room_facilities: "",
+      room_level: "",
+      room_status: "",
     });
     setEditDialogOpen(false);
   };
@@ -191,12 +155,13 @@ const useRoomList = () => {
     setPage(newPage);
     await fetchRoomList();
   };
-  
+
   const handleChangeRowsPerPage = (newRowsPerPage: number) => {
     setRowsPerPage(newRowsPerPage);
-    setPage(1); 
+    setPage(1);
     fetchRoomList();
   };
+
   return {
     listItems,
     selectAll,

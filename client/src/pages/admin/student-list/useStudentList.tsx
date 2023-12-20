@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback } from "react";
 import UserService from "../../../auth/service/UserService";
 import useUserState from "../../../auth/model/useUserState";
 import { ListItem, UserData } from "../../../auth/model/authTypes";
+import React from "react";
+
 const useStudentList = () => {
   const [listItems, setListItems] = useState<ListItem[]>([]);
   const [selectAll, setSelectAll] = useState(false);
@@ -11,37 +13,54 @@ const useStudentList = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
   const [userImage, setUserImage] = useState<File | null>(null);
-
   const [editDialogOpen, setEditDialogOpen] = useState(false);
-
   const [addDialogOpen, setAddDialogOpen] = useState(false);
-  const { user, editingUser,AddUser, setEditUser, handleInputChange, resetUser, handleInputEditChange } = useUserState();
 
-  const [searchTerm, setSearchTerm] = useState('');
+  const {
+    user,
+    editingUser,
+    AddUser,
+    setEditUser,
+    setAddUser,
+    handleInputChange,
+    handleSelectChange,
+    resetUser,
+    handleInputEditChange
+  } = useUserState();
   
-    const handleSearch = async () => {
-      await fetchUserList();
+  const [searchTerm, setSearchTerm] = React.useState('');
+
+
+  const markItemAsUpdated = (itemId: string) => {
+    setListItems(prevListItems => 
+      prevListItems.map(item => 
+        item.id === itemId ? { ...item, updated: true } : item
+      )
+    );
+    
+  };
+
+
+  const handleSearch = useCallback(async () => {
+    if (searchTerm.trim() !== '') {
       const searchData = await UserService.searchUsers(searchTerm);
       setListItems(searchData);
-    };
-
-  useEffect(() => {
-    handleSearch();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchTerm]); 
+    }
+  }, [searchTerm]);
 
   const fetchUserList = useCallback(async () => {
-    try {
-      const response = await UserService.getAllUsers({ page: page, pageSize: rowsPerPage });
-      setListItems(response);
-    } catch (error) {
-      console.error("Error fetching user response:", error);
-    }
+    const response = await UserService.getAllUsers({ page, pageSize: rowsPerPage });
+    setListItems(response);
   }, [page, rowsPerPage]);
 
   useEffect(() => {
-    fetchUserList();
-  }, [fetchUserList]);
+    const fetchData = async () => {
+      await Promise.all([fetchUserList(), handleSearch()]);
+      setListItems((items) => items.map((item) => ({ ...item, updated: false })));
+    };
+
+    fetchData();
+  }, [fetchUserList, handleSearch]);
 
   const handleAdd = () => {
     resetUser();
@@ -55,48 +74,30 @@ const useStudentList = () => {
   };
 
   const handleCloseEditDialog = () => {
-    setEditUser({
-      id: "",
-      pin: "",
-      citizen_id: "",
-      firstname: "",
-      lastname: "",
-    });
+    setEditUser(initialUserState);
     setEditDialogOpen(false);
   };
 
   const handleEditConfirmed = async () => {
     if (editingUser) {
-      try {
-        const updatedUserData = {
-          id: editingUser.id,
-          pin: editingUser.pin,
-          citizen_id: editingUser.citizen_id,
-          firstname: editingUser.firstname,
-          lastname: editingUser.lastname,
-        };
+      const updatedUserData = {
+        id: editingUser.id,
+        pin: editingUser.pin,
+        citizen_id: editingUser.citizen_id,
+        firstname: editingUser.firstname,
+        lastname: editingUser.lastname,
+      };
 
-        const response = await UserService.updateUser(
-          editingUser.id,
-          updatedUserData
-        );
+      const response = await UserService.updateUser(
+        editingUser.id,
+        updatedUserData
+      );
 
-        if (response.status === 200) {
-          console.log("User updated successfully:", response.data);
-          setEditUser({
-            id: "",
-            pin: "",
-            citizen_id: "",
-            firstname: "",
-            lastname: "",
-          });
-        } else {
-          console.error("Failed to update user:", response.data);
-        }
-      } catch (error) {
-        console.error("Error updating user:", error);
+      if (response.status === 200) {
+        setEditUser(initialUserState);
       }
       await fetchUserList();
+      markItemAsUpdated(editingUser.id);
       setEditDialogOpen(false);
     }
   };
@@ -107,33 +108,30 @@ const useStudentList = () => {
   };
 
   const handleAddConfirmed = async () => {
-    try {
-      const formData = new FormData();
-      formData.append("pin", user.pin);
-      formData.append("citizen_id", user.citizen_id);
-      formData.append("firstname", user.firstname);
-      formData.append("lastname", user.lastname);
-      formData.append("account_type", user.account_type);
-      if (userImage) {
+    const formData = new FormData();
+    formData.append("pin", user.pin);
+    formData.append("citizen_id", user.citizen_id);
+    formData.append("firstname", user.firstname);
+    formData.append("lastname", user.lastname);
+    formData.append("account_type", user.account_type);
+    if (userImage) {
       formData.append("image", userImage);
     }
-      const response = await UserService.addUser(AddUser);
-      console.log("API Response:", response);
-      await fetchUserList();
-      setAddDialogOpen(false);
-      resetUser();
-      setUserImage(null); 
-    } catch (error) {
-      console.error("Error adding user:", error);
-    }
+
+    await UserService.addUser(AddUser);
+    await fetchUserList();
+    setAddDialogOpen(false);
+    resetUser();
+    setUserImage(null);
   };
+
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files && files.length > 0) {
       setUserImage(files[0]);
     }
   };
-  
+
   const handleSelectAll = () => {
     setSelectAll(!selectAll);
     setSelectedItems(selectAll ? [] : listItems.map((item) => item.id));
@@ -156,19 +154,15 @@ const useStudentList = () => {
   };
 
   const handleDeleteConfirmed = async () => {
-    if (itemToDelete !== null) {
-      try {
+    try {
+      if (itemToDelete !== null) {
         await UserService.deactivateUser(itemToDelete);
         const updatedList = listItems.filter(
           (item) => item.id !== itemToDelete
         );
         setListItems(updatedList);
         setItemToDelete(null);
-      } catch (error) {
-        console.error("Error deactivating user:", error);
-      }
-    } else {
-      try {
+      } else {
         await Promise.all(
           selectedItems.map(async (id) => {
             await UserService.deactivateUser(id);
@@ -179,12 +173,13 @@ const useStudentList = () => {
         );
         setListItems(updatedList);
         setSelectedItems([]);
-      } catch (error) {
-        console.error("Error deactivating users:", error);
       }
+      await fetchUserList();
+    } catch (error) {
+      console.error("Error deactivating user(s):", error);
+    } finally {
+      setDeleteDialogOpen(false);
     }
-    await fetchUserList();
-    setDeleteDialogOpen(false);
   };
 
   const handleDeleteAll = () => {
@@ -199,19 +194,20 @@ const useStudentList = () => {
     setPage(newPage);
     await fetchUserList();
   };
-  
+
   const handleChangeRowsPerPage = (newRowsPerPage: number) => {
     setRowsPerPage(newRowsPerPage);
-    setPage(1); // Reset page to 1 when changing rowsPerPage
+    setPage(1);
     fetchUserList();
   };
-  
-  // const handleChangeRowsPerPage = (
-  //   event: React.ChangeEvent<HTMLInputElement>
-  // ) => {
-  //   setRowsPerPage(parseInt(event.target.value, 10));
-  //   setPage(0);
-  // };
+
+  const initialUserState: UserData = {
+    id: "",
+    pin: "",
+    citizen_id: "",
+    firstname: "",
+    lastname: "",
+  };
 
   return {
     listItems,
@@ -227,12 +223,14 @@ const useStudentList = () => {
     AddUser,
     editingUser,
     searchTerm,
+    setAddUser,
     setSearchTerm,
     handleSearch,
     setEditUser,
     handleInputChange,
     handleImageChange,
     resetUser,
+    handleSelectChange,
     handleInputEditChange,
     fetchUserList,
     handleAdd,
@@ -249,7 +247,9 @@ const useStudentList = () => {
     handleCloseDeleteDialog,
     handleChangePage,
     handleChangeRowsPerPage,
+    markItemAsUpdated
   };
 };
 
 export default useStudentList;
+

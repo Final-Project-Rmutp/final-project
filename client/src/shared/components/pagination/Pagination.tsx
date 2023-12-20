@@ -34,7 +34,7 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
         Page {page} of {totalPages}
       </Typography>
       <Button
-        variant="outlined"
+        variant="solid"
         color="primary"
         onClick={() => handlePageChange(page - 1)}
         disabled={page === 1}
@@ -42,7 +42,7 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
         Previous
       </Button>
       <Button
-        variant="outlined"
+        variant="solid"
         color="primary"
         onClick={() => handlePageChange(page + 1)}
         disabled={page === totalPages}
