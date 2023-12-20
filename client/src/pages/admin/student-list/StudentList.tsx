@@ -12,7 +12,7 @@ import {
   FormLabel,
   Stack,
   Input,
-  Avatar,
+  // Avatar,
   Box,
   Select,
   Option,
@@ -30,6 +30,8 @@ import useStudentList from "./useStudentList";
 import CustomPagination from "../../../shared/components/pagination/Pagination";
 import { VisuallyHiddenInput } from "./StudentListStyled";
 // import { Icon } from '@iconify/react';
+import { ListItem } from "../../../auth/model/authTypes";
+
 const StudentList: React.FC = () => {
   const {
     listItems,
@@ -300,6 +302,10 @@ const StudentList: React.FC = () => {
         </ModalDialog>
     </Modal>
   );
+
+  const randomImageNumber = Math.floor(Math.random() * 1000) + 1;
+  const [clickedImageUrl, setClickedImageUrl] = React.useState<string | null>(null);
+  const [selectedItem, setSelectedItem] = React.useState<ListItem | null>(null);
   return (
     <HeadStudentList>
       <TableContainer>
@@ -352,7 +358,11 @@ const StudentList: React.FC = () => {
           >
             <TableHeaderRows />
             <Tbody>
-              {listItems.map((item, index) => (
+            {listItems.map((item, index) => {
+                const rowRandomImageNumber = randomImageNumber + index;
+                const rowRandomImageUrl = `https://xsgames.co/randomusers/avatar.php?g=pixel&=${rowRandomImageNumber}`;
+
+                return (
                 <tr
                   key={item.id}
                   style={{ borderRadius: item.updated ? "10px" : "" }}
@@ -361,19 +371,23 @@ const StudentList: React.FC = () => {
                     {(page - 1) * rowsPerPage + index + 1}
                   </th>
                   <th style={rowStyle(item)}>
-                    {/* <img
-                                src={`https://picsum.photos/60/60?random=${item.id}`}
-                                alt={`User ${item.id}`}
-                                width="50"
-                                height="50"
-                                src={item.user_img_path ?? ''}
-                              /> */}
-                    <div className="d-flex justify-content-center align-items-center">
+                    <img
+                      src={rowRandomImageUrl}
+                      alt={`User ${item.id}`}
+                      width="50"
+                      height="50"
+                      onClick={() => {
+                        setClickedImageUrl(rowRandomImageUrl);
+                        setSelectedItem(item);
+                      }}
+                       // src={item.user_img_path ?? ''}
+                    />
+                    {/* <div className="d-flex justify-content-center align-items-center">
                       <Avatar
                         src={item.user_img_path ?? ""}
                         sx={{ zIndex: 0 }}
                       />
-                    </div>
+                    </div> */}
                   </th>
                   <th style={rowStyle(item)}>{item.firstname}</th>
                   <th style={rowStyle(item)}>{item.lastname}</th>
@@ -419,8 +433,9 @@ const StudentList: React.FC = () => {
                       </Button>
                     </Box>
                   </th>
-                </tr>
-              ))}
+                  </tr>
+                );
+              })}
             </Tbody>
           </Table>
           <Modal open={deleteDialogOpen} onClose={handleCloseDeleteDialog}>
@@ -508,6 +523,26 @@ const StudentList: React.FC = () => {
       open={addDialogOpen} 
       onClose={handleCloseAddDialog} 
       onConfirm={handleAddConfirmed} />
+      <Modal
+        open={!!clickedImageUrl}
+        onClose={() => setClickedImageUrl(null)}
+      >
+        <ModalDialog
+                size="lg"
+                variant="outlined"
+                layout="center"
+                color="primary">
+          <DialogTitle>{selectedItem && selectedItem.firstname}</DialogTitle>
+          <DialogContent>
+            {clickedImageUrl && (
+              <img src={clickedImageUrl} alt="Full-size" style={{ width: '100%',height: '100%' }} />
+            )}
+          </DialogContent>
+          <DialogActions>
+            {/* <Button onClick={() => setClickedImageUrl(null)}>Close</Button> */}
+          </DialogActions>
+        </ModalDialog>
+        </Modal>
     </HeadStudentList>
   );
 };

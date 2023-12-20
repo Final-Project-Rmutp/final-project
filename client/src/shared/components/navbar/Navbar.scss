@@ -213,8 +213,6 @@ body {
   }
   .sidebar {
     border-radius: 20px;
-    // border: 2px solid #C684FF;
-    // background: var(--bg-left);
     &.closed {
       transform: translateX(-95%);
       .icon {
