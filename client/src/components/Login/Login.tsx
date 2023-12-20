@@ -47,7 +47,6 @@ const Login: React.FC = () => {
     try {
       if (!loginData.citizen_id.trim() || !loginData.pin.trim()) {
         if (!loginData.citizen_id.trim()) {
-          
           toast.error("ID Student is required");
         }
         if (!loginData.pin.trim()) {
@@ -55,26 +54,21 @@ const Login: React.FC = () => {
         }
         setErrorMessages({
           username: !loginData.citizen_id.trim() ? "ID Student is required" : "",
-          password: !loginData.pin.trim()
-            ? "ID Card is required"
-            : "",
+          password: !loginData.pin.trim() ? "ID Card is required" : "",
           general: "Username and password are required",
         });
         setLoading(false);
         return;
       }
-      
 
       const response = await axios.post(`${apiUrl}/auth/login`, loginData);
 
-      if (response.data && response.data.token) {
+      if (response.status === 200 && response.data && response.data.token) {
         setLoading(true);
         const { token, account_role } = response.data;
         localStorage.setItem("token", token);
         localStorage.setItem("role", account_role);
 
-
-        /////////// remember
         if (loginData.rememberMe && loginData.pin.trim() && loginData.citizen_id.trim()) {
           localStorage.setItem("username", loginData.pin);
           localStorage.setItem("password", loginData.citizen_id);
@@ -84,8 +78,6 @@ const Login: React.FC = () => {
         }
         toast.success("Login Success");
 
-
-        /////////////////// check role
         setTimeout(() => {
           setLoading(false);
           if (account_role === "admin") {

@@ -1,51 +1,51 @@
 
-# /package-lock.json
+/package-lock.json
 
 
-# See http://help.github.com/ignore-files/ for more about ignoring files.
+See http://help.github.com/ignore-files/ for more about ignoring files.
 
-# compiled output
-# /tmp
-# /out-tsc
-# # Only exists if Bazel was run
-# /bazel-out
+compiled output
+/tmp
+/out-tsc
+# Only exists if Bazel was run
+/bazel-out
 
-# dependencies
+dependencies
 /node_modules/
 
-# profiling files
-# chrome-profiler-events*.json
+profiling files
+chrome-profiler-events*.json
 
-# # IDEs and editors
-# /.idea
-# .project
-# .classpath
-# .c9/
-# *.launch
-# .settings/
-# *.sublime-workspace
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
 
-# IDE - VSCode
-# .vscode/*
-# !.vscode/settings.json
-# !.vscode/tasks.json
-# !.vscode/launch.json
-# !.vscode/extensions.json
-# .history/*
+IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
 
-# # misc
-# /.angular/cache
-# /.sass-cache
-# /connect.lock
-# /coverage
-# /libpeerconnection.log
-# npm-debug.log
-# yarn-error.log
-# testem.log
-# /typings
+# misc
+/.angular/cache
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
 
-# # System Files
-# .DS_Store
-# Thumbs.db
+# System Files
+.DS_Store
+Thumbs.db
 
 

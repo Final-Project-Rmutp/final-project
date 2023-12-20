@@ -5,7 +5,6 @@ import {
   Route,
 } from "react-router-dom";
 import Login from "./components/Login/Login";
-// import Room from "./pages/room/Room";
 import { AuthProvider } from "./auth/AuthContext";
 import "./input.scss";
 import * as React from 'react';
@@ -15,7 +14,10 @@ import UnAuthenticatedRoute from "./auth/UnAuthenticatedRoute";
 import { Toaster} from 'sonner'
 
 // import CssBaseline from '@mui/material/CssBaseline';
-import User from "./pages/student/student";
+// import User from "./pages/student/student";
+
+////user 
+import Room from "./pages/room/Room";
 
 
 ////admin
@@ -44,7 +46,7 @@ const App: React.FC = () => {
                 path="/user"
                 element={
                   <AuthenticatedRoute>
-                    <User />
+                    <Room />
                   </AuthenticatedRoute>
                 }
               />
