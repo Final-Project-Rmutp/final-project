@@ -169,7 +169,6 @@ body {
     height: var(--header-height);
     line-height: var(--header-height);
     font-size: var(--header-height);
-    text-align: center;
     user-select: none;
     cursor: pointer;
     left: var(--icon-left-open);
@@ -203,10 +202,9 @@ body {
     height: var(--header-height);
     line-height: var(--header-height);
     font-size: var(--header-height);
-    text-align: center;
     user-select: none;
     cursor: pointer;
-    top: -6px;
+    top: -20px;
     left: var(--icon-left);
     transition: 0.4s;
 

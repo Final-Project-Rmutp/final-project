@@ -10,7 +10,6 @@ import {
   IconButton,
   Container,
 } from "@mui/joy";
-import { Icon } from '@iconify/react';
 import { MenuItems, MenuItemLinks } from "../../../styles/global";
 import { SidebarData } from "./SidebarData";
 import "./Navbar.scss";
@@ -29,6 +28,7 @@ import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import CssBaseline from '@mui/joy/CssBaseline';
 import UserService from "../../../auth/service/UserService";
 import { CardStyle, Header, Layout, Left, Main, Sidebar } from "./NavbarStyled";
+import Hamburger from "./Hamburger";
 
 interface LayoutState {
   leftOpen: boolean;
@@ -149,6 +149,8 @@ const AdminProfileSidebar: React.FC = () => {
       return null;
     }
 
+
+
     return (
       <IconButton
         id="toggle-mode"
@@ -168,15 +170,17 @@ const AdminProfileSidebar: React.FC = () => {
   }
 
   const materialTheme = materialExtendTheme();
-
+  const handleHamburgerClick = (event: MouseEvent<HTMLDivElement>) => {
+    toggleSidebar(event)
+  };
   return (
       <MaterialCssVarsProvider theme={{ [MATERIAL_THEME_ID]: materialTheme }}>
         <CssVarsProvider theme={theme}>
           <CssBaseline />
           <Layout id="layout">
-            <Left id="left" className={leftOpen}>
-              <div className="icon" onClick={toggleSidebar}>
-                <p><Icon icon="solar:hamburger-menu-bold-duotone" color="#9A9EEC" /></p>
+            <Left id="left" className={state.leftOpen ? "open" : "closed"}>
+              <div className="icon" onClick={handleHamburgerClick}>
+              <Hamburger isActive={state.leftOpen} onClick={toggleSidebar} />
               </div>
               <Sidebar className={`sidebar ${leftOpen}`}
               >
@@ -192,7 +196,7 @@ const AdminProfileSidebar: React.FC = () => {
                         to={item.path}
                         onClick={() => handleTabChange(item.title)}
                       >
-                        {item.icon}
+                        <span className="size-icon">{item.icon}</span> 
                         <Typography level="h4" style={{ marginLeft: "16px" }}>{item.title}</Typography>
                       </MenuItemLinks>
                     </MenuItems>

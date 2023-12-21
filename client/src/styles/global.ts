@@ -62,14 +62,35 @@ export const MenuItemLinks = styled(Link)`
   font-size: 20px;
   text-decoration: none;
   color: #ffffff;
-  
+  transition: all 0.2s ease;
+  border-radius: 20px;
+
+
   &:hover {
     width: 100%;
     height: 45px;
     text-align: center;
     margin: 0 0.5rem;
-    .MuiTypography-h4{
-      color:#E418F5;
+    padding:1rem;
+    border-radius: 20px;
+    .MuiTypography-h4 {
+      font-size: 25px;
+    }
+    .size-icon{
+      font-size: 35px;
+    }
+  }
+
+  &:focus,
+  &:active {
+    width: 100%;
+    height: 45px;
+    text-align: center;
+    margin: 0 0.5rem;
+    // border:1px solid #6167C9;
+    .MuiTypography-h4 {
+      font-size: 25px;
+      color: #6167C9;
     }
   }
 `;
