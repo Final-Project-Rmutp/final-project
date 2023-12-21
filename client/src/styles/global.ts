@@ -62,16 +62,15 @@ export const MenuItemLinks = styled(Link)`
   font-size: 20px;
   text-decoration: none;
   color: #ffffff;
-
+  
   &:hover {
-    background-color: #E5D1FA;
-    color: #424874;
-    border:1px solid #424874;
     width: 100%;
     height: 45px;
     text-align: center;
-    border-radius: 13px;
-    margin: 0 2rem;
+    margin: 0 0.5rem;
+    .MuiTypography-h4{
+      color:#E418F5;
+    }
   }
 `;
 
