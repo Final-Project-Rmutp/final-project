@@ -156,15 +156,15 @@ async function updateUser(req, res) {
 // Search from pin,citizen_id
 async function searchuser(req, res) {
     const search = req.body.search;
+    const activeaccount = 1; // active account = 1 // inactive account = 2
     try 
     {
      const Query = `SELECT id, firstname, lastname, citizen_id, pin, account_type, user_img_path
                     FROM "user"
-                    WHERE pin LIKE '%' || $1 || '%' OR citizen_id LIKE '%' || $1 || '%'
+                    WHERE account_status = $2 AND (pin LIKE '%' || $1 || '%' OR citizen_id LIKE '%' || $1 || '%')
                     `;
-    const values = [search];   
+    const values = [search , activeaccount];   
     const result = await client.query(Query, values);
-    console.log(result);
     res.status(200).json(result.rows); 
     } catch (err) 
     {

@@ -58,7 +58,7 @@ app.use("/logs", LogsRoute)
           url:'http://localhost:5000/',
         },
         {
-          url:'http://3.1.195.56:5000/',
+          url:'http://54.169.85.51:5000/',
         },
     ],
     },
