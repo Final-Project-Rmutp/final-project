@@ -24,6 +24,7 @@ import Room from "./pages/room/Room";
 import StudentList from "./pages/admin/student-list/StudentList";
 import ReservedList from "./pages/admin/reserved-list/ReservedList";
 import RoomList from "./pages/admin/room-list/RoomList";
+import UserProfileSidebar from "./shared/components/navbar-user/UserNavbar";
 
 
 const App: React.FC = () => {
@@ -43,14 +44,15 @@ const App: React.FC = () => {
               />
 
               <Route
-                path="/user"
+                path="user"
                 element={
                   <AuthenticatedRoute>
-                    <Room />
+                    <UserProfileSidebar />
                   </AuthenticatedRoute>
                 }
-              />
-
+              >
+                <Route path="room-user" element={<Room />} />
+              </Route>
               <Route
                 path="admin"
                 element={

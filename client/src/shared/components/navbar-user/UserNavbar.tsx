@@ -11,24 +11,31 @@ import {
   Container,
 } from "@mui/joy";
 import { MenuItems, MenuItemLinks } from "../../../styles/global";
-import { SidebarData } from "./SidebarData";
-import "./Navbar.scss";
+import { UserSidebarData } from "./UserSidebarData";
+import "../navbar/Navbar.scss";
 import { Outlet, useNavigate } from "react-router";
-import { toast } from 'sonner';
+import { toast } from "sonner";
 import theme from "../../../styles/theme";
 import {
   experimental_extendTheme as materialExtendTheme,
   Experimental_CssVarsProvider as MaterialCssVarsProvider,
-  THEME_ID as MATERIAL_THEME_ID
-} from '@mui/material/styles';
+  THEME_ID as MATERIAL_THEME_ID,
+} from "@mui/material/styles";
 
-import { CssVarsProvider, useColorScheme } from '@mui/joy/styles';
-import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
-import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
-import CssBaseline from '@mui/joy/CssBaseline';
+import { CssVarsProvider, useColorScheme } from "@mui/joy/styles";
+import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
+import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
+import CssBaseline from "@mui/joy/CssBaseline";
 import UserService from "../../../auth/service/UserService";
-import { CardStyle, Header, Layout, Left, Main, Sidebar } from "./NavbarStyled";
-import Hamburger from "./Hamburger";
+import {
+  CardStyle,
+  Header,
+  Layout,
+  Left,
+  Main,
+  Sidebar,
+} from "../navbar/NavbarStyled";
+import Hamburger from "../navbar/Hamburger";
 
 interface LayoutState {
   leftOpen: boolean;
@@ -37,7 +44,7 @@ interface LayoutState {
   anchorEl: null | HTMLElement;
 }
 
-const AdminProfileSidebar: React.FC = () => {
+const UserProfileSidebar: React.FC = () => {
   const navigate = useNavigate();
 
   const [state, setState] = useState<LayoutState>({
@@ -66,7 +73,6 @@ const AdminProfileSidebar: React.FC = () => {
       }));
     }
   };
-  
 
   const handleTabChange = (tab: string) => {
     setState((prevState) => ({
@@ -79,7 +85,7 @@ const AdminProfileSidebar: React.FC = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userRole");
     navigate("/");
-    toast.success('Logout Successful');
+    toast.success("Logout Successful");
   };
 
   useEffect(() => {
@@ -105,7 +111,10 @@ const AdminProfileSidebar: React.FC = () => {
   useEffect(() => {
     const handleClickOutside: EventListener = (event: Event) => {
       const mouseEvent = event as unknown as MouseEvent;
-      if (state.anchorEl && !state.anchorEl.contains(mouseEvent.target as Node)) {
+      if (
+        state.anchorEl &&
+        !state.anchorEl.contains(mouseEvent.target as Node)
+      ) {
         handleClose();
       }
     };
@@ -118,8 +127,6 @@ const AdminProfileSidebar: React.FC = () => {
   }, [state.anchorEl, handleClose]);
 
   const leftOpen = state.leftOpen ? "open" : "closed";
-  // const randomImageNumber = Math.floor(Math.random() * 1000) + 1;
-  // const randomImageUrl = `https://picsum.photos/200/200?random=${randomImageNumber}`;
   const [userProfile, setUserProfile] = useState({
     firstname: "",
     user_img_path: "null",
@@ -149,75 +156,78 @@ const AdminProfileSidebar: React.FC = () => {
       return null;
     }
 
-
-
     return (
       <IconButton
         id="toggle-mode"
         size="lg"
         variant="soft"
         color="neutral"
-        onClick={() => setMode(mode === 'dark' ? 'light' : 'dark')}
+        onClick={() => setMode(mode === "dark" ? "light" : "dark")}
         sx={{
           zIndex: 999,
-          borderRadius: '50%',
-          boxShadow: 'sm',
+          borderRadius: "50%",
+          boxShadow: "sm",
         }}
       >
-        {mode === 'light' ? <DarkModeRoundedIcon /> : <LightModeRoundedIcon />}
+        {mode === "light" ? <DarkModeRoundedIcon /> : <LightModeRoundedIcon />}
       </IconButton>
     );
   }
 
   const materialTheme = materialExtendTheme();
   const handleHamburgerClick = (event: MouseEvent<HTMLDivElement>) => {
-    toggleSidebar(event)
+    toggleSidebar(event);
   };
   return (
-      <MaterialCssVarsProvider theme={{ [MATERIAL_THEME_ID]: materialTheme }}>
-        <CssVarsProvider theme={theme}>
-          <CssBaseline />
-          <Layout id="layout" data-left={state.leftOpen ? 'open' : 'closed'}>
-            <Left id="left" className={state.leftOpen ? "open" : "closed"}>
-              <div className="icon" onClick={handleHamburgerClick}>
+    <MaterialCssVarsProvider theme={{ [MATERIAL_THEME_ID]: materialTheme }}>
+      <CssVarsProvider theme={theme}>
+        <CssBaseline />
+        <Layout
+          id="layout"
+          data-left={state.leftOpen ? "open" : "closed"}
+          style={{ position: "relative" }}
+        >
+          <Left id="left" className={state.leftOpen ? "open" : "closed"}>
+            <div className="icon" onClick={handleHamburgerClick}>
               <Hamburger isActive={state.leftOpen} onClick={toggleSidebar} />
-              </div>
-              <Sidebar className={`sidebar ${leftOpen}`}
-              >
-                <div className="header-left">
-                  <div className="logo-header">
-                    <Typography level="h2">LOGO</Typography>
-                  </div>
+            </div>
+            <Sidebar className={`sidebar ${leftOpen}`}>
+              <div className="header-left">
+                <div className="logo-header">
+                  <Typography level="h2">LOGO</Typography>
                 </div>
-                <Container className="content">
-                  {SidebarData.map((item, index) => (
-                    <MenuItems key={index}>
-                      <MenuItemLinks
-                        to={item.path}
-                        onClick={() => handleTabChange(item.title)}
-                      >
-                        <span className="size-icon">{item.icon}</span> 
-                        <Typography level="h4" style={{ marginLeft: "16px" }}>{item.title}</Typography>
-                      </MenuItemLinks>
-                    </MenuItems>
-                  ))}
-                </Container>
-              </Sidebar>
-            </Left>
-            <Main id="main">
-              <Header className="header">
-                <div className="item-header">
-                <CardStyle
-                  onClick={handleMenuClick}
-                >
+              </div>
+              <Container className="content">
+                {UserSidebarData.map((item, index) => (
+                  <MenuItems key={index}>
+                    <MenuItemLinks
+                      to={item.path}
+                      onClick={() => handleTabChange(item.title)}
+                    >
+                      <span className="size-icon">{item.icon}</span>
+                      <Typography level="h4" style={{ marginLeft: "16px" }}>
+                        {item.title}
+                      </Typography>
+                    </MenuItemLinks>
+                  </MenuItems>
+                ))}
+              </Container>
+            </Sidebar>
+          </Left>
+
+          <Main
+            id="main"
+          >
+            <Header className="header">
+              <div className="item-header">
+                <CardStyle onClick={handleMenuClick}>
                   <Box
-                  
                     sx={{
                       p: 1,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      height: '0px',
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      height: "0px",
                     }}
                   >
                     <Avatar src={userProfile.user_img_path} />
@@ -237,31 +247,37 @@ const AdminProfileSidebar: React.FC = () => {
                 >
                   <MenuItem
                     sx={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                    }}>
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
                     <ColorSchemeToggle />
                   </MenuItem>
                   <MenuItem
                     sx={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                    }}>
-                    <Button color="danger" variant="soft" onClick={handleLogout}>
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Button
+                      color="danger"
+                      variant="soft"
+                      onClick={handleLogout}
+                    >
                       Logout
                     </Button>
                   </MenuItem>
                 </Menu>
-                </div>
-              </Header>
-              <div className="content">
-                <Outlet></Outlet>
               </div>
-            </Main>
-          </Layout>
-        </CssVarsProvider>
-      </MaterialCssVarsProvider>
+            </Header>
+            <div className="content">
+              <Outlet></Outlet>
+            </div>
+          </Main>
+        </Layout>
+      </CssVarsProvider>
+    </MaterialCssVarsProvider>
   );
 };
 
-export default AdminProfileSidebar;
+export default UserProfileSidebar;

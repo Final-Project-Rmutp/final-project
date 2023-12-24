@@ -22,7 +22,6 @@ import DeleteForever from "@mui/icons-material/DeleteForever";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import {
   Tbody,
-  Theader,
   HeadStudentList,
   TableContainer,
 } from "./StudentListStyled";
@@ -31,6 +30,7 @@ import CustomPagination from "../../../shared/components/pagination/Pagination";
 import { VisuallyHiddenInput } from "./StudentListStyled";
 // import { Icon } from '@iconify/react';
 import { ListItem } from "../../../auth/model/authTypes";
+import { TableHeaderRows } from './table-header-rows'
 
 const StudentList: React.FC = () => {
   const {
@@ -46,7 +46,7 @@ const StudentList: React.FC = () => {
     AddUser,
     editingUser,
     searchTerm,
-    setSearchTerm,
+    // setSearchTerm,
     handleAddConfirmed,
     handleInputChange,
     handleInputEditChange,
@@ -64,6 +64,7 @@ const StudentList: React.FC = () => {
     handleChangePage,
     handleChangeRowsPerPage,
     setAddUser,
+    handleChange,
   } = useStudentList();
   interface Item {
     updated: boolean;
@@ -73,57 +74,13 @@ const StudentList: React.FC = () => {
     color: item.updated ? "white" : "",
     // borderRadius: item.updated ? '10px' : '',
   });
-  const TableHeaderRows: React.FC = () => (
-    <Theader>
-    <tr>
-      <th style={{ width: 50 }}>No</th>
-      <th style={{ width: 80 }}>IMG</th>
-      <th style={{ width: 200 }}>FirstName</th>
-      <th style={{ width: 200 }}>LastName</th>
-      <th style={{ width: 200 }}>ID Card</th>
-      <th style={{ width: 200 }}>Student ID</th>
-      <th style={{ width: 200 }}>Account Type</th>
-      <th style={{ width: 100 }}>Actions</th>
-      <th style={{ width: 200 }}>Active</th>
-    </tr>
-    <tr>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th>
-        <Input
-          disabled={false}
-          size="md"
-          placeholder="Find data here..."
-          variant="outlined"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </th>
-      <th></th>
-      <th></th>
-      <th>
-        <Checkbox
-          checked={selectAll}
-          onChange={handleSelectAll}
-          color="primary"
-        />
-      </th>
-      <th></th>
-    </tr>
-  </Theader>
-  );
+  
+
 
   const ModalEdit: React.FC<{ open: boolean; onClose: () => void; onConfirm: () => void }> = ({ open, onClose, onConfirm }) => (
     <Modal open={open} onClose={onClose}>
       <ModalDialog size="lg" variant="outlined" layout="center" color="primary" sx={{ width: 450 }}>
         <DialogTitle>Edit User</DialogTitle>
-        <form
-          onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
-            event.preventDefault();
-          }}
-        >
           <Stack spacing={3}>
             {editingUser && (
               <>
@@ -183,7 +140,6 @@ const StudentList: React.FC = () => {
               </Button>
             </DialogActions>
           </Stack>
-        </form>
       </ModalDialog>
     </Modal>
   );
@@ -202,7 +158,6 @@ const StudentList: React.FC = () => {
               <FormControl>
                 <FormLabel>ID Card</FormLabel>
                 <Input
-                  autoFocus
                   required
                   name="pin"
                   value={AddUser.pin}
@@ -355,7 +310,12 @@ const StudentList: React.FC = () => {
               },
             }}
           >
-            <TableHeaderRows />
+            <TableHeaderRows 
+              searchTerm={searchTerm}
+              handleChange={handleChange} 
+              handleSelectAll={handleSelectAll} 
+              selectAll={selectAll} 
+            />
             <Tbody>
             {listItems.map((item, index) => {
                 const rowRandomImageNumber = randomImageNumber + index;

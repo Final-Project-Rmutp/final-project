@@ -56,14 +56,10 @@ label{
   border-radius: 5px;
 }
 
-.login-button-user:hover {
-}
-
-
 
 
 .center-content {
-  position: absolute;
+  // position: absolute;
   left: 0px;
   right: 0px;
   top: 0px;
@@ -76,9 +72,9 @@ label{
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #0f0c29;
-  background: -webkit-linear-gradient(to bottom, #24243e, #302b63, #0f0c29);
-  background: linear-gradient(to bottom, #24243e, #302b63, #0f0c29);
+  // background: #0f0c29;
+  // background: -webkit-linear-gradient(to bottom, #24243e, #302b63, #0f0c29);
+  // background: linear-gradient(to bottom, #24243e, #302b63, #0f0c29);
 }
 
 .center-controls {

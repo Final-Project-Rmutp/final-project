@@ -47,6 +47,24 @@ const useStudentList = () => {
       setListItems(searchData);
     }
   }, [searchTerm]);
+  
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    handleSearch();
+  
+    // if (
+    //   e.target.value === '' &&
+    //   e.nativeEvent &&
+    //   (e.nativeEvent as InputEvent).inputType === 'deleteContentBackward'
+    // ) {
+    //   handleSearch();
+    // }
+  };
+  
+  
+  
+  
 
   const fetchUserList = useCallback(async () => {
     const response = await UserService.getAllUsers({ page, pageSize: rowsPerPage });
@@ -247,7 +265,9 @@ const useStudentList = () => {
     handleCloseDeleteDialog,
     handleChangePage,
     handleChangeRowsPerPage,
-    markItemAsUpdated
+    markItemAsUpdated,
+    handleChange,
+    setUserImage
   };
 };
 
