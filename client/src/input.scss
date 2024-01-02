@@ -43,13 +43,26 @@ html, body  {
 }
 
 
+  * {
+    scrollbar-width: none;
+    scrollbar-color: #B4D4FF #B4D4FF;
+  }
 
+  *::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
 
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
 
-
-
-
-
+  *::-webkit-scrollbar-thumb {
+    background: rgb(230,197,250);
+    background: linear-gradient(90deg, rgba(230,197,250,1) 0%, rgba(148,187,233,1) 100%);
+    border-radius: 10px;
+    border: 1px none #ffffff;
+  }
 
 
 
