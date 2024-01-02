@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
-// import { useAuth } from '../../auth/AuthContext';
 import Floor6 from '../../components/floor6/Floor6';
 import './Room.scss';
-import { Select, Option, Typography } from '@mui/joy';
-// import { toast } from 'sonner';
-// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { Typography } from '@mui/joy';
+
 import "dayjs/locale/th";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import NewAdapter from './AdapterDay'
-import { DateTime } from './RoomStyled';
+import { DateTime, OptionStyle, SelectStyle } from './RoomStyled';
 const Room: React.FC = () => {
   // const { getUserInfo } = useAuth();
   // const navigate = useNavigate();
@@ -40,23 +37,20 @@ const Room: React.FC = () => {
       <div className="eiei center-content">
         <div className="center-controls">
           <Typography >Select Room:</Typography>
-          <Select placeholder="Select a floor" onChange={(_, value) => handleFloorSelect(value as string)}>
+          <SelectStyle placeholder="Select a floor" onChange={(_, value) => handleFloorSelect(value as string)}>
             {availableFloors.map(floor => (
-              <Option key={floor} value={floor}>
+              <OptionStyle key={floor} value={floor}>
                 {floor}
-              </Option>
+              </OptionStyle>
             ))}
-          </Select>
-          {/* <p>Welcome, {userInfo.name}!</p> */}
-          {/* <div className="login-button-user" onClick={handleLogout}>
-            <div>
-              <Button color="danger">Logout</Button>
-            </div>
-          </div> */}
+          </SelectStyle>
           <div className="controls">
             <Typography >Select Date and Time:</Typography>
             <div>
-              <LocalizationProvider dateAdapter={NewAdapter} adapterLocale="th" >
+              <LocalizationProvider 
+              dateAdapter={NewAdapter} 
+              adapterLocale="th" 
+              >
                 <DateTime
                   className='datetime-picker'
                   localeText={{ start: "Check-in", end: "Check-out" }}

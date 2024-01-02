@@ -69,6 +69,7 @@ const Login: React.FC = () => {
         localStorage.setItem("token", token);
         localStorage.setItem("role", account_role);
 
+          
         if (loginData.rememberMe && loginData.pin.trim() && loginData.citizen_id.trim()) {
           localStorage.setItem("username", loginData.pin);
           localStorage.setItem("password", loginData.citizen_id);

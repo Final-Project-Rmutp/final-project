@@ -71,7 +71,7 @@ export const MenuItemLinks = styled(Link)`
     height: 45px;
     text-align: center;
     margin: 0 0.5rem;
-    padding:1rem;
+    padding:1rem; 
     border-radius: 20px;
     .MuiTypography-h4 {
       font-size: 25px;

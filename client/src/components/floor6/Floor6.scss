@@ -2,18 +2,17 @@
   .bedroomContainer {
     border-radius: 8px;
     padding: 20px;
-    // background-image: url('https://image.freepik.com/free-photo/natural-green-grass-background_141793-617.jpg');
+    background-image: url('https://image.freepik.com/free-photo/natural-green-grass-background_141793-617.jpg');
     background-size: cover; 
     background-position: center;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.1)rgba(255, 255, 255, 0));
     // backdrop-filter: blur(2px);
     // -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    // border: 1px solid rgba(255, 255, 255, 0.18);
     display: grid;
     gap: 10px;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  
+    color: #000;
   
     @media screen and (max-width: 768px) {
       grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));

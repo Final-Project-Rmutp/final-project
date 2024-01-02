@@ -4,28 +4,23 @@ import { Icon } from '@iconify/react';
 
 export const UserSidebarData = [
     {
-        title: 'Home',
+        title: 'Reservation',
         path: 'room-user',
-        icon: <Icon icon="flat-color-icons:line-chart" />
+        // icon: <Icon icon="fluent-mdl2:reservation-orders" color="#235726" />
     },
     {
-        title: 'user',
+        title: 'Classroom',
         path: '',
-        icon: <Icon icon="ph:user-list-fill" color="#3F51B5"  />
+        // icon: <Icon icon="ph:user-list-fill" color="#3F51B5"  />
     },
     {
-        title: 'reserved',
+        title: 'Status',
         path: '',
-        icon: <Icon icon="grommet-icons:system" color="#00BCD4"  />
-    },
-    {   
-        title: 'room',
-        path: '',
-        icon: <Icon icon="cil:room" color="#3F51B5"  />
+        // icon: <Icon icon="fluent-mdl2:sync-status-solid" color="#0077B2" />
     },
     {
-        title: 'Reprot',
+        title: 'Report',
         path: '',
-        icon: <Icon icon="fluent-mdl2:report-warning" color="red"  />
+        // icon: <Icon icon="fluent-mdl2:report-warning" color="red"  />
     }
 ]

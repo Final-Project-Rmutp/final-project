@@ -2,13 +2,11 @@ import React, { useState, MouseEvent, useEffect, useRef } from "react";
 import {
   Button,
   Avatar,
-  Menu,
-  MenuItem,
   Box,
   Typography,
   Stack,
-  IconButton,
   Container,
+  List,
 } from "@mui/joy";
 import { MenuItems, MenuItemLinks } from "../../../styles/global";
 import { UserSidebarData } from "./UserSidebarData";
@@ -23,20 +21,28 @@ import {
 } from "@mui/material/styles";
 
 import { CssVarsProvider, useColorScheme } from "@mui/joy/styles";
-import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
-import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
+// import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
+// import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
 import CssBaseline from "@mui/joy/CssBaseline";
 import UserService from "../../../auth/service/UserService";
 import {
-  CardStyle,
-  Header,
-  Layout,
-  Left,
   Main,
-  Sidebar,
+  MenuContainer,
+  MenuItemContainer,
 } from "../navbar/NavbarStyled";
 import Hamburger from "../navbar/Hamburger";
-
+import {
+  HeaderNav,
+  MenuItemLinksNav,
+  MenuItemsNav,
+  SidebarUser,
+  IconButtonUser,
+  CardStyleUser,
+  LayoutUser,
+  LeftUser,
+} from "./UserSidebarStyle";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { Icon } from "@iconify/react";
 interface LayoutState {
   leftOpen: boolean;
   rightOpen: boolean;
@@ -134,12 +140,8 @@ const UserProfileSidebar: React.FC = () => {
 
   useEffect(() => {
     const fetchUserProfile = async () => {
-      try {
-        const profileData = await UserService.fetchUserProfile();
-        setUserProfile(profileData);
-      } catch (error) {
-        console.error("Error fetching user profile:", error);
-      }
+      const profileData = await UserService.fetchUserProfile();
+      setUserProfile(profileData);
     };
 
     fetchUserProfile();
@@ -157,20 +159,27 @@ const UserProfileSidebar: React.FC = () => {
     }
 
     return (
-      <IconButton
+      <IconButtonUser
         id="toggle-mode"
-        size="lg"
-        variant="soft"
         color="neutral"
         onClick={() => setMode(mode === "dark" ? "light" : "dark")}
         sx={{
-          zIndex: 999,
-          borderRadius: "50%",
-          boxShadow: "sm",
+          zIndex: 2,
+          boxShadow: "none",
         }}
       >
-        {mode === "light" ? <DarkModeRoundedIcon /> : <LightModeRoundedIcon />}
-      </IconButton>
+        {mode === "light" ? (
+          <Icon
+            icon="line-md:sunny-filled-loop-to-moon-filled-loop-transition"
+            color="black"
+          />
+        ) : (
+          <Icon
+            icon="line-md:moon-filled-alt-to-sunny-filled-loop-transition"
+            color="white"
+          />
+        )}
+      </IconButtonUser>
     );
   }
 
@@ -178,103 +187,137 @@ const UserProfileSidebar: React.FC = () => {
   const handleHamburgerClick = (event: MouseEvent<HTMLDivElement>) => {
     toggleSidebar(event);
   };
+
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   return (
     <MaterialCssVarsProvider theme={{ [MATERIAL_THEME_ID]: materialTheme }}>
       <CssVarsProvider theme={theme}>
         <CssBaseline />
-        <Layout
+        <LayoutUser
           id="layout"
           data-left={state.leftOpen ? "open" : "closed"}
           style={{ position: "relative" }}
         >
-          <Left id="left" className={state.leftOpen ? "open" : "closed"}>
-            <div className="icon" onClick={handleHamburgerClick}>
-              <Hamburger isActive={state.leftOpen} onClick={toggleSidebar} />
-            </div>
-            <Sidebar className={`sidebar ${leftOpen}`}>
-              <div className="header-left">
-                <div className="logo-header">
-                  <Typography level="h2">LOGO</Typography>
+          {isMobile && (
+            <LeftUser id="left" className={state.leftOpen ? "open" : "closed"}>
+              <div className="icon" onClick={handleHamburgerClick}>
+                <Hamburger isActive={state.leftOpen} onClick={toggleSidebar} />
+              </div>
+              <SidebarUser className={`sidebar ${leftOpen}`}>
+                <div className="header-left">
+                  <div className="logo-header">
+                    <Typography level="h2">LOGO</Typography>
+                  </div>
+                </div>
+                <Container className="content">
+                  {UserSidebarData.map((item, index) => (
+                    <MenuItems key={index}>
+                      <MenuItemLinks
+                        to={item.path}
+                        onClick={() => handleTabChange(item.title)}
+                      >
+                        <span className="size-icon">{item.icon}</span>
+                        <Typography level="h4" style={{ marginLeft: "16px" }}>
+                          {item.title}
+                        </Typography>
+                      </MenuItemLinks>
+                    </MenuItems>
+                  ))}
+                </Container>
+              </SidebarUser>
+            </LeftUser>
+          )}
+          <Main id="main">
+            <HeaderNav>
+              <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl flex items-center justify-between gap-5 h-[--header-height]">
+                <Box>
+                  <span></span>
+                </Box>
+                {!isMobile && (
+                  <>
+                  <Box>
+                  <div className="lg:flex-1 flex items-center gap-1.5">
+                    <span>LOGO</span>
+                  </div></Box>
+                  <Box component="nav" sx={{ flexGrow: 0 }}>
+                      <List role="menubar" orientation="horizontal">
+                        {UserSidebarData.map((item, index) => (
+                          <MenuItemsNav key={index}>
+                            <MenuItemLinksNav
+                              to={item.path}
+                              onClick={() => handleTabChange(item.title)}
+                            >
+                              <span className="size-icon">{item.icon}</span>
+                              <Typography
+                                noWrap
+                                level="title-sm"
+                                style={{ marginLeft: "16px" }}
+                              >
+                                {item.title}
+                              </Typography>
+                            </MenuItemLinksNav>
+                          </MenuItemsNav>
+                        ))}
+                      </List>
+                  </Box>
+                  </>
+                )}
+                <div className="flex items-center justify-end gap-1.5">
+                <ColorSchemeToggle />
+                  <CardStyleUser onClick={handleMenuClick}>
+                    <Box
+                      sx={{
+                        p: 0.8,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Avatar variant="solid" src={userProfile.user_img_path}>
+                        {userProfile.firstname.substring(0, 1)}
+                      </Avatar>
+                      <Stack spacing={0.4} sx={{ marginLeft: 2 }}>
+                        <Typography
+                          fontWeight="bold"
+                          level="title-sm"
+                          sx={{ paddingRight: 2 }}
+                        >
+                          {userProfile.firstname}
+                        </Typography>
+                      </Stack>
+                    </Box>
+                  </CardStyleUser>
+                  <MenuContainer
+                    id="profile-menu"
+                    anchorEl={state.anchorEl}
+                    open={Boolean(state.anchorEl)}
+                    sx={{ width: 120 }}
+                    ref={menuRef}
+                  >
+                    <MenuItemContainer
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Button
+                        color="danger"
+                        variant="solid"
+                        fullWidth
+                        onClick={handleLogout}
+                      >
+                        Logout
+                      </Button>
+                    </MenuItemContainer>
+                  </MenuContainer>
                 </div>
               </div>
-              <Container className="content">
-                {UserSidebarData.map((item, index) => (
-                  <MenuItems key={index}>
-                    <MenuItemLinks
-                      to={item.path}
-                      onClick={() => handleTabChange(item.title)}
-                    >
-                      <span className="size-icon">{item.icon}</span>
-                      <Typography level="h4" style={{ marginLeft: "16px" }}>
-                        {item.title}
-                      </Typography>
-                    </MenuItemLinks>
-                  </MenuItems>
-                ))}
-              </Container>
-            </Sidebar>
-          </Left>
-
-          <Main
-            id="main"
-          >
-            <Header className="header">
-              <div className="item-header">
-                <CardStyle onClick={handleMenuClick}>
-                  <Box
-                    sx={{
-                      p: 1,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      height: "0px",
-                    }}
-                  >
-                    <Avatar src={userProfile.user_img_path} />
-                    <Stack spacing={0.5} sx={{ marginLeft: 2 }}>
-                      <Typography fontWeight="bold" sx={{ paddingRight: 2 }}>
-                        {userProfile.firstname}
-                      </Typography>
-                    </Stack>
-                  </Box>
-                </CardStyle>
-                <Menu
-                  id="profile-menu"
-                  anchorEl={state.anchorEl}
-                  open={Boolean(state.anchorEl)}
-                  sx={{ width: 230 }}
-                  ref={menuRef}
-                >
-                  <MenuItem
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <ColorSchemeToggle />
-                  </MenuItem>
-                  <MenuItem
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Button
-                      color="danger"
-                      variant="soft"
-                      onClick={handleLogout}
-                    >
-                      Logout
-                    </Button>
-                  </MenuItem>
-                </Menu>
-              </div>
-            </Header>
+            </HeaderNav>
             <div className="content">
               <Outlet></Outlet>
             </div>
           </Main>
-        </Layout>
+        </LayoutUser>
       </CssVarsProvider>
     </MaterialCssVarsProvider>
   );

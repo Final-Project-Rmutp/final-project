@@ -5,25 +5,33 @@
       nav: true;
       main:true;
       pf:true;
+      menu:true;
+      bgSty?:string;
     }
   
     interface NavPaletteOptions {
       bg?: string;
       color?: string;
       hoverBg?: string;
+      menu?: string;
+      bgSty?:string;
     }
   
     interface Palette {
       nav: PaletteRange & NavPaletteOptions;
       main:PaletteRange & NavPaletteOptions;
       pf:PaletteRange & NavPaletteOptions;
+      menu:PaletteRange & NavPaletteOptions;
+      bgSty:PaletteRange & NavPaletteOptions;
 
     }
   
     interface PaletteOptions {
       nav?: NavPaletteOptions;
       main?: NavPaletteOptions;
-      pf:NavPaletteOptions;
+      pf?:NavPaletteOptions;
+      menu?:NavPaletteOptions;
+      bgSty?:NavPaletteOptions;
 
     }
   }
@@ -40,7 +48,8 @@
     900: '#131318',
     dark:'#1D232A',
     nav:'#191E24',
-    border:'#383F47'
+    border:'#383F47',
+    bgStyle:'#101728'
   };
 
   const theme = extendTheme({
@@ -78,6 +87,10 @@
             solidDisabledColor: `var(--joy-palette-neutral-300)`,
             solidDisabledBg: `var(--joy-palette-neutral-50)`,
           },
+          menu:{
+            bg:'var(--joy-palette-neutral-100)',
+            color:'var(--joy-palette-neutral-200)'
+          },
           common: {
             white: '#FFF',
             black: '#09090D',
@@ -100,6 +113,7 @@
             bg: 'var(--joy-palette-neutral-50)',
             color: 'var(--joy-palette-neutral-900)',
             hoverBg: 'var(--joy-palette-neutral-50)',
+            bgSty:'var(--joy-plaette-neutral-bgStyle)'
           },
           background: {
             body: 'var(--joy-palette-neutral-100)',
@@ -142,13 +156,17 @@
             solidDisabledColor: `var(--joy-palette-neutral-700)`,
             solidDisabledBg: `var(--joy-palette-neutral-900)`,
           },
+          menu:{
+            bg:'var(--joy-palette-neutral-500)',
+            color:'var(--joy-palette-neutral-200)'
+          },
           common: {
             white: '#FFF',
             black: '#09090D',
           },
           pf:{
             bg: 'var(--joy-palette-neutral-500)',
-            color: 'var(--joy-palette-neutral-900)',
+            color: 'var(--joy-palette-neutral-50)',
             hoverBg: 'var(--joy-palette-neutral-50)',
           },
           nav:{

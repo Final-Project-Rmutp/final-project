@@ -77,187 +77,6 @@ const StudentList: React.FC = () => {
   
 
 
-  const ModalEdit: React.FC<{ open: boolean; onClose: () => void; onConfirm: () => void }> = ({ open, onClose, onConfirm }) => (
-    <Modal open={open} onClose={onClose}>
-      <ModalDialog size="lg" variant="outlined" layout="center" color="primary" sx={{ width: 450 }}>
-        <DialogTitle>Edit User</DialogTitle>
-          <Stack spacing={3}>
-            {editingUser && (
-              <>
-                <FormControl>
-                  <FormLabel>ID Card</FormLabel>
-                  <Input
-                    autoFocus
-                    required
-                    name="pin"
-                    value={editingUser.pin}
-                    onChange={handleInputEditChange}
-                    fullWidth
-                    size="lg"
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Student ID</FormLabel>
-                  <Input
-                    required
-                    name="citizen_id"
-                    value={editingUser.citizen_id}
-                    onChange={handleInputEditChange}
-                    fullWidth
-                    size="lg"
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>FirstName</FormLabel>
-                  <Input
-                    required
-                    name="firstname"
-                    value={editingUser.firstname}
-                    onChange={handleInputEditChange}
-                    fullWidth
-                    size="lg"
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>LastName</FormLabel>
-                  <Input
-                    required
-                    name="lastname"
-                    value={editingUser.lastname}
-                    onChange={handleInputEditChange}
-                    fullWidth
-                    size="lg"
-                  />
-                </FormControl>
-              </>
-            )}
-            <DialogActions>
-              <Button type="cancel" onClick={onClose}>
-                Cancel
-              </Button>
-              <Button type="submit" onClick={onConfirm}>
-                Confirm
-              </Button>
-            </DialogActions>
-          </Stack>
-      </ModalDialog>
-    </Modal>
-  );
-  const ModalAdd: React.FC<{ open: boolean; onClose: () => void; onConfirm: () => void }> = ({ open, onClose, onConfirm }) => (
-    <Modal open={open} onClose={onClose}>
-        <ModalDialog
-          size="lg"
-          layout="center"
-          color="primary"
-          sx={{ width: 450 }}
-        >
-          <DialogTitle>Add New User</DialogTitle>
-
-          <Stack spacing={3}>
-            <>
-              <FormControl>
-                <FormLabel>ID Card</FormLabel>
-                <Input
-                  required
-                  name="pin"
-                  value={AddUser.pin}
-                  onChange={handleInputChange}
-                  fullWidth
-                  size="lg"
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Student ID</FormLabel>
-                <Input
-                  required
-                  name="citizen_id"
-                  value={AddUser.citizen_id}
-                  onChange={handleInputChange}
-                  fullWidth
-                  size="lg"
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>FirstName</FormLabel>
-                <Input
-                  required
-                  name="firstname"
-                  value={AddUser.firstname}
-                  onChange={handleInputChange}
-                  fullWidth
-                  size="lg"
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>LastName</FormLabel>
-                <Input
-                  required
-                  name="lastname"
-                  value={AddUser.lastname}
-                  onChange={handleInputChange}
-                  fullWidth
-                  size="lg"
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>AccountType</FormLabel>
-                <Select
-                  defaultValue="select"
-                  required
-                  name="account_type"
-                  value={AddUser.account_type}
-                  onChange={(_, value) =>
-                    setAddUser({ ...AddUser, account_type: value as string })
-                  }
-                >
-                  <Option value="student">Student</Option>
-                  <Option value="teacher">Teacher</Option>
-                </Select>
-              </FormControl>
-              <FormControl>
-                <FormLabel>Upload</FormLabel>
-                <Button
-                  component="label"
-                  role={undefined}
-                  tabIndex={-1}
-                  variant="solid"
-                  color="success"
-                  startDecorator={
-                    <SvgIcon>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
-                        />
-                      </svg>
-                    </SvgIcon>
-                  }
-                >
-                  Upload a file
-                  <VisuallyHiddenInput type="file" />
-                </Button>
-              </FormControl>
-            </>
-            <DialogActions>
-              <Button type="cancel" onClick={onClose}>
-                Cancel
-              </Button>
-              <Button type="submit" onClick={onConfirm}>
-                Confirm
-              </Button>
-            </DialogActions>
-          </Stack>
-        </ModalDialog>
-    </Modal>
-  );
-
   const randomImageNumber = Math.floor(Math.random() * 1000) + 1;
   const [clickedImageUrl, setClickedImageUrl] = React.useState<string | null>(null);
   const [selectedItem, setSelectedItem] = React.useState<ListItem | null>(null);
@@ -475,14 +294,184 @@ const StudentList: React.FC = () => {
           </Button>
         </div>
       </div>
-      <ModalEdit 
-      open={editDialogOpen} 
-      onClose={handleCloseEditDialog} 
-      onConfirm={handleEditConfirmed} />
-      <ModalAdd 
-      open={addDialogOpen} 
-      onClose={handleCloseAddDialog} 
-      onConfirm={handleAddConfirmed} />
+      <Modal open={editDialogOpen} onClose={handleCloseEditDialog}>
+              <ModalDialog
+                size="lg"
+                variant="outlined"
+                layout="center"
+                color="primary"
+                sx={{width:450}}>  
+                <DialogTitle>Edit User</DialogTitle>
+                <form
+                  onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
+                    event.preventDefault();
+                  }}
+                >
+                  <Stack spacing={3}>
+                  {editingUser && (
+                    <>
+                    <FormControl>
+                      <FormLabel>ID Card</FormLabel>
+                      <Input autoFocus required 
+                        name="pin"
+                        value={editingUser.pin}
+                        onChange={handleInputEditChange}
+                        fullWidth
+                        size="lg"
+                      />
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel>Student ID</FormLabel>
+                      <Input required 
+                        name="citizen_id"
+                        value={editingUser.citizen_id}
+                        onChange={handleInputEditChange}
+                        fullWidth
+                        size="lg"
+                      />
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel>FirstName</FormLabel>
+                      <Input required 
+                        name="firstname"
+                        value={editingUser.firstname}
+                        onChange={handleInputEditChange}
+                        fullWidth
+                        size="lg"
+                      />
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel>LastName</FormLabel>
+                      <Input required 
+                        name="lastname"
+                        value={editingUser.lastname}
+                        onChange={handleInputEditChange}
+                        fullWidth
+                        size="lg"
+                      />
+                    </FormControl>
+                    </>
+                    )}
+                    <DialogActions>
+                      <Button type="cancel" onClick={handleCloseEditDialog}>Cancel</Button>
+                      <Button type="submit" onClick={handleEditConfirmed}>Confirm</Button>
+                    </DialogActions>
+                  </Stack>
+                </form>
+              </ModalDialog>
+            </Modal>
+      <Modal open={addDialogOpen}  onClose={handleCloseAddDialog}>
+        <ModalDialog
+          size="lg"
+          layout="center"
+          color="primary"
+          sx={{ width: 450 }}
+        >
+          <DialogTitle>Add New User</DialogTitle>
+
+          <Stack spacing={3}>
+            <>
+              <FormControl>
+                <FormLabel>ID Card</FormLabel>
+                <Input
+                  required
+                  name="pin"
+                  value={AddUser.pin}
+                  onChange={handleInputChange}
+                  fullWidth
+                  size="lg"
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>Student ID</FormLabel>
+                <Input
+                  required
+                  name="citizen_id"
+                  value={AddUser.citizen_id}
+                  onChange={handleInputChange}
+                  fullWidth
+                  size="lg"
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>FirstName</FormLabel>
+                <Input
+                  required
+                  name="firstname"
+                  value={AddUser.firstname}
+                  onChange={handleInputChange}
+                  fullWidth
+                  size="lg"
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>LastName</FormLabel>
+                <Input
+                  required
+                  name="lastname"
+                  value={AddUser.lastname}
+                  onChange={handleInputChange}
+                  fullWidth
+                  size="lg"
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>AccountType</FormLabel>
+                <Select
+                  defaultValue="select"
+                  required
+                  name="account_type"
+                  value={AddUser.account_type}
+                  onChange={(_, value) =>
+                    setAddUser({ ...AddUser, account_type: value as string })
+                  }
+                >
+                  <Option value="student">Student</Option>
+                  <Option value="teacher">Teacher</Option>
+                </Select>
+              </FormControl>
+              <FormControl>
+                <FormLabel>Upload</FormLabel>
+                <Button
+                  component="label"
+                  role={undefined}
+                  tabIndex={-1}
+                  variant="solid"
+                  color="success"
+                  startDecorator={
+                    <SvgIcon>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
+                        />
+                      </svg>
+                    </SvgIcon>
+                  }
+                >
+                  Upload a file
+                  <VisuallyHiddenInput type="file" />
+                </Button>
+              </FormControl>
+            </>
+            <DialogActions>
+              <Button type="cancel"  onClick={handleCloseAddDialog}>
+                Cancel
+              </Button>
+              <Button type="submit" onClick={handleAddConfirmed}>
+                Confirm
+              </Button>
+            </DialogActions>
+          </Stack>
+        </ModalDialog>
+      </Modal>
       <Modal
         open={!!clickedImageUrl}
         onClose={() => setClickedImageUrl(null)}

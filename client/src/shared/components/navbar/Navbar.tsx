@@ -2,12 +2,9 @@ import React, { useState, MouseEvent, useEffect, useRef } from "react";
 import {
   Button,
   Avatar,
-  Menu,
-  MenuItem,
   Box,
   Typography,
   Stack,
-  IconButton,
   Container,
 } from "@mui/joy";
 import { MenuItems, MenuItemLinks } from "../../../styles/global";
@@ -23,12 +20,11 @@ import {
 } from '@mui/material/styles';
 
 import { CssVarsProvider, useColorScheme } from '@mui/joy/styles';
-import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
-import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import CssBaseline from '@mui/joy/CssBaseline';
 import UserService from "../../../auth/service/UserService";
-import { CardStyle, Header, Layout, Left, Main, Sidebar } from "./NavbarStyled";
+import { CardStyle, Header, IconButtonHeader, Layout, Left, Main, MenuContainer, Sidebar ,MenuItemContainer} from "./NavbarStyled";
 import Hamburger from "./Hamburger";
+import { Icon } from '@iconify/react';
 
 interface LayoutState {
   leftOpen: boolean;
@@ -137,6 +133,7 @@ const AdminProfileSidebar: React.FC = () => {
 
     fetchUserProfile();
   }, []);
+  
   function ColorSchemeToggle() {
     const { mode, setMode } = useColorScheme();
     const [mounted, setMounted] = React.useState(false);
@@ -152,7 +149,7 @@ const AdminProfileSidebar: React.FC = () => {
 
 
     return (
-      <IconButton
+      <IconButtonHeader
         id="toggle-mode"
         size="lg"
         variant="soft"
@@ -160,12 +157,12 @@ const AdminProfileSidebar: React.FC = () => {
         onClick={() => setMode(mode === 'dark' ? 'light' : 'dark')}
         sx={{
           zIndex: 999,
-          borderRadius: '50%',
           boxShadow: 'sm',
+          width:"100%"
         }}
       >
-        {mode === 'light' ? <DarkModeRoundedIcon /> : <LightModeRoundedIcon />}
-      </IconButton>
+        {mode === 'light' ? <Icon icon="line-md:sunny-filled-loop-to-moon-filled-loop-transition" color="#235726" /> : <Icon icon="line-md:moon-filled-alt-to-sunny-filled-loop-transition" color="#235726" />}
+      </IconButtonHeader>
     );
   }
 
@@ -228,30 +225,37 @@ const AdminProfileSidebar: React.FC = () => {
                     </Stack>
                   </Box>
                 </CardStyle>
-                <Menu
+                <MenuContainer
                   id="profile-menu"
                   anchorEl={state.anchorEl}
                   open={Boolean(state.anchorEl)}
-                  sx={{ width: 230 }}
+                  sx={{ width: 190 }}
                   ref={menuRef}
                 >
-                  <MenuItem
+                  <MenuItemContainer
                     sx={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                    }}>
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
                     <ColorSchemeToggle />
-                  </MenuItem>
-                  <MenuItem
+                  </MenuItemContainer>
+                  <MenuItemContainer
                     sx={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                    }}>
-                    <Button color="danger" variant="soft" onClick={handleLogout}>
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Button
+                      color="danger"
+                      variant="solid"
+                      fullWidth
+                      onClick={handleLogout}
+                    >
                       Logout
                     </Button>
-                  </MenuItem>
-                </Menu>
+                  </MenuItemContainer>
+                </MenuContainer>
                 </div>
               </Header>
               <div className="content">

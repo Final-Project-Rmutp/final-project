@@ -1,11 +1,13 @@
 import React from 'react';
 import './Floor6.scss';
+import { Card, Typography } from '@mui/joy';
 
 const Floor6: React.FC = () => {
   return (
     <div className="roomLayout">
-      <label>Room Layout</label>
+      <Typography>Room Layout</Typography>
       {/* Container for four bedrooms */}
+      <Card>
       <div className="bedroomContainer">
         <div className="blank1" id="blank1_floor6">
           blank
@@ -23,6 +25,7 @@ const Floor6: React.FC = () => {
           602
         </div>
       </div>
+      </Card>
     </div>
   );
 };
