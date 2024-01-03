@@ -737,7 +737,7 @@ router.get('/room/getallroom',authMiddleware.isAdmin, roomController.getallroom)
  *                  room_level:
  *                    type: string
  *                    example: 9
- *                  room_facilities:
+ *                  facilities_id:
  *                    type: string
  *                    example: ["computer","projector"]
  *                  room_status:
