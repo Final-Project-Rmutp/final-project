@@ -63,11 +63,6 @@ async function addroom(req, res) {
     }
 }
 
-
-
-
-
-
 //Read room data
 async function getallroom(req, res) {
     try {
@@ -82,37 +77,40 @@ async function getallroom(req, res) {
         }
 
         const roomsQuery = `
-            SELECT r.room_id, r.room_number, r.room_type, r.room_capacity, r.room_level, f.facility_name, r.room_status
+            SELECT r.room_id, r.room_number, r.room_type, r.room_capacity, r.room_level, r.room_status, array_agg(f.facility_name) as room_facilities
             FROM rooms r
             LEFT JOIN roomfacility rf ON r.room_id = rf.room_id
             LEFT JOIN facility f ON rf.facility_id = f.facility_id
+            GROUP BY r.room_id
             ORDER BY r.room_id
             LIMIT $1 OFFSET $2
         `;
 
         const roomsResult = await client.query(roomsQuery, [pageSize, offset]);
 
-        const roomData = {};
-        roomsResult.rows.forEach(row => {
-            const { room_id, room_number, room_type, room_capacity, room_level, facility_name, room_status } = row;
-            if (!roomData[room_id]) {
-                roomData[room_id] = {
-                    room_id: room_id.toString(),
-                    room_number: room_number.toString(),
-                    room_type,
-                    room_capacity: room_capacity.toString(),
-                    room_level,
-                    room_facilities: [],
-                    room_status
-                    // Add other room properties here
-                };
-            }
-            if (facility_name) {
-                roomData[room_id].room_facilities.push(facility_name);
-            }
+        const roomsArray = roomsResult.rows.map(row => {
+            const {
+                room_id,
+                room_number,
+                room_type,
+                room_capacity,
+                room_level,
+                room_facilities,
+                room_status
+            } = row;
+
+            return {
+                room_id: room_id.toString(),
+                room_number: room_number.toString(),
+                room_type,
+                room_capacity: room_capacity.toString(),
+                room_level,
+                room_facilities: room_facilities || [],
+                room_status
+                // Add other room properties here
+            };
         });
 
-        const roomsArray = Object.values(roomData);
         res.status(200).json(roomsArray);
     } catch (err) {
         console.error(err.message);
