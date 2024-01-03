@@ -3,9 +3,10 @@ const client = require('../configs/database.js');
 // Get all logs
 async function getlogs(req, res) {
     try {
-        let query = `SELECT logs.log_id, logs.action_type, "user".pin, "user".citizen_id, "user".firstname, logs.log_status, logs.timestamp
+        let query = `SELECT logs.logs_id, action_type.action_type_name, "user".pin, "user".citizen_id, "user".firstname, logs.action_status, logs.logs_message, logs.timestamp
         FROM action_logs AS logs
-        LEFT JOIN "user" ON logs.user_id = "user".id`;
+        LEFT JOIN "user" ON logs.user_id = "user".id
+		LEFT JOIN action_type on logs.action_type_id = action_type.action_type_id`;
 
         const { startDate, endDate } = req.query;
         const values = [];

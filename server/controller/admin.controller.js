@@ -5,6 +5,7 @@ const { logging } = require('../middleware/loggingMiddleware.js');
 // Add a new user
 async function adduser(req, res) {
     const { pin, citizen_id, firstname, lastname, account_type, user_img_path } = req.body;
+    const action_type = 5; // adduser
 
     // Check for missing or empty values (except user_img_path)
     const requiredFields = [pin, citizen_id, firstname, lastname, account_type];
@@ -34,12 +35,12 @@ async function adduser(req, res) {
         const insertedId = result.rows[0].id;
         const id = req.user.id;
 
-        logging("adduser", id, `User registration successful. User ID: ${insertedId}, Details: ${JSON.stringify(req.body)}`);
+        logging(action_type, id,'Success', `User registration successful. User ID: ${insertedId}`);
         res.status(201).json({ message: 'User registration successful' });
     } catch (err) {
         const id = req.user.id;
         console.error(err.message);
-        logging("error adduser", id, err.message);
+        logging(action_type, id, 'Error', err.message);
         res.status(500).json({ message: 'Internal server error' });
     }
 }
@@ -94,6 +95,7 @@ async function getUserById(req, res) {
 
 // Update user account status to 0
 async function deactivateUser(req, res) {
+    const action_type = 6; //deactivateUser
     try {
         const userId = req.params.id; 
         // Update query to set accountstatus to 0 for the user with the specified ID
@@ -102,26 +104,27 @@ async function deactivateUser(req, res) {
         const id = req.user.id;
         // console.log(userId)
         if (result.rowCount === 1) {
-            logging("deactivate",id,"User deactivate successfully id: "+userId)
+            logging(action_type, id,'Success', `User deactivate successfully id: ${userId}`);
             res.status(200).json({ message: 'User deactivate successfully' });
         } else {
-            logging("error deactivateUser", id, "User not found id: "+userId);
+            logging(action_type, id,'Error', `User not found id: ${userId}`);
             res.status(404).json({ message: 'User not found' });
         }
     } catch (err) {
         console.error(err.message);
         const id = req.user.id;
-        logging("error deactivateUser", id, err.message);
+        logging(action_type, id,'Error', err.message);
         res.status(500).json({ message: 'Internal server error' });
     }
 }
 
 // Update user account
 async function updateUser(req, res) {
+    const action_type = 7; //updateUser
     try {
         const userId = req.params.id;
         const updatedUserData = req.body;
-        const loggedInUserId = req.user.id;
+        const id = req.user.id;
 
         const { firstname, lastname, citizen_id, pin } = updatedUserData;
 
@@ -139,16 +142,16 @@ async function updateUser(req, res) {
         const result = await client.query(updateQuery, [firstname, lastname, citizen_id, pin, userId]);
 
         if (result.rowCount === 1) {
-            logging("updateuser", loggedInUserId, `User data updated successfully. User ID: ${userId}`);
+            logging(action_type, id,'Success', `User data updated successfully. User ID: ${userId}`);
             res.status(200).json({ message: 'User data updated successfully' });
         } else {
-            logging("error updateuser", loggedInUserId, `User not found. User ID: ${userId}`);
+            logging(action_type, id,'Error', `User not found. User ID: ${userId}`);
             res.status(404).json({ message: 'User not found' });
         }
     } catch (err) {
         console.error(err.message);
-        const loggedInUserId = req.user.id;
-        logging("error updateuser", loggedInUserId, err.message);
+        const id = req.user.id;
+        logging(action_type, id,'Error', err.message);
         res.status(500).json({ message: 'Internal server error' });
     }
 }

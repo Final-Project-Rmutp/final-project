@@ -3,6 +3,7 @@ const { logging } = require('../middleware/loggingMiddleware.js');
 
 //Create room
 async function addroom(req, res) {
+    const action_type = 2; //addroom
     const { room_number, room_level, room_capacity, room_type, facilities_id } = req.body;
 
     const missingFields = !room_number || !room_capacity || !room_level || !room_type || facilities_id === undefined;
@@ -50,15 +51,14 @@ async function addroom(req, res) {
         await client.query('COMMIT');
 
         const userId = req.user.id;
-        logging("addroom", userId, `Room addition successful, room_id: ${roomId}`);
-
+        logging(action_type, userId,'Success', `Room addition successful, room_id: ${roomId}`);
         res.status(201).json({ message: 'Room addition successful' });
     } catch (err) {
         await client.query('ROLLBACK');
 
         const userId = req.user.id;
         console.error(err.message);
-        logging("error addroom", userId, err.message);
+        logging(action_type, userId,'Error', err.message);
         res.status(500).json({ message: 'Internal server error' });
     }
 }
@@ -174,6 +174,7 @@ async function getroomById(req, res) {
 
 //Update room data
 async function updateroom(req, res) {
+    const action_type = 3; //updateroom
     const roomId = req.params.room_id;
     const { room_number, room_level, room_capacity, room_type, facilities_id, room_status } = req.body;
 
@@ -222,15 +223,14 @@ async function updateroom(req, res) {
         await client.query('COMMIT');
 
         const userId = req.user.id;
-        logging("updateroom", userId, `Room update successful, room_id: ${roomId}`);
-
+        logging(action_type, userId,'Success', `Room update successful, room_id: ${roomId}`);
         res.status(200).json({ message: 'Room update successful' });
     } catch (err) {
         await client.query('ROLLBACK');
 
         const userId = req.user.id;
         console.error(err.message);
-        logging("error updateroom", userId, err.message);
+        logging(action_type, userId,'Error', err.message);
         res.status(500).json({ message: 'Internal server error' });
     }
 }
@@ -239,6 +239,7 @@ async function updateroom(req, res) {
 
 //Delete room
 async function deleteroom(req, res) {
+    const action_type = 4; //deleteroom
     const { room_id } = req.params; // Assuming room_id is passed as a route parameter
 
     if (!room_id || isNaN(room_id)) {
@@ -266,15 +267,14 @@ async function deleteroom(req, res) {
         await client.query('COMMIT');
 
         const userId = req.user.id;
-        logging("deleteroom", userId, `Room deletion successful, room_id: ${room_id}`);
-
+        logging(action_type, userId,'Success', `Room deletion successful, room_id: ${room_id}`);
         res.status(200).json({ message: 'Room deletion successful' });
     } catch (err) {
         await client.query('ROLLBACK');
 
         const userId = req.user.id;
         console.error(err.message);
-        logging("error deleteroom", userId, err.message);
+        logging(action_type, userId,'Error', err.message);
         res.status(500).json({ message: 'Internal server error' });
     }
 }

@@ -6,6 +6,7 @@ const { logging } = require('../middleware/loggingMiddleware.js');
 // login
 async function login(req, res) {
     const { pin, citizen_id } = req.body;
+    const action_type = 1;
 
     if (isNaN(citizen_id)) {
         return res.status(400).json({ message: 'PIN and Citizen ID must be numbers' });
@@ -26,14 +27,14 @@ async function login(req, res) {
         const user = result.rows[0];
 
         if (user.account_status === '0') {
-            logging("login", user.id, 'Account disabled');
+            logging(action_type, user.id, 'Failed', 'Account disabled');
             return res.status(401).json({ message: 'Account disabled' });
         }
 
         const isCitizenIdValid = citizen_id === user.citizen_id;
 
         if (!isCitizenIdValid) {
-            logging("login", user.id, 'Authentication failed');
+            logging(action_type, user.id, 'Failed', 'Authentication failed');
             return res.status(401).json({ message: 'Authentication failed' });
         }
 
@@ -44,11 +45,11 @@ async function login(req, res) {
         };
 
         const token = jwt.sign(tokenPayload, jwtSecret);
-        logging("login", user.id, 'Authentication successful');
+        logging(action_type, user.id, 'Success', 'Authentication successful');
         res.status(200).json({ message: 'Authentication successful', token, account_role: user.account_role });
     } catch (err) {
         console.error(err.message);
-        logging("error login", "1", err.message);
+        logging(action_type, '1', 'Error', err.message);
         res.status(500).json({ message: 'Internal server error' });
     }
 }
