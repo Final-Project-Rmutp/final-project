@@ -656,7 +656,7 @@ router.post('/room/add',authMiddleware.isAdmin, roomController.addroom);
  *                  room_level:
  *                    type: string
  *                    example: 9
- *                  room_facilities:
+ *                  facilities_id:
  *                    type: string
  *                    example: ["computer","projector"]
  *                  room_status:
@@ -817,7 +817,7 @@ router.get('/room/getroom/:room_id',authMiddleware.isAdmin, roomController.getro
  *               room_status:
  *                 type: string
  *                 example: "1"
- *               room_facilities:
+ *               facilities_id:
  *                 type: string
  *                 example: [1]
  *             required:
@@ -825,7 +825,7 @@ router.get('/room/getroom/:room_id',authMiddleware.isAdmin, roomController.getro
  *               - room_number
  *               - room_type
  *               - room_capacity
- *               - room_facilities
+ *               - facilities_id
  *               - room_level
  *               - room_status
  *     responses:
