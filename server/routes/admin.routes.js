@@ -533,24 +533,23 @@ router.post('/user/search',authMiddleware.isAdmin, adminController.searchuser);
  *               room_number:
  *                 type: string
  *                 example: "9901"
- *               room_type:
- *                 type: string
- *                 example: "ห้องปฏิบัติการ"
- *               room_capacity:
- *                 type: string
- *                 example: "30"
- *               room_facilities:
- *                 type: string
- *                 example: "มีคอม"
  *               room_level:
  *                 type: string
  *                 example: "9"
+ *               room_capacity:
+ *                 type: string
+ *                 example: "30"
+ *               room_type:
+ *                 type: string
+ *                 example: "ห้องปฏิบัติการ"
+ *               facilities_id:
+ *                 type: string
+ *                 example: [1]
  *             required:
  *               - room_number
- *               - room_type
- *               - room_capacity
- *               - room_facilities
  *               - room_level
+ *               - room_capacity
+ *               - room_type
  *     responses:
  *       201:
  *         description: Room additional successful.
@@ -654,12 +653,12 @@ router.post('/room/add',authMiddleware.isAdmin, roomController.addroom);
  *                  room_capacity:
  *                    type: string
  *                    example: 30
- *                  room_facilities:
- *                    type: string
- *                    example: "มีคอม"
  *                  room_level:
  *                    type: string
  *                    example: 9
+ *                  room_facilities:
+ *                    type: string
+ *                    example: ["computer","projector"]
  *                  room_status:
  *                    type: string
  *                    example: 1
@@ -715,7 +714,7 @@ router.get('/room/getallroom',authMiddleware.isAdmin, roomController.getallroom)
  *         description: Room ID to fetch
  *         schema:
  *           type: string
- *     responses:
+  *     responses:
  *       200:
  *         description: authenticate successful. Returns the list of users.
  *         content:
@@ -735,12 +734,12 @@ router.get('/room/getallroom',authMiddleware.isAdmin, roomController.getallroom)
  *                  room_capacity:
  *                    type: string
  *                    example: 30
- *                  room_facilities:
- *                    type: string
- *                    example: "มีคอม"
  *                  room_level:
  *                    type: string
  *                    example: 9
+ *                  room_facilities:
+ *                    type: string
+ *                    example: ["computer","projector"]
  *                  room_status:
  *                    type: string
  *                    example: 1
@@ -812,15 +811,15 @@ router.get('/room/getroom/:room_id',authMiddleware.isAdmin, roomController.getro
  *               room_capacity:
  *                 type: string
  *                 example: "30"
- *               room_facilities:
- *                 type: string
- *                 example: "มีคอม"
  *               room_level:
  *                 type: string
  *                 example: "9"
  *               room_status:
  *                 type: string
  *                 example: "1"
+ *               room_facilities:
+ *                 type: string
+ *                 example: [1]
  *             required:
  *               - room_id
  *               - room_number
