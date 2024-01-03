@@ -656,7 +656,7 @@ router.post('/room/add',authMiddleware.isAdmin, roomController.addroom);
  *                  room_level:
  *                    type: string
  *                    example: 9
- *                  facilities_id:
+ *                  room_facilities:
  *                    type: string
  *                    example: ["computer","projector"]
  *                  room_status:
