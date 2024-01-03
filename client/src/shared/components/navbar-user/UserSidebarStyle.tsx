@@ -5,7 +5,7 @@ import { styled } from '@mui/system';
 
 
 export const HeaderNav = styled(Sheet)`
-
+    height:4.5rem;
     background-color: ${({ theme }) => theme.palette.background.backdrop};
 `;
 export const SidebarUser = styled(Card)`

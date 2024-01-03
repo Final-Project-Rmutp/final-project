@@ -22,7 +22,7 @@ import DeleteForever from "@mui/icons-material/DeleteForever";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import {
   Tbody,
-  HeadStudentList,
+  HeadList,
   TableContainer,
 } from "./StudentListStyled";
 import useStudentList from "./useStudentList";
@@ -81,7 +81,7 @@ const StudentList: React.FC = () => {
   const [clickedImageUrl, setClickedImageUrl] = React.useState<string | null>(null);
   const [selectedItem, setSelectedItem] = React.useState<ListItem | null>(null);
   return (
-    <HeadStudentList>
+    <HeadList>
       <TableContainer>
         <Sheet
           sx={{
@@ -492,7 +492,7 @@ const StudentList: React.FC = () => {
           </DialogActions>
         </ModalDialog>
         </Modal>
-    </HeadStudentList>
+    </HeadList>
   );
 };
 

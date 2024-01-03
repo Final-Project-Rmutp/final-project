@@ -43,6 +43,8 @@ import {
 } from "./UserSidebarStyle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Icon } from "@iconify/react";
+import { Link, useLocation  } from 'react-router-dom';
+import HomeUser from "../../../pages/user/index";
 interface LayoutState {
   leftOpen: boolean;
   rightOpen: boolean;
@@ -79,12 +81,13 @@ const UserProfileSidebar: React.FC = () => {
       }));
     }
   };
-
+  const location = useLocation();
   const handleTabChange = (tab: string) => {
     setState((prevState) => ({
       ...prevState,
       selectedTab: tab,
     }));
+
   };
 
   const handleLogout = () => {
@@ -237,8 +240,9 @@ const UserProfileSidebar: React.FC = () => {
                   <>
                   <Box>
                   <div className="lg:flex-1 flex items-center gap-1.5">
-                    <span>LOGO</span>
-                  </div></Box>
+                    <span><Link to="/user/page">LOGO</Link></span>
+                  </div>
+                  </Box>
                   <Box component="nav" sx={{ flexGrow: 0 }}>
                       <List role="menubar" orientation="horizontal">
                         {UserSidebarData.map((item, index) => (
@@ -315,6 +319,7 @@ const UserProfileSidebar: React.FC = () => {
             </HeaderNav>
             <div className="content">
               <Outlet></Outlet>
+              {location.pathname === '/user/page' && <HomeUser />}
             </div>
           </Main>
         </LayoutUser>

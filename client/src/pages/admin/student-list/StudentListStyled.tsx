@@ -38,7 +38,7 @@ export const StyledButton = styled(Button)`
   }
 `;
 
-export const HeadStudentList = styled('div')`
+export const HeadList = styled('div')`
   padding: 2rem;
   width: 100%;
   display: flex;

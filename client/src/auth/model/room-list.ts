@@ -4,7 +4,8 @@ export interface RoomListItem {
     room_number: string;
     room_type: string;
     room_capacity: string;
-    room_facilities: string;
+    room_facilities: number[];
+    facilities_id:number[];
     room_level: string;
     room_status: string;
 }
@@ -15,7 +16,8 @@ export interface RoomListActionItem {
     room_number: string;
     room_type: string;
     room_capacity: string;
-    room_facilities: string;
+    room_facilities: number[];
+    facilities_id:number[];
     room_level: string;
     room_status: string;
 }

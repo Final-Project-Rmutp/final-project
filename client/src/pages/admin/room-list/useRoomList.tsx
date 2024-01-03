@@ -19,6 +19,7 @@ const useRoomList = () => {
     editingRoom,
     AddRoom,
     setEditRoom,
+    setAddRoom,
     handleInputChange,
     resetRoom,
     handleInputEditChange,
@@ -92,7 +93,8 @@ const useRoomList = () => {
             room_number: "",
             room_type: "",
             room_capacity: "",
-            room_facilities: "",
+            room_facilities:[0, 1],
+            facilities_id:[1, 2],
             room_level: "",
             room_status: "",
           });
@@ -144,7 +146,8 @@ const useRoomList = () => {
       room_number: "",
       room_type: "",
       room_capacity: "",
-      room_facilities: "",
+      room_facilities: [0, 1],
+      facilities_id:[1, 2],
       room_level: "",
       room_status: "",
     });
@@ -194,6 +197,7 @@ const useRoomList = () => {
     handleAdd,
     handleAddConfirmed,
     handleEditConfirmed,
+    setAddRoom,
   };
 };
 

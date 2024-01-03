@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Floor6 from '../../components/floor6/Floor6';
+import Floor6 from '../../../components/floor6/Floor6';
 import './Room.scss';
 import { Typography } from '@mui/joy';
 

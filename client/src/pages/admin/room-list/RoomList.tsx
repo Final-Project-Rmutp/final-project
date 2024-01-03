@@ -3,17 +3,14 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Dialog,
-  MenuItem,
-  TextField,
 } from "@mui/material";
 
-import { Checkbox, Button, Sheet, Table, ModalDialog, Modal, Divider, FormControl, FormLabel, Stack, Input, Box } from '@mui/joy';
+import { Checkbox, Button, Sheet, Table, ModalDialog, Modal, Divider, FormControl, FormLabel, Stack, Input, Box, Select,Option } from '@mui/joy';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import {
   Tbody,
   Theader,
-  HeadStudentList,
+  HeadList,
   TableContainer,
 } from "../student-list/StudentListStyled";
 import useRoomList from "./useRoomList";
@@ -50,10 +47,28 @@ const RoomList: React.FC = () => {
     handleDeleteAll,
     handleAdd,
     handleEditConfirmed,
+    setEditRoom,
+    setAddRoom
   } = useRoomList();
+  const mapFacilityValueToLabel = (values: number[]) => {
+    if (!Array.isArray(values)) {
+      return [];
+    }
+  
+    return values.map((value) => {
+      switch (value) {
+        case 1:
+          return "computer";
+        case 2:
+          return "projector";
+        default:
+          return "";
+      }
+    });
+  };
   
   return (
-          <HeadStudentList>
+          <HeadList>
             <TableContainer>
               <Sheet sx={{
                     '--TableCell-height': '40px',
@@ -135,9 +150,9 @@ const RoomList: React.FC = () => {
                             </th>
                             <th>{item.room_type}</th>
                             <th>{item.room_capacity}</th>
-                            <th>{item.room_facilities}</th>
+                            <th>{Array.isArray(item.room_facilities) ? item.room_facilities.join(", ") : item.room_facilities}</th>
                             <th>{item.room_level}</th>
-                            <th>{item.room_status}</th>
+                            <th>{parseInt(item.room_status, 10) === 1 ? "ห้องใช้งานได้" : "ห้องใช้งานไม่ได้"}</th>
                             <th>
                             <Checkbox
                               checked={selectedItems.includes(item.room_id)}
@@ -282,13 +297,29 @@ const RoomList: React.FC = () => {
                     </FormControl>
                     <FormControl>
                       <FormLabel>Facilities</FormLabel>
-                      <Input required 
+                      {/* <Input required 
                         name="room_facilities"
                         value={editingRoom.room_facilities}
                         onChange={handleInputEditChange}
                         fullWidth
                         size="lg"
-                      />
+                      /> */}
+                      <Select
+                          defaultValue={['1']}
+                          required
+                          name="room_facilities"
+                          value={editingRoom.room_facilities.map(String)}
+                          onChange={(_, values) =>
+                            setEditRoom({
+                              ...editingRoom,
+                              room_facilities: values.map(Number),
+                            })
+                          }
+                          multiple
+                        >
+                          <Option value="1">{mapFacilityValueToLabel([1])}</Option>
+                          <Option value="2">{mapFacilityValueToLabel([2])}</Option>
+                        </Select>
                     </FormControl>
                     <FormControl>
                       <FormLabel>Floor</FormLabel>
@@ -320,70 +351,97 @@ const RoomList: React.FC = () => {
                 </form>
               </ModalDialog>
             </Modal>
-            <Dialog open={addDialogOpen} onClose={handleCloseAddDialog}>
-              <DialogTitle>Add New Room</DialogTitle>
-              <DialogContent>
-                <TextField
-                  label="Number"
-                  name="room_number"
-                  value={AddRoom.room_number}
-                  onChange={handleInputChange}
-                  fullWidth
-                  sx={{ marginBottom: 2, marginTop:2 }}
-                  inputProps={{ inputMode: "numeric" }}
-                />
-                <TextField
-                  label="Type"
-                  name="room_type"
-                  value={AddRoom.room_type}
-                  onChange={handleInputChange}
-                  fullWidth
-                  sx={{ marginBottom: 2 }}
-                  inputProps={{ inputMode: "numeric" }}
-                />
-                <TextField
-                  label="Capacity"
-                  name="room_capacity"
-                  value={AddRoom.room_capacity}
-                  onChange={handleInputChange}
-                  fullWidth
-                  sx={{ marginBottom: 2 }}
-                />
-                <TextField
-                  label="Facilities"
-                  name="room_facilities"
-                  value={AddRoom.room_facilities}
-                  onChange={handleInputChange}
-                  fullWidth
-                  sx={{ marginBottom: 2 }}
-                />
-                <TextField
-                  label="Floor"
-                  name="room_level"
-                  value={AddRoom.room_level}
-                  onChange={handleInputChange}
-                  select
-                  fullWidth
+            <Modal open={addDialogOpen} onClose={handleCloseAddDialog}>
+              <ModalDialog
+                size="lg"
+                variant="outlined"
+                layout="center"
+                color="primary"
+                sx={{width:450}}>  
+                <DialogTitle>Add New Room</DialogTitle>
+                <form
+                  onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
+                    event.preventDefault();
+                  }}
                 >
-                  <MenuItem value="1" >1</MenuItem>
-                  <MenuItem value="2">2</MenuItem>
-                  <MenuItem value="3">3</MenuItem>
-                  <MenuItem value="4">4</MenuItem>
-                  <MenuItem value="5">5</MenuItem>
-                  <MenuItem value="6">6</MenuItem>
-                  <MenuItem value="7">7</MenuItem>
-                  <MenuItem value="8">8</MenuItem>
-                  <MenuItem value="9">9</MenuItem>
-                </TextField>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleCloseAddDialog}>Cancel</Button>
-                <Button onClick={handleAddConfirmed} color="primary">
-                  Add
-                </Button>
-              </DialogActions>
-            </Dialog>
-          </HeadStudentList>
+                  <Stack spacing={3}>
+                    <>
+                    <FormControl>
+                      <FormLabel>Number</FormLabel>
+                      <Input autoFocus required 
+                        name="room_number"
+                        value={AddRoom.room_number}
+                        onChange={handleInputChange}
+                        fullWidth
+                        size="lg"
+                      />
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel>Type</FormLabel>
+                      <Input required 
+                        name="room_type"
+                        value={AddRoom.room_type}
+                        onChange={handleInputChange}
+                        fullWidth
+                        size="lg"
+                      />
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel>Capacity</FormLabel>
+                      <Input required 
+                        name="room_capacity"
+                        value={AddRoom.room_capacity}
+                        onChange={handleInputChange}
+                        fullWidth
+                        size="lg"
+                      />
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel>Facilities</FormLabel>
+                      {/* <Input required 
+                        name="room_facilities"
+                        value={AddRoom.room_facilities}
+                        onChange={handleInputChange}
+                        fullWidth
+                        size="lg"
+                      /> */}
+                      <Select
+                          defaultValue={['1']}
+                          required
+                          name="facilities_id"
+                          value={AddRoom.facilities_id.map(String)}
+                          onChange={(_, values) =>
+                            setAddRoom({
+                              ...AddRoom,
+                              facilities_id: values.map(Number),
+                            })
+                          }
+                          multiple
+                        >
+                          <Option value="1">{mapFacilityValueToLabel([1])}</Option>
+                          <Option value="2">{mapFacilityValueToLabel([2])}</Option>
+                        </Select>
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel>Floor</FormLabel>
+                      <Input required 
+                        name="room_level"
+                        value={AddRoom.room_level}
+                        onChange={handleInputChange}
+                        fullWidth
+                        size="lg"
+                      />
+                    </FormControl>
+                    </>
+                    <DialogActions>
+                      <Button type="cancel" onClick={handleCloseAddDialog}>Cancel</Button>
+                      <Button type="submit" onClick={handleAddConfirmed}>Confirm</Button>
+                    </DialogActions>
+                  </Stack>
+                </form>
+              </ModalDialog>
+            </Modal>
+          </HeadList>
   );
 };
 

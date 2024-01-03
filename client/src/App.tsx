@@ -17,7 +17,7 @@ import { Toaster} from 'sonner'
 // import User from "./pages/student/student";
 
 ////user 
-import Room from "./pages/room/Room";
+import Room from "./pages/user/room/Room";
 
 
 ////admin
@@ -25,6 +25,7 @@ import StudentList from "./pages/admin/student-list/StudentList";
 import ReservedList from "./pages/admin/reserved-list/ReservedList";
 import RoomList from "./pages/admin/room-list/RoomList";
 import UserProfileSidebar from "./shared/components/navbar-user/UserNavbar";
+import HomeUser from "./pages/user/index";
 
 
 const App: React.FC = () => {
@@ -51,6 +52,7 @@ const App: React.FC = () => {
                   </AuthenticatedRoute>
                 }
               >
+                <Route path="page" element={<HomeUser />} />
                 <Route path="room-user" element={<Room />} />
               </Route>
               <Route
