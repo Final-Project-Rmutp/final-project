@@ -177,9 +177,9 @@ async function getroomById(req, res) {
 //Update room data
 async function updateroom(req, res) {
     const roomId = req.params.room_id;
-    const { room_number, room_level, room_capacity, room_type, room_facilities, room_status } = req.body;
+    const { room_number, room_level, room_capacity, room_type, facilities_id, room_status } = req.body;
 
-    const missingFields = !room_number || !room_capacity || !room_level || !room_type || room_facilities === undefined || !room_status;
+    const missingFields = !room_number || !room_capacity || !room_level || !room_type || facilities_id === undefined || !room_status;
     if (missingFields) {
         return res.status(400).json({ message: 'All fields are required' });
     }
@@ -210,13 +210,13 @@ async function updateroom(req, res) {
         await client.query(deleteRoomFacilitiesQuery, [roomId]);
 
         // Insert updated room facilities if available
-        if (room_facilities.length > 0) {
+        if (facilities_id.length > 0) {
             const insertRoomFacilityQuery = `
                 INSERT INTO roomfacility (room_id, facility_id)
                 VALUES ($1, $2)
             `;
     
-            for (const facilityId of room_facilities) {
+            for (const facilityId of facilities_id) {
                 await client.query(insertRoomFacilityQuery, [roomId, facilityId]);
             }
         }
