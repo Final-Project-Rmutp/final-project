@@ -3,6 +3,7 @@ const router = express.Router();
 const adminController = require('../controller/admin.controller.js');
 const authMiddleware = require('../middleware/authMiddleware.js')
 const roomController = require('../controller/room.controller.js');
+const uploadMiddleware = require('../middleware/uploadMiddleware.js');
 
 /**
  * @swagger
@@ -11,13 +12,13 @@ const roomController = require('../controller/room.controller.js');
  *     tags:
  *     - Admin - user
  *     summary: Register a new user (authentication required).
- *     description: Create a new user account by providing user information.
+ *     description: Create a new user account by providing user information and an image file.
  *     security:
  *       - Authorization: []
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             properties:
@@ -38,7 +39,7 @@ const roomController = require('../controller/room.controller.js');
  *                 example: "student"
  *               user_img_path:
  *                 type: string
- *                 example: ""
+ *                 format: binary   # Specify the format as binary for file uploads
  *             required:
  *               - pin
  *               - citizen_id
@@ -98,7 +99,7 @@ const roomController = require('../controller/room.controller.js');
  *                    example: Internal server error
  */
 
-router.post('/user/add',authMiddleware.isAdmin, adminController.adduser);
+router.post('/user/add',authMiddleware.isAdmin, uploadMiddleware.uploadFileMiddleware, uploadMiddleware.handleFileUploadError, adminController.adduser);
 
 /**
  * @swagger
@@ -365,7 +366,7 @@ router.delete('/user/deactivateUser/:id',authMiddleware.isAdmin, adminController
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             properties:
@@ -377,6 +378,9 @@ router.delete('/user/deactivateUser/:id',authMiddleware.isAdmin, adminController
  *                 type: string
  *               lastname:
  *                 type: string
+ *               user_img_path:
+ *                 type: string
+ *                 format: binary   # Specify the format as binary for file uploads
  *             required:
  *               - pin
  *               - citizen_id
@@ -435,7 +439,7 @@ router.delete('/user/deactivateUser/:id',authMiddleware.isAdmin, adminController
  *                    example: Internal server error
  */
 
-router.patch('/user/updateuser/:id',authMiddleware.isAdmin, adminController.updateUser);
+router.patch('/user/updateuser/:id',authMiddleware.isAdmin, uploadMiddleware.uploadFileMiddleware, uploadMiddleware.handleFileUploadError, adminController.updateUser);
 
 
 /**
@@ -954,7 +958,6 @@ router.patch('/room/updateroom/:room_id',authMiddleware.isAdmin, roomController.
  */
 
 router.delete('/room/deleteroom/:room_id',authMiddleware.isAdmin, roomController.deleteroom);
-
 
 
 module.exports = router;

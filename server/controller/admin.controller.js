@@ -1,10 +1,12 @@
 const client = require('../configs/database.js');
 const jwt =  require('jsonwebtoken');
 const { logging } = require('../middleware/loggingMiddleware.js');
+const fs = require('fs');
 
 // Add a new user
 async function adduser(req, res) {
-    const { pin, citizen_id, firstname, lastname, account_type, user_img_path } = req.body;
+    const { pin, citizen_id, firstname, lastname, account_type } = req.body;
+    const user_img_path = req.file ? req.file.filename : null;
     const action_type = 5; // adduser
 
     // Check for missing or empty values (except user_img_path)
@@ -72,7 +74,6 @@ async function getallusers(req, res) {
     }
 }
 
-
 // Get user by ID
 async function getUserById(req, res) {
     try {
@@ -120,38 +121,64 @@ async function deactivateUser(req, res) {
 
 // Update user account
 async function updateUser(req, res) {
-    const action_type = 7; //updateUser
+    const action_type = 7; // updateUser
     try {
         const userId = req.params.id;
-        const updatedUserData = req.body;
+        const { firstname, lastname, citizen_id, pin } = req.body;
+        const user_img_path = req.file ? req.file.filename : null; // New image if provided
+
         const id = req.user.id;
 
-        const { firstname, lastname, citizen_id, pin } = updatedUserData;
-
         const requiredFields = ['firstname', 'lastname', 'citizen_id', 'pin'];
-        if (requiredFields.some(field => !updatedUserData[field])) {
+        if (requiredFields.some(field => !req.body[field])) {
             return res.status(400).json({ message: 'All fields are required' });
         }
 
         const pinRegex = /^\d{12}-\d$/;
         if (!pinRegex.test(pin) || isNaN(citizen_id)) {
-            return res.status(400).json({ message: 'ID and Citizen ID must be numbers in correct format' });
+            return res.status(400).json({ message: 'ID and Citizen ID must be numbers in the correct format' });
         }
 
-        const updateQuery = 'UPDATE "user" SET firstname = $1, lastname = $2, citizen_id = $3, pin = $4 WHERE id = $5';
-        const result = await client.query(updateQuery, [firstname, lastname, citizen_id, pin, userId]);
+        const oldUserData = await client.query('SELECT user_img_path FROM "user" WHERE id = $1', [userId]);
+        
+        // Update the user data in the database
+        const updateQuery = 'UPDATE "user" SET user_img_path = $1, firstname = $2, lastname = $3, citizen_id = $4, pin = $5 WHERE id = $6';
+        const result = await client.query(updateQuery, [user_img_path, firstname, lastname, citizen_id, pin, userId]);
 
-        if (result.rowCount === 1) {
-            logging(action_type, id,'Success', `User data updated successfully. User ID: ${userId}`);
+        if (oldUserData.rows && oldUserData.rows.length > 0) {
+            const oldImageFileName = oldUserData.rows[0].user_img_path;
+            // Remove the old image file from the uploads folder
+            if (oldImageFileName && user_img_path !== null) {
+                fs.unlink(`uploads/${oldImageFileName}`, (err) => {
+                    if (err) {
+                        console.error('Error removing old image file:', err);
+                    } else {
+                        console.log('Old image file deleted successfully');
+                    }
+                });
+            }
+
+            // Remove the old image file if user_img_path is null
+            if (oldImageFileName && user_img_path === null) {
+                fs.unlink(`uploads/${oldImageFileName}`, (err) => {
+                    if (err) {
+                        console.error('Error removing old image file:', err);
+                    } else {
+                        console.log('Old image file deleted successfully');
+                    }
+                });
+            }
+
+            logging(action_type, id, 'Success', `User data updated successfully. User ID: ${userId}`);
             res.status(200).json({ message: 'User data updated successfully' });
         } else {
-            logging(action_type, id,'Error', `User not found. User ID: ${userId}`);
+            logging(action_type, id, 'Error', `User not found. User ID: ${userId}`);
             res.status(404).json({ message: 'User not found' });
         }
     } catch (err) {
         console.error(err.message);
         const id = req.user.id;
-        logging(action_type, id,'Error', err.message);
+        logging(action_type, id, 'Error', err.message);
         res.status(500).json({ message: 'Internal server error' });
     }
 }
@@ -175,9 +202,5 @@ async function searchuser(req, res) {
      res.status(500).json({ message: 'Internal server error' });
     }
 }
-
-// TODO: Upload img
-
-
 
 module.exports = { adduser, getallusers, getUserById, deactivateUser, updateUser, searchuser };
