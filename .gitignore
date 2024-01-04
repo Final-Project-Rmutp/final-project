@@ -4,4 +4,4 @@ client/node_modules/
 .vscode/settings.json
 server/controller/querry.text
 node_modules
-server/uploads/*
+server/uploads/
