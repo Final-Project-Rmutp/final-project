@@ -12,7 +12,6 @@ const useStudentList = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
-  const [userImage, setUserImage] = useState<File | null>(null);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
 
@@ -82,7 +81,6 @@ const useStudentList = () => {
 
   const handleAdd = () => {
     resetUser();
-    setUserImage(null);
     setAddDialogOpen(true);
   };
 
@@ -122,33 +120,42 @@ const useStudentList = () => {
 
   const handleCloseAddDialog = () => {
     setAddDialogOpen(false);
-    setUserImage(null);
   };
 
   const handleAddConfirmed = async () => {
     const formData = new FormData();
-    formData.append("pin", user.pin);
-    formData.append("citizen_id", user.citizen_id);
-    formData.append("firstname", user.firstname);
-    formData.append("lastname", user.lastname);
-    formData.append("account_type", user.account_type);
-    if (userImage) {
-      formData.append("image", userImage);
-    }
-
-    await UserService.addUser(AddUser);
+    formData.append("pin", AddUser.pin);
+    formData.append("citizen_id", AddUser.citizen_id);
+    formData.append("firstname", AddUser.firstname);
+    formData.append("lastname", AddUser.lastname);
+    formData.append("account_type", AddUser.account_type);
+    formData.append("user_img_path", AddUser.user_img_path || ""); // Append the file
+  
+    await UserService.addUser(formData);
     await fetchUserList();
     setAddDialogOpen(false);
     resetUser();
-    setUserImage(null);
   };
+
+
+
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files && files.length > 0) {
-      setUserImage(files[0]);
+      const selectedImage = files[0];
+  
+      const reader = new FileReader();
+      reader.onloadend  = () => {
+        setAddUser({ ...AddUser, user_img_path: reader.result as string });
+      };
+  
+      reader.readAsDataURL(selectedImage);
     }
   };
+  
+  
+  
 
   const handleSelectAll = () => {
     setSelectAll(!selectAll);
@@ -267,7 +274,7 @@ const useStudentList = () => {
     handleChangeRowsPerPage,
     markItemAsUpdated,
     handleChange,
-    setUserImage
+
   };
 };
 

@@ -143,7 +143,6 @@ body {
   // scroll-behavior: smooth;
   // scroll-padding-top: 5rem;
   grid-row-start: 1;
-  transition: width var(--secs);
   width: 0;
   @media (orientation: landscape) {
     &.open {
@@ -161,7 +160,6 @@ body {
     user-select: none;
     cursor: pointer;
     left: var(--icon-left-open);
-    transition: left var(--secs);
     margin-top:2rem;
   }
   .sidebar {

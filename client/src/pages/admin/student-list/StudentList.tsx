@@ -17,6 +17,7 @@ import {
   Select,
   Option,
   SvgIcon,
+  // Avatar,
 } from "@mui/joy";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
@@ -65,6 +66,7 @@ const StudentList: React.FC = () => {
     handleChangeRowsPerPage,
     setAddUser,
     handleChange,
+    handleImageChange,
   } = useStudentList();
   interface Item {
     updated: boolean;
@@ -77,7 +79,7 @@ const StudentList: React.FC = () => {
   
 
 
-  const randomImageNumber = Math.floor(Math.random() * 1000) + 1;
+  // const randomImageNumber = Math.floor(Math.random() * 1000) + 1;
   const [clickedImageUrl, setClickedImageUrl] = React.useState<string | null>(null);
   const [selectedItem, setSelectedItem] = React.useState<ListItem | null>(null);
   return (
@@ -137,8 +139,8 @@ const StudentList: React.FC = () => {
             />
             <Tbody>
             {listItems.map((item, index) => {
-                const rowRandomImageNumber = randomImageNumber + index;
-                const rowRandomImageUrl = `https://xsgames.co/randomusers/avatar.php?g=pixel&=${rowRandomImageNumber}`;
+                // const rowRandomImageNumber = randomImageNumber + index;
+                // const rowRandomImageUrl = `https://xsgames.co/randomusers/avatar.php?g=pixel&=${rowRandomImageNumber}`;
 
                 return (
                 <tr
@@ -149,23 +151,20 @@ const StudentList: React.FC = () => {
                     {(page - 1) * rowsPerPage + index + 1}
                   </th>
                   <th style={rowStyle(item)}>
-                    <img
-                      src={rowRandomImageUrl}
-                      alt={`User ${item.id}`}
-                      width="50"
-                      height="50"
-                      onClick={() => {
-                        setClickedImageUrl(rowRandomImageUrl);
-                        setSelectedItem(item);
-                      }}
-                       // src={item.user_img_path ?? ''}
-                    />
-                    {/* <div className="d-flex justify-content-center align-items-center">
-                      <Avatar
-                        src={item.user_img_path ?? ""}
-                        sx={{ zIndex: 0 }}
-                      />
-                    </div> */}
+                    {item.user_img_path !== null && (
+                        <img
+                          // src={rowRandomImageUrl}
+                          src={item.user_img_path}
+                          alt="User Image"
+                          // alt={`User ${item.id}`}
+                          width="50"
+                          height="50"
+                          onClick={() => {
+                            setClickedImageUrl(item.user_img_path);
+                            setSelectedItem(item);
+                          }}
+                        />
+                      )}
                   </th>
                   <th style={rowStyle(item)}>{item.firstname}</th>
                   <th style={rowStyle(item)}>{item.lastname}</th>
@@ -306,12 +305,13 @@ const StudentList: React.FC = () => {
                   onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
                     event.preventDefault();
                   }}
+                  encType="multipart/form-data"
                 >
                   <Stack spacing={3}>
                   {editingUser && (
                     <>
                     <FormControl>
-                      <FormLabel>ID Card</FormLabel>
+                      <FormLabel>Student ID</FormLabel>
                       <Input autoFocus required 
                         name="pin"
                         value={editingUser.pin}
@@ -321,7 +321,7 @@ const StudentList: React.FC = () => {
                       />
                     </FormControl>
                     <FormControl>
-                      <FormLabel>Student ID</FormLabel>
+                      <FormLabel>ID Card</FormLabel>
                       <Input required 
                         name="citizen_id"
                         value={editingUser.citizen_id}
@@ -368,108 +368,122 @@ const StudentList: React.FC = () => {
           sx={{ width: 450 }}
         >
           <DialogTitle>Add New User</DialogTitle>
-
-          <Stack spacing={3}>
-            <>
-              <FormControl>
-                <FormLabel>ID Card</FormLabel>
-                <Input
-                  required
-                  name="pin"
-                  value={AddUser.pin}
-                  onChange={handleInputChange}
-                  fullWidth
-                  size="lg"
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Student ID</FormLabel>
-                <Input
-                  required
-                  name="citizen_id"
-                  value={AddUser.citizen_id}
-                  onChange={handleInputChange}
-                  fullWidth
-                  size="lg"
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>FirstName</FormLabel>
-                <Input
-                  required
-                  name="firstname"
-                  value={AddUser.firstname}
-                  onChange={handleInputChange}
-                  fullWidth
-                  size="lg"
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>LastName</FormLabel>
-                <Input
-                  required
-                  name="lastname"
-                  value={AddUser.lastname}
-                  onChange={handleInputChange}
-                  fullWidth
-                  size="lg"
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>AccountType</FormLabel>
-                <Select
-                  defaultValue="select"
-                  required
-                  name="account_type"
-                  value={AddUser.account_type}
-                  onChange={(_, value) =>
-                    setAddUser({ ...AddUser, account_type: value as string })
-                  }
+          <form
+                  onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
+                    event.preventDefault();
+                  }}
+                  encType="multipart/form-data"
                 >
-                  <Option value="student">Student</Option>
-                  <Option value="teacher">Teacher</Option>
-                </Select>
-              </FormControl>
-              <FormControl>
-                <FormLabel>Upload</FormLabel>
-                <Button
-                  component="label"
-                  role={undefined}
-                  tabIndex={-1}
-                  variant="solid"
-                  color="success"
-                  startDecorator={
-                    <SvgIcon>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
-                        />
-                      </svg>
-                    </SvgIcon>
-                  }
-                >
-                  Upload a file
-                  <VisuallyHiddenInput type="file" />
+            <Stack spacing={3}>
+              <>
+                <FormControl>
+                  <FormLabel>Student ID</FormLabel>
+                  <Input
+                    required
+                    name="pin"
+                    value={AddUser.pin}
+                    onChange={handleInputChange}
+                    fullWidth
+                    size="lg"
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>ID Card</FormLabel>
+                  <Input
+                    required
+                    name="citizen_id"
+                    value={AddUser.citizen_id}
+                    onChange={handleInputChange}
+                    fullWidth
+                    size="lg"
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>FirstName</FormLabel>
+                  <Input
+                    required
+                    name="firstname"
+                    value={AddUser.firstname}
+                    onChange={handleInputChange}
+                    fullWidth
+                    size="lg"
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>LastName</FormLabel>
+                  <Input
+                    required
+                    name="lastname"
+                    value={AddUser.lastname}
+                    onChange={handleInputChange}
+                    fullWidth
+                    size="lg"
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>AccountType</FormLabel>
+                  <Select
+                    defaultValue="select"
+                    required
+                    name="account_type"
+                    value={AddUser.account_type}
+                    onChange={(_, value) =>
+                      setAddUser({ ...AddUser, account_type: value as string })
+                    }
+                  >
+                    <Option value="student">Student</Option>
+                    <Option value="teacher">Teacher</Option>
+                  </Select>
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Upload</FormLabel>
+                  <Button
+                    component="label"
+                    role={undefined}
+                    tabIndex={-1}
+                    variant="solid"
+                    color="success"
+                    startDecorator={
+                      <SvgIcon>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
+                          />
+                        </svg>
+                      </SvgIcon>
+                    }
+                  >
+                    Upload a file
+                    <VisuallyHiddenInput
+                      type="file"
+                      name="user_img_path"
+                      onChange={handleImageChange}
+                    />
+                  </Button>
+                </FormControl>
+                {AddUser.user_img_path !== null &&(
+                    <img src={AddUser.user_img_path} alt="" />
+                )}
+              </>
+              <DialogActions>
+                <Button type="cancel"  onClick={handleCloseAddDialog}>
+                  Cancel
                 </Button>
-              </FormControl>
-            </>
-            <DialogActions>
-              <Button type="cancel"  onClick={handleCloseAddDialog}>
-                Cancel
-              </Button>
-              <Button type="submit" onClick={handleAddConfirmed}>
-                Confirm
-              </Button>
-            </DialogActions>
-          </Stack>
+                <Button type="submit" onClick={handleAddConfirmed}>
+                  Confirm
+                </Button>
+              </DialogActions>
+            </Stack>
+          </form>
+
         </ModalDialog>
       </Modal>
       <Modal
