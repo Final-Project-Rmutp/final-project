@@ -16,7 +16,7 @@ app.use(express.urlencoded({extended: true}));
 
 // test route
 app.get("/", (req, res) => {
-    res.json({ message: "API WORK." });
+    res.json({ DB_HOST: process.env.DB_HOST });
   });
 
 //AuthRoute
