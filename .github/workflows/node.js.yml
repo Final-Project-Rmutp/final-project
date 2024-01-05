@@ -10,6 +10,8 @@ on:
 jobs:
   build:
     runs-on: self-hosted
+    env: 
+      DB_HOST: ${{ secrets.DB_HOST }}
     strategy:
       matrix:
         node-version: [18.x]
@@ -26,5 +28,5 @@ jobs:
       working-directory: server
     - run: |
         touch .env
-        echo "${{ secrets.FINAL_ENV }}"
+        echo "${{ secrets.DB_HOST }}"
     - run: pm2 restart api
