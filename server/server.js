@@ -14,9 +14,12 @@ app.use(cors(
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
+const mySecret = process.env.DB_HOST;
+console.log(mySecret); // Use the secret as needed
+
 // test route
 app.get("/", (req, res) => {
-    res.json({ DB_HOST: process.env.DB_HOST });
+    res.json({ mySecret });
   });
 
 //AuthRoute
