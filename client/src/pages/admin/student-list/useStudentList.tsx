@@ -129,7 +129,7 @@ const useStudentList = () => {
     formData.append("firstname", AddUser.firstname);
     formData.append("lastname", AddUser.lastname);
     formData.append("account_type", AddUser.account_type);
-    formData.append("user_img_path", AddUser.user_img_path || ""); // Append the file
+    formData.append("user_img_path", AddUser.user_img_path ?? "");
   
     await UserService.addUser(formData);
     await fetchUserList();

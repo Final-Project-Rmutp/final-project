@@ -43,8 +43,7 @@ import {
 } from "./UserSidebarStyle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Icon } from "@iconify/react";
-import { Link, useLocation  } from 'react-router-dom';
-import HomeUser from "../../../pages/user/index";
+import { Link  } from 'react-router-dom';
 interface LayoutState {
   leftOpen: boolean;
   rightOpen: boolean;
@@ -81,7 +80,6 @@ const UserProfileSidebar: React.FC = () => {
       }));
     }
   };
-  const location = useLocation();
   const handleTabChange = (tab: string) => {
     setState((prevState) => ({
       ...prevState,
@@ -319,7 +317,6 @@ const UserProfileSidebar: React.FC = () => {
             </HeaderNav>
             <div className="content">
               <Outlet></Outlet>
-              {location.pathname === '/user/page' && <HomeUser />}
             </div>
           </Main>
         </LayoutUser>

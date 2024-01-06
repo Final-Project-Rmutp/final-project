@@ -6,6 +6,7 @@ export default {
     "./src/**/*.tsx",
     "./src/**/*.scss",
     "./src/**/*.css",
+    'node_modules/preline/dist/*.js',
   ],
   
   theme: {

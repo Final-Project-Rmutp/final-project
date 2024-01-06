@@ -155,8 +155,8 @@ const StudentList: React.FC = () => {
                         <img
                           // src={rowRandomImageUrl}
                           src={item.user_img_path}
-                          alt="User Image"
-                          // alt={`User ${item.id}`}
+                          // alt="User Image"
+                          alt={`User ${item.id}`}
                           width="50"
                           height="50"
                           onClick={() => {
