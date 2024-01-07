@@ -1,9 +1,8 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const adminController = require('../controller/admin.controller.js');
-const authMiddleware = require('../middleware/authMiddleware.js')
-const roomController = require('../controller/room.controller.js');
-const uploadMiddleware = require('../middleware/uploadMiddleware.js');
+const adminController = require("../controller/admin.controller.js");
+const authMiddleware = require("../middleware/authMiddleware.js");
+const roomController = require("../controller/room.controller.js");
 
 /**
  * @swagger
@@ -99,8 +98,7 @@ const uploadMiddleware = require('../middleware/uploadMiddleware.js');
  *                    example: Internal server error
  */
 
-router.post('/user/add',authMiddleware.isAdmin, uploadMiddleware.uploadFileMiddleware, uploadMiddleware.handleFileUploadError, adminController.adduser);
-// router.post('/user/add',authMiddleware.isAdmin, adminController.adduser);
+router.post("/user/add", authMiddleware.isAdmin, adminController.adduser);
 
 /**
  * @swagger
@@ -191,8 +189,11 @@ router.post('/user/add',authMiddleware.isAdmin, uploadMiddleware.uploadFileMiddl
  *                    example: Internal server error
  */
 
-
-router.get('/user/getalluser',authMiddleware.isAdmin, adminController.getallusers);
+router.get(
+  "/user/getalluser",
+  authMiddleware.isAdmin,
+  adminController.getallusers
+);
 
 /**
  * @swagger
@@ -272,8 +273,11 @@ router.get('/user/getalluser',authMiddleware.isAdmin, adminController.getalluser
  *                    example: Internal server error
  */
 
-
-router.get('/user/getuser/:id',authMiddleware.isAdmin, adminController.getUserById);
+router.get(
+  "/user/getuser/:id",
+  authMiddleware.isAdmin,
+  adminController.getUserById
+);
 
 /**
  * @swagger
@@ -345,7 +349,11 @@ router.get('/user/getuser/:id',authMiddleware.isAdmin, adminController.getUserBy
  *                    example: Internal server error
  */
 
-router.delete('/user/deactivateUser/:id',authMiddleware.isAdmin, adminController.deactivateUser);
+router.delete(
+  "/user/deactivateUser/:id",
+  authMiddleware.isAdmin,
+  adminController.deactivateUser
+);
 
 /**
  * @swagger
@@ -440,8 +448,11 @@ router.delete('/user/deactivateUser/:id',authMiddleware.isAdmin, adminController
  *                    example: Internal server error
  */
 
-router.patch('/user/updateuser/:id',authMiddleware.isAdmin, uploadMiddleware.uploadFileMiddleware, uploadMiddleware.handleFileUploadError, adminController.updateUser);
-
+router.patch(
+  "/user/updateuser/:id",
+  authMiddleware.isAdmin,
+  adminController.updateUser
+);
 
 /**
  * @swagger
@@ -516,7 +527,7 @@ router.patch('/user/updateuser/:id',authMiddleware.isAdmin, uploadMiddleware.upl
  *                    example: Internal server error
  */
 
-router.post('/user/search',authMiddleware.isAdmin, adminController.searchuser);
+router.post("/user/search", authMiddleware.isAdmin, adminController.searchuser);
 
 /**
  * @swagger
@@ -608,7 +619,7 @@ router.post('/user/search',authMiddleware.isAdmin, adminController.searchuser);
  *                    example: Internal server error
  */
 
-router.post('/room/add',authMiddleware.isAdmin, roomController.addroom);
+router.post("/room/add", authMiddleware.isAdmin, roomController.addroom);
 
 /**
  * @swagger
@@ -699,8 +710,11 @@ router.post('/room/add',authMiddleware.isAdmin, roomController.addroom);
  *                    example: Internal server error
  */
 
-
-router.get('/room/getallroom',authMiddleware.isAdmin, roomController.getallroom);
+router.get(
+  "/room/getallroom",
+  authMiddleware.isAdmin,
+  roomController.getallroom
+);
 
 /**
  * @swagger
@@ -719,7 +733,7 @@ router.get('/room/getallroom',authMiddleware.isAdmin, roomController.getallroom)
  *         description: Room ID to fetch
  *         schema:
  *           type: string
-  *     responses:
+ *     responses:
  *       200:
  *         description: authenticate successful. Returns the list of users.
  *         content:
@@ -780,8 +794,11 @@ router.get('/room/getallroom',authMiddleware.isAdmin, roomController.getallroom)
  *                    example: Internal server error
  */
 
-
-router.get('/room/getroom/:room_id',authMiddleware.isAdmin, roomController.getroomById);
+router.get(
+  "/room/getroom/:room_id",
+  authMiddleware.isAdmin,
+  roomController.getroomById
+);
 
 /**
  * @swagger
@@ -886,7 +903,11 @@ router.get('/room/getroom/:room_id',authMiddleware.isAdmin, roomController.getro
  *                    example: Internal server error
  */
 
-router.patch('/room/updateroom/:room_id',authMiddleware.isAdmin, roomController.updateroom);
+router.patch(
+  "/room/updateroom/:room_id",
+  authMiddleware.isAdmin,
+  roomController.updateroom
+);
 
 /**
  * @swagger
@@ -958,7 +979,10 @@ router.patch('/room/updateroom/:room_id',authMiddleware.isAdmin, roomController.
  *                    example: Internal server error
  */
 
-router.delete('/room/deleteroom/:room_id',authMiddleware.isAdmin, roomController.deleteroom);
-
+router.delete(
+  "/room/deleteroom/:room_id",
+  authMiddleware.isAdmin,
+  roomController.deleteroom
+);
 
 module.exports = router;

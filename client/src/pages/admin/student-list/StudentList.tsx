@@ -21,17 +21,13 @@ import {
 } from "@mui/joy";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
-import {
-  Tbody,
-  HeadList,
-  TableContainer,
-} from "./StudentListStyled";
+import { Tbody, HeadList, TableContainer } from "./StudentListStyled";
 import useStudentList from "./useStudentList";
 import CustomPagination from "../../../shared/components/pagination/Pagination";
 import { VisuallyHiddenInput } from "./StudentListStyled";
 // import { Icon } from '@iconify/react';
 import { ListItem } from "../../../auth/model/authTypes";
-import { TableHeaderRows } from './table-header-rows'
+import { TableHeaderRows } from "./table-header-rows";
 
 const StudentList: React.FC = () => {
   const {
@@ -76,11 +72,11 @@ const StudentList: React.FC = () => {
     color: item.updated ? "white" : "",
     // borderRadius: item.updated ? '10px' : '',
   });
-  
-
 
   // const randomImageNumber = Math.floor(Math.random() * 1000) + 1;
-  const [clickedImageUrl, setClickedImageUrl] = React.useState<string | null>(null);
+  const [clickedImageUrl, setClickedImageUrl] = React.useState<string | null>(
+    null
+  );
   const [selectedItem, setSelectedItem] = React.useState<ListItem | null>(null);
   return (
     <HeadList>
@@ -131,30 +127,30 @@ const StudentList: React.FC = () => {
               },
             }}
           >
-            <TableHeaderRows 
+            <TableHeaderRows
               searchTerm={searchTerm}
-              handleChange={handleChange} 
-              handleSelectAll={handleSelectAll} 
-              selectAll={selectAll} 
+              handleChange={handleChange}
+              handleSelectAll={handleSelectAll}
+              selectAll={selectAll}
             />
             <Tbody>
-            {listItems.map((item, index) => {
+              {listItems.map((item, index) => {
                 // const rowRandomImageNumber = randomImageNumber + index;
                 // const rowRandomImageUrl = `https://xsgames.co/randomusers/avatar.php?g=pixel&=${rowRandomImageNumber}`;
 
                 return (
-                <tr
-                  key={item.id}
-                  style={{ borderRadius: item.updated ? "10px" : "" }}
-                >
-                  <th style={rowStyle(item)}>
-                    {(page - 1) * rowsPerPage + index + 1}
-                  </th>
-                  <th style={rowStyle(item)}>
-                    {item.user_img_path !== null && (
+                  <tr
+                    key={item.id}
+                    style={{ borderRadius: item.updated ? "10px" : "" }}
+                  >
+                    <th style={rowStyle(item)}>
+                      {(page - 1) * rowsPerPage + index + 1}
+                    </th>
+                    <th style={rowStyle(item)}>
+                      {item.user_img_path !== null && (
                         <img
                           // src={rowRandomImageUrl}
-                          src={item.user_img_path}
+                          src={`${item.user_img_path}`}
                           // alt="User Image"
                           alt={`User ${item.id}`}
                           width="50"
@@ -165,51 +161,51 @@ const StudentList: React.FC = () => {
                           }}
                         />
                       )}
-                  </th>
-                  <th style={rowStyle(item)}>{item.firstname}</th>
-                  <th style={rowStyle(item)}>{item.lastname}</th>
-                  <th style={rowStyle(item)}>{item.pin}</th>
-                  <th style={rowStyle(item)}>{item.citizen_id}</th>
-                  <th style={rowStyle(item)}>{item.account_type}</th>
-                  <th>
-                    <Checkbox
-                      checked={selectedItems.includes(item.id)}
-                      onChange={() => handleCheckboxChange(item.id)}
-                      color="primary"
-                    />
-                  </th>
-                  <th>
-                    {/* {item.updated && 
+                    </th>
+                    <th style={rowStyle(item)}>{item.firstname}</th>
+                    <th style={rowStyle(item)}>{item.lastname}</th>
+                    <th style={rowStyle(item)}>{item.pin}</th>
+                    <th style={rowStyle(item)}>{item.citizen_id}</th>
+                    <th style={rowStyle(item)}>{item.account_type}</th>
+                    <th>
+                      <Checkbox
+                        checked={selectedItems.includes(item.id)}
+                        onChange={() => handleCheckboxChange(item.id)}
+                        color="primary"
+                      />
+                    </th>
+                    <th>
+                      {/* {item.updated && 
                                   <Icon icon="icon-park:update-rotation" />} */}
-                    <Box
-                      sx={{
-                        display: "flex",
-                        gap: 1,
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Button
-                        variant="solid"
-                        color="warning"
-                        className="edit"
-                        onClick={() => {
-                          handleEdit(item);
+                      <Box
+                        sx={{
+                          display: "flex",
+                          gap: 1,
+                          justifyContent: "center",
+                          alignItems: "center",
                         }}
                       >
-                        Edit
-                      </Button>
-                      <Button
-                        color="danger"
-                        variant="solid"
-                        endDecorator={<DeleteForever />}
-                        onClick={() => handleDelete(item.id)}
-                        className="delete"
-                      >
-                        Delete
-                      </Button>
-                    </Box>
-                  </th>
+                        <Button
+                          variant="solid"
+                          color="warning"
+                          className="edit"
+                          onClick={() => {
+                            handleEdit(item);
+                          }}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          color="danger"
+                          variant="solid"
+                          endDecorator={<DeleteForever />}
+                          onClick={() => handleDelete(item.id)}
+                          className="delete"
+                        >
+                          Delete
+                        </Button>
+                      </Box>
+                    </th>
                   </tr>
                 );
               })}
@@ -239,7 +235,6 @@ const StudentList: React.FC = () => {
                   variant="solid"
                   color="danger"
                   onClick={handleDeleteConfirmed}
-                  
                 >
                   Confirm Delete
                 </Button>
@@ -294,73 +289,83 @@ const StudentList: React.FC = () => {
         </div>
       </div>
       <Modal open={editDialogOpen} onClose={handleCloseEditDialog}>
-              <ModalDialog
-                size="lg"
-                variant="outlined"
-                layout="center"
-                color="primary"
-                sx={{width:450}}>  
-                <DialogTitle>Edit User</DialogTitle>
-                <form
-                  onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
-                    event.preventDefault();
-                  }}
-                  encType="multipart/form-data"
-                >
-                  <Stack spacing={3}>
-                  {editingUser && (
-                    <>
-                    <FormControl>
-                      <FormLabel>Student ID</FormLabel>
-                      <Input autoFocus required 
-                        name="pin"
-                        value={editingUser.pin}
-                        onChange={handleInputEditChange}
-                        fullWidth
-                        size="lg"
-                      />
-                    </FormControl>
-                    <FormControl>
-                      <FormLabel>ID Card</FormLabel>
-                      <Input required 
-                        name="citizen_id"
-                        value={editingUser.citizen_id}
-                        onChange={handleInputEditChange}
-                        fullWidth
-                        size="lg"
-                      />
-                    </FormControl>
-                    <FormControl>
-                      <FormLabel>FirstName</FormLabel>
-                      <Input required 
-                        name="firstname"
-                        value={editingUser.firstname}
-                        onChange={handleInputEditChange}
-                        fullWidth
-                        size="lg"
-                      />
-                    </FormControl>
-                    <FormControl>
-                      <FormLabel>LastName</FormLabel>
-                      <Input required 
-                        name="lastname"
-                        value={editingUser.lastname}
-                        onChange={handleInputEditChange}
-                        fullWidth
-                        size="lg"
-                      />
-                    </FormControl>
-                    </>
-                    )}
-                    <DialogActions>
-                      <Button type="cancel" onClick={handleCloseEditDialog}>Cancel</Button>
-                      <Button type="submit" onClick={handleEditConfirmed}>Confirm</Button>
-                    </DialogActions>
-                  </Stack>
-                </form>
-              </ModalDialog>
-            </Modal>
-      <Modal open={addDialogOpen}  onClose={handleCloseAddDialog}>
+        <ModalDialog
+          size="lg"
+          variant="outlined"
+          layout="center"
+          color="primary"
+          sx={{ width: 450 }}
+        >
+          <DialogTitle>Edit User</DialogTitle>
+          <form
+            onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
+              event.preventDefault();
+            }}
+            encType="multipart/form-data"
+          >
+            <Stack spacing={3}>
+              {editingUser && (
+                <>
+                  <FormControl>
+                    <FormLabel>Student ID</FormLabel>
+                    <Input
+                      autoFocus
+                      required
+                      name="pin"
+                      value={editingUser.pin}
+                      onChange={handleInputEditChange}
+                      fullWidth
+                      size="lg"
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>ID Card</FormLabel>
+                    <Input
+                      required
+                      name="citizen_id"
+                      value={editingUser.citizen_id}
+                      onChange={handleInputEditChange}
+                      fullWidth
+                      size="lg"
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>FirstName</FormLabel>
+                    <Input
+                      required
+                      name="firstname"
+                      value={editingUser.firstname}
+                      onChange={handleInputEditChange}
+                      fullWidth
+                      size="lg"
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>LastName</FormLabel>
+                    <Input
+                      required
+                      name="lastname"
+                      value={editingUser.lastname}
+                      onChange={handleInputEditChange}
+                      fullWidth
+                      size="lg"
+                    />
+                  </FormControl>
+                </>
+              )}
+              <DialogActions>
+                <Button type="cancel" onClick={handleCloseEditDialog}>
+                  Cancel
+                </Button>
+                <Button type="submit" onClick={handleEditConfirmed}>
+                  Confirm
+                </Button>
+              </DialogActions>
+            </Stack>
+          </form>
+        </ModalDialog>
+      </Modal>
+      <Modal open={addDialogOpen} onClose={handleCloseAddDialog}>
         <ModalDialog
           size="lg"
           layout="center"
@@ -369,11 +374,11 @@ const StudentList: React.FC = () => {
         >
           <DialogTitle>Add New User</DialogTitle>
           <form
-                  onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
-                    event.preventDefault();
-                  }}
-                  encType="multipart/form-data"
-                >
+            onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
+              event.preventDefault();
+            }}
+            encType="multipart/form-data"
+          >
             <Stack spacing={3}>
               <>
                 <FormControl>
@@ -469,12 +474,12 @@ const StudentList: React.FC = () => {
                     />
                   </Button>
                 </FormControl>
-                {AddUser.user_img_path !== null &&(
-                    <img src={AddUser.user_img_path} alt="" />
+                {AddUser.user_img_path !== null && (
+                  <img src={AddUser.user_img_path} alt="" />
                 )}
               </>
               <DialogActions>
-                <Button type="cancel"  onClick={handleCloseAddDialog}>
+                <Button type="cancel" onClick={handleCloseAddDialog}>
                   Cancel
                 </Button>
                 <Button type="submit" onClick={handleAddConfirmed}>
@@ -483,29 +488,30 @@ const StudentList: React.FC = () => {
               </DialogActions>
             </Stack>
           </form>
-
         </ModalDialog>
       </Modal>
-      <Modal
-        open={!!clickedImageUrl}
-        onClose={() => setClickedImageUrl(null)}
-      >
+      <Modal open={!!clickedImageUrl} onClose={() => setClickedImageUrl(null)}>
         <ModalDialog
-                size="lg"
-                variant="outlined"
-                layout="center"
-                color="primary">
+          size="lg"
+          variant="outlined"
+          layout="center"
+          color="primary"
+        >
           <DialogTitle>{selectedItem && selectedItem.firstname}</DialogTitle>
           <DialogContent>
             {clickedImageUrl && (
-              <img src={clickedImageUrl} alt="Full-size" style={{ width: '100%',height: '100%' }} />
+              <img
+                src={clickedImageUrl}
+                alt="Full-size"
+                style={{ width: "100%", height: "100%" }}
+              />
             )}
           </DialogContent>
           <DialogActions>
             {/* <Button onClick={() => setClickedImageUrl(null)}>Close</Button> */}
           </DialogActions>
         </ModalDialog>
-        </Modal>
+      </Modal>
     </HeadList>
   );
 };

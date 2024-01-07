@@ -25,35 +25,31 @@ const useStudentList = () => {
     handleInputChange,
     handleSelectChange,
     resetUser,
-    handleInputEditChange
+    handleInputEditChange,
   } = useUserState();
-  
-  const [searchTerm, setSearchTerm] = React.useState('');
+
+  const [searchTerm, setSearchTerm] = React.useState("");
   const [image, setImage] = React.useState<File | null>(null);
 
-
   const markItemAsUpdated = (itemId: string) => {
-    setListItems(prevListItems => 
-      prevListItems.map(item => 
+    setListItems((prevListItems) =>
+      prevListItems.map((item) =>
         item.id === itemId ? { ...item, updated: true } : item
       )
     );
-    
   };
 
-
   const handleSearch = useCallback(async () => {
-    if (searchTerm.trim() !== '') {
+    if (searchTerm.trim() !== "") {
       const searchData = await UserService.searchUsers(searchTerm);
       setListItems(searchData);
     }
   }, [searchTerm]);
-  
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
     handleSearch();
-  
+
     // if (
     //   e.target.value === '' &&
     //   e.nativeEvent &&
@@ -62,20 +58,21 @@ const useStudentList = () => {
     //   handleSearch();
     // }
   };
-  
-  
-  
-  
 
   const fetchUserList = useCallback(async () => {
-    const response = await UserService.getAllUsers({ page, pageSize: rowsPerPage });
+    const response = await UserService.getAllUsers({
+      page,
+      pageSize: rowsPerPage,
+    });
     setListItems(response);
   }, [page, rowsPerPage]);
 
   useEffect(() => {
     const fetchData = async () => {
       await Promise.all([fetchUserList(), handleSearch()]);
-      setListItems((items) => items.map((item) => ({ ...item, updated: false })));
+      setListItems((items) =>
+        items.map((item) => ({ ...item, updated: false }))
+      );
     };
 
     fetchData();
@@ -144,27 +141,21 @@ const useStudentList = () => {
     resetUser();
   };
 
-
-
-
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files && files.length > 0) {
       const selectedImage = files[0];
-      
+
       setImage(selectedImage);
-  
+
       const reader = new FileReader();
-      reader.onloadend  = () => {
+      reader.onloadend = () => {
         setAddUser({ ...AddUser, user_img_path: reader.result as string });
       };
-  
+
       reader.readAsDataURL(selectedImage);
     }
   };
-  
-  
-  
 
   const handleSelectAll = () => {
     setSelectAll(!selectAll);
@@ -283,9 +274,7 @@ const useStudentList = () => {
     handleChangeRowsPerPage,
     markItemAsUpdated,
     handleChange,
-
   };
 };
 
 export default useStudentList;
-
