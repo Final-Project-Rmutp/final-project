@@ -28,7 +28,7 @@ const upload = multer({
 app.get("/", (req, res) => {
     res.json({ message: "API WORK." });
   });
-
+ 
 //AuthRoute
 const AuthRoute = require('./routes/auth.routes.js');
 app.use("/auth", AuthRoute)
