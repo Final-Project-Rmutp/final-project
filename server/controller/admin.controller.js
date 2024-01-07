@@ -82,14 +82,16 @@ async function getallusers(req, res) {
                        LIMIT $3 OFFSET $4`;
     const values = ["user", "1", pageSize, offset];
     const result = await client.query(query, values);
-    const baseUrl = `${req.protocol}://${req.get("host")}`;
-    res.status(200).json(
-      result.rows.map((row) => ({
-        ...row,
-        user_img_path: row.user_img_path
-          ? `${baseUrl}/uploads/${row.user_img_path}`
-          : null,
-      }))
+    const serverIp = '54.169.85.51';
+        const baseUrl = `http://${serverIp}:${process.env.PORT}`;
+        
+        res.status(200).json(
+        result.rows.map((row) => ({
+            ...row,
+            user_img_path: row.user_img_path
+            ? `${baseUrl}/uploads/${row.user_img_path}`
+            : null,
+        }))
     );
   } catch (err) {
     console.error(err.message);
