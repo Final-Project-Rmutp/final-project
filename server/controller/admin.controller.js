@@ -5,8 +5,8 @@ const fs = require('fs');
 
 // Add a new user
 async function adduser(req, res) {
-    const { pin, citizen_id, firstname, lastname, account_type } = req.body;
-    const user_img_path = req.file ? req.file.filename : null;
+    const { pin, citizen_id, firstname, lastname, account_type, user_img_path } =
+    req.body;
     const action_type = 5; // adduser
 
     // Check for missing or empty values (except user_img_path)
@@ -65,9 +65,17 @@ async function getallusers(req, res) {
                        WHERE account_role = $1 AND account_status = $2
                        ORDER BY id
                        LIMIT $3 OFFSET $4`;
-        const values = ['user', '1', pageSize, offset];
+        const values = ["user", "1", pageSize, offset];
         const result = await client.query(query, values);
-        res.status(200).json(result.rows);
+        const baseUrl = `${req.protocol}://${req.get(process.env.DB_HOST)}`;
+        res.status(200).json(
+        result.rows.map((row) => ({
+            ...row,
+            user_img_path: row.user_img_path
+            ? `${baseUrl}/uploads/${row.user_img_path}`
+            : null,
+        }))
+        );
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ message: 'Error fetching users' });

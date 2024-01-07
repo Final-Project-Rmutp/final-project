@@ -3,6 +3,7 @@ import UserService from "../../../auth/service/UserService";
 import useUserState from "../../../auth/model/useUserState";
 import { ListItem, UserData } from "../../../auth/model/authTypes";
 import React from "react";
+import axiosInstance from "../../../environments/axiosInstance.ts";
 
 const useStudentList = () => {
   const [listItems, setListItems] = useState<ListItem[]>([]);
@@ -28,6 +29,7 @@ const useStudentList = () => {
   } = useUserState();
   
   const [searchTerm, setSearchTerm] = React.useState('');
+  const [image, setImage] = React.useState<File | null>(null);
 
 
   const markItemAsUpdated = (itemId: string) => {
@@ -129,8 +131,13 @@ const useStudentList = () => {
     formData.append("firstname", AddUser.firstname);
     formData.append("lastname", AddUser.lastname);
     formData.append("account_type", AddUser.account_type);
-    formData.append("user_img_path", AddUser.user_img_path ?? "");
-  
+    const imageFormData = new FormData();
+    console.log(image);
+    imageFormData.append("image", image as File);
+    const response = await axiosInstance.post("/image-upload", imageFormData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    formData.append("user_img_path", response.data.filename);
     await UserService.addUser(formData);
     await fetchUserList();
     setAddDialogOpen(false);
@@ -144,6 +151,8 @@ const useStudentList = () => {
     const files = event.target.files;
     if (files && files.length > 0) {
       const selectedImage = files[0];
+      
+      setImage(selectedImage);
   
       const reader = new FileReader();
       reader.onloadend  = () => {

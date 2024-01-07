@@ -1,18 +1,28 @@
 const express = require('express')
 const cors = require('cors')
 const app = express()
-const port = 5000
 const client = require('./configs/database.js');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
+const multer = require("multer");
+const port = process.env.PORT || 5000;
 
-app.use(cors(
-// {
-//   origin: '*', //remove this part when upload
-// }
-));
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./uploads");
+  },
+  filename: function (req, file, cb) {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+
+app.use("/uploads", express.static("uploads"));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+const upload = multer({
+  storage,
+});
 
 // test route
 app.get("/", (req, res) => {
@@ -35,6 +45,11 @@ app.use("/user", UserRoute)
 const LogsRoute = require('./routes/logs.routes.js');
 app.use("/logs", LogsRoute)
 
+app.post("/image-upload", upload.single("image"), (req, res) => {
+  res.json({
+    filename: req.file.filename,
+  });
+});
   const options = {
     definition: {
       openapi: '3.0.0', // Specify the OpenAPI version
