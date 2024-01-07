@@ -99,7 +99,8 @@ const uploadMiddleware = require('../middleware/uploadMiddleware.js');
  *                    example: Internal server error
  */
 
-router.post('/user/add',authMiddleware.isAdmin, uploadMiddleware.uploadFileMiddleware, uploadMiddleware.handleFileUploadError, adminController.adduser);
+// router.post('/user/add',authMiddleware.isAdmin, uploadMiddleware.uploadFileMiddleware, uploadMiddleware.handleFileUploadError, adminController.adduser);
+router.post('/user/add',authMiddleware.isAdmin, adminController.adduser);
 
 /**
  * @swagger
