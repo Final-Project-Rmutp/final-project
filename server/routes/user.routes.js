@@ -140,7 +140,7 @@ router.post("/room/report", authMiddleware.authenticateToken, reportController.R
  * /user/getreport:
  *   get:
  *     tags:
- *     - User
+ *     - User - report
  *     summary: Get users Profile (authentication required)
  *     description: Retrieve a profile of users (authentication required).
  *     security:
