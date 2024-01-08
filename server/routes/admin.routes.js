@@ -3,6 +3,8 @@ const router = express.Router();
 const adminController = require("../controller/admin.controller.js");
 const authMiddleware = require("../middleware/authMiddleware.js");
 const roomController = require("../controller/room.controller.js");
+const reportController = require('../controller/report.controller.js')
+
 
 /**
  * @swagger
@@ -983,6 +985,141 @@ router.delete(
   "/room/deleteroom/:room_id",
   authMiddleware.isAdmin,
   roomController.deleteroom
+);
+
+/**
+ * @swagger
+ * /admin/getreport:
+ *   get:
+ *     tags:
+ *     - Admin - report
+ *     summary: Get users Profile (authentication required)
+ *     description: Retrieve a profile of users (authentication required).
+ *     security:
+ *       - Authorization: []
+ *     responses:
+ *       200:
+ *         description: authenticate successful. Returns the users profile.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  firstname:
+ *                    type: string
+ *                    example: "admin"
+ *                  user_img_path:
+ *                    type: string
+ *                    example: "null"
+ *       401:
+ *         description: No token provided , Invalid token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: No token provided , Invalid token
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Internal server error
+ */
+
+router.get('/getreport', authMiddleware.isAdmin , reportController.getallreports);
+/**
+ * @swagger
+ * /admin/updatereportstatus/{report_id}:
+ *   patch:
+ *     tags:
+ *     - Admin - report
+ *     summary: Edit user information (authentication required).
+ *     description: Edit user information.
+ *     security:
+ *       - Authorization: []
+ *     parameters:
+ *       - in: path
+ *         name: report_id
+ *         required: true
+ *         description: User ID to fetch
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               report_status:
+ *                 type: string
+ *                 example: "0"
+ *             required:
+ *               - report_status
+ *     responses:
+ *       200:
+ *         description: report Edit successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: report Edit successfully
+ *       401:
+ *         description: No token provided/Invalid token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: No token provided/Invalid token
+ *       403:
+ *         description: You don't have permission to access this resource.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: You don't have permission to access this resource.
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: User not found
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Internal server error
+ */
+
+router.patch(
+  "/updatereportstatus/:report_id",
+  authMiddleware.isAdmin,
+  reportController.updatereportstatus
 );
 
 module.exports = router;

@@ -282,5 +282,4 @@ async function deleteroom(req, res) {
 
 
 
-
-module.exports = { addroom, getallroom, getroomById, updateroom, deleteroom };
+module.exports = { addroom, getallroom, getroomById, updateroom, deleteroom};
