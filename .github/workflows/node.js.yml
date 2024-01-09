@@ -28,8 +28,8 @@ jobs:
       working-directory: server
 
     - name: Create ENV File
-    - run: |
+      run: |
         echo "${{ secrets.ENV_FILE }}" > .env
         cat .env
-        
+
     - run: pm2 restart api
