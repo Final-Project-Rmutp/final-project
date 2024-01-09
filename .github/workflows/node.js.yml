@@ -10,8 +10,6 @@ on:
 jobs:
   build:
     runs-on: self-hosted
-    env: 
-      DB_HOST: ${{ vars.DB_HOST }}
     strategy:
       matrix:
         node-version: [18.x]
@@ -26,7 +24,9 @@ jobs:
         cache: 'npm'
     - run: npm ci
       working-directory: server
+    - name: Create env file
     - run: |
         touch .env
-        echo "${{ vars.DB_HOST }}"
+        echo "${{ secrets.ENV_FILE }}" > .env
+        cat .env
     - run: pm2 restart api

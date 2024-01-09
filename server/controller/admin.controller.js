@@ -5,8 +5,7 @@ const fs = require("fs");
 
 // Add a new user
 async function adduser(req, res) {
-  const { pin, citizen_id, firstname, lastname, account_type, user_img_path } =
-    req.body;
+  const { pin, citizen_id, firstname, lastname, account_type, user_img_path } = req.body;
   const action_type = 5; // adduser
 
   // Check for missing or empty values (except user_img_path)
@@ -33,25 +32,12 @@ async function adduser(req, res) {
     const insertQuery = `INSERT INTO "user" (pin, citizen_id, firstname, lastname, account_type, user_img_path) 
                             VALUES ($1, $2, $3, $4, $5, $6)
                             RETURNING id`;
-    const values = [
-      pin,
-      citizen_id,
-      firstname,
-      lastname,
-      account_type,
-      user_img_path,
-    ];
-
+    const values = [pin, citizen_id, firstname, lastname, account_type, user_img_path, ];
     const result = await client.query(insertQuery, values);
     const insertedId = result.rows[0].id;
     const id = req.user.id;
 
-    logging(
-      action_type,
-      id,
-      "Success",
-      `User registration successful. User ID: ${insertedId}`
-    );
+    logging(action_type, id, "Success", `User registration successful. User ID: ${insertedId}`);
     res.status(201).json({ message: "User registration successful" });
   } catch (err) {
     const id = req.user.id;
@@ -130,12 +116,7 @@ async function deactivateUser(req, res) {
     const id = req.user.id;
     // console.log(userId)
     if (result.rowCount === 1) {
-      logging(
-        action_type,
-        id,
-        "Success",
-        `User deactivate successfully id: ${userId}`
-      );
+      logging(action_type,id,"Success",`User deactivate successfully id: ${userId}`);
       res.status(200).json({ message: "User deactivate successfully" });
     } else {
       logging(action_type, id, "Error", `User not found id: ${userId}`);
@@ -156,7 +137,6 @@ async function updateUser(req, res) {
     const userId = req.params.id;
     const { firstname, lastname, citizen_id, pin } = req.body;
     const user_img_path = req.file ? req.file.filename : null; // New image if provided
-
     const id = req.user.id;
 
     const requiredFields = ["firstname", "lastname", "citizen_id", "pin"];
@@ -171,22 +151,11 @@ async function updateUser(req, res) {
       });
     }
 
-    const oldUserData = await client.query(
-      'SELECT user_img_path FROM "user" WHERE id = $1',
-      [userId]
-    );
-
+    const oldUserData = await client.query('SELECT user_img_path FROM "user" WHERE id = $1',[userId]);
     // Update the user data in the database
     const updateQuery =
       'UPDATE "user" SET user_img_path = $1, firstname = $2, lastname = $3, citizen_id = $4, pin = $5 WHERE id = $6';
-    const result = await client.query(updateQuery, [
-      user_img_path,
-      firstname,
-      lastname,
-      citizen_id,
-      pin,
-      userId,
-    ]);
+    const result = await client.query(updateQuery, [user_img_path, firstname, lastname, citizen_id, pin, userId, ]);
 
     if (oldUserData.rows && oldUserData.rows.length > 0) {
       const oldImageFileName = oldUserData.rows[0].user_img_path;
@@ -212,12 +181,7 @@ async function updateUser(req, res) {
         });
       }
 
-      logging(
-        action_type,
-        id,
-        "Success",
-        `User data updated successfully. User ID: ${userId}`
-      );
+      logging(action_type,id,"Success",`User data updated successfully. User ID: ${userId}`);
       res.status(200).json({ message: "User data updated successfully" });
     } else {
       logging(action_type, id, "Error", `User not found. User ID: ${userId}`);
@@ -249,11 +213,4 @@ async function searchuser(req, res) {
   }
 }
 
-module.exports = {
-  adduser,
-  getallusers,
-  getUserById,
-  deactivateUser,
-  updateUser,
-  searchuser,
-};
+module.exports = { adduser, getallusers, getUserById, deactivateUser, updateUser, searchuser };

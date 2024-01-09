@@ -7,7 +7,7 @@ const storage = multer.diskStorage({
   filename: function (req, file, cb) {
     const pin = req.body.pin;
     const timestamp = Date.now();
-    const filename = pin + '-' + timestamp;
+    const filename = pin + '-' + timestamp + file.originalname;
     cb(null, filename); // Set a unique filename (you can modify this as needed)
   }
 });
@@ -41,9 +41,6 @@ function handleFileUploadError(err, req, res, next) {
     return res.status(500).json({ message: 'Internal server error' });
   }
 }
-
-
-
 
 // Middleware function for file uploads
 const uploadFileMiddleware = upload.single('user_img_path');

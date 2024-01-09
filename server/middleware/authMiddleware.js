@@ -28,7 +28,6 @@ function authenticateToken(req, res, next) {
   });
 }
 
-
 // Middleware to authenticate role permission
 function isAdmin(req, res, next) {
   const authHeader = req.headers['authorization'];
@@ -60,7 +59,6 @@ function isAdmin(req, res, next) {
   });
 }
 
-
 // Middleware to authenticate account type permission
 function isTeacher(req, res, next) {
   const authHeader = req.headers['authorization'];
@@ -91,6 +89,5 @@ function isTeacher(req, res, next) {
     }
   });
 }
-
 
 module.exports = { authenticateToken, isAdmin, isTeacher };

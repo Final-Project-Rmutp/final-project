@@ -1,8 +1,6 @@
 const client = require('../configs/database.js');
 const { logging } = require('../middleware/loggingMiddleware.js');
 
-
-
 // report room
 async function ReportRoom(req, res) {
     const action_type = 8; // report room
@@ -90,7 +88,8 @@ async function updatereportstatus(req, res) {
       res.status(500).json({ message: "Internal server error" });
     }
   }
-  // Get report
+
+// Get report
 async function getreport(req, res) {
     try {
         const userId = req.user.id;

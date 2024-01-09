@@ -5,7 +5,6 @@ const authMiddleware = require("../middleware/authMiddleware.js");
 const roomController = require("../controller/room.controller.js");
 const reportController = require('../controller/report.controller.js')
 
-
 /**
  * @swagger
  * /admin/user/add:
@@ -191,11 +190,7 @@ router.post("/user/add", authMiddleware.isAdmin, adminController.adduser);
  *                    example: Internal server error
  */
 
-router.get(
-  "/user/getalluser",
-  authMiddleware.isAdmin,
-  adminController.getallusers
-);
+router.get("/user/getalluser", authMiddleware.isAdmin, adminController.getallusers);
 
 /**
  * @swagger
@@ -275,11 +270,7 @@ router.get(
  *                    example: Internal server error
  */
 
-router.get(
-  "/user/getuser/:id",
-  authMiddleware.isAdmin,
-  adminController.getUserById
-);
+router.get("/user/getuser/:id", authMiddleware.isAdmin, adminController.getUserById);
 
 /**
  * @swagger
@@ -351,11 +342,7 @@ router.get(
  *                    example: Internal server error
  */
 
-router.delete(
-  "/user/deactivateUser/:id",
-  authMiddleware.isAdmin,
-  adminController.deactivateUser
-);
+router.delete("/user/deactivateUser/:id", authMiddleware.isAdmin, adminController.deactivateUser);
 
 /**
  * @swagger
@@ -450,11 +437,7 @@ router.delete(
  *                    example: Internal server error
  */
 
-router.patch(
-  "/user/updateuser/:id",
-  authMiddleware.isAdmin,
-  adminController.updateUser
-);
+router.patch("/user/updateuser/:id", authMiddleware.isAdmin, adminController.updateUser);
 
 /**
  * @swagger
@@ -712,11 +695,7 @@ router.post("/room/add", authMiddleware.isAdmin, roomController.addroom);
  *                    example: Internal server error
  */
 
-router.get(
-  "/room/getallroom",
-  authMiddleware.isAdmin,
-  roomController.getallroom
-);
+router.get("/room/getallroom", authMiddleware.isAdmin, roomController.getallroom);
 
 /**
  * @swagger
@@ -796,11 +775,7 @@ router.get(
  *                    example: Internal server error
  */
 
-router.get(
-  "/room/getroom/:room_id",
-  authMiddleware.isAdmin,
-  roomController.getroomById
-);
+router.get("/room/getroom/:room_id", authMiddleware.isAdmin, roomController.getroomById);
 
 /**
  * @swagger
@@ -905,11 +880,7 @@ router.get(
  *                    example: Internal server error
  */
 
-router.patch(
-  "/room/updateroom/:room_id",
-  authMiddleware.isAdmin,
-  roomController.updateroom
-);
+router.patch("/room/updateroom/:room_id", authMiddleware.isAdmin, roomController.updateroom);
 
 /**
  * @swagger
@@ -981,11 +952,7 @@ router.patch(
  *                    example: Internal server error
  */
 
-router.delete(
-  "/room/deleteroom/:room_id",
-  authMiddleware.isAdmin,
-  roomController.deleteroom
-);
+router.delete("/room/deleteroom/:room_id", authMiddleware.isAdmin, roomController.deleteroom);
 
 /**
  * @swagger
@@ -1034,6 +1001,7 @@ router.delete(
  */
 
 router.get('/getreport', authMiddleware.isAdmin , reportController.getallreports);
+
 /**
  * @swagger
  * /admin/updatereportstatus/{report_id}:
@@ -1116,10 +1084,6 @@ router.get('/getreport', authMiddleware.isAdmin , reportController.getallreports
  *                    example: Internal server error
  */
 
-router.patch(
-  "/updatereportstatus/:report_id",
-  authMiddleware.isAdmin,
-  reportController.updatereportstatus
-);
+router.patch("/updatereportstatus/:report_id", authMiddleware.isAdmin, reportController.updatereportstatus);
 
 module.exports = router;

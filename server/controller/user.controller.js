@@ -19,5 +19,4 @@ async function getprofile(req, res) {
     }
 }
 
-
 module.exports = { getprofile };

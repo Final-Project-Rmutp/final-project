@@ -76,7 +76,6 @@ const logsController = require('../controller/logs.controller.js');
  *                   example: "Internal server error"
  */
 
-
 router.get('/', logsController.getlogs);
 
 /**
@@ -149,7 +148,6 @@ router.get('/', logsController.getlogs);
  *                   type: string
  *                   example: "Internal server error"
  */
-
 
 router.get('/loginlogs', logsController.loginlogs);
 
@@ -224,7 +222,6 @@ router.get('/loginlogs', logsController.loginlogs);
  *                   example: "Internal server error"
  */
 
-
 router.get('/adduserlogs', logsController.adduserlogs);
 
 /**
@@ -297,7 +294,6 @@ router.get('/adduserlogs', logsController.adduserlogs);
  *                   type: string
  *                   example: "Internal server error"
  */
-
 
 router.get('/updateuserlogs', logsController.updateuserlogs);
 
@@ -372,7 +368,6 @@ router.get('/updateuserlogs', logsController.updateuserlogs);
  *                   example: "Internal server error"
  */
 
-
 router.get('/deactivatelogs', logsController.deactivatelogs);
 
 /**
@@ -445,7 +440,6 @@ router.get('/deactivatelogs', logsController.deactivatelogs);
  *                   type: string
  *                   example: "Internal server error"
  */
-
 
 router.get('/addroomlogs', logsController.addroomlogs);
 
@@ -520,7 +514,6 @@ router.get('/addroomlogs', logsController.addroomlogs);
  *                   example: "Internal server error"
  */
 
-
 router.get('/updateroomlogs', logsController.updateroomlogs);
 
 /**
@@ -593,7 +586,6 @@ router.get('/updateroomlogs', logsController.updateroomlogs);
  *                   type: string
  *                   example: "Internal server error"
  */
-
 
 router.get('/deleteroomlogs', logsController.deleteroomlogs);
 

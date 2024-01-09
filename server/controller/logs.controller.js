@@ -27,9 +27,6 @@ async function getlogs(req, res) {
     }
 }
 
-
-
-
 // Get login logs
 async function loginlogs(req, res) {
     try {
@@ -57,7 +54,6 @@ async function loginlogs(req, res) {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
-
 
 // Get adduser logs
 async function adduserlogs(req, res) {
@@ -226,7 +222,5 @@ async function deleteroomlogs(req, res) {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
-
-
 
 module.exports = { getlogs, loginlogs, adduserlogs, updateuserlogs, deactivatelogs, addroomlogs, updateroomlogs, deleteroomlogs };

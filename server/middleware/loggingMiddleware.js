@@ -1,4 +1,5 @@
 const client = require('../configs/database.js');
+
 // Function to log events
 function logging(action_type, user_id, action_status, log_status) {
     try {

@@ -89,15 +89,7 @@ async function getallroom(req, res) {
         const roomsResult = await client.query(roomsQuery, [pageSize, offset]);
 
         const roomsArray = roomsResult.rows.map(row => {
-            const {
-                room_id,
-                room_number,
-                room_type,
-                room_capacity,
-                room_level,
-                room_facilities,
-                room_status
-            } = row;
+            const { room_id, room_number, room_type, room_capacity, room_level, room_facilities, room_status } = row;
 
             return {
                 room_id: room_id.toString(),
@@ -117,7 +109,6 @@ async function getallroom(req, res) {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
-
 
 //Read room data by room_id
 async function getroomById(req, res) {
@@ -170,7 +161,6 @@ async function getroomById(req, res) {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
-
 
 //Update room data
 async function updateroom(req, res) {
@@ -235,8 +225,6 @@ async function updateroom(req, res) {
     }
 }
 
-
-
 //Delete room
 async function deleteroom(req, res) {
     const action_type = 4; //deleteroom
@@ -278,8 +266,5 @@ async function deleteroom(req, res) {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
-
-
-
 
 module.exports = { addroom, getallroom, getroomById, updateroom, deleteroom};

@@ -50,8 +50,6 @@ const reportController = require('../controller/report.controller.js')
  *                    example: Internal server error
  */
 
-
-
 router.get('/getprofile', authMiddleware.authenticateToken , userController.getprofile);
 
 /**
