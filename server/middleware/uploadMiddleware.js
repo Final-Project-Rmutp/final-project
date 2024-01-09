@@ -1,48 +1,161 @@
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const multer = require('multer');
+const sharp = require('sharp');
+const fileType = require('file-type');
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/'); // Set the destination folder for uploads
-  },
-  filename: function (req, file, cb) {
-    const pin = req.body.pin;
-    const timestamp = Date.now();
-    const filename = pin + '-' + timestamp + file.originalname;
-    cb(null, filename); // Set a unique filename (you can modify this as needed)
+// AWS S3 configuration
+const s3Client = new S3Client({
+  region: process.env.S3_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
   }
 });
 
-// Validate image file type
-const fileFilter = function(req, file, cb) {
-  if (file.mimetype.startsWith('image/')) {
-    cb(null, true); // Accept the file if it's an image
-  } else {
-    cb(new Error('Only image files are allowed')); // Reject the file if it's not an image
+// Multer setup for file upload
+const upload = multer();
+
+// Middleware function for S3 upload
+const uploadToS3 = upload.single('image');
+
+// Handle S3 upload
+const handleS3Upload = async (req, res, next) => {
+  const file = req.file;
+  if (!file) {
+    return res.status(400).json({ error: 'No file uploaded' });
+  }
+
+  const buffer = file.buffer; // Assuming multer stores the file buffer in req.file.buffer
+  const fileTypeResult = fileType(buffer);
+
+  // Check if the uploaded file is an image
+  if (!fileTypeResult || !fileTypeResult.mime.startsWith('image')) {
+    return res.status(400).json({ error: 'Uploaded file is not an image' });
+  }
+
+  try {
+    const pin = req.body.pin;
+    const fileName = pin + '.webp';
+
+    // Check if the file already exists in S3
+    const headParams = {
+      Bucket: process.env.S3_BUCKET,
+      Key: fileName
+    };
+
+    try {
+      // Check if the file exists
+      await s3Client.send(new HeadObjectCommand(headParams));
+
+      // If it exists, add a timestamp to the file name
+      const timestamp = new Date().getTime();
+      fileName = pin + `_${timestamp}.webp`;
+    } catch (error) {
+      // File doesn't exist, proceed with the original file name
+    }
+
+    // Convert image to WebP format using sharp
+    const webpBuffer = await sharp(buffer).toFormat('webp').toBuffer();
+
+    const uploadParams = {
+      Bucket: process.env.S3_BUCKET,
+      Key: fileName,
+      Body: webpBuffer,
+      ContentType: 'image/webp'
+    };
+
+    const uploadCommand = new PutObjectCommand(uploadParams);
+    const uploadResult = await s3Client.send(uploadCommand);
+
+    req.uploadedFileUrl = `https://${process.env.S3_BUCKET}.s3.${process.env.S3_REGION}.amazonaws.com/${fileName}`;
+    next();
+  } catch (error) {
+    console.error('Error uploading file:', error);
+    return res.status(500).json({ error: 'Failed to upload file' });
   }
 };
 
-const upload = multer({ 
-  storage: storage,
-  fileFilter: fileFilter
-});
+// Handle S3 update
+const handleS3Update = async (req, res, next) => {
+  const file = req.file;
+  if (!file) {
+    return res.status(400).json({ error: 'No file uploaded' });
+  }
 
-// Define the error handling middleware
-function handleFileUploadError(err, req, res, next) {
-  if (err instanceof multer.MulterError) {
-    // Multer error occurred (e.g., invalid file type)
-    return res.status(400).json({ message: err.message });
-  } else if (err instanceof Error) {
-    // Other Error type
-    console.error('Unexpected error:', err);
-    return res.status(400).json({ message: err.message });
-  } else {
-    // Fallback for unhandled cases
-    console.error('Unknown error:', err);
-    return res.status(500).json({ message: 'Internal server error' });
+  const buffer = file.buffer; // Assuming multer stores the file buffer in req.file.buffer
+  const fileTypeResult = fileType(buffer);
+
+  // Check if the uploaded file is an image
+  if (!fileTypeResult || !fileTypeResult.mime.startsWith('image')) {
+    return res.status(400).json({ error: 'Uploaded file is not an image' });
+  }
+
+  try {
+    const pin = req.body.pin;
+    const fileName = pin + '.webp';
+
+    // Check if the file already exists in S3
+    const headParams = {
+      Bucket: process.env.S3_BUCKET,
+      Key: fileName
+    };
+
+    try {
+      // Check if the file exists
+      await s3Client.send(new HeadObjectCommand(headParams));
+
+      // If it exists, add a timestamp to the file name
+      const timestamp = new Date().getTime();
+      fileName = pin + `_${timestamp}.webp`;
+    } catch (error) {
+      // File doesn't exist, proceed with the original file name
+    }
+
+    // Convert image to WebP format using sharp
+    const webpBuffer = await sharp(buffer).toFormat('webp').toBuffer();
+
+    const uploadParams = {
+      Bucket: process.env.S3_BUCKET,
+      Key: fileName,
+      Body: webpBuffer,
+      ContentType: 'image/webp'
+    };
+
+    const uploadCommand = new PutObjectCommand(uploadParams);
+    const uploadResult = await s3Client.send(uploadCommand);
+
+    req.uploadedFileUrl = `https://${process.env.S3_BUCKET}.s3.${process.env.S3_REGION}.amazonaws.com/${fileName}`;
+    next();
+  } catch (error) {
+    console.error('Error uploading file:', error);
+    return res.status(500).json({ error: 'Failed to upload file' });
+  }
+};
+
+// Function to delete an object from S3
+async function deleteObjectFromS3(objectKey) {
+  try {
+    const s3Client = new S3Client({
+      region: process.env.S3_REGION,
+      credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+      }
+    });
+
+    const deleteParams = {
+      Bucket: process.env.S3_BUCKET,
+      Key: objectKey
+    };
+
+    const deleteCommand = new DeleteObjectCommand(deleteParams);
+    await s3Client.send(deleteCommand);
+    console.log(`Object ${objectKey} deleted successfully from S3`);
+  } catch (error) {
+    console.error('Error deleting object from S3:', error);
+    throw error;
   }
 }
 
-// Middleware function for file uploads
-const uploadFileMiddleware = upload.single('user_img_path');
+module.exports = { uploadToS3, handleS3Upload, deleteObjectFromS3 };
 
-module.exports = { uploadFileMiddleware, handleFileUploadError };

@@ -17,13 +17,10 @@ const storage = multer.diskStorage({
   },
 });
 
-app.use("/uploads", express.static("uploads"));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-const upload = multer({
-  storage,
-});
+
 
 // test route
 app.get("/", (req, res) => {
@@ -45,12 +42,6 @@ app.use("/user", UserRoute);
 //LogsRoute
 const LogsRoute = require("./routes/logs.routes.js");
 app.use("/logs", LogsRoute);
-
-app.post("/image-upload", upload.single("image"), (req, res) => {
-  res.json({
-    filename: req.file.filename,
-  });
-});
 
 const options = {
   definition: {

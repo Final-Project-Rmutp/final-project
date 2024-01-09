@@ -4,6 +4,7 @@ const adminController = require("../controller/admin.controller.js");
 const authMiddleware = require("../middleware/authMiddleware.js");
 const roomController = require("../controller/room.controller.js");
 const reportController = require('../controller/report.controller.js')
+const uploadMiddleware = require('../middleware/uploadMiddleware.js')
 
 /**
  * @swagger
@@ -37,7 +38,7 @@ const reportController = require('../controller/report.controller.js')
  *               account_type:
  *                 type: string
  *                 example: "student"
- *               user_img_path:
+ *               image:
  *                 type: string
  *                 format: binary   # Specify the format as binary for file uploads
  *             required:
@@ -99,7 +100,7 @@ const reportController = require('../controller/report.controller.js')
  *                    example: Internal server error
  */
 
-router.post("/user/add", authMiddleware.isAdmin, adminController.adduser);
+router.post("/user/add", authMiddleware.isAdmin, uploadMiddleware.uploadToS3, uploadMiddleware.handleS3Upload, adminController.adduser,);
 
 /**
  * @swagger
@@ -376,7 +377,7 @@ router.delete("/user/deactivateUser/:id", authMiddleware.isAdmin, adminControlle
  *                 type: string
  *               lastname:
  *                 type: string
- *               user_img_path:
+ *               image:
  *                 type: string
  *                 format: binary   # Specify the format as binary for file uploads
  *             required:
@@ -437,7 +438,7 @@ router.delete("/user/deactivateUser/:id", authMiddleware.isAdmin, adminControlle
  *                    example: Internal server error
  */
 
-router.patch("/user/updateuser/:id", authMiddleware.isAdmin, adminController.updateUser);
+router.patch("/user/updateuser/:id", authMiddleware.isAdmin, uploadMiddleware.uploadToS3, uploadMiddleware.handleS3Upload, adminController.updateUser);
 
 /**
  * @swagger
@@ -1085,5 +1086,78 @@ router.get('/getreport', authMiddleware.isAdmin , reportController.getallreports
  */
 
 router.patch("/updatereportstatus/:report_id", authMiddleware.isAdmin, reportController.updatereportstatus);
+
+// /**
+//  * @swagger
+//  * /admin/uploads:
+//  *   post:
+//  *     tags:
+//  *     - TEST
+//  *     summary: Register a new user (authentication required).
+//  *     description: Create a new user account by providing user information and an image file.
+//  *     requestBody:
+//  *       required: true
+//  *       content:
+//  *         multipart/form-data:
+//  *           schema:
+//  *             type: object
+//  *             properties:
+//  *               image:
+//  *                 type: string
+//  *                 format: binary   # Specify the format as binary for file uploads
+//  *     responses:
+//  *       201:
+//  *         description: User registration successful.
+//  *         content:
+//  *           application/json:
+//  *             schema:
+//  *               type: object
+//  *               properties:
+//  *                  message:
+//  *                    type: string
+//  *                    example: User registration successful.
+//  *       400:
+//  *         description: Bad request (e.g., missing or invalid input data)
+//  *         content:
+//  *           application/json:
+//  *             schema:
+//  *               type: object
+//  *               properties:
+//  *                  message:
+//  *                    type: string
+//  *                    example: Bad request (e.g., missing or invalid input data)
+//  *       401:
+//  *         description: No token provided/Invalid token
+//  *         content:
+//  *           application/json:
+//  *             schema:
+//  *               type: object
+//  *               properties:
+//  *                  message:
+//  *                    type: string
+//  *                    example: No token provided/Invalid token
+//  *       403:
+//  *         description: You don't have permission to access this resource.
+//  *         content:
+//  *           application/json:
+//  *             schema:
+//  *               type: object
+//  *               properties:
+//  *                  message:
+//  *                    type: string
+//  *                    example: You don't have permission to access this resource.
+//  *       500:
+//  *         description: Internal server error
+//  *         content:
+//  *           application/json:
+//  *             schema:
+//  *               type: object
+//  *               properties:
+//  *                  message:
+//  *                    type: string
+//  *                    example: Internal server error
+//  */
+
+// router.post('/uploads', authMiddleware.isAdmin, uploadMiddleware.uploadToS3, uploadMiddleware.handleS3Upload, (req, res) => {res.json({ imageUrl: req.uploadedFileUrl });});
 
 module.exports = router;

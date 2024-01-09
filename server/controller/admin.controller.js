@@ -2,13 +2,14 @@ const client = require("../configs/database.js");
 const jwt = require("jsonwebtoken");
 const { logging } = require("../middleware/loggingMiddleware.js");
 const fs = require("fs");
+const { deleteObjectFromS3 } = require("../middleware/uploadMiddleware.js");
 
 // Add a new user
 async function adduser(req, res) {
-  const { pin, citizen_id, firstname, lastname, account_type, user_img_path } = req.body;
+  const { pin, citizen_id, firstname, lastname, account_type } = req.body;
   const action_type = 5; // adduser
 
-  // Check for missing or empty values (except user_img_path)
+  // Check for missing or empty values
   const requiredFields = [pin, citizen_id, firstname, lastname, account_type];
   if (requiredFields.some((field) => !field)) {
     return res.status(400).json({ message: "All fields are required" });
@@ -32,7 +33,7 @@ async function adduser(req, res) {
     const insertQuery = `INSERT INTO "user" (pin, citizen_id, firstname, lastname, account_type, user_img_path) 
                             VALUES ($1, $2, $3, $4, $5, $6)
                             RETURNING id`;
-    const values = [pin, citizen_id, firstname, lastname, account_type, user_img_path, ];
+    const values = [pin, citizen_id, firstname, lastname, account_type, req.uploadedFileUrl];
     const result = await client.query(insertQuery, values);
     const insertedId = result.rows[0].id;
     const id = req.user.id;
@@ -49,6 +50,7 @@ async function adduser(req, res) {
 
 // Get all users
 async function getallusers(req, res) {
+  const accountstatus = 1; //1 = active user
   try {
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.pageSize) || 10;
@@ -66,19 +68,9 @@ async function getallusers(req, res) {
                        WHERE account_role = $1 AND account_status = $2
                        ORDER BY id
                        LIMIT $3 OFFSET $4`;
-    const values = ["user", "1", pageSize, offset];
+    const values = ["user", accountstatus , pageSize, offset];
     const result = await client.query(query, values);
-    const serverIp = '54.169.85.51';
-        const baseUrl = `http://${serverIp}:${process.env.PORT}`;
-        
-        res.status(200).json(
-        result.rows.map((row) => ({
-            ...row,
-            user_img_path: row.user_img_path
-            ? `${baseUrl}/uploads/${row.user_img_path}`
-            : null,
-        }))
-    );
+    res.status(200).json(result.rows);
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ message: "Error fetching users" });
@@ -130,7 +122,7 @@ async function deactivateUser(req, res) {
   }
 }
 
-// Update user account
+// Update user account using S3 for image storage
 async function updateUser(req, res) {
   const action_type = 7; // updateUser
   try {
@@ -151,37 +143,21 @@ async function updateUser(req, res) {
       });
     }
 
-    const oldUserData = await client.query('SELECT user_img_path FROM "user" WHERE id = $1',[userId]);
+    const oldUserData = await client.query('SELECT user_img_path FROM "user" WHERE id = $1', [userId]);
     // Update the user data in the database
     const updateQuery =
-      'UPDATE "user" SET user_img_path = $1, firstname = $2, lastname = $3, citizen_id = $4, pin = $5 WHERE id = $6';
-    const result = await client.query(updateQuery, [user_img_path, firstname, lastname, citizen_id, pin, userId, ]);
+    'UPDATE "user" SET firstname = $1, lastname = $2, citizen_id = $3, pin = $4, user_img_path = $5 WHERE id = $6';
+    const result = await client.query(updateQuery, [firstname, lastname, citizen_id, pin, req.uploadedFileUrl, userId]);
 
     if (oldUserData.rows && oldUserData.rows.length > 0) {
       const oldImageFileName = oldUserData.rows[0].user_img_path;
-      // Remove the old image file from the uploads folder
-      if (oldImageFileName && user_img_path !== null) {
-        fs.unlink(`uploads/${oldImageFileName}`, (err) => {
-          if (err) {
-            console.error("Error removing old image file:", err);
-          } else {
-            console.log("Old image file deleted successfully");
-          }
-        });
+      
+      // Delete old image file from S3 if a new image is uploaded or if the image is removed
+      if (oldImageFileName && (user_img_path !== null || user_img_path === null)) {
+        await deleteObjectFromS3(oldImageFileName);
       }
 
-      // Remove the old image file if user_img_path is null
-      if (oldImageFileName && user_img_path === null) {
-        fs.unlink(`uploads/${oldImageFileName}`, (err) => {
-          if (err) {
-            console.error("Error removing old image file:", err);
-          } else {
-            console.log("Old image file deleted successfully");
-          }
-        });
-      }
-
-      logging(action_type,id,"Success",`User data updated successfully. User ID: ${userId}`);
+      logging(action_type, id, "Success", `User data updated successfully. User ID: ${userId}`);
       res.status(200).json({ message: "User data updated successfully" });
     } else {
       logging(action_type, id, "Error", `User not found. User ID: ${userId}`);
