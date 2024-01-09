@@ -24,7 +24,6 @@ jobs:
         cache: 'npm'
     - run: npm ci
       working-directory: server
-    - name: Create env file
     - run: |
         touch .env
         echo "${{ secrets.ENV_FILE }}" > .env
