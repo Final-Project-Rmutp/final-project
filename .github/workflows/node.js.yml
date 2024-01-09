@@ -17,15 +17,19 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+
     - run: npm ci
       working-directory: server
+
+    - name: Create ENV File
     - run: |
-        touch .env
         echo "${{ secrets.ENV_FILE }}" > .env
         cat .env
+        
     - run: pm2 restart api
