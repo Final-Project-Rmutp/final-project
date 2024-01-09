@@ -31,5 +31,6 @@ jobs:
       run: |
         echo "${{ secrets.ENV_FILE }}" > .env
         cat .env
+      working-directory: server
 
     - run: pm2 restart api
