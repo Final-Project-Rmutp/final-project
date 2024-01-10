@@ -31,7 +31,9 @@ const UserService = {
   },
   addUser: async (userData: FormData) => {
     const response = await axiosInstance.post("/admin/user/add", userData, {
-      headers: {},
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     });
     return response.data;
   },

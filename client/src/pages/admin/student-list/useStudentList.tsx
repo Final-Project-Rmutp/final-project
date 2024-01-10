@@ -3,7 +3,6 @@ import UserService from "../../../auth/service/UserService";
 import useUserState from "../../../auth/model/useUserState";
 import { ListItem, UserData } from "../../../auth/model/authTypes";
 import React from "react";
-import axiosInstance from "../../../environments/axiosInstance.ts";
 
 const useStudentList = () => {
   const [listItems, setListItems] = useState<ListItem[]>([]);
@@ -128,13 +127,9 @@ const useStudentList = () => {
     formData.append("firstname", AddUser.firstname);
     formData.append("lastname", AddUser.lastname);
     formData.append("account_type", AddUser.account_type);
-    const imageFormData = new FormData();
-    console.log(image);
-    imageFormData.append("image", image as File);
-    const response = await axiosInstance.post("/image-upload", imageFormData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-    formData.append("user_img_path", response.data.filename);
+    formData.append("image", image as File);
+    console.log(formData);
+
     await UserService.addUser(formData);
     await fetchUserList();
     setAddDialogOpen(false);

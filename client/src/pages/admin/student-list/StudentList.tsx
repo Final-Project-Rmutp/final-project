@@ -149,17 +149,15 @@ const StudentList: React.FC = () => {
                     <th style={rowStyle(item)}>
                       {item.user_img_path !== null && (
                         <img
-                          // src={rowRandomImageUrl}
-                          src={`${item.user_img_path}`}
-                          // alt="User Image"
-                          alt={`User ${item.id}`}
-                          width="50"
-                          height="50"
-                          onClick={() => {
-                            setClickedImageUrl(item.user_img_path);
-                            setSelectedItem(item);
-                          }}
-                        />
+                        src={`https://happybay-image.s3.ap-southeast-1.amazonaws.com/${item.user_img_path}`}
+                        alt={`User ${item.id}`}
+                        width="50"
+                        height="50"
+                        onClick={() => {
+                          setClickedImageUrl(item.user_img_path);
+                          setSelectedItem(item);
+                        }}
+                      />
                       )}
                     </th>
                     <th style={rowStyle(item)}>{item.firstname}</th>
