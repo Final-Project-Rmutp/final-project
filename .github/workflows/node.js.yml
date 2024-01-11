@@ -33,4 +33,10 @@ jobs:
         cat .env
       working-directory: server
 
+    - name: Build client
+      run: |
+        rm -rf node_modules
+        npm run dev
+      working-directory: client
+
     - run: pm2 restart api
