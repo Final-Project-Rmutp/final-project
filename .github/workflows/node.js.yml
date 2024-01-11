@@ -33,10 +33,10 @@ jobs:
         cat .env
       working-directory: server
 
-    - name: Build client
-      run: |
-        npm ci
-        npm run dev
-      working-directory: client
+    # - name: Build client
+    #   run: |
+    #     npm ci
+    #     npm run dev
+    #   working-directory: client
 
     - run: pm2 restart api
