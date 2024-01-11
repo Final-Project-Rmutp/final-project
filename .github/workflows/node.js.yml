@@ -35,9 +35,8 @@ jobs:
 
     - name: Build client
       run: |
-        rm -rf node_modules
         npm i vite
-        npm i
+        npm ci
         npm run dev
       working-directory: client
 
