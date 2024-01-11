@@ -35,7 +35,6 @@ jobs:
 
     - name: Build client
       run: |
-        npm i vite
         npm ci
         npm run dev
       working-directory: client
