@@ -39,4 +39,4 @@ jobs:
     #     npm run dev
     #   working-directory: client
 
-    - run: pm2 restart api
+    # - run: pm2 restart api
