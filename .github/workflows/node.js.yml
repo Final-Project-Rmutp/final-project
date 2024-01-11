@@ -33,13 +33,13 @@ jobs:
         cat .env
       working-directory: server
 
-    - name: Build client
-      run: |
-        yarn install
-      working-directory: client
+    # - name: Build client
+    #   run: |
+    #     yarn install
+    #   working-directory: client
 
     - name: Restart pm2
       run: |
         pm2 restart api
-        pm2 restart client
+    #     pm2 restart client
 
