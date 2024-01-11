@@ -24,7 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // test route
 app.get("/", (req, res) => {
-  res.json({ message: "API WORK." });
+  res.json({ message: "API WORK."});
 });
 
 //AuthRoute
@@ -63,10 +63,7 @@ const options = {
     },
     servers: [
       {
-        url: "http://localhost:5000/",
-      },
-      {
-        url: "http://54.169.85.51:5000/",
+        url: process.env.API_HOST || "http://localhost:5000/",
       },
     ],
   },
