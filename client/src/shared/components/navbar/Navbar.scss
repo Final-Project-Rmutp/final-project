@@ -31,14 +31,10 @@ img {
 // }
 
 .header {
-  margin-top:10px;
-  margin-left: 10px;
-  margin-right:2.5rem;
   padding: 10px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  border-radius: 15px;
   box-shadow: none;
   position: relative;
   min-height: 4rem;
@@ -109,7 +105,7 @@ body {
   .content {
     overflow: auto;
     box-sizing: border-box;
-    height: calc(100vh - var(--header-height));
+    height: calc(108vh - var(--header-height));
   }
 }
 
@@ -119,6 +115,7 @@ body {
   min-width: 0;
   overflow: hidden; 
   transition: margin-left var(--secs);
+  transition: width var(--secs);
   margin-left: var(--left-width);
   .header {
     @media (orientation: landscape) {
@@ -142,11 +139,11 @@ body {
   // scroll-behavior: smooth;
   // scroll-padding-top: 5rem;
   grid-row-start: 1;
+  transition: width var(--secs);
   width: 0;
   @media (orientation: landscape) {
     &.open {
-      width: calc(1.2rem * var(--landscape-width));
-
+      width: calc(1.045rem * var(--landscape-width));
     }
   } // <-- Landscape ONLY sidebars
   .icon {
@@ -159,6 +156,7 @@ body {
     user-select: none;
     cursor: pointer;
     left: var(--icon-left-open);
+    transition: width var(--secs);
     margin-top:2rem;
   }
   .sidebar {
@@ -177,7 +175,6 @@ body {
 }
 
 #left {
-  padding: 10px;
   z-index: 5;
   width: var(--left-width);
   .icon {
@@ -195,7 +192,6 @@ body {
 
   }
   .sidebar {
-    border-radius: 20px;
     &.closed {
       transform: translateX(-110%);
       .icon {
@@ -216,6 +212,7 @@ body {
 #main {
   flex-grow: 1;
   width: calc(100% - var(--portrait-width) - 3rem);
+  transition: width var(--secs);
   .header {
     @media (orientation: landscape) {
       .title {
@@ -251,7 +248,7 @@ body {
   .content {
     overflow: auto;
     box-sizing: border-box;
-    height: calc(100vh - var(--header-height));
+    height: calc(100vh - 100px);
   }
 }
 

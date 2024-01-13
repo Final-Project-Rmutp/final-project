@@ -71,24 +71,21 @@ const RoomList: React.FC = () => {
           <HeadList>
             <TableContainer>
               <Sheet sx={{
-                    '--TableCell-height': '40px',
-                    // the number is the amount of the header rows.
-                    '--TableHeader-height': 'calc(1 * var(--TableCell-height))',
-                    minWidth:600,
-                    height: 370,
-                    overflow: 'auto',
-                    ackground: (
-                      theme,
-                    ) => `linear-gradient(${theme.vars.palette.background.surface} ,
-                      0 100%`,
-                      backgroundSize:
-                      '40px calc(100% - var(--TableCell-height)), 40px calc(100% - var(--TableCell-height)), 14px calc(100% - var(--TableCell-height)), 14px calc(100% - var(--TableCell-height))',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundAttachment: 'local, local, scroll, scroll',
-                    backgroundPosition:
-                      'var(--Table-firstColumnWidth) var(--TableCell-height), calc(100% - var(--Table-lastColumnWidth)) var(--TableCell-height), var(--Table-firstColumnWidth) var(--TableCell-height), calc(100% - var(--Table-lastColumnWidth)) var(--TableCell-height)',
-                    backgroundColor: 'nav.bg',
-                  }}>
+            "--TableCell-height": "40px",
+            "--TableHeader-height": "calc(1 * var(--TableCell-height))",
+            "--Table-firstColumnWidth": "80px",
+            "--Table-lastColumnWidth": "144px",
+            "--TableRow-stripeBackground": "rgba(0 0 0 / 0.04)",
+            "--TableRow-hoverBackground": "rgba(0 0 0 / 0.08)",
+            height: 400,
+            overflow: "auto",
+            background: (
+              theme
+            ) => `linear-gradient(${theme.vars.palette.background.backdrop} ,
+                      0%`,
+            backgroundColor: "background.popup",
+          }}
+        >
                   <Table className="table mb-0" 
                   borderAxis="bothBetween"
                   stickyHeader 
@@ -163,7 +160,7 @@ const RoomList: React.FC = () => {
                             <th>
                             <Box sx={{ display: 'flex', gap: 1, justifyContent:'center', alignItems:'center' }}>
                                 <Button
-                                  variant="outlined"
+                                  variant="solid"
                                   color="warning"
                                   className="edit"
                                   onClick={() => handleEdit(item)}
@@ -172,7 +169,7 @@ const RoomList: React.FC = () => {
                                 </Button>
                                 <Button
                                   color="danger"
-                                  variant="outlined"
+                                  variant="solid"
                                   endDecorator={<DeleteForever />}
                                   onClick={() => handleDelete(item.room_id)}
                                   className="delete"
@@ -227,22 +224,25 @@ const RoomList: React.FC = () => {
                   }}}
                   id="delete"
                   color="danger"
-                  variant="soft"
+                  variant="solid"
                   className="text-red p-2"
                   onClick={handleDeleteAll}
                 >
                 Delete All
                 </Button>
                 <Button
-                  sx={{width:'150px',padding:'15px !important',":hover": {
-                    boxShadow: '0 1px 20px 1px #0D6EFD',
-                    border: '1px solid #0D6EFD'
-                  }}}
-
+                  sx={{
+                    width: "150px",
+                    padding: "15px !important",
+                    ":hover": {
+                      boxShadow: "0 1px 20px 1px #0D6EFD",
+                      border: "1px solid #0D6EFD",
+                    },
+                  }}
                   id="add"
                   color="primary"
-                  variant="soft"
-                  className="text-primary p-2"
+                  variant="solid"
+                  className=" p-2"
                   onClick={handleAdd}
                 >
                   Add

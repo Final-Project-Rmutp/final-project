@@ -14,19 +14,35 @@ export const Main = styled(Sheet)`
 
 export const Left = styled(Sheet)`
   background-color: ${({ theme }) => theme.palette.background.backdrop};
+  padding:0 !important;
+  .icon{
+    left:-40px !important;
+    top:-30px !important;
+  }
+  &.open {
+    .icon{
+      top:-40px !important;
+      left:230px !important;
+    }
+  }
 `;
 
 export const Header = styled(Sheet)`
+  z-index:3;
   padding:20px;
-  background-color: ${({ theme }) => theme.palette.nav.bg};
-  border:1px solid;
-  border-color:${({ theme }) => theme.palette.nav.color};
+  border-bottom:1px solid;
+  border-color:${({ theme }) => theme.palette.danger.outlinedDisabledBorder};
+  background-color: ${({ theme }) => theme.palette.nav.navSide};
+
 `;
 
-export const Sidebar = styled(Card)`
-  background-color: ${({ theme }) => theme.palette.nav.bg};
+export const Sidebar = styled(Card)`.
+  z-index:0;
   border:1px solid;
-  border-color:${({ theme }) => theme.palette.nav.color};
+  border-color:${({ theme }) => theme.palette.danger.outlinedDisabledBorder};
+  border-radius:0;
+  background-color: ${({ theme }) => theme.palette.nav.navSide};
+
 `;
 export const CardStyle = styled(Card)`
   background-color: ${({ theme }) => theme.palette.main.bg};

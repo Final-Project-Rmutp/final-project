@@ -149,7 +149,7 @@ const StudentList: React.FC = () => {
                     <th style={rowStyle(item)}>
                       {item.user_img_path !== null && (
                         <img
-                        src={`https://happybay-image.s3.ap-southeast-1.amazonaws.com/${item.user_img_path}`}
+                        src={`${item.user_img_path}`}
                         alt={`User ${item.id}`}
                         width="50"
                         height="50"
@@ -501,7 +501,7 @@ const StudentList: React.FC = () => {
               <img
                 src={clickedImageUrl}
                 alt="Full-size"
-                style={{ width: "100%", height: "100%" }}
+                style={{ width: "20rem", height: "20rem" }}
               />
             )}
           </DialogContent>

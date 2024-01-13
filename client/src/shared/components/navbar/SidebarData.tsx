@@ -14,6 +14,11 @@ export const SidebarData = [
         icon: <Icon icon="ph:user-list-fill" color="#3F51B5"  />
     },
     {
+        title: 'classroom',
+        path: 'classroom-list',
+        icon: <Icon icon="ph:user-list-fill" color="#3F51B5"  />
+    },
+    {
         title: 'reserved',
         path: 'reserved-list',
         icon: <Icon icon="grommet-icons:system" color="#00BCD4"  />

@@ -14,10 +14,10 @@ import UnAuthenticatedRoute from "./auth/UnAuthenticatedRoute";
 import { Toaster} from 'sonner'
 
 // import CssBaseline from '@mui/material/CssBaseline';
-// import User from "./pages/student/student";
+import Classroom from "./pages/user/student/student";
 
 ////user 
-import Room from "./pages/user/room/Room";
+import Room from "./pages/user/room/Reservation";
 
 
 ////admin
@@ -45,14 +45,13 @@ const App: React.FC = () => {
               />
 
               <Route
-                path="user"
+                path="/user"
                 element={
                   <AuthenticatedRoute>
                     <UserProfileSidebar />
                   </AuthenticatedRoute>
                 }
               >
-                <Route path="page" element={<HomeUser />} />
                 <Route path="room-user" element={<Room />} />
               </Route>
               <Route
@@ -66,6 +65,7 @@ const App: React.FC = () => {
                 <Route path="student-list" element={<StudentList />} />
                 <Route path="reserved-list" element={<ReservedList />} />
                 <Route path="room-list" element={<RoomList />} />
+                <Route path="classroom-list" element={<Classroom />} />
               </Route>
             </Routes>
           </AuthProvider>

@@ -4,13 +4,16 @@ import { DateTimePicker } from '@mui/x-date-pickers';
 
 
 export const DateTime = styled(DateTimePicker)`
-    border-radius:20px;
+    border-radius:8px;
     color:${({ theme }) => theme.palette.common.white};
     border-color:${({ theme }) => theme.palette.common.white};
     background-color: ${({ theme }) => theme.palette.nav.bg};
+    width:230px;
+    height:38px;
 
     .css-fliaa7-MuiInputBase-root-MuiOutlinedInput-root{
-        border-radius:20px;
+        border-radius:8px;
+        height:38px;
         color:${({ theme }) => theme.palette.pf.color};
     }
     .css-i4bv87-MuiSvgIcon-root{
@@ -18,6 +21,7 @@ export const DateTime = styled(DateTimePicker)`
     }
 `;
 export const SelectStyle = styled(Select)`
+    width:160px;
     color:${({ theme }) => theme.palette.pf.color};
     background-color: ${({ theme }) => theme.palette.nav.bg};
 `;

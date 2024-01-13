@@ -10,8 +10,8 @@ import {
 } from "@mui/joy";
 import { MenuItems, MenuItemLinks } from "../../../styles/global";
 import { UserSidebarData } from "./UserSidebarData";
-import "../navbar/Navbar.scss";
-import { Outlet, useNavigate } from "react-router";
+import "./UserNavbar.scss";
+import { Outlet, Route, Routes, useNavigate } from "react-router";
 import { toast } from "sonner";
 import theme from "../../../styles/theme";
 import {
@@ -21,8 +21,6 @@ import {
 } from "@mui/material/styles";
 
 import { CssVarsProvider, useColorScheme } from "@mui/joy/styles";
-// import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
-// import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
 import CssBaseline from "@mui/joy/CssBaseline";
 import UserService from "../../../auth/service/UserService";
 import {
@@ -43,7 +41,9 @@ import {
 } from "./UserSidebarStyle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Icon } from "@iconify/react";
-import { Link  } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import HomeUser from "../../../pages/user/index";
+
 interface LayoutState {
   leftOpen: boolean;
   rightOpen: boolean;
@@ -80,12 +80,12 @@ const UserProfileSidebar: React.FC = () => {
       }));
     }
   };
+
   const handleTabChange = (tab: string) => {
     setState((prevState) => ({
       ...prevState,
       selectedTab: tab,
     }));
-
   };
 
   const handleLogout = () => {
@@ -147,6 +147,7 @@ const UserProfileSidebar: React.FC = () => {
 
     fetchUserProfile();
   }, []);
+
   function ColorSchemeToggle() {
     const { mode, setMode } = useColorScheme();
     const [mounted, setMounted] = React.useState(false);
@@ -167,6 +168,7 @@ const UserProfileSidebar: React.FC = () => {
         sx={{
           zIndex: 2,
           boxShadow: "none",
+          marginBottom: 2,
         }}
       >
         {mode === "light" ? (
@@ -190,6 +192,7 @@ const UserProfileSidebar: React.FC = () => {
   };
 
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
   return (
     <MaterialCssVarsProvider theme={{ [MATERIAL_THEME_ID]: materialTheme }}>
       <CssVarsProvider theme={theme}>
@@ -231,17 +234,22 @@ const UserProfileSidebar: React.FC = () => {
           <Main id="main">
             <HeaderNav>
               <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl flex items-center justify-between gap-5 h-[--header-height]">
-                <Box>
+                <Box sx={{ flexGrow: 0, marginBottom: 2 }}>
                   <span></span>
                 </Box>
                 {!isMobile && (
                   <>
-                  <Box>
-                  <div className="lg:flex-1 flex items-center gap-1.5">
-                    <span><Link to="/user/page">LOGO</Link></span>
-                  </div>
-                  </Box>
-                  <Box component="nav" sx={{ flexGrow: 0 }}>
+                    <Box sx={{ flexGrow: 0, marginBottom: 2 }}>
+                      <div className="lg:flex-1 flex items-center gap-1.5">
+                        <span>
+                          <Link to="/user">LOGO</Link>
+                        </span>
+                      </div>
+                    </Box>
+                    <Box
+                      component="nav"
+                      sx={{ flexGrow: 0, marginBottom: 2 }}
+                    >
                       <List role="menubar" orientation="horizontal">
                         {UserSidebarData.map((item, index) => (
                           <MenuItemsNav key={index}>
@@ -261,11 +269,11 @@ const UserProfileSidebar: React.FC = () => {
                           </MenuItemsNav>
                         ))}
                       </List>
-                  </Box>
+                    </Box>
                   </>
                 )}
                 <div className="flex items-center justify-end gap-1.5">
-                <ColorSchemeToggle />
+                  <ColorSchemeToggle />
                   <CardStyleUser onClick={handleMenuClick}>
                     <Box
                       sx={{
@@ -273,6 +281,7 @@ const UserProfileSidebar: React.FC = () => {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
+                        marginBottom: 2,
                       }}
                     >
                       <Avatar variant="solid" src={userProfile.user_img_path}>
@@ -315,8 +324,11 @@ const UserProfileSidebar: React.FC = () => {
                 </div>
               </div>
             </HeaderNav>
-            <div className="content">
+            <div className="content-user">
               <Outlet></Outlet>
+              <Routes>
+                <Route path="/" element={<HomeUser />} />
+              </Routes>
             </div>
           </Main>
         </LayoutUser>

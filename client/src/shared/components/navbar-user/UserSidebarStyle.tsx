@@ -6,11 +6,27 @@ import { styled } from '@mui/system';
 
 export const HeaderNav = styled(Sheet)`
     height:4.5rem;
-    background-color: ${({ theme }) => theme.palette.background.backdrop};
+    background-color: ${({ theme }) => theme.palette.userNav.bg};
+    width: 100%;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    position: fixed;
+    z-index: 2;
+    padding: 8px 16px;
+    transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0,  0.10);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-color: rgba(197, 202, 233, 0.08);
+    border-width: 1px 0px ;
 `;
 export const SidebarUser = styled(Card)`
-  background-color: ${({ theme }) => theme.palette.nav.bg};
-  padding:none;
+    background-color: ${({ theme }) => theme.palette.userNav.bg};
+    backdrop-filter: blur(10rem);
+    -webkit-backdrop-filter:blur(10rem);
+    border-color: rgba(197, 202, 233, 0.08);
+    border-width: 1px 0px ;
+    padding:none;
 `;
 export const LeftUser = styled(Sheet)`
   background-color: ${({ theme }) => theme.palette.background.backdrop};
