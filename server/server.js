@@ -39,6 +39,10 @@ app.use("/admin", AdminRoute);
 const UserRoute = require("./routes/user.routes.js");
 app.use("/user", UserRoute);
 
+//ReservationRoute
+const ReservationRoute = require("./routes/reservation.routes.js");
+app.use("/reservation", ReservationRoute);
+
 //LogsRoute
 const LogsRoute = require("./routes/logs.routes.js");
 app.use("/logs", LogsRoute);
