@@ -8,9 +8,11 @@ const dashboardController = require('../controller/dashboard.controller.js');
  * /dashboard/getbookingData:
  *   get:
  *     tags:
- *     - dashboard
+ *     - Dashboard
  *     summary: Get users Profile (authentication required)
  *     description: Retrieve a profile of users (authentication required).
+ *     security:
+ *       - Authorization: []
  *     responses:
  *       200:
  *         description: authenticate successful. Returns the users profile.
@@ -50,16 +52,18 @@ const dashboardController = require('../controller/dashboard.controller.js');
  *                    example: Internal server error
  */
 
-router.get('/getbookingData', dashboardController.getbookingData);
+router.get('/getbookingData',authMiddleware.isAdmin, dashboardController.getbookingData);
 
 /**
  * @swagger
  * /dashboard/getcancellationData:
  *   get:
  *     tags:
- *     - dashboard
+ *     - Dashboard
  *     summary: Get users Profile (authentication required)
  *     description: Retrieve a profile of users (authentication required).
+ *     security:
+ *       - Authorization: []
  *     responses:
  *       200:
  *         description: authenticate successful. Returns the users profile.
@@ -99,16 +103,18 @@ router.get('/getbookingData', dashboardController.getbookingData);
  *                    example: Internal server error
  */
 
-router.get('/getcancellationData', dashboardController.getcancellationData);
+router.get('/getcancellationData',authMiddleware.isAdmin, dashboardController.getcancellationData);
 
 /**
  * @swagger
  * /dashboard/getfrequentUseData:
  *   get:
  *     tags:
- *     - dashboard
+ *     - Dashboard
  *     summary: Get users Profile (authentication required)
  *     description: Retrieve a profile of users (authentication required).
+ *     security:
+ *       - Authorization: []
  *     responses:
  *       200:
  *         description: authenticate successful. Returns the users profile.
@@ -148,16 +154,18 @@ router.get('/getcancellationData', dashboardController.getcancellationData);
  *                    example: Internal server error
  */
 
-router.get('/getfrequentUseData', dashboardController.getfrequentUseData);
+router.get('/getfrequentUseData',authMiddleware.isAdmin, dashboardController.getfrequentUseData);
 
 /**
  * @swagger
  * /dashboard/getrarelyUsedData:
  *   get:
  *     tags:
- *     - dashboard
+ *     - Dashboard
  *     summary: Get users Profile (authentication required)
  *     description: Retrieve a profile of users (authentication required).
+ *     security:
+ *       - Authorization: []
  *     responses:
  *       200:
  *         description: authenticate successful. Returns the users profile.
@@ -197,6 +205,6 @@ router.get('/getfrequentUseData', dashboardController.getfrequentUseData);
  *                    example: Internal server error
  */
 
-router.get('/getrarelyUsedData', dashboardController.getrarelyUsedData);
+router.get('/getrarelyUsedData',authMiddleware.isAdmin, dashboardController.getrarelyUsedData);
 
 module.exports = router;
