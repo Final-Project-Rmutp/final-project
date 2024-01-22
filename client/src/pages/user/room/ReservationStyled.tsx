@@ -1,14 +1,13 @@
 import { styled } from '@mui/system';
-import { Select,Option } from '@mui/joy';
-import { DateTimePicker } from '@mui/x-date-pickers';
+import { Select,Option, Sheet } from '@mui/joy';
 
 
-export const DateTime = styled(DateTimePicker)`
+export const DateTime = styled(Sheet)`
     border-radius:8px;
     color:${({ theme }) => theme.palette.common.white};
     border-color:${({ theme }) => theme.palette.common.white};
     background-color: ${({ theme }) => theme.palette.nav.bg};
-    width:230px;
+    width:180px;
     height:38px;
 
     .css-fliaa7-MuiInputBase-root-MuiOutlinedInput-root{

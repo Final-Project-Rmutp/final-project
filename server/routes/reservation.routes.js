@@ -65,7 +65,7 @@ router.get('/getroomschedule', reservationController.getRoomSchedule);
  * /reservation/searchroom:
  *   post:
  *     tags:
- *     - TEST
+ *     - Reservation
  *     summary: Register a new user (authentication required).
  *     description: Create a new user account by providing user information and an image file.
  *     requestBody:
