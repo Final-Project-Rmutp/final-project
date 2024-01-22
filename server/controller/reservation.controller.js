@@ -280,4 +280,32 @@ function transformReservationStatus(status) {
     }
   }
 
-module.exports = { getRoomSchedule, searchroom, reservation, getreservation };
+// Function to approve a reservation
+async function updatestatus(req, res) {
+  try {
+      const { reservation_id, reservation_status } = req.query;
+      // Check if the class exists
+      const checkClassQuery = `
+          SELECT *
+          FROM reservations
+          WHERE reservation_id = $1;
+      `;
+
+      const checkClassResult = await client.query(checkClassQuery, [reservation_id]);
+      if (checkClassResult.rows.length === 0) {
+          return res.status(404).json({ message: 'Class not found' });
+      }
+
+      // Delete the class
+      const updatestatusQuery = `UPDATE reservations SET reservation_status = $2 WHERE reservation_id = $1;`;
+
+      const updatestatusResult = await client.query(updatestatusQuery, [reservation_id, reservation_status]);
+
+      res.status(200).json({ message: 'Change status successfully'});
+  } catch (err) {
+      console.error(err.message);
+      res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+module.exports = { getRoomSchedule, searchroom, reservation, getreservation, updatestatus };

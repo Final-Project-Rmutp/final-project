@@ -331,4 +331,63 @@ router.post("/reserve", authMiddleware.authenticateToken, reservationController.
 
 router.get('/getreservation', authMiddleware.isAdmin, reservationController.getreservation);
 
+/**
+ * @swagger
+ * /reservation/updatestatus:
+ *   patch:
+ *     tags:
+ *     - Reservation
+ *     summary: Change status of reservation (authentication required)
+ *     description: Retrieve a profile of users (authentication required).
+ *     security:
+ *       - Authorization: []
+ *     parameters:
+ *       - in: query
+ *         name: reservation_id
+ *         description: "Reservation ID"
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: reservation_status
+ *         description: "Reservation Status(eg. 1 = in progess)"
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: authenticate successful. Returns the users profile.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  firstname:
+ *                    type: string
+ *                    example: "admin"
+ *                  user_img_path:
+ *                    type: string
+ *                    example: "null"
+ *       401:
+ *         description: No token provided , Invalid token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: No token provided , Invalid token
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Internal server error
+ */
+
+router.patch('/updatestatus', authMiddleware.isAdmin, reservationController.updatestatus);
+
 module.exports = router;
