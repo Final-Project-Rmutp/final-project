@@ -46,10 +46,23 @@ async function getallreports(req, res) {
         });
       }
   
-      const query = `SELECT report_id,room_id,user_id,report_detail,report_status,timestamp
-                         FROM "reports" 
-                         ORDER BY report_id
-                         LIMIT $1 OFFSET $2`;
+      const query = `SELECT 
+                          reports.report_id,
+                          rooms.room_number,
+                          "user".firstname || ' ' || "user".lastname AS fullname,
+                          reports.report_detail,
+                          reports.report_status,
+                          reports.timestamp
+                      FROM 
+                          reports
+                          LEFT JOIN 
+                          "user" ON reports.user_id = "user".id
+                      LEFT JOIN
+                          rooms ON reports.room_id = rooms.room_id                      
+                      ORDER BY 
+                          reports.report_id
+                      LIMIT $1 OFFSET $2;
+                      `;
       const values = [pageSize,offset];
       const result = await client.query(query, values);
       res.status(200).json(result.rows);
@@ -91,22 +104,49 @@ async function updatereportstatus(req, res) {
 
 // Get report
 async function getreport(req, res) {
-    try {
-        const userId = req.user.id;
-        const query = `SELECT report_id,room_id,report_detail,report_status,timestamp  FROM "reports" WHERE user_id = $1`;
-        const result = await client.query(query, [userId]);
-        const report = result.rows[0];
+  try {
+      const page = parseInt(req.query.page) || 1;
+      const pageSize = parseInt(req.query.pageSize) || 10;
+      const offset = (page - 1) * pageSize;
 
-        if (!report) {
-            return res.status(404).json({ message: 'Report not found' });
-        }
+      if (page < 1 || pageSize < 1 || pageSize > 100) {
+          return res.status(400).json({
+              message:
+                  "Page number must be 1 or greater, pageSize must be greater than 0, and not exceed 100",
+          });
+      }
 
-        res.status(200).json(report);
+      const userId = req.user.id;
+      const query = `
+          SELECT reports.report_id,
+                 rooms.room_number,
+                 reports.report_detail,
+                 CASE
+                     WHEN reports.report_status = 0 THEN 'Canceled'
+                     WHEN reports.report_status = 1 THEN 'In progress'
+                     WHEN reports.report_status = 2 THEN 'Approve'
+                 END AS report_status,
+                 reports.timestamp
+          FROM reports
+          JOIN rooms ON reports.room_id = rooms.room_id
+          WHERE reports.user_id = $1
+          LIMIT $2 OFFSET $3;
+      `;
+      const values = [userId, pageSize, offset];
+      const result = await client.query(query, values);
+      const report = result.rows[0];
 
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).json({ message: 'Error fetching profile data' });
-    }
+      if (!report) {
+          return res.status(404).json({ message: 'Report not found' });
+      }
+
+      res.status(200).json(report);
+
+  } catch (err) {
+      console.error(err.message);
+      res.status(500).json({ message: 'Error fetching profile data' });
+  }
 }
+
 
 module.exports = { ReportRoom, getallreports, updatereportstatus, getreport};
