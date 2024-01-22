@@ -73,4 +73,50 @@ async function getschedule(req, res) {
     }
 }
 
-module.exports = { getprofile, getschedule };
+  // Get all report
+async function getreservation(req, res) {
+    try {
+      const query = `SELECT
+        CONCAT(u.firstname, ' ', u.lastname) AS fullname,
+        u.account_type,
+        r.room_number,
+        rs.reservation_reason,
+        rs.reservation_status,
+        rs.reservation_date,
+        rs.timestamp,
+        rs.start_time,
+        rs.end_time
+        FROM reservations rs
+        LEFT JOIN "user" u ON rs.user_id = u.id
+        LEFT JOIN rooms r ON rs.room_id = r.room_id
+        WHERE u.id = $1
+        ORDER BY timestamp`;
+      const userId = req.user.id
+      const result = await client.query(query, [userId]);
+      const transformedRows = result.rows.map(row => ({
+        ...row,
+        reservation_status: transformReservationStatus(row.reservation_status),
+      }));
+      res.status(200).json(transformedRows);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).json({ message: "Error fetching reports" });
+    }
+}
+
+    // Function to transform reservation_status values
+function transformReservationStatus(status) {
+    switch (status) {
+      case 0:
+        return 'cancel';
+      case 1:
+        return 'in progress';
+      case 2:
+        return 'success';
+      default:
+        return 'unknown';
+    }
+  }
+
+
+module.exports = { getprofile, getschedule, getreservation };
