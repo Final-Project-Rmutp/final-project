@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import {
   Checkbox,
@@ -63,7 +63,11 @@ const StudentList: React.FC = () => {
     setAddUser,
     handleChange,
     handleImageChange,
+    fetchUserList
   } = useStudentList();
+  useEffect(() => {
+    fetchUserList();
+  }, [fetchUserList]);
   interface Item {
     updated: boolean;
   }
@@ -241,7 +245,7 @@ const StudentList: React.FC = () => {
           </Modal>
         </Sheet>
         <CustomPagination
-          count={100}
+          count={1000}
           page={page}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}

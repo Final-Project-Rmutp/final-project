@@ -1,10 +1,17 @@
 import React, { useState } from "react";
-import { Modal, ModalClose, ModalDialog } from "@mui/joy";
-import styled from "styled-components";
-import { SlotProps } from "@mui/joy/utils/types";
-
+import { Button, Modal, ModalClose, ModalDialog,Typography } from "@mui/joy";
+import { styled } from '@mui/system';
 const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-
+type CustomSlot = {
+  start: string;
+  end: string;
+  name: string;
+  courseCode: string;
+  room: string;
+  classInfo: string;
+  startDate: string;
+  endDate: string;
+};
 const timeSlots: { start: string; end: string }[] = [
   { start: "08:00", end: "09:00" },
   { start: "09:00", end: "10:00" },
@@ -18,19 +25,24 @@ const timeSlots: { start: string; end: string }[] = [
   { start: "17:00", end: "18:00" },
 ];
 
-const TimeSlotRow = styled.div`
+const TimeSlotRow = styled(Typography)`
   display: flex;
-  align-items: center;
+  align-items: center;  
+  justify-content: center;
   margin-bottom: 10px;
 `;
 
-const DayColumn = styled.div`
+const DayColumn = styled(Typography)`
   width: 120px;
   text-align: center;
   font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
 `;
 
-const TimeSlotBox = styled.div`
+const TimeSlotBox = styled(Typography)`
   width: 80px;
   height: 40px;
   border: 1px solid #ddd;
@@ -51,8 +63,13 @@ const TimeSlotBox = styled.div`
     border-color: #4caf50;
   }
 `;
+type CustomSlotProps = {
+  slot: CustomSlot;
+  onClick: (slot: CustomSlot) => void;
+  isSelected: boolean;
+};
 
-const Slot: React.FC<SlotProps> = ({ slot, onClick, isSelected }) => {
+const Slot: React.FC<CustomSlotProps> = ({ slot, onClick, isSelected }) => {
   const handleSlotClick = () => {
     onClick(slot);
   };
@@ -64,7 +81,13 @@ const Slot: React.FC<SlotProps> = ({ slot, onClick, isSelected }) => {
   );
 };
 
+
 const Classroom: React.FC = () => {
+
+  const [confirmedSlots, setConfirmedSlots] = useState<{ [day: string]: CustomSlot[] }>(
+    daysOfWeek.reduce((acc, day) => ({ ...acc, [day]: [] }), {})
+  );
+  
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [name, setName] = useState("");
   const [courseCode, setCourseCode] = useState("");
@@ -72,12 +95,12 @@ const Classroom: React.FC = () => {
   const [classInfo, setClassInfo] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [selectedSlots, setSelectedSlots] = useState<{ [day: string]: { start: string; end: string }[] }>(
+  const [selectedSlots, setSelectedSlots] = useState<{ [day: string]: CustomSlot[] }>(
     daysOfWeek.reduce((acc, day) => ({ ...acc, [day]: [] }), {})
   );
 
 
-  const handleSlotClick = (slot: { start: string; end: string }, day: string) => {
+  const handleSlotClick = (slot: CustomSlot, day: string) => {
     const isSlotSelected = selectedSlots[day].some((s) => s.start === slot.start && s.end === slot.end);
 
     if (isSlotSelected) {
@@ -111,7 +134,6 @@ const Classroom: React.FC = () => {
     setSelectedSlots(
       daysOfWeek.reduce((acc, day) => ({ ...acc, [day]: [] }), {})
     );
-    // Clear other input fields when modal is closed
     setName("");
     setCourseCode("");
     setRoom("");
@@ -120,40 +142,75 @@ const Classroom: React.FC = () => {
     setEndDate("");
   };
 
-  const handleConfirm = () => {
-    console.log("Name:", name);
-    console.log("Course Code:", courseCode);
-    console.log("Room:", room);
-    console.log("Class:", classInfo);
-    console.log("Start Date:", startDate);
-    console.log("End Date:", endDate);
-    console.log("Selected Time Slots:", selectedSlots);
-    closeModal();
+ const handleConfirm = () => {
+  const inputFields = {
+    name,
+    courseCode,
+    room,
+    classInfo,
+    startDate,
+    endDate,
   };
+
+  const updatedConfirmedSlots: { [day: string]: CustomSlot[] } = { ...confirmedSlots };
+
+  daysOfWeek.forEach((day) => {
+    if (selectedSlots[day].length > 0) {
+      updatedConfirmedSlots[day] = [
+        ...updatedConfirmedSlots[day],
+        ...selectedSlots[day].map((slot) => ({ ...slot, ...inputFields })),
+      ];
+    }
+  });
+
+  setConfirmedSlots(updatedConfirmedSlots);
+  closeModal();
+};
+
+  
+
 
 
   return (
-    <div className="App">
+    <div className="container mx-auto">
       <TimeSlotRow>
         <DayColumn></DayColumn>
         {timeSlots.map((slot, index) => (
-          <TimeSlotBox key={index}>{`${slot.start} - ${slot.end}`}</TimeSlotBox>
+          <TimeSlotBox key={index}>
+            {`${slot.start} - ${slot.end}`}
+          </TimeSlotBox>
         ))}
       </TimeSlotRow>
       {daysOfWeek.map((day, index) => (
         <TimeSlotRow key={index}>
           <DayColumn>{day}</DayColumn>
-          {timeSlots.map((slot, index) => (
-            <Slot
-              key={index}
-              slot={slot}
-              onClick={() => handleSlotClick(slot, day)}
-              isSelected={selectedSlots[day].some((s) => s.start === slot.start && s.end === slot.end)}
-            />
-          ))}
+          {timeSlots.map((slot, index) => {
+            const isSelected = selectedSlots[day].some((s) => s.start === slot.start && s.end === slot.end);
+            const confirmedSlot = confirmedSlots[day]?.find((s) => s.start === slot.start && s.end === slot.end);
+
+            return (
+              <div key={index} className="position-relative">
+                <Slot
+                  key={index}
+                  slot={slot}
+                  onClick={() => handleSlotClick(slot, day)}
+                  isSelected={isSelected}
+                />
+                {confirmedSlot && confirmedSlots[day].length > 0 && (
+                  <div className="selected-info position-absolute" style={{ top: '-9px' }}>
+                    <div className="bg-danger">
+                      {` ${confirmedSlot.name}, ${confirmedSlot.courseCode}, ${confirmedSlot.room}, ${confirmedSlot.classInfo}, ${confirmedSlot.startDate}, ${confirmedSlot.endDate}`}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </TimeSlotRow>
       ))}
-      <button onClick={openModal}>Show Selected Times</button>
+      <div className="d-flex justify-content-center align-items-center">
+        <Button onClick={openModal}>Show Selected Times</Button>
+      </div>
       <Modal open={modalIsOpen} onClose={closeModal}>
         <ModalDialog>
           <ModalClose onClick={closeModal} />
@@ -162,11 +219,11 @@ const Classroom: React.FC = () => {
             <ul>
               {daysOfWeek.map((day) => (
                 <li key={day}>
-                  {selectedSlots[day].length > 0 && (
+                  {confirmedSlots[day].length > 0 && (
                     <>
                       <strong>{day}:</strong>
                       <ul>
-                        {selectedSlots[day].map((slot, index) => (
+                        {confirmedSlots[day].map((slot, index) => (
                           <li key={index}>{`${slot.start} - ${slot.end}`}</li>
                         ))}
                       </ul>
@@ -201,7 +258,7 @@ const Classroom: React.FC = () => {
                   End Date:
                   <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
                 </label>
-                <button onClick={handleConfirm}>Confirm</button>
+                <Button onClick={handleConfirm}>Confirm</Button>
               </>
             )}
           </div>

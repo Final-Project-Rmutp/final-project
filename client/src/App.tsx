@@ -14,9 +14,10 @@ import UnAuthenticatedRoute from "./auth/UnAuthenticatedRoute";
 import { Toaster} from 'sonner'
 
 // import CssBaseline from '@mui/material/CssBaseline';
-import Classroom from "./pages/user/student/student";
+import Classroom from "./pages/user/classroom/Classroom";
 
 ////user 
+import UserProfileSidebar from "./shared/components/navbar-user/UserNavbar";
 import Room from "./pages/user/room/Reservation";
 
 
@@ -24,8 +25,8 @@ import Room from "./pages/user/room/Reservation";
 import StudentList from "./pages/admin/student-list/StudentList";
 import ReservedList from "./pages/admin/reserved-list/ReservedList";
 import RoomList from "./pages/admin/room-list/RoomList";
-import UserProfileSidebar from "./shared/components/navbar-user/UserNavbar";
-import HomeUser from "./pages/user/index";
+import ReportList from "./pages/admin/report-list/ReportList";
+
 
 
 const App: React.FC = () => {
@@ -66,6 +67,7 @@ const App: React.FC = () => {
                 <Route path="reserved-list" element={<ReservedList />} />
                 <Route path="room-list" element={<RoomList />} />
                 <Route path="classroom-list" element={<Classroom />} />
+                <Route path="report-list" element={<ReportList />} />
               </Route>
             </Routes>
           </AuthProvider>

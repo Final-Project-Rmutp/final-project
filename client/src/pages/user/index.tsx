@@ -1,7 +1,18 @@
 import React from "react";
 import { useColorScheme } from "@mui/joy/styles";
 import { Typography, Sheet } from "@mui/joy";
+import "./index.scss";
 
+const commonStyles = {
+    color: "hsl(0 0% 100% / 0.2)",
+    backgroundClip: "text",
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "0% 100%",
+    backgroundImage: "linear-gradient(135deg, #8A2BE2, #4B0082);",
+    animation: "scroll-reveal linear forwards",
+    animationTimeline: "view(y)",
+    animationRange: "contain",
+};
 const HomeUser: React.FC = () => {
     const { mode } = useColorScheme();
 
@@ -14,9 +25,9 @@ const HomeUser: React.FC = () => {
             height: "800px",
             position: "relative",
             ...(mode === "dark"
-                    ? { background: "linear-gradient(to bottom, #020420, #0F172A)" }
-                    : { background: "#fff" }),
-                padding: 5,
+                ? { background: "linear-gradient(to bottom, #020420, #0F172A)" }
+                : { background: "#fff" }),
+            padding: 5,
             }}
         >
             <Typography
@@ -37,30 +48,49 @@ const HomeUser: React.FC = () => {
                 ? { background: " #080D1A" }
                 : { background: "#080D1A" }),
             padding: 5,
-            marginTop: "0", 
+            marginTop: "0",
             zIndex: "1",
-            height:"800px",
+            height: "800px",
             }}
         >
-            <div className=" p-4 sm:p-8 z-1">
-            <div className="font-inter font-extrabold text-2xl text-black tracking-tight">
-                <Typography sx={{color:"white"}}>My trip to the summit</Typography>
-            </div>
-            <div className="mt-1 font-medium text-sm text-slate-500">
-                <Typography sx={{color:"white"}}>November 16, 2021 · 4 min read</Typography>
-            </div>
-            <p className="mt-4 leading-7 text-slate-500">
-                <Typography sx={{color:"white"}}>
-                Maybe we can live without libraries, people like you and me...
-                </Typography>
-            </p>
-            <p className="mt-4 leading-7 text-slate-500">
-                <Typography sx={{color:"white"}}>
-                Look. If you think this is about overdue fines and missing books,
-                you'd better think again...
-                </Typography>
-            </p>
-            </div>
+            <section
+            className="d-flex flex-column justify-center align-items-center text-center m-0"
+            style={{ paddingBlock: "clamp(5rem, 25vh, 0.5rem)" }}
+            >
+            <Typography
+                level="h1"
+                sx={{
+                ...commonStyles,
+                animationRangeStart: "cover 45vh",
+                animationRangeEnd: "cover 50vh",
+                }}
+            >
+                Reservation Room
+            </Typography>
+            <Typography
+                level="title-md"
+                sx={{
+                maxWidth: "100ch",
+                ...commonStyles,
+                animationRangeStart: "cover 55vh",
+                animationRangeEnd: "cover 65vh",
+                }}
+            >
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia nam sit fugiat quis. Ullam non id necessitatibus, tempore sint dolore.
+            </Typography>
+            <Typography
+                level="title-md"
+                sx={{
+                maxWidth: "90ch",
+                ...commonStyles,
+                animationRangeStart: "cover 60vh",
+                animationRangeEnd: "cover 70vh",
+                }}
+            >
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Perspiciatis?
+            </Typography>
+            </section>
         </Sheet>
         <Sheet
             sx={{

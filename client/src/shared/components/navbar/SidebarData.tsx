@@ -30,7 +30,7 @@ export const SidebarData = [
     },
     {
         title: 'Report',
-        path: '',
+        path: 'report-list',
         icon: <Icon icon="fluent-mdl2:report-warning" color="red"  />
     }
 ]

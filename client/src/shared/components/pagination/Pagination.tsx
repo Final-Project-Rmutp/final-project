@@ -59,7 +59,7 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
         value={rowsPerPage}
         onChange={(_, value) => handleRowsPerPageChange(value as number)}
       >
-        {[5, 10, 25].map((option) => (
+        {[5, 10, 25, 50, 100].map((option) => (
           <Option key={option} value={option}>
             <Typography>{option}</Typography>
           </Option>
