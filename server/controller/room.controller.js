@@ -266,5 +266,68 @@ async function deleteroom(req, res) {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
+// Get room level
+async function getroomlevel(req, res) {
+    try {
+        const roomlevelId = req.params.roomlevel_id;
+        console.log(roomlevelId);
+        const query = `
+          select distinct room_level from rooms
+          order by room_level
+        `;
+        const result = await client.query(query);
+        
+  
+      if (result.rows.length === 1) {
+        const subject = result.rows[0];
+        res.status(200).json(subject);
+      } else {
+        res.status(404).json({ message: "Room Level not found" });
+      }
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  }
+// Get room number
+async function getroomnumber(req, res) {
+    try {
+        const query = `
+          SELECT distinct room_number FROM rooms
+          ORDER BY room_number
+        `;
+        const result = await client.query(query);
 
-module.exports = { addroom, getallroom, getroomById, updateroom, deleteroom};
+        if (result.rows.length > 0) {
+            const roomNumbers = result.rows.map(row => row.room_number);
+            res.status(200).json({ room_numbers: roomNumbers });
+        } else {
+            res.status(404).json({ message: "Room Numbers not found" });
+        }
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+// Get room type
+async function getroomtype(req, res) {
+    try {
+        const query = `
+          SELECT distinct room_type FROM rooms
+          ORDER BY room_type
+        `;
+        const result = await client.query(query);
+
+        if (result.rows.length > 0) {
+            const roomTypes = result.rows.map(row => row.room_type);
+            res.status(200).json({ room_types: roomTypes });
+        } else {
+            res.status(404).json({ message: "Room Types not found" });
+        }
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+
+module.exports = { addroom, getallroom, getroomById, updateroom, deleteroom, getroomlevel, getroomnumber, getroomtype};

@@ -189,4 +189,117 @@ async function searchuser(req, res) {
   }
 }
 
-module.exports = { adduser, getallusers, getUserById, deactivateUser, updateUser, searchuser };
+// Add a new Subject
+async function addsubject(req, res) {
+  const { subject_name, subject_code, user_id } = req.body;
+  const action_type = 10; // addsubject
+
+  // Check for missing or empty values
+  const requiredFields = [subject_name, subject_code, user_id];
+  if (requiredFields.some((field) => !field)) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+
+  try {
+    // Check if subject with the same subject_code already exists
+    const subjectCheckQuery = `SELECT subject_id FROM subjects WHERE subject_code = $1`;
+    const subjectCheckResult = await client.query(subjectCheckQuery, [subject_code]);
+
+    if (subjectCheckResult.rows.length > 0) {
+      return res.status(400).json({ message: "Subject with the same code already exists" });
+    }
+
+    // Insert the new subject
+    const insertQuery = `INSERT INTO subjects (subject_name, subject_code, user_id) 
+                            VALUES ($1, $2, $3)
+                            RETURNING subject_id`;
+    const values = [subject_name, subject_code, user_id];
+    const result = await client.query(insertQuery, values);
+    const insertedId = result.rows[0].subject_id;
+    const id = req.user.id;
+
+    logging(action_type, id, "Success", `Add subject successful. Subject ID: ${insertedId}`);
+    res.status(201).json({ message: "Add subject successful" });
+  } catch (err) {
+    const id = req.user.id;
+    console.error(err.message);
+    logging(action_type, id, "Error", err.message);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+// Get all subjects
+async function getallsubject(req, res) {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize) || 10;
+    const offset = (page - 1) * pageSize;
+
+    if (page < 1 || pageSize < 1 || pageSize > 100) {
+      return res.status(400).json({
+        message:
+          "Page number must be 1 or greater, pageSize must be greater than 0, and not exceed 100",
+      });
+    }
+
+    const query = `
+                  SELECT subject_id, subject_name, subject_code, user_id
+                  FROM subjects
+                  ORDER BY subject_id
+                  LIMIT $1 OFFSET $2`;
+
+    const values = [pageSize, offset];
+    const result = await client.query(query, values);
+    res.status(200).json(result.rows);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ message: "Error fetching subjects" });
+  }
+}
+
+// Get subject by subject_id
+async function getSubjectById(req, res) {
+  try {
+    const subjectId = req.params.subject_id;
+    console.log(subjectId);
+    const query = `
+      SELECT subject_id, subject_name, subject_code, user_id
+      FROM subjects
+      WHERE subject_id = $1`;
+      
+    const result = await client.query(query, [subjectId]);
+
+    if (result.rows.length === 1) {
+      const subject = result.rows[0];
+      res.status(200).json(subject);
+    } else {
+      res.status(404).json({ message: "Subject not found" });
+    }
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+// Delete subject by subject_id
+async function deleteSubjectById(req, res) {
+  try {
+    const subjectId = req.params.subject_id;
+    const query = `
+      DELETE FROM subjects
+      WHERE subject_id = $1`;
+
+    const result = await client.query(query, [subjectId]);
+
+    if (result.rowCount === 1) {
+      res.status(200).json({ message: "Subject deleted successfully" });
+    } else {
+      res.status(404).json({ message: "Subject not found" });
+    }
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+
+module.exports = { adduser, getallusers, getUserById, deactivateUser, updateUser, searchuser ,addsubject, getallsubject ,getSubjectById , deleteSubjectById};
