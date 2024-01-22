@@ -46,7 +46,7 @@ async function login(req, res) {
 
         const token = jwt.sign(tokenPayload, jwtSecret);
         logging(action_type, user.id, 'Success', 'Authentication successful');
-        res.status(200).json({ message: 'Authentication successful', token, account_role: user.account_role });
+        res.status(200).json({ message: 'Authentication successful', token, account_role: user.account_role, account_type: user.account_type });
     } catch (err) {
         console.error(err.message);
         logging(action_type, '1', 'Error', err.message);
