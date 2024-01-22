@@ -178,7 +178,7 @@ async function searchuser(req, res) {
   try {
     const Query = `SELECT id, firstname, lastname, citizen_id, pin, account_type, user_img_path
                     FROM "user"
-                    WHERE account_status = $2 AND (pin LIKE '%' || $1 || '%' OR citizen_id LIKE '%' || $1 || '%')
+                    WHERE account_status = $2 AND (pin LIKE '%' || $1 || '%' OR citizen_id LIKE '%' || $1 || '%' OR firstname LIKE '%' || $1 || '%' OR lastname LIKE '%' || $1 || '%')
                     `;
     const values = [search, activeaccount];
     const result = await client.query(Query, values);
