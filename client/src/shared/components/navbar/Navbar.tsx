@@ -6,6 +6,8 @@ import {
   Typography,
   Stack,
   Container,
+  Breadcrumbs,
+  Link,
 } from "@mui/joy";
 import { MenuItems, MenuItemLinks } from "../../../styles/global";
 import { SidebarData } from "./SidebarData";
@@ -25,7 +27,7 @@ import UserService from "../../../auth/service/UserService";
 import { CardStyle, Header, IconButtonHeader, Layout, Left, Main, MenuContainer, Sidebar ,MenuItemContainer} from "./NavbarStyled";
 import Hamburger from "./Hamburger";
 import { Icon } from '@iconify/react';
-
+import { useLocation } from 'react-router-dom';
 interface LayoutState {
   leftOpen: boolean;
   rightOpen: boolean;
@@ -170,6 +172,32 @@ const AdminProfileSidebar: React.FC = () => {
   const handleHamburgerClick = (event: MouseEvent<HTMLDivElement>) => {
     toggleSidebar(event)
   };
+  const location = useLocation();
+  const generateBreadcrumbs = () => {
+    const pathnames = location.pathname.split('/').filter((x) => x);
+  
+    return (
+      <Breadcrumbs aria-label="breadcrumbs" size="lg">
+        {pathnames.map((name: string, index: number) => {
+          const routeTo = `/${pathnames.slice(0, index + 1).join('/')}`;
+          const isLast = index === pathnames.length - 1;
+  
+          const breadcrumbName = SidebarData.find((item) => item.path === name)?.name;
+  
+          return isLast ? (
+            <Typography color="primary">
+              {breadcrumbName || name}
+            </Typography>
+          ) : (
+            <Link key={routeTo} color="neutral">
+              Admin
+            </Link>
+          );
+        })}
+      </Breadcrumbs>
+    );
+  };
+  
   return (
       <MaterialCssVarsProvider theme={{ [MATERIAL_THEME_ID]: materialTheme }}>
         <CssVarsProvider theme={theme}>
@@ -259,6 +287,9 @@ const AdminProfileSidebar: React.FC = () => {
                 </div>
               </Header>
               <div className="content">
+                <div className="d-flex justify-content-end me-5 mt-2">
+                  {generateBreadcrumbs()}
+                </div>
                 <Outlet></Outlet>
               </div>
             </Main>

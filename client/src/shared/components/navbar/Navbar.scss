@@ -139,7 +139,7 @@ body {
   // scroll-behavior: smooth;
   // scroll-padding-top: 5rem;
   grid-row-start: 1;
-  transition: width var(--secs);
+  transition: width var(--secs), transform var(--secs), margin-left var(--secs);
   width: 0;
   @media (orientation: landscape) {
     &.open {
@@ -179,6 +179,7 @@ body {
   width: var(--left-width);
   .icon {
     position: fixed;
+    transition: left var(--secs);
     z-index: 10;
     width: var(--header-height);
     height: var(--header-height);
@@ -192,6 +193,7 @@ body {
 
   }
   .sidebar {
+    transition: transform var(--secs);
     &.closed {
       transform: translateX(-110%);
       .icon {

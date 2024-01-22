@@ -973,12 +973,24 @@ router.delete("/room/deleteroom/:room_id", authMiddleware.isAdmin, roomControlle
  *             schema:
  *               type: object
  *               properties:
- *                  firstname:
+ *                  report_id:
  *                    type: string
- *                    example: "admin"
- *                  user_img_path:
+ *                    example: "1"
+ *                  room_number:
  *                    type: string
- *                    example: "null"
+ *                    example: "9901"
+ *                  fullname:
+ *                    type: string
+ *                    example: "User User"
+ *                  report_detail:
+ *                    type: string
+ *                    example: "NULL"
+ *                  report_status:
+ *                    type: string
+ *                    example: "1"
+ *                  timestamp:
+ *                    type: string
+ *                    example: "2024-01-09T01:39:40.260Z"
  *       401:
  *         description: No token provided , Invalid token
  *         content:

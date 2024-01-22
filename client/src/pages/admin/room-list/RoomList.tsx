@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   DialogTitle,
   DialogContent,
@@ -48,8 +48,12 @@ const RoomList: React.FC = () => {
     handleAdd,
     handleEditConfirmed,
     setEditRoom,
-    setAddRoom
+    setAddRoom,
+    fetchRoomList
   } = useRoomList();
+  useEffect(() => {
+    fetchRoomList();
+  }, [fetchRoomList]);
   const mapFacilityValueToLabel = (values: number[]) => {
     if (!Array.isArray(values)) {
       return [];
