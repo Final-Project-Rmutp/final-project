@@ -47,6 +47,10 @@ app.use("/reservation", ReservationRoute);
 const LogsRoute = require("./routes/logs.routes.js");
 app.use("/logs", LogsRoute);
 
+//ClassRoute
+const ClassRoute = require("./routes/class.routes.js");
+app.use("/class", ClassRoute);
+
 const options = {
   definition: {
     openapi: "3.0.0", // Specify the OpenAPI version
