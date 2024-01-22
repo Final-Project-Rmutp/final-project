@@ -1172,4 +1172,487 @@ router.patch("/updatereportstatus/:report_id", authMiddleware.isAdmin, reportCon
 
 // router.post('/uploads', authMiddleware.isAdmin, uploadMiddleware.uploadToS3, uploadMiddleware.handleS3Upload, (req, res) => {res.json({ imageUrl: req.uploadedFileUrl });});
 
+/**
+ * @swagger
+ * /admin/subject/addsubject:
+ *   post:
+ *     tags:
+ *     - Admin - subject
+ *     summary: Create a new subject (authentication required).
+ *     description: Create a new subject by providing subject information.
+ *     security:
+ *       - Authorization: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               subject_name:
+ *                 type: string
+ *                 example: "Math"
+ *               subject_code:
+ *                 type: string
+ *                 example: "ST212224236"
+ *               user_id:
+ *                 type: string
+ *                 example: "1"
+ *             required:
+ *               - subject_name
+ *               - subject_code
+ *     responses:
+ *       201:
+ *         description: Room additional successful.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Room additional successful.
+ *       400:
+ *         description: Bad request (e.g., missing or invalid input data)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Bad request (e.g., missing or invalid input data)
+ *       401:
+ *         description: No token provided/Invalid token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: No token provided/Invalid token
+ *       403:
+ *         description: You don't have permission to access this resource.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: You don't have permission to access this resource.
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Internal server error
+ */
+
+router.post("/subject/addsubject", authMiddleware.isAdmin, adminController.addsubject);
+
+/**
+ * @swagger
+ * /admin/subject/getallsubject:
+ *   get:
+ *     tags:
+ *     - Admin - subject
+ *     summary: Get all subject (authentication required)
+ *     description: Retrieve a list of all subjects (authentication required).
+ *     security:
+ *       - Authorization: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *           minimum: 1
+ *           description: The page number to retrieve
+ *       - in: query
+ *         name: pageSize
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *           minimum: 1
+ *           maximum: 100
+ *           description: Number of items per page
+ *     responses:
+ *       200:
+ *         description: authenticate successful. Returns the list of users.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  subject_id:
+ *                    type: string
+ *                    example: 1
+ *                  subject_name:
+ *                    type: string
+ *                    example: "Mathematics"
+ *                  subject_code:
+ *                    type: string
+ *                    example: "MATH101"
+ *                  user_id:
+ *                    type: string
+ *                    example: "123"
+ *       401:
+ *         description: No token provided/Invalid token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: No token provided/Invalid token
+ *       403:
+ *         description: You don't have permission to access this resource.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: You don't have permission to access this resource.
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Internal server error
+ */
+
+router.get("/subject/getallsubject", authMiddleware.isAdmin, adminController.getallsubject);
+
+/**
+ * @swagger
+ * /admin/subject/getbyid/{subject_id}:
+ *   get:
+ *     tags:
+ *     - Admin - subject
+ *     summary: Get subject by subject_id (authentication required)
+ *     description: Retrieve subject details by subject_id (authentication required).
+ *     security:
+ *       - Authorization: []
+ *     parameters:
+ *       - in: path
+ *         name: subject_id
+ *         required: true
+ *         description: Subject ID to fetch
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successful. Returns the subject details.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  subject_id:
+ *                    type: string
+ *                    example: 1
+ *                  subject_name:
+ *                    type: string
+ *                    example: "Mathematics"
+ *                  subject_code:
+ *                    type: string
+ *                    example: "MATH101"
+ *                  user_id:
+ *                    type: string
+ *                    example: "123"
+ *       401:
+ *         description: No token provided/Invalid token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: No token provided/Invalid token
+ *       404:
+ *         description: Subject not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Subject not found
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Internal server error
+ */
+
+router.get("/subject/getbyid/:subject_id", authMiddleware.isAdmin, adminController.getSubjectById);
+
+/**
+ * @swagger
+ * /admin/subject/deletesubject/{subject_id}:
+ *   delete:
+ *     tags:
+ *     - Admin - subject
+ *     summary: Delete subject (authentication required).
+ *     description: Delete subject .
+ *     security:
+ *       - Authorization: []
+ *     parameters:
+ *       - in: path
+ *         name: subject_id
+ *         required: true
+ *         description: Subject ID to fetch
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Room Delete successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Room Delete successfully
+ *       401:
+ *         description: No token provided/Invalid token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: No token provided/Invalid token
+ *       403:
+ *         description: You don't have permission to access this resource.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: You don't have permission to access this resource.
+ *       404:
+ *         description: Subject not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Subject not found
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Internal server error
+ */
+
+router.delete("/subject/deletesubject/:subject_id", authMiddleware.isAdmin, adminController.deleteSubjectById);
+
+/**
+ * @swagger
+ * /admin/room/getroomlevel/{roomlevel_id}:
+ *   get:
+ *     tags:
+ *     - Admin - roomlevel
+ *     summary: Get roomlevel by roomlevel_id (authentication required)
+ *     description: Retrieve roomlevel details by roomlevel_id (authentication required).
+ *     security:
+ *       - Authorization: []
+ *     responses:
+ *       200:
+ *         description: Successful. Returns the roomlevel details.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  roomlevel_id:
+ *                    type: string
+ *                    example: 1
+ *                  roomlevel_name:
+ *                    type: string
+ *                    example: "Mathematics"
+ *                  roomlevel_code:
+ *                    type: string
+ *                    example: "MATH101"
+ *                  user_id:
+ *                    type: string
+ *                    example: "123"
+ *       401:
+ *         description: No token provided/Invalid token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: No token provided/Invalid token
+ *       404:
+ *         description: Roomlevel not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Roomlevel not found
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Internal server error
+ */
+
+router.get("/room/getroomlevel/:roomlevel_id", authMiddleware.isAdmin, roomController.getroomlevel);
+
+/**
+ * @swagger
+ * /admin/room/getroomnumber/{roomnumber_id}:
+ *   get:
+ *     tags:
+ *     - Admin - roomnumber
+ *     summary: Get roomnumber by roomnumber_id (authentication required)
+ *     description: Retrieve roomnumber details by roomnumber_id (authentication required).
+ *     security:
+ *       - Authorization: []
+ *     responses:
+ *       200:
+ *         description: Successful. Returns the roomnumber details.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  roomnumber_id:
+ *                    type: string
+ *                    example: 1
+ *       401:
+ *         description: No token provided/Invalid token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: No token provided/Invalid token
+ *       404:
+ *         description: Roomlevel not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Roomlevel not found
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Internal server error
+ */
+
+router.get("/room/getroomnumber/:roomnumber_id", authMiddleware.isAdmin, roomController.getroomnumber);
+
+/**
+ * @swagger
+ * /admin/room/getroomtype/{roomtype_id}:
+ *   get:
+ *     tags:
+ *     - Admin - roomtype
+ *     summary: Get roomtype by roomtype_id (authentication required)
+ *     description: Retrieve roomtype details by roomtype_id (authentication required).
+ *     security:
+ *       - Authorization: []
+ *     responses:
+ *       200:
+ *         description: Successful. Returns the roomtype details.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  roomtype_id:
+ *                    type: string
+ *                    example: 1
+ *       401:
+ *         description: No token provided/Invalid token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: No token provided/Invalid token
+ *       404:
+ *         description: Roomlevel not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Roomlevel not found
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Internal server error
+ */
+
+router.get("/room/getroomtype/:roomtype_id", authMiddleware.isAdmin, roomController.getroomtype);
+
 module.exports = router;
