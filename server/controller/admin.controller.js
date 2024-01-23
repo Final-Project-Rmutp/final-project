@@ -280,6 +280,7 @@ async function getSubjectById(req, res) {
     res.status(500).json({ message: "Internal server error" });
   }
 }
+
 // Delete subject by subject_id
 async function deleteSubjectById(req, res) {
   try {
@@ -301,5 +302,50 @@ async function deleteSubjectById(req, res) {
   }
 }
 
+// Update subject data
+async function updateSubject(req, res) {
+  const action_type = 3; // update subject
+  const subjectId = req.params.subject_id;
+  const { subject_name, subject_code, user_id, subject_id } = req.body;
 
-module.exports = { adduser, getallusers, getUserById, deactivateUser, updateUser, searchuser ,addsubject, getallsubject ,getSubjectById , deleteSubjectById};
+  const missingFields = !subject_name || !subject_code || !user_id || !subject_id;
+  if (missingFields) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
+
+  const areNumbersInvalid = isNaN(subjectId) || isNaN(user_id) || isNaN(subject_id);
+  if (areNumbersInvalid) {
+    return res.status(400).json({ message: 'Subject ID, User ID, and Edited Subject ID must be numbers' });
+  }
+
+  try {
+    // Start a transaction for updating subject
+    await client.query('BEGIN');
+
+    const updateSubjectQuery = `
+        UPDATE subjects 
+        SET subject_name = $1, subject_code = $2, user_id = $3
+        WHERE subject_id = $4
+    `;
+
+    const subjectValues = [subject_name, subject_code, user_id, subject_id];
+    await client.query(updateSubjectQuery, subjectValues);
+
+    await client.query('COMMIT');
+
+    const userId = req.user.id;
+    logging(action_type, userId, 'Success', `Subject update successful, subject_id: ${subject_id}`);
+    res.status(200).json({ message: 'Subject update successful' });
+  } catch (err) {
+    await client.query('ROLLBACK');
+
+    const userId = req.user.id;
+    console.error(err.message);
+    logging(action_type, userId, 'Error', err.message);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+
+
+module.exports = { adduser, getallusers, getUserById, deactivateUser, updateUser, searchuser ,addsubject, getallsubject ,getSubjectById , deleteSubjectById, updateSubject};

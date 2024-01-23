@@ -1655,4 +1655,100 @@ router.get("/room/getroomnumber/:roomnumber_id", authMiddleware.isAdmin, roomCon
 
 router.get("/room/getroomtype/:roomtype_id", authMiddleware.isAdmin, roomController.getroomtype);
 
+/**
+ * @swagger
+ * /admin/subject/updatesubject/{subject_id}:
+ *   patch:
+ *     tags:
+ *     - Admin - subject
+ *     summary: Edit subject information (authentication required).
+ *     description: Edit subject information.
+ *     security:
+ *       - Authorization: []
+ *     parameters:
+ *       - in: path
+ *         name: subject_id
+ *         required: true
+ *         description: Subject ID to fetch
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               subject_id:
+ *                 type: string
+ *                 example: "123"
+ *               subject_name:
+ *                 type: string
+ *                 example: "Math"
+ *               subject_code:
+ *                 type: string
+ *                 example: "MATH101"
+ *               user_id:
+ *                 type: string
+ *                 example: "123"
+ *             required:
+ *               - subject_id
+ *               - subject_name
+ *               - subject_code
+ *               - user_id
+ *     responses:
+ *       200:
+ *         description: Subject data updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Subject data updated successfully
+ *       401:
+ *         description: No token provided/Invalid token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: No token provided/Invalid token
+ *       403:
+ *         description: You don't have permission to access this resource.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: You don't have permission to access this resource.
+ *       404:
+ *         description: Subject not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Subject not found
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Internal server error
+ */
+
+router.patch("/subject/updatesubject/:subject_id", authMiddleware.isAdmin, adminController.updateSubject);
+
 module.exports = router;
