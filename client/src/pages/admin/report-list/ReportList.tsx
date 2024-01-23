@@ -1,7 +1,6 @@
 import React,{ useEffect }from "react";
 import useReportAdminList from "./useReportList";
-import axios from "axios";
-import { Sheet, Table, } from '@mui/joy';
+import { Button, Chip, Sheet, Table, } from '@mui/joy';
 import {
   Tbody,
   Theader,
@@ -9,6 +8,7 @@ import {
   TableContainer,
 } from "../student-list/StudentListStyled";
 import CustomPagination from "../../../shared/components/pagination/Pagination";
+import axiosInstance from "../../../environments/axiosInstance";
 
 const ReportList: React.FC = () => {
     const { 
@@ -20,22 +20,15 @@ const ReportList: React.FC = () => {
         fetchReportList
     } = useReportAdminList();
 
-    const updateReportStatus = async (reportId: number, newStatus: string) => {
-        try {
-            const response = await axios.patch(`/admin/updatereportstatus/${reportId}`, {
-                report_status: newStatus,
-            });
-
-            if (response.status === 200) {
-                console.log("Report status updated successfully");
-                await fetchReportList();
-            } else {
-                console.error("Failed to update report status:", response.data);
-            }
-        } catch (error) {
-            console.error("Error updating report status:", error);
-        }
+    const updateReportStatus = async (reportId: number, currentStatus: string) => {
+        const newStatus = currentStatus === "1" ? "0" : "1";
+        const response = await axiosInstance.patch(`/admin/updatereportstatus/${reportId}`, {
+            report_status: newStatus,
+        });
+        await fetchReportList();
+        return response.data;
     };
+    
     useEffect(() => {
         fetchReportList();
     }, [fetchReportList]);
@@ -97,8 +90,10 @@ const ReportList: React.FC = () => {
                         <th>Room</th>
                         <th>Date time</th>
                         <th>Status</th>
+                        <th>Action</th>
                     </tr>
                     <tr>
+                        <th></th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -111,16 +106,19 @@ const ReportList: React.FC = () => {
                         {reportList.map((item,index) => (
                             <tr className="text-center" key={item.id || index}>
                             <th>{index + 1}</th>
-                            <th>{item.user_id}</th>
-                            <th>{item.room_id}</th>
-                            <th>{item.report_id}</th>
+                            <th>{item.fullname}</th>
+                            <th>{item.room_number}</th>
                             <th>{item.report_detail}</th>
                             <th>{formatTimestamp(item.timestamp)}</th>
-                            <th>{item.report_status}</th>
                             <th>
-                                <button
-                                    onClick={() => updateReportStatus(item.report_id, "0")}>Update Status
-                                </button>
+                                <Chip color={item.report_status.toString() === "1" ? "success" : "warning"}variant="solid" size="lg">
+                                    {item.report_status.toString() === "1"? "Success" : "Wait"}
+                                </Chip>
+                            </th>
+                            <th>
+                                <Button
+                                    onClick={() => updateReportStatus(item.report_id, item.report_status.toString())}>Update Status
+                                </Button>
                             </th>
                             </tr>
                         ))}

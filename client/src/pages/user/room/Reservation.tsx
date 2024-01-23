@@ -16,7 +16,7 @@ const Room: React.FC = () => {
   // const [selectedFloor, setSelectedFloor] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs | null>(dayjs());
   const [selectedStartTime, setSelectedStartTime] = useState<dayjs.Dayjs | null>(dayjs().startOf('day').hour(8));
-  const [selectedEndTime, setSelectedEndTime] = useState<dayjs.Dayjs | null>(dayjs().startOf('day').hour(8));
+  const [selectedEndTime, setSelectedEndTime] = useState<dayjs.Dayjs | null>(dayjs().startOf('day').hour(9));
   const [searchRoom, setSearchRoom] = useState<SearchRoomParams>({
     room_capacity: '',
     room_level: '',
@@ -108,9 +108,13 @@ const Room: React.FC = () => {
   ) => {
     setSelectedEndTime(value);
   };
-  const shouldDisableTime = (value: dayjs.Dayjs) => {
+  const shouldDisableStartTime = (value: dayjs.Dayjs) => {
     const hour = value.hour();
     return hour < 8 || hour > 18;
+  };
+  const shouldDisableEndTime = (value: dayjs.Dayjs) => {
+    const hour = value.hour();
+    return hour < 9 || hour > 18;
   };
 
   return (
@@ -145,7 +149,7 @@ const Room: React.FC = () => {
                     views={['hours']}
                     value={selectedStartTime}
                     onChange={handleStartTimeChange}
-                    shouldDisableTime={shouldDisableTime}
+                    shouldDisableTime={shouldDisableStartTime}
                 />
               </DateTime>
             </LocalizationProvider>
@@ -160,7 +164,7 @@ const Room: React.FC = () => {
                     views={['hours']}
                     value={selectedEndTime}
                     onChange={handleEndTimeChange}
-                    shouldDisableTime={shouldDisableTime}
+                    shouldDisableTime={shouldDisableEndTime}
                 />
               </DateTime>
             </LocalizationProvider>

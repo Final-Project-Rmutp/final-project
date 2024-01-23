@@ -8,12 +8,10 @@ const useReportAdminList = () => {
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
     const fetchReportList = useCallback(async () => {
-        try {
             const response = await RoomService.getAdminReportList();
             setListItems(response);
-        } catch (error) {
-            console.error("Error fetching room response:", error);
-        }
+            return response.data;
+
     }, []);
 
     useEffect(() => {

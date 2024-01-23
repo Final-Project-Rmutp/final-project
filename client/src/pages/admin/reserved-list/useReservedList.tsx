@@ -1,128 +1,116 @@
-import { useState, useEffect } from "react";
-import UserService from "../../../auth/service/UserService";
-import useUserState from "../../../auth/model/useUserState";
-import { ReservedListItem } from "../../../auth/model/reserved-list";
-
+import {useCallback, useEffect, useState } from "react";
+import axiosInstance from "../../../environments/axiosInstance";
+export class reservedList {
+    id!:string;
+    fullname!:string;
+    account_type!:string;
+    room_number!:string;
+    reservation_id!:string;
+    reservation_reason!:string;
+    reservation_status!:string;
+    reservation_date!:string;
+    timestamp!:string;
+    start_time!:string;
+    end_time!:string;
+}
 const useReservedList = () => {
-  const [listItems, setListItems] = useState<ReservedListItem[]>([]);
-  const [selectAll, setSelectAll] = useState(false);
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState<string | null>(null);
-  const { user, editingUser, AddUser, setEditUser, handleInputChange, resetUser, handleInputEditChange } = useUserState();
-
-  const fetchUserList = async () => {
-    try {
-      // const data = await UserService.getAllUsers();
-      // setListItems(data);
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchUserList();
-  }, []);
-
-  const handleSelectAll = () => {
-    setSelectAll(!selectAll);
-    setSelectedItems(selectAll ? [] : listItems.map((item) => item.id));
-  };
-  
-  const handleCheckboxChange = (itemId: string) => {
-    setSelectedItems((prevSelected) => {
-      if (prevSelected.includes(itemId)) {
-        return prevSelected.filter((id) => id !== itemId);
-      } else {
-        return [...prevSelected, itemId];
-      }
+    const [reservedtList, setListItems] = useState<reservedList[]>([]);
+    const [page, setPage] = useState(1);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [reservationData, setReservationData] = useState({
+      room_id: "",
+      reservation_date: "",
+      start_time: "",
+      end_time: "",
+      reservation_reason: "",
     });
-  };
-  const handleDelete = async (id: string) => {
-    await fetchUserList();
-    setItemToDelete(id);
-    setDeleteDialogOpen(true);
-  };
+    const fetchReservedList = useCallback(async () => {
+      const response = await axiosInstance.get("/reservation/getreservation", {
+        params: {
+          page: 0,
+          pageSize: 0,
+        },
+      });
+      setListItems(response.data);
+      return response.data;
 
-  const handleDeleteConfirmed = async () => {
-    if (itemToDelete !== null) {
-      try {
-        await UserService.deactivateUser(itemToDelete);
-        const updatedList = listItems.filter(
-          (item) => item.id !== itemToDelete
-        );
-        setListItems(updatedList);
-        setItemToDelete(null);
-      } catch (error) {
-        console.error("Error deactivating user:", error);
-      }
-    } else {
-      try {
-        await Promise.all(
-          selectedItems.map(async (id) => {
-            await UserService.deactivateUser(id);
-          })
-        );
-        const updatedList = listItems.filter(
-          (item) => !selectedItems.includes(item.id)
-        );
-        setListItems(updatedList);
-        setSelectedItems([]);
-      } catch (error) {
-        console.error("Error deactivating users:", error);
-      }
-    }
-    await fetchUserList();
-    setDeleteDialogOpen(false);
-  };
+      }, []);
 
-  const handleDeleteAll = () => {
-    setDeleteDialogOpen(true);
-  };
+      useEffect(() => {
+        fetchReservedList();
+      }, [fetchReservedList]);
 
-  const handleCloseDeleteDialog = () => {
-    setDeleteDialogOpen(false);
-  };
+    const searchRoom = async () => {
+        const response = await axiosInstance.post("/reservation/searchroom", {
+          room_capacity: "",
+          room_level: "",
+          room_type: "",
+          room_number: "",
+          reservation_date: "",
+          start_time: "",
+          end_time: "",
+        });
+        return response.data
+    };
+  
+    const reserveRoom = async () => {
+        const response = await axiosInstance.post("/reservation/reserve", {
+          ...reservationData,
+        });
+        await fetchReservedList();
+        return response.data
+    };
+  
+    const getReservations = async () => {
+        const response = await axiosInstance.get("/reservation/getreservation", {
+          params: {
+            page: 1,
+            pageSize: 10,
+          },
+        });
+        return response.data
 
-  const handleChangePage = (_event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
+    };
+  
+    const updateReservationStatus = async (
+      currentStatus: string,
+      reservationId: string
+    ) => {
+      const newStatus = currentStatus;
+      const response = await axiosInstance.patch(
+        "/reservation/updatestatus",
+        {
+          reservation_id: reservationId,
+          reservation_status: newStatus,
+        }
+      );
+      return response.data;
+    };
+    const handleChangePage = async (newPage: number) => {
+        setPage(newPage);
+        await fetchReservedList();
+    };
 
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+    const handleChangeRowsPerPage = (newRowsPerPage: number) => {
+        setRowsPerPage(newRowsPerPage);
+        setPage(1);
+        fetchReservedList();
+    };
 
-  return {
-    listItems,
-    selectAll,
-    selectedItems,
-    page,
-    rowsPerPage,
-    deleteDialogOpen,
-    itemToDelete,
-    user,
-    AddUser,
-    editingUser,
-    handleSelectAll,
-    setEditUser,
-    handleCheckboxChange,
-    handleInputChange,
-    resetUser,
-    handleInputEditChange,
-    fetchUserList,
-    // ... ส่วนที่เพิ่มมา
-    handleDelete,
-    handleDeleteConfirmed,
-    handleDeleteAll,
-    handleCloseDeleteDialog,
-    handleChangePage,
-    handleChangeRowsPerPage,
-  };
+    return {
+        page,
+        rowsPerPage,
+        reservationData,
+        reservedtList,
+        handleChangePage,
+        handleChangeRowsPerPage,
+        fetchReservedList,
+        getReservations,
+        updateReservationStatus,
+        reserveRoom,
+        searchRoom,
+        setReservationData
+    };
 };
 
 export default useReservedList;
