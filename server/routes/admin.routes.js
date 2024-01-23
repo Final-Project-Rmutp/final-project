@@ -965,6 +965,21 @@ router.delete("/room/deleteroom/:room_id", authMiddleware.isAdmin, roomControlle
  *     description: Retrieve a profile of users (authentication required).
  *     security:
  *       - Authorization: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         required: false
+ *         description: Page number (default is 1)
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *       - in: query
+ *         name: pageSize
+ *         required: false
+ *         description: Number of items per page (default is 10)
+ *         schema:
+ *           type: integer
+ *           example: 10
  *     responses:
  *       200:
  *         description: authenticate successful. Returns the users profile.
@@ -992,7 +1007,7 @@ router.delete("/room/deleteroom/:room_id", authMiddleware.isAdmin, roomControlle
  *                    type: string
  *                    example: "2024-01-09T01:39:40.260Z"
  *       401:
- *         description: No token provided , Invalid token
+ *         description: No token provided, Invalid token
  *         content:
  *           application/json:
  *             schema:
@@ -1000,7 +1015,7 @@ router.delete("/room/deleteroom/:room_id", authMiddleware.isAdmin, roomControlle
  *               properties:
  *                  message:
  *                    type: string
- *                    example: No token provided , Invalid token
+ *                    example: No token provided, Invalid token
  *       500:
  *         description: Internal server error
  *         content:
@@ -1012,6 +1027,7 @@ router.delete("/room/deleteroom/:room_id", authMiddleware.isAdmin, roomControlle
  *                    type: string
  *                    example: Internal server error
  */
+
 
 router.get('/getreport', authMiddleware.isAdmin , reportController.getallreports);
 

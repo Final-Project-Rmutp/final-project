@@ -105,48 +105,49 @@ async function updatereportstatus(req, res) {
 // Get report
 async function getreport(req, res) {
   try {
-      const page = parseInt(req.query.page) || 1;
-      const pageSize = parseInt(req.query.pageSize) || 10;
-      const offset = (page - 1) * pageSize;
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize) || 10;
+    const offset = (page - 1) * pageSize;
 
-      if (page < 1 || pageSize < 1 || pageSize > 100) {
-          return res.status(400).json({
-              message:
-                  "Page number must be 1 or greater, pageSize must be greater than 0, and not exceed 100",
-          });
-      }
+    if (page < 1 || pageSize < 1 || pageSize > 100) {
+      return res.status(400).json({
+        message:
+          "Page number must be 1 or greater, pageSize must be greater than 0, and not exceed 100",
+      });
+    }
 
-      const userId = req.user.id;
-      const query = `
-          SELECT reports.report_id,
-                 rooms.room_number,
-                 reports.report_detail,
-                 CASE
-                     WHEN reports.report_status = 0 THEN 'Canceled'
-                     WHEN reports.report_status = 1 THEN 'In progress'
-                     WHEN reports.report_status = 2 THEN 'Approve'
-                 END AS report_status,
-                 reports.timestamp
-          FROM reports
-          JOIN rooms ON reports.room_id = rooms.room_id
-          WHERE reports.user_id = $1
-          LIMIT $2 OFFSET $3;
-      `;
-      const values = [userId, pageSize, offset];
-      const result = await client.query(query, values);
-      const report = result.rows[0];
+    const userId = req.user.id;
+    const query = `
+      SELECT reports.report_id,
+             rooms.room_number,
+             reports.report_detail,
+             CASE
+                 WHEN reports.report_status = 0 THEN 'Canceled'
+                 WHEN reports.report_status = 1 THEN 'In progress'
+                 WHEN reports.report_status = 2 THEN 'Approve'
+             END AS report_status,
+             reports.timestamp
+      FROM reports
+      JOIN rooms ON reports.room_id = rooms.room_id
+      WHERE reports.user_id = $1
+      LIMIT $2 OFFSET $3;
+    `;
+    const values = [userId, pageSize, offset];
+    const result = await client.query(query, values);
+    const reports = result.rows;
 
-      if (!report) {
-          return res.status(404).json({ message: 'Report not found' });
-      }
+    if (reports.length === 0) {
+      return res.status(404).json({ message: 'No reports found' });
+    }
 
-      res.status(200).json(report);
+    res.status(200).json(reports);
 
   } catch (err) {
-      console.error(err.message);
-      res.status(500).json({ message: 'Error fetching profile data' });
+    console.error(err.message);
+    res.status(500).json({ message: 'Error fetching reports' });
   }
 }
+
 
 
 module.exports = { ReportRoom, getallreports, updatereportstatus, getreport};
