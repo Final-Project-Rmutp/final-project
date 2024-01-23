@@ -34,6 +34,8 @@ const useUserState = () => {
     citizen_id: "",
     firstname: "",
     lastname: "",
+    user_img_path: "" || null,
+
   });
   const [AddUser, setAddUser] = useState<AdduserListItem>({
     id: "",

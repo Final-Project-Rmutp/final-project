@@ -5,6 +5,8 @@ export interface UserData {
   citizen_id: string;
   firstname: string;
   lastname: string;
+  user_img_path:string | null;
+
 }
 
 export interface ListItem {
