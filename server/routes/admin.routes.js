@@ -1486,7 +1486,7 @@ router.delete("/subject/deletesubject/:subject_id", authMiddleware.isAdmin, admi
  * /admin/room/getroomlevel/{roomlevel_id}:
  *   get:
  *     tags:
- *     - Admin - roomlevel
+ *     - Admin - RoomGET
  *     summary: Get roomlevel by roomlevel_id (authentication required)
  *     description: Retrieve roomlevel details by roomlevel_id (authentication required).
  *     security:
@@ -1550,7 +1550,7 @@ router.get("/room/getroomlevel/:roomlevel_id", authMiddleware.isAdmin, roomContr
  * /admin/room/getroomnumber/{roomnumber_id}:
  *   get:
  *     tags:
- *     - Admin - roomnumber
+ *     - Admin - RoomGET
  *     summary: Get roomnumber by roomnumber_id (authentication required)
  *     description: Retrieve roomnumber details by roomnumber_id (authentication required).
  *     security:
@@ -1605,7 +1605,7 @@ router.get("/room/getroomnumber/:roomnumber_id", authMiddleware.isAdmin, roomCon
  * /admin/room/getroomtype/{roomtype_id}:
  *   get:
  *     tags:
- *     - Admin - roomtype
+ *     - Admin - RoomGET
  *     summary: Get roomtype by roomtype_id (authentication required)
  *     description: Retrieve roomtype details by roomtype_id (authentication required).
  *     security:
