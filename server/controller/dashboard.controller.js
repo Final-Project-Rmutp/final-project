@@ -81,7 +81,7 @@ async function getfrequentUseData(req, res) {
             FROM reservations
             JOIN rooms ON reservations.room_id = rooms.room_id
             GROUP BY rooms.room_number, reservations.reservation_status
-            ORDER BY status_count ASC
+            ORDER BY status_count DESC
         `;
 
         const result = await client.query(query);
