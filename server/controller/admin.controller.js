@@ -346,6 +346,159 @@ async function updateSubject(req, res) {
   }
 }
 
+// Add a new facility
+async function addfacility(req, res) {
+  const { facility_id, facility_name } = req.body;
+  const action_type = 12; // addfacility
+
+  const requiredFields = [facility_name, facility_id];
+  if (requiredFields.some((field) => !field)) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+
+  try {
+    const facilityCheckQuery = `SELECT facility_id FROM facility WHERE facility_id = $1`;
+    const facilityCheckResult = await client.query(facilityCheckQuery, [facility_id]);
+
+    if (facilityCheckResult.rows.length > 0) {
+      return res.status(400).json({ message: "Facility with the same ID already exists" });
+    }
+
+    const insertQuery = `INSERT INTO facility (facility_name, facility_id) 
+                            VALUES ($1, $2)
+                            RETURNING facility_id`;
+    const values = [facility_name, facility_id];
+    const result = await client.query(insertQuery, values);
+    const insertedId = result.rows[0].facility_id;
+
+    logging(action_type, req.user.id, "Success", `Add facility successful. Facility ID: ${insertedId}`);
+    res.status(201).json({ message: "Add facility successful" });
+  } catch (err) {
+    console.error(err.message);
+    logging(action_type, req.user.id, "Error", err.message);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+// Get all facility
+async function getallfacility(req, res) {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize) || 10;
+    const offset = (page - 1) * pageSize;
+
+    if (page < 1 || pageSize < 1 || pageSize > 100) {
+      return res.status(400).json({
+        message:
+          "Page number must be 1 or greater, pageSize must be greater than 0, and not exceed 100",
+      });
+    }
+
+    const query = `
+                  SELECT facility_id, facility_name
+                  FROM facility
+                  ORDER BY facility_id
+                  LIMIT $1 OFFSET $2`;
+
+    const values = [pageSize, offset];
+    const result = await client.query(query, values);
+    res.status(200).json(result.rows);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ message: "Error fetching facility" });
+  }
+}
+
+// Get facility by id
+async function getFacilityById(req, res) {
+  try {
+    const facilityId = req.params.facility_id;
+    console.log(facilityId);
+    const query = `
+      SELECT facility_id, facility_name
+      FROM facility
+      WHERE facility_id = $1`;
+      
+    const result = await client.query(query, [facilityId]);
+
+    if (result.rows.length === 1) {
+      const facility = result.rows[0];
+      res.status(200).json(facility);
+    } else {
+      res.status(404).json({ message: "Facility not found" });
+    }
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+// Delete facility by facility_id
+async function deleteFacilityById(req, res) {
+  try {
+    const facilityId = req.params.facility_id;
+    const query = `
+      DELETE FROM facility
+      WHERE facility_id = $1`;
+
+    const result = await client.query(query, [facilityId]);
+
+    if (result.rowCount === 1) {
+      res.status(200).json({ message: "Facility deleted successfully" });
+    } else {
+      res.status(404).json({ message: "Facility not found" });
+    }
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+// Update facility data
+async function updateFacility(req, res) {
+  const action_type = 3; // update facility
+  const facilityId = req.params.facility_id;
+  const { facility_name } = req.body;
+
+  const missingFields = !facility_name;
+  if (missingFields) {
+    return res.status(400).json({ message: 'Facility name is required' });
+  }
+
+  const isNumberInvalid = isNaN(facilityId);
+  if (isNumberInvalid) {
+    return res.status(400).json({ message: 'Facility ID must be a number' });
+  }
+
+  try {
+    // Start a transaction for updating facility
+    await client.query('BEGIN');
+
+    const updateFacilityQuery = `
+        UPDATE facility 
+        SET facility_name = $1
+        WHERE facility_id = $2
+    `;
+
+    const facilityValues = [facility_name, facilityId];
+    await client.query(updateFacilityQuery, facilityValues);
+
+    await client.query('COMMIT');
+
+    const userId = req.user.id;
+    logging(action_type, userId, 'Success', `Facility update successful, facility_id: ${facilityId}`);
+    res.status(200).json({ message: 'Facility update successful' });
+  } catch (err) {
+    await client.query('ROLLBACK');
+
+    const userId = req.user.id;
+    console.error(err.message);
+    logging(action_type, userId, 'Error', err.message);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
 
 
-module.exports = { adduser, getallusers, getUserById, deactivateUser, updateUser, searchuser ,addsubject, getallsubject ,getSubjectById , deleteSubjectById, updateSubject};
+module.exports = { adduser, getallusers, getUserById, deactivateUser, updateUser, searchuser ,addsubject,
+                 getallsubject ,getSubjectById , deleteSubjectById, updateSubject, addfacility, getallfacility,
+                getFacilityById, deleteFacilityById, updateFacility};

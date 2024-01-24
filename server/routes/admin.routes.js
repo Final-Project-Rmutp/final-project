@@ -1767,4 +1767,360 @@ router.get("/room/getroomtype/:roomtype_id", authMiddleware.isAdmin, roomControl
 
 router.patch("/subject/updatesubject/:subject_id", authMiddleware.isAdmin, adminController.updateSubject);
 
+/**
+ * @swagger
+ * /admin/facility/addfacility:
+ *   post:
+ *     tags:
+ *     - Admin - facility
+ *     summary: Create a new facility (authentication required).
+ *     description: Create a new facility by providing facility information.
+ *     security:
+ *       - Authorization: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               facility_name:
+ *                 type: string
+ *                 example: "Math"
+ *               facility_id:
+ *                 type: string
+ *                 example: "ST212224236"
+ *             required:
+ *               - facility_id
+ *               - facility_name
+ *     responses:
+ *       201:
+ *         description: Facility addition successful.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Facility addition successful.
+ *       400:
+ *         description: Bad request (e.g., missing or invalid input data)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Bad request (e.g., missing or invalid input data)
+ *       401:
+ *         description: No token provided/Invalid token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: No token provided/Invalid token
+ *       403:
+ *         description: You don't have permission to access this resource.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: You don't have permission to access this resource.
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Internal server error
+ */
+
+
+router.post("/facility/addfacility", authMiddleware.isAdmin, adminController.addfacility);
+
+/**
+ * @swagger
+ * /admin/facility/getallfacility:
+ *   get:
+ *     tags:
+ *     - Admin - facility
+ *     summary: Get all facilities (authentication required)
+ *     description: Retrieve a list of all facilities (authentication required).
+ *     security:
+ *       - Authorization: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *           minimum: 1
+ *           description: The page number to retrieve
+ *       - in: query
+ *         name: pageSize
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *           minimum: 1
+ *           maximum: 100
+ *           description: Number of items per page
+ *     responses:
+ *       200:
+ *         description: Authenticate successful. Returns the list of facilities.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   facility_id:
+ *                     type: string
+ *                     example: 1
+ *                   facility_name:
+ *                     type: string
+ *                     example: "Computer"
+ *       401:
+ *         description: No token provided/Invalid token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: No token provided/Invalid token
+ *       403:
+ *         description: You don't have permission to access this resource.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: You don't have permission to access this resource.
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Internal server error
+ */
+
+router.get("/facility/getallfacility", authMiddleware.isAdmin, adminController.getallfacility);
+
+/**
+ * @swagger
+ * /admin/facility/getfacilitybyid/{facility_id}:
+ *   get:
+ *     tags:
+ *     - Admin - facility
+ *     summary: Get facility by ID (authentication required)
+ *     description: Retrieve a facility by its ID (authentication required).
+ *     security:
+ *       - Authorization: []
+ *     parameters:
+ *       - in: path
+ *         name: facility_id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "1"
+ *         description: The ID of the facility to retrieve
+ *     responses:
+ *       200:
+ *         description: Facility found. Returns the facility details.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 facility_id:
+ *                   type: string
+ *                   example: "1"
+ *                 facility_name:
+ *                   type: string
+ *                   example: "Computer"
+ *       404:
+ *         description: Facility not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Facility not found
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Internal server error
+ */
+router.get("/facility/getFacilityById/:facility_id", authMiddleware.isAdmin, adminController.getFacilityById);
+
+/**
+ * @swagger
+ * /admin/facility/deletefacilitybyid/{facility_id}:
+ *   delete:
+ *     tags:
+ *     - Admin - facility
+ *     summary: Delete facility by ID (authentication required)
+ *     description: Delete a facility by its ID (authentication required).
+ *     security:
+ *       - Authorization: []
+ *     parameters:
+ *       - in: path
+ *         name: facility_id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "1"
+ *         description: The ID of the facility to delete
+ *     responses:
+ *       200:
+ *         description: Facility deleted successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Facility deleted successfully
+ *       404:
+ *         description: Facility not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Facility not found
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Internal server error
+ */
+
+router.delete("/facility/deleteFacilityById/:facility_id", authMiddleware.isAdmin, adminController.deleteFacilityById);
+
+/**
+ * @swagger
+ * /admin/facility/updatefacility/{facility_id}:
+ *   patch:
+ *     tags:
+ *     - Admin - facility
+ *     summary: Edit facility information (authentication required).
+ *     description: Edit facility information.
+ *     security:
+ *       - Authorization: []
+ *     parameters:
+ *       - in: path
+ *         name: facility_id
+ *         required: true
+ *         description: Facility ID to update
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               facility_id:
+ *                 type: string
+ *                 example: "1"
+ *               facility_name:
+ *                 type: string
+ *                 example: "Computer"
+ *             required:
+ *               - facility_id
+ *               - facility_name
+ *     responses:
+ *       200:
+ *         description: Facility data updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Facility data updated successfully
+ *       401:
+ *         description: No token provided/Invalid token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: No token provided/Invalid token
+ *       403:
+ *         description: You don't have permission to access this resource.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: You don't have permission to access this resource.
+ *       404:
+ *         description: Facility not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Facility not found
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Internal server error
+ */
+
+router.patch("/facility/updatefacility/:facility_id", authMiddleware.isAdmin, adminController.updateFacility);
+
 module.exports = router;
