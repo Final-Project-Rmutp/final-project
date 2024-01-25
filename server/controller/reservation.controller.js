@@ -238,6 +238,7 @@ async function getreservation(req, res) {
       }
   
       const query = `SELECT
+      rs.reservation_id,
       CONCAT(u.firstname, ' ', u.lastname) AS fullname,
       u.account_type,
       r.room_number,
