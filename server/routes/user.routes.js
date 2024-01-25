@@ -195,9 +195,9 @@ router.get('/getreport', authMiddleware.authenticateToken , reportController.get
  * /user/getschedule:
  *   get:
  *     tags:
- *     - User
- *     summary: Get users Profile (authentication required)
- *     description: Retrieve a profile of users (authentication required).
+ *     - Teacher
+ *     summary: Get class schedule (authentication required, teacher type)
+ *     description: Retrieve a class schedule (authentication required).
  *     security:
  *       - Authorization: []
  *     responses:
