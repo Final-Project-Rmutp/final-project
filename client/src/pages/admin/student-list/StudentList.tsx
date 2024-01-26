@@ -269,6 +269,7 @@ const StudentList: React.FC = () => {
             variant="solid"
             className="text-red p-2"
             onClick={handleDeleteAll}
+            disabled={selectedItems.length === 0}
           >
             Delete All
           </Button>

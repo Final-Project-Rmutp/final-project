@@ -45,16 +45,16 @@ const Login: React.FC = () => {
   const handleLogin = async () => {
     resetErrorMessages();
     try {
-      if (!loginData.citizen_id.trim() || !loginData.pin.trim()) {
-        if (!loginData.citizen_id.trim()) {
+      if (!loginData.pin.trim() || !loginData.citizen_id.trim()) {
+        if (!loginData.pin.trim()) {
           toast.error("ID Student is required");
         }
-        if (!loginData.pin.trim()) {
+        if (!loginData.citizen_id.trim()) {
           toast.error("ID Card is required");
         }
         setErrorMessages({
-          username: !loginData.citizen_id.trim() ? "ID Student is required" : "",
-          password: !loginData.pin.trim() ? "ID Card is required" : "",
+          username: !loginData.pin.trim() ? "ID Student is required" : "",
+          password: !loginData.citizen_id.trim() ? "ID Card is required" : "",
           general: "Username and password are required",
         });
         setLoading(false);

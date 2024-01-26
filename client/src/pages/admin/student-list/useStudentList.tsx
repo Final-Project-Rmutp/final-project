@@ -78,8 +78,17 @@ const useStudentList = () => {
   }, [fetchUserList, handleSearch]);
 
   const handleAdd = () => {
-    resetUser();
     setAddDialogOpen(true);
+    setAddUser({
+      id: "",
+      pin: "",
+      citizen_id: "",
+      firstname: "",
+      lastname: "",
+      account_type: "",
+      user_img_path: "" || null,
+    }
+    );
   };
 
   const handleEdit = (user: UserData) => {
@@ -119,6 +128,16 @@ const useStudentList = () => {
 
   const handleCloseAddDialog = () => {
     setAddDialogOpen(false);
+    setAddUser({
+      id: "",
+      pin: "",
+      citizen_id: "",
+      firstname: "",
+      lastname: "",
+      account_type: "",
+      user_img_path: "" || null,
+    }
+    );
   };
 
   const handleAddConfirmed = async () => {
@@ -134,7 +153,16 @@ const useStudentList = () => {
     await UserService.addUser(formData);
     await fetchUserList();
     setAddDialogOpen(false);
-    resetUser();
+    setAddUser({
+      id: "",
+      pin: "",
+      citizen_id: "",
+      firstname: "",
+      lastname: "",
+      account_type: "",
+      user_img_path: "" || null,
+    }
+    );
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {

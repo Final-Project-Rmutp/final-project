@@ -179,7 +179,7 @@ const UserProfileSidebar: React.FC = () => {
         ) : (
           <Icon
             icon="line-md:moon-filled-alt-to-sunny-filled-loop-transition"
-            color="white"
+            color="#fecf49"
           />
         )}
       </IconButtonUser>
