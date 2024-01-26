@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import {
-  DialogTitle,
   DialogContent,
   DialogActions,
 } from "@mui/material";
 
-import { Checkbox, Button, Sheet, Table, ModalDialog, Modal, Divider, FormControl, FormLabel, Stack, Input, Box, Select,Option } from '@mui/joy';
+import { Checkbox, Button, Sheet, Table, ModalDialog, Modal, Divider, FormControl, FormLabel, Stack, Input, Box, Select,Option,
+  DialogTitle,
+ } from '@mui/joy';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import {
   Tbody,
@@ -195,9 +196,9 @@ const RoomList: React.FC = () => {
                         ))}
                     </Tbody>
                   </Table>
-                  <Modal open={deleteDialogOpen} onClose={handleCloseDeleteDialog}>
-                    <ModalDialog variant="outlined" role="alertdialog">
-                      <DialogTitle>
+                  <Modal open={deleteDialogOpen} onClose={handleCloseDeleteDialog} >
+                    <ModalDialog variant="outlined" role="alertdialog" color="danger" sx={{borderWidth: '3px'}}>
+                      <DialogTitle color="danger" variant="plain" level="body-lg">
                         <WarningRoundedIcon />
                         Confirmation
                       </DialogTitle>
@@ -208,7 +209,7 @@ const RoomList: React.FC = () => {
                           : "Are you sure you want to delete the selected room?"}
                       </DialogContent>
                       <DialogActions>
-                        <Button variant="plain" color="neutral" onClick={handleCloseDeleteDialog}>
+                        <Button variant="solid" color="neutral" onClick={handleCloseDeleteDialog}>
                           Cancel
                         </Button>
                         <Button variant="solid"  color="danger" onClick={handleDeleteConfirmed}>
@@ -240,6 +241,7 @@ const RoomList: React.FC = () => {
                   variant="solid"
                   className="text-red p-2"
                   onClick={handleDeleteAll}
+                  disabled={selectedItems.length === 0}
                 >
                 Delete All
                 </Button>

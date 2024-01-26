@@ -30,6 +30,8 @@ const TimeSlotRow = styled(Typography)`
   align-items: center;  
   justify-content: center;
   margin-bottom: 10px;
+  width:100%;
+
 `;
 
 const DayColumn = styled(Typography)`
@@ -43,7 +45,8 @@ const DayColumn = styled(Typography)`
 `;
 
 const TimeSlotBox = styled(Typography)`
-  width: 80px;
+  width: 120px;
+  max-width:100%;
   height: 40px;
   border: 1px solid #ddd;
   margin-right: 10px;
@@ -113,7 +116,17 @@ const Classroom: React.FC = () => {
         (s) => (s.start <= slot.start && slot.start < s.end) || (s.start < slot.end && slot.end <= s.end)
       );
 
-      if (!overlappingSelection) {
+      const conflictingDays = daysOfWeek.filter(
+        (otherDay) =>
+          otherDay !== day &&
+          selectedSlots[otherDay].some(
+            (otherSlot) =>
+              (otherSlot.start <= slot.start && slot.start < otherSlot.end) ||
+              (otherSlot.start < slot.end && slot.end <= otherSlot.end)
+          )
+      );
+
+      if (!overlappingSelection && conflictingDays.length === 0) {
         setSelectedSlots({
           ...selectedSlots,
           [day]: [...selectedSlots[day], slot],
@@ -187,13 +200,24 @@ const Classroom: React.FC = () => {
           {timeSlots.map((slot, index) => {
             const isSelected = selectedSlots[day].some((s) => s.start === slot.start && s.end === slot.end);
             const confirmedSlot = confirmedSlots[day]?.find((s) => s.start === slot.start && s.end === slot.end);
-
+            const createCustomSlot = (start: string, end: string): CustomSlot => {
+              return {
+                start,
+                end,
+                name: "",
+                courseCode: "",
+                room: "",
+                classInfo: "",
+                startDate: "",
+                endDate: "",
+              };
+            };
             return (
               <div key={index} className="position-relative">
                 <Slot
                   key={index}
-                  slot={slot}
-                  onClick={() => handleSlotClick(slot, day)}
+                  slot={createCustomSlot(slot.start, slot.end)}
+                  onClick={() => handleSlotClick(createCustomSlot(slot.start, slot.end), day)}  
                   isSelected={isSelected}
                 />
                 {confirmedSlot && confirmedSlots[day].length > 0 && (
@@ -219,11 +243,11 @@ const Classroom: React.FC = () => {
             <ul>
               {daysOfWeek.map((day) => (
                 <li key={day}>
-                  {confirmedSlots[day].length > 0 && (
+                  {selectedSlots[day].length > 0 && (
                     <>
                       <strong>{day}:</strong>
                       <ul>
-                        {confirmedSlots[day].map((slot, index) => (
+                        {selectedSlots[day].map((slot, index) => (
                           <li key={index}>{`${slot.start} - ${slot.end}`}</li>
                         ))}
                       </ul>

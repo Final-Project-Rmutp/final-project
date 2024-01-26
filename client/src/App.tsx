@@ -26,6 +26,7 @@ import StudentList from "./pages/admin/student-list/StudentList";
 import ReservedList from "./pages/admin/reserved-list/ReservedList";
 import RoomList from "./pages/admin/room-list/RoomList";
 import ReportList from "./pages/admin/report-list/ReportList";
+import AdminDashBoard from "./pages/admin/dashboard/Dashboard";
 
 
 
@@ -68,6 +69,7 @@ const App: React.FC = () => {
                 <Route path="room-list" element={<RoomList />} />
                 <Route path="classroom-list" element={<Classroom />} />
                 <Route path="report-list" element={<ReportList />} />
+                <Route path="admin-dashboard" element={<AdminDashBoard />} />
               </Route>
             </Routes>
           </AuthProvider>
