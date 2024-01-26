@@ -1,140 +1,63 @@
 const client = require("../configs/database.js");
 
-async function getbookingData(req, res){
+async function getreserveddata(req, res) {
     try {
-        let query = `
-            SELECT rooms.room_number, 
-                   reservations.reservation_status, 
-                   COUNT(*) as status_count
-            FROM reservations
-            JOIN rooms ON reservations.room_id = rooms.room_id
-            GROUP BY rooms.room_number, reservations.reservation_status;
+        // Retrieve total reserved
+        const totalReservedQuery = 'SELECT COUNT(*) AS total_reserved FROM reservations;';
+        const totalReservedResult = await client.query(totalReservedQuery);
+        const totalReserved = totalReservedResult.rows[0].total_reserved;
+
+        // Retrieve most reserved room
+        const mostReservedQuery = `
+            SELECT r.room_number, COUNT(*) AS reservations
+            FROM reservations rs
+            LEFT JOIN rooms r ON rs.room_id = r.room_id
+            GROUP BY r.room_number
+            ORDER BY reservations DESC
+            LIMIT 1;
         `;
+        const mostReservedResult = await client.query(mostReservedQuery);
+        const mostReservedRoom = mostReservedResult.rows[0];
 
-        const result = await client.query(query);
+        // Retrieve least reserved room
+        const leastReservedQuery = `
+            SELECT r.room_number, COUNT(*) AS reservations
+            FROM reservations rs
+            LEFT JOIN rooms r ON rs.room_id = r.room_id
+            GROUP BY r.room_number
+            ORDER BY reservations ASC
+            LIMIT 1;
+        `;
+        const leastReservedResult = await client.query(leastReservedQuery);
+        const leastReservedRoom = leastReservedResult.rows[0];
 
-        if (result.rows.length > 0) {
-            result.rows.forEach(row => {
-                if (row.reservation_status === 0) {
-                    row.reservation_status = "Canceled";
-                } else if (row.reservation_status === 1) {
-                    row.reservation_status = "In progress";
-                }
-                else if (row.reservation_status === 2) {
-                    row.reservation_status = "Approve";
-                }
-            });
+        // Retrieve most cancelled room
+        const mostCancelledQuery = `
+            SELECT r.room_number, COUNT(*) AS cancellations
+            FROM reservations rs
+            LEFT JOIN rooms r ON rs.room_id = r.room_id
+            WHERE rs.reservation_status = '0'
+            GROUP BY r.room_number
+            ORDER BY cancellations DESC
+            LIMIT 1;
+        `;
+        const mostCancelledResult = await client.query(mostCancelledQuery);
+        const mostCancelledRoom = mostCancelledResult.rows[0];
 
-            res.status(200).json(result.rows);
-        } else {
-            res.status(404).json({ message: 'No data found' });
-        }
+        // Construct the response object
+        const dashboardData = {
+            total_reserved: totalReserved,
+            most_reserved_room: mostReservedRoom,
+            least_reserved_room: leastReservedRoom,
+            most_cancelled_room: mostCancelledRoom
+        };
+
+        res.status(200).json(dashboardData);
     } catch (error) {
         console.error(error.message);
         res.status(500).json({ message: 'Internal server error' });
     }
 }
 
-async function getcancellationData(req, res) {
-    try {
-        let query = `
-            SELECT rooms.room_number, 
-                   reservations.reservation_status, 
-                   COUNT(*) as status_count
-            FROM reservations
-            JOIN rooms ON reservations.room_id = rooms.room_id
-            WHERE reservations.reservation_status = 0
-            GROUP BY rooms.room_number, reservations.reservation_status
-            ORDER BY status_count DESC;
-        `;
 
-        const result = await client.query(query);
-
-        if (result.rows.length > 0) {
-            result.rows.forEach(row => {
-                if (row.reservation_status === 0) {
-                    row.reservation_status = "Canceled";
-                } else if (row.reservation_status === 1) {
-                    row.reservation_status = "In progress";
-                }
-                else if (row.reservation_status === 2) {
-                    row.reservation_status = "Approve";
-                }
-            });
-
-            res.status(200).json(result.rows);
-        } else {
-            res.status(404).json({ message: 'No data found' });
-        }
-    } catch (error) {
-        console.error(error.message);
-        res.status(500).json({ message: 'Internal server error' });
-    }
-}
-
-async function getfrequentUseData(req, res) {
-    try {
-        let query = `
-            SELECT rooms.room_number, 
-                   reservations.reservation_status, 
-                   COUNT(*) as status_count
-            FROM reservations
-            JOIN rooms ON reservations.room_id = rooms.room_id
-            GROUP BY rooms.room_number, reservations.reservation_status
-            ORDER BY status_count DESC
-        `;
-
-        const result = await client.query(query);
-
-        if (result.rows.length > 0) {
-            result.rows.forEach(row => {
-                if (row.reservation_status === 0) {
-                    row.reservation_status = "Canceled";
-                } else if (row.reservation_status === 1) {
-                    row.reservation_status = "In progress";
-                }
-                else if (row.reservation_status === 2) {
-                    row.reservation_status = "Approve";
-                }
-            });
-
-            res.status(200).json(result.rows);
-        } else {
-            res.status(404).json({ message: 'No data found' });
-        }
-    } catch (error) {
-        console.error(error.message);
-        res.status(500).json({ message: 'Internal server error' });
-    }
-}
-
-async function getrarelyUsedData (req, res){
-    try { let query = `SELECT rooms.room_number, reservations.reservation_status, COUNT(*) as status_count
-    FROM reservations
-    JOIN rooms ON reservations.room_id = rooms.room_id
-    GROUP BY rooms.room_number, reservations.reservation_status
-    ORDER BY status_count ASC`;
-    
-    const result = await client.query(query);
-    if (result.rows.length > 0) {
-        result.rows.forEach(row => {
-            if (row.reservation_status === 0) {
-                row.reservation_status = "Canceled";
-            } else if (row.reservation_status === 1) {
-                row.reservation_status = "In progress";
-            }
-            else if (row.reservation_status === 2) {
-                row.reservation_status = "Approve";
-            }
-        });
-        res.status(200).json(result.rows);
-    } else {
-        res.status(404).json({ message: 'No data found' });
-    }
-    } catch (error) {
-        console.error(err.message);
-        res.status(500).json({ message: 'Internal server error' });
-    }
-}
-
-module.exports = { getbookingData , getcancellationData , getfrequentUseData , getrarelyUsedData };
+module.exports = { getreserveddata };
