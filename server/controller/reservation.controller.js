@@ -126,7 +126,7 @@ async function searchroom(req, res) {
 
             const recommendedRooms = recommendedRoomsResult.rows;
 
-            return res.status(404).json({
+            return res.status(200).json({
                 message: 'No available rooms at the specified time',
                 recommended_rooms: recommendedRooms
             });
