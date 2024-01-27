@@ -192,5 +192,59 @@ async function updateclass(req, res) {
     }
 }
 
+// Create class
+async function createClassTest(req, res) {
+    try {
+        const userId = req.user.id; // สมมติว่ามี middleware ที่เพิ่ม property user ใน request
+        const {
+            selectedSlots,
+            name,
+            courseCode,
+            room,
+            classInfo,
+            startDate,
+            endDate,
+        } = req.body;
+      // Validate
+      // 
+      // Example query to insert class data into the database
+        const insertClassQuery = `
+        INSERT INTO classtest (user_id, name, course_code, room, class_info, start_date, end_date, timestamp)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())
+        RETURNING *;
+    `;
 
-module.exports = { getClassSchedule, addclass, deleteclass, updateclass };
+      // Loop through selected slots and insert class for each slot
+    for (const day in selectedSlots) {
+        for (const slot of selectedSlots[day]) {
+            const values = [
+                userId,
+                name,
+                courseCode,
+                room,
+                classInfo,
+                startDate,
+                endDate,
+            ];
+
+            try {
+                const result = await client.query(insertClassQuery, values);
+                const insertedClass = result.rows[0];
+                // You can do further processing or error handling here
+            } catch (error) {
+                console.error('Error inserting class:', error);
+                // Handle error as needed
+                res.status(500).json({ message: 'Internal server error' });
+                return;
+            }
+        }
+    }
+
+        res.status(201).json({ message: 'Class created successfully' });
+    } catch (error) {
+        console.error('Error creating class:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+module.exports = { getClassSchedule, addclass, deleteclass, updateclass, createClassTest };

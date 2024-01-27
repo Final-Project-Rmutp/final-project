@@ -443,4 +443,8 @@ router.delete("/deleteclass/:class_id", authMiddleware.isAdmin, classController.
 
 router.patch("/updateclass/:class_id", authMiddleware.isAdmin, classController.updateclass);
 
+
+//////////////////////////////////////////////////////
+router.post('/createclass/test', classController.createClassTest);
+//////////////////////////////////////////////////////
 module.exports = router;
