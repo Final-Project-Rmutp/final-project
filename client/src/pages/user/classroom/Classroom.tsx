@@ -184,7 +184,7 @@ const Classroom: React.FC = () => {
 
 const createClassRoom = async () => {
   try {
-    const response = await axiosInstance.post('class/createclass/test', {
+    const response = await axiosInstance.post('/class/createclass/test', {
       selectedSlots,
       name,
       courseCode,
@@ -196,11 +196,12 @@ const createClassRoom = async () => {
 
     console.log('Class created successfully:', response.data);
 
-    // ทำการดึงข้อมูลตารางใหม่หลังจากที่ทำการสร้างคลาส
-    const scheduleResponse = await axiosInstance.get('/api/getschedule');
+    // Fetch the updated schedule after creating the class
+    const scheduleResponse = await axiosInstance.get('/class/getschedule');
     setSchedule(scheduleResponse.data);
   } catch (error) {
     console.error('Error creating class:', error);
+    // Handle error as needed, e.g., show a user-friendly error message
   }
 };
 

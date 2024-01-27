@@ -195,50 +195,44 @@ async function updateclass(req, res) {
 // Create class
 async function createClassTest(req, res) {
     try {
-        const userId = req.user.id; // สมมติว่ามี middleware ที่เพิ่ม property user ใน request
-        const {
-            selectedSlots,
-            name,
-            courseCode,
-            room,
-            classInfo,
-            startDate,
-            endDate,
-        } = req.body;
-      // Validate
-      // 
-      // Example query to insert class data into the database
+        const userId = req.user.id;
+
+        // Validate input data
+        const { selectedSlots, name, courseCode, room, classInfo, startDate, endDate } = req.body;
+        if (!name || !courseCode || !room || !classInfo || !startDate || !endDate) {
+        res.status(400).json({ message: 'Invalid input data' });
+        return;
+        }
+
         const insertClassQuery = `
         INSERT INTO classtest (user_id, name, course_code, room, class_info, start_date, end_date, timestamp)
         VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())
         RETURNING *;
-    `;
+        `;
 
-      // Loop through selected slots and insert class for each slot
-      for (const day in selectedSlots) {
+        for (const day in selectedSlots) {
         for (const slot of selectedSlots[day]) {
             const values = [
-                userId,
-                slot.name,        // ใช้ชื่อจาก slot
-                slot.courseCode,  // ใช้ courseCode จาก slot
-                slot.room,        // ใช้ room จาก slot
-                slot.classInfo,   // ใช้ classInfo จาก slot
-                slot.startDate,   // ใช้ startDate จาก slot
-                slot.endDate,     // ใช้ endDate จาก slot
+            userId,
+            slot.name,
+            slot.courseCode,
+            slot.room,
+            slot.classInfo,
+            slot.startDate,
+            slot.endDate,
             ];
-    
+
             try {
-                const result = await client.query(insertClassQuery, values);
-                const insertedClass = result.rows[0];
-                // You can do further processing or error handling here
+            const result = await client.query(insertClassQuery, values);
+            const insertedClass = result.rows[0];
+            // You can do further processing or error handling here
             } catch (error) {
-                console.error('Error inserting class:', error);
-                // Handle error as needed
-                res.status(500).json({ message: 'Internal server error' });
-                return;
+            console.error('Error inserting class:', error);
+            res.status(500).json({ message: 'Internal server error' });
+            return;
             }
         }
-    }
+        }
 
         res.status(201).json({ message: 'Class created successfully' });
     } catch (error) {
