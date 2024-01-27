@@ -79,9 +79,12 @@ const useReservedList = () => {
       const newStatus = currentStatus;
       const response = await axiosInstance.patch(
         "/reservation/updatestatus",
+        {},
         {
-          reservation_id: reservationId,
-          reservation_status: newStatus,
+          params: {
+            reservation_id: reservationId,
+            reservation_status: newStatus,
+          },
         }
       );
       return response.data;

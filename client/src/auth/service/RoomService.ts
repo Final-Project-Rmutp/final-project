@@ -8,6 +8,8 @@ interface GetAllRoomsParams {
     offset?: number
 }
 export class SearchRoomParams {
+    id!:string;
+    room_id!:string;
     room_capacity!: string;
     room_level!: string;
     room_type!: string;
@@ -15,6 +17,25 @@ export class SearchRoomParams {
     reservation_date!: string;
     start_time!: string;
     end_time!: string;
+}
+export interface ReservationListUser {
+    id:string;
+    fullname: string;
+    account_type: string;
+    room_number: string;
+    reservation_reason: string;
+    reservation_status: string;
+    reservation_date: string;
+    timestamp: string;
+    start_time: string;
+    end_time: string;
+}
+export interface AddClassParams {
+    subject_id: string;
+    day_of_week: string;
+    start_time: string;
+    end_time: string;
+    room_id: string;
 }
 const RoomService = {
     getAllRoom: async ({ page, pageSize }: GetAllRoomsParams) => {
@@ -47,6 +68,21 @@ const RoomService = {
         const response = await axiosInstance.post('/reservation/searchroom', searchRoom);
         return response.data;
     },
+    getReservationList: async () => {
+        const response = await axiosInstance.get('/reservation/getreservation');
+        return response.data;
+    },
+
+    addClass: async (classData: AddClassParams) => {
+        const response = await axiosInstance.post('/class/addclass', classData);
+        return response.data;
+    },
+    
+    getReservedData: async () => {
+        const response = await axiosInstance.get('/dashboard/getreserveddata');
+        return response.data;
+    },
+
 };
 
 export default RoomService;

@@ -69,7 +69,7 @@ const App: React.FC = () => {
                 <Route path="room-list" element={<RoomList />} />
                 <Route path="classroom-list" element={<Classroom />} />
                 <Route path="report-list" element={<ReportList />} />
-                <Route path="admin-dashboard" element={<AdminDashBoard />} />
+                <Route path="dashboard" element={<AdminDashBoard />} />
               </Route>
             </Routes>
           </AuthProvider>

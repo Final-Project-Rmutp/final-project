@@ -175,7 +175,7 @@ const Classroom: React.FC = () => {
       ];
     }
   });
-
+  console.log(updatedConfirmedSlots)
   setConfirmedSlots(updatedConfirmedSlots);
   closeModal();
 };

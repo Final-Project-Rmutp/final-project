@@ -63,7 +63,7 @@ const ReservedList: React.FC = () => {
 
     const handleCancel = async () => {
         for (const reservationId of selectedItems) {
-            await updateReservationStatus("1", reservationId);
+            await updateReservationStatus("0", reservationId);
         }
         await fetchReservedList();
         setSelectedItems([]);
@@ -78,7 +78,7 @@ const ReservedList: React.FC = () => {
     
     const handleInProgress = async () => {
         for (const reservationId of selectedItems) {
-            await updateReservationStatus("0", reservationId);
+            await updateReservationStatus("1", reservationId);
         }
         await fetchReservedList();
         setSelectedItems([]);
@@ -173,7 +173,12 @@ const ReservedList: React.FC = () => {
                             <th>{item.account_type}</th>
                             <th>{item.reservation_reason}</th>
                             <th>
-                              <Chip color="success" variant="solid">{item.reservation_status}</Chip>
+                              <Chip color={item.reservation_status === "cancel" ? "danger" :
+                              item.reservation_status === "in progress"? "warning": "success"}
+                              variant="solid" 
+                              size="lg">
+                                {item.reservation_status}
+                              </Chip>
                             </th>
                             <th>{formatTimestamp(item.reservation_date)}</th>
                             {/* <th>{formatTimestamp(item.timestamp)}</th> */}

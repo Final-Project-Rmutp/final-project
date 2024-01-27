@@ -1,58 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent, Typography, Grid } from '@mui/material';
 import { PieChart } from '@mui/x-charts/PieChart';
-import BarChartComponent from './BarChartComponent';
-import { DefaultizedPieValueType } from '@mui/x-charts';
 import { useDrawingArea } from '@mui/x-charts/hooks';
 import { styled } from '@mui/material/styles';
-interface RoomData {
-  roomNumber: number;
-  bookings: number;
-  cancellations: number;
+import RoomService from '../../../auth/service/RoomService';
+
+export interface RoomData {
+  roomNumber: string;
+  bookings: string;
+  cancellations: string;
 }
 
-interface MockData {
-  totalBookings: number;
-  mostBookedRoom: RoomData;
-  leastBookedRoom: RoomData;
-  mostCancelledRoom: RoomData;
+export interface DashboardData {
+  totalBookings: string;
+  mostBookedRoom: RoomData[];
+  leastBookedRoom: RoomData[];
+  mostCancelledRoom: RoomData[];
 }
-
-const mockData: MockData = {
-  totalBookings: 100,
-  mostBookedRoom: { roomNumber: 123, bookings: 10, cancellations: 0 },
-  leastBookedRoom: { roomNumber: 456, bookings: 5, cancellations: 0 },
-  mostCancelledRoom: { roomNumber: 789, bookings: 10, cancellations: 8 },
-  // Add more data if needed  
-};
-
-const barChartData = [
-  {
-    roomNumber: mockData.mostBookedRoom.roomNumber,
-    bookings: mockData.mostBookedRoom.bookings,
-    cancellations: mockData.mostBookedRoom.cancellations || 0,
-  },
-  {
-    roomNumber: mockData.leastBookedRoom.roomNumber,
-    bookings: mockData.leastBookedRoom.bookings,
-    cancellations: mockData.leastBookedRoom.cancellations || 0,
-  },
-  {
-    roomNumber: mockData.mostCancelledRoom.roomNumber,
-    bookings: mockData.mostCancelledRoom.bookings || 0,
-    cancellations: mockData.mostCancelledRoom.cancellations || 0,
-  },
-  // Add more data if needed
-];
-
-const TOTAL = barChartData.map((item) => item.bookings).reduce((a, b) => a + b, 0);
-
-const getArcLabel = (params: DefaultizedPieValueType) => {
-  const percent = TOTAL === 0 ? 0 : params.value / TOTAL;
-  return `${(percent * 100).toFixed(0)}%`;
-};
-
-
 
 const size = {
   width: 400,
@@ -64,7 +28,6 @@ const StyledText = styled('text')(({ theme }) => ({
   textAnchor: 'middle',
   dominantBaseline: 'central',
   fontSize: 14,
-  
 }));
 
 function PieCenterLabel({ children }: { children: React.ReactNode }) {
@@ -75,26 +38,46 @@ function PieCenterLabel({ children }: { children: React.ReactNode }) {
     </StyledText>
   );
 }
+
 const DashboardComponent: React.FC = () => {
+  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const response = await RoomService.getReservedData();
+        setDashboardData(response);
+      } catch (error) {
+        console.error('Error fetching dashboard data:', error);
+      }
+    };
+
+    fetchDashboardData();
+  }, []); // Empty dependency array means this effect runs once after the initial render.
+
+  if (!dashboardData) {
+    // If data is still loading, you can show a loading indicator or return null.
+    return null;
+  }
 
   const pieChartData = [
     {
       id: 0,
-      value: mockData.mostBookedRoom.bookings,
-      label: `Room ${mockData.mostBookedRoom.roomNumber} - Most Booked`,
-      color: '#0088FE'
+      value: Number(dashboardData?.mostBookedRoom[0]?.bookings) || 0,
+      label: `Room ${dashboardData?.mostBookedRoom[0]?.roomNumber || ''} - Most Booked`,
+      color: '#0088FE',
     },
     {
       id: 1,
-      value: mockData.leastBookedRoom.bookings,
-      label: `Room ${mockData.leastBookedRoom.roomNumber} - Least Booked`,
-      color: '#FF8042'
+      value: Number(dashboardData?.leastBookedRoom[0]?.bookings) || 0,
+      label: `Room ${dashboardData?.leastBookedRoom[0]?.roomNumber || ''} - Least Booked`,
+      color: '#FF8042',
     },
     {
       id: 2,
-      value: mockData.mostCancelledRoom.cancellations,
-      label: `Room ${mockData.mostCancelledRoom.roomNumber} - Most Cancelled`,
-      color: '#00C49F'
+      value: Number(dashboardData?.mostCancelledRoom[0]?.cancellations) || 0,
+      label: `Room ${dashboardData?.mostCancelledRoom[0]?.roomNumber || ''} - Most Cancelled`,
+      color: '#00C49F',
     },
   ];
 
@@ -104,30 +87,28 @@ const DashboardComponent: React.FC = () => {
         <Card>
           <CardContent>
             <Typography variant="h6">Total Bookings</Typography>
-            <Typography variant="h4">{mockData.totalBookings}</Typography>
+            <Typography variant="h4">{dashboardData?.totalBookings || '0'}</Typography>
           </CardContent>
         </Card>
       </Grid>
 
       <Grid item xs={12} md={6} lg={12}>
-        <Card sx={{width:'100%'}}>
-          <CardContent sx={{width:'100%'}}>
+        <Card sx={{ width: '100%' }}>
+          <CardContent sx={{ width: '100%' }}>
             <Typography variant="h6">Booking Stats</Typography>
             <PieChart
               series={[
                 {
                   data: pieChartData,
-                  arcLabel: getArcLabel,
                   highlightScope: { faded: 'global', highlighted: 'item' },
                   faded: { innerRadius: 30, additionalRadius: -30, color: 'purple' },
                   innerRadius: 60,
                 },
               ]}
-              sx={{marginLeft:15}}
+              sx={{ marginLeft: 15 }}
               {...size}
-              
             >
-              <PieCenterLabel>จองทั้งหมด {mockData.totalBookings}</PieCenterLabel>
+              <PieCenterLabel>จองทั้งหมด {dashboardData?.totalBookings || '0'}</PieCenterLabel>
             </PieChart>
           </CardContent>
         </Card>
@@ -137,7 +118,6 @@ const DashboardComponent: React.FC = () => {
         <Card>
           <CardContent>
             <Typography variant="h6">Bar Chart</Typography>
-            <BarChartComponent data={barChartData} />
           </CardContent>
         </Card>
       </Grid>

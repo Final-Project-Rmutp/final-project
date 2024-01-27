@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, {  useState } from 'react';
 // import Floor6 from '../../../components/floor6/Floor6';
-import './Reservation.scss';
-import { Button, FormLabel, Grid } from '@mui/joy';
+import {FormLabel, Grid, Sheet, Table,Button  } from '@mui/joy';
 
 import "dayjs/locale/th";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -11,13 +10,28 @@ import { DateTime, OptionStyle, SelectStyle } from './ReservationStyled';
 import RoomService, { SearchRoomParams } from '../../../auth/service/RoomService';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import {
+  Tbody,
+  Theader,
+  HeadList,
+  TableContainer,
+} from "../../admin/student-list/StudentListStyled";
+import { toast } from 'sonner'
+type ApiResponse = {
+  availableRooms: SearchRoomParams[];
+  message?: string; // Make 'message' optional
+  // recommended_rooms: SearchRoomParams[];
+};
 
 const Room: React.FC = () => {
   // const [selectedFloor, setSelectedFloor] = useState<string | null>(null);
+
   const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs | null>(dayjs());
   const [selectedStartTime, setSelectedStartTime] = useState<dayjs.Dayjs | null>(dayjs().startOf('day').hour(8));
   const [selectedEndTime, setSelectedEndTime] = useState<dayjs.Dayjs | null>(dayjs().startOf('day').hour(9));
   const [searchRoom, setSearchRoom] = useState<SearchRoomParams>({
+    id:'',
+    room_id:'',
     room_capacity: '',
     room_level: '',
     room_type: '',
@@ -26,10 +40,15 @@ const Room: React.FC = () => {
     start_time: '',
     end_time: '',
   }); 
+  const [searchResults, setSearchResults] = useState<ApiResponse>({ availableRooms: []});
+  // const [searchResults, setSearchResults] = useState<{ availableRooms: SearchRoomParams[] , message:string}>({ availableRooms: [] });
+  const [searchResultsRecom, setSearchResultsRecom] = useState<{ recommended_rooms: SearchRoomParams[], message: string }>({ recommended_rooms: [], message: '' });
   const availableFloors = ['1', '2', '3','4','5','6','7','8','9'];
   const roomNumber = ['9901', '9902', '9903'];  
   const roomTypes = ['ห้องปฏิบัติการ', 'ห้องประชุม', 'ลานกิจกรรม'];
   const numberOfPeopleOptions = ['10', '20', '30', '40', '55'];
+
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setSearchRoom((prevUser) => ({
@@ -37,30 +56,8 @@ const Room: React.FC = () => {
       [name]: value,
     }));
   };
-  // const handleDurationSelect = (value: string | null) => {
-  //   console.log('Selected Duration:', value);
-  // };
-  
-  // const handleRoomNumberSelect = (value: string | null) => {
-  //   console.log('Selected Room Type:', value);
-  // };
-  
-  // const handleRoomTypeSelect = (value: string | null) => {
-  //   console.log('Selected Room Type:', value);
-  // };
-  
-  // const handleNumberOfPeopleSelect = (value: string | null) => {
-  //   console.log('Selected Number of People:', value);
-  // };
-  
-  // const handleFloorSelect = (value: string | null) => {
-  //   if (value !== null) {
-  //     setSelectedFloor(value);
-  //   }
-  // };
 
   const handleSubmit = async () => {
-    try {
       const startTime = selectedStartTime?.format("HH:00");
       const endTime = selectedEndTime?.format("HH:00");
       if (startTime && endTime) {
@@ -82,15 +79,18 @@ const Room: React.FC = () => {
         start_time: startTime || "",
         end_time: endTime || "",
       } as SearchRoomParams);
-      if (response) {
-        console.log('Room search successful:', response);
-      } else {
-        console.error('Failed to search room:', response);
-      }
-    } catch (error) {
-      console.error('Error during room search:', error);
-    }
-  };
+      console.log("Full response:", response);
+        setSearchResultsRecom({
+          message: response.message || '',
+          recommended_rooms: response.recommended_rooms || []
+        });
+        console.log("Available Rooms:", response.availableRooms);
+        setSearchResults({
+          availableRooms: response.availableRooms || [],
+          message: response.message || ''
+        });
+
+  }
 
   const handleDateChange = (
     value: dayjs.Dayjs | null,
@@ -116,6 +116,7 @@ const Room: React.FC = () => {
     const hour = value.hour();
     return hour < 9 || hour > 18;
   };
+
 
   return (
     <div className="container mx-auto">
@@ -216,7 +217,119 @@ const Room: React.FC = () => {
           </Grid>
         </Grid>
       </form>
-      {/* {selectedFloor === 'Floor 6' && <Floor6 />} */}
+        <HeadList>
+            <TableContainer>
+                <Sheet
+                    sx={{
+                        "--TableCell-height": "40px",
+                        "--TableHeader-height": "calc(1 * var(--TableCell-height))",
+                        "--Table-firstColumnWidth": "80px",
+                        "--Table-lastColumnWidth": "144px",
+                        "--TableRow-stripeBackground": "rgba(0 0 0 / 0.04)",
+                        "--TableRow-hoverBackground": "rgba(0 0 0 / 0.08)",
+                        height: 400,
+                        overflow: "auto",
+                        background: (
+                        theme
+                        ) => `linear-gradient(${theme.vars.palette.background.surface} ,
+                                0 100%`,
+                        backgroundSize:
+                        "40px calc(100% - var(--TableCell-height)), 40px calc(100% - var(--TableCell-height)), 14px calc(100% - var(--TableCell-height)), 14px calc(100% - var(--TableCell-height))",
+                        backgroundRepeat: "no-repeat",
+                        backgroundAttachment: "local, local, scroll, scroll",
+                        backgroundPosition:
+                        "var(--Table-firstColumnWidth) var(--TableCell-height), calc(100% - var(--Table-lastColumnWidth)) var(--TableCell-height), var(--Table-firstColumnWidth) var(--TableCell-height), calc(100% - var(--Table-lastColumnWidth)) var(--TableCell-height)",
+                        backgroundColor: "nav.bg",
+                    }}
+                    >
+                    <Table
+                        className="table mb-0"
+                        borderAxis="bothBetween"
+                        stickyHeader
+                        hoverRow
+                        sx={{
+                        "--Table-headerUnderlineThickness": "1px",
+                        "--TableCell-paddingX": "10px",
+                        "--TableCell-paddingY": "7px",
+                        "& tr > *:first-of-type": {
+                            position: "sticky",
+                            zIndex: 1,
+                            left: 0,
+                            boxShadow: "1px 0 var(--TableCell-borderColor)",
+                            // bgcolor: 'background.surface',
+                        },
+                        "& tr > *:last-child": {
+                            position: "sticky",
+                            right: 0,
+                            bgcolor: "var(--TableCell-headBackground)",
+                        },
+                        }}
+                    >
+                <Theader>
+                <tr>
+                  <th>No</th>
+                  <th>ชั้น</th>
+                  <th>ประเภทห้อง</th>
+                  <th>ห้อง</th>
+                </tr>
+                <tr>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </Theader>
+              <Tbody>
+              {searchResults.availableRooms && searchResults.availableRooms.length > 0 ? (
+                searchResults.availableRooms.map((item, index) => (
+                  <tr className="text-center" key={item.room_id || index}>
+                    <th>{index + 1}</th>
+                    <th>{item.room_level}</th>
+                    <th>{item.room_type}</th>
+                    <th>{item.room_number}</th>
+                  </tr>
+                ))
+              ) : (
+                searchResultsRecom.recommended_rooms && searchResultsRecom.recommended_rooms.length > 0 ? (
+                  <>
+                    <tr>
+                      <th colSpan={4} className="text-center">
+                        Recommended Rooms:
+                      </th>
+                    </tr>
+                    {searchResultsRecom.recommended_rooms.map((item, index) => (
+                      <tr className="text-center" key={item.room_id || index}>
+                        <th>{index + 1}</th>
+                        <th>{item.room_level}</th>
+                        <th>{item.room_type}</th>
+                        <th>{item.room_number}</th>
+                      </tr>
+                    ))}
+                  </>
+                ) : (
+                  searchResultsRecom.message && (
+                  <tr>
+                    <th colSpan={4} className="text-center">
+                      {toast.error(searchResultsRecom.message)}
+                    </th>
+                  </tr>
+                  )
+                )
+              )}
+              </Tbody>
+            </Table>
+          </Sheet>
+          {/* <div className="pagination-container">
+            <CustomPagination
+              count={100}
+              page={page}
+              rowsPerPage={rowsPerPage}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </div> */}
+        </TableContainer>
+      </HeadList>
     </div>
   );
 };

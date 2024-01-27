@@ -5,7 +5,7 @@ import { Icon } from '@iconify/react';
 export const SidebarData = [
     {
         title: 'dashboard',
-        path: 'admin-dashboard',
+        path: 'dashboard',
         name:'Dashboard',
         icon: <Icon icon="flat-color-icons:line-chart" />
     },
