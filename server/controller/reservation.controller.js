@@ -199,7 +199,7 @@ async function reservation(req, res) {
       
       // Insert reservation into the reservations table
       const insertReservationQuery = `
-        INSERT INTO reservations (room_id, user_id, reservation_date, start_time, end_time, reservation__reason)
+        INSERT INTO reservations (room_id, user_id, reservation_date, start_time, end_time, reservation_reason)
         VALUES ($1, $2, $3, $4, $5, $6)
         RETURNING *;
       `;

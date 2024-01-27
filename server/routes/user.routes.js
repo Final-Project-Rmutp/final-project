@@ -284,6 +284,6 @@ router.get('/getschedule', authMiddleware.isTeacher , userController.getschedule
  *                    example: Internal server error
  */
 
-router.get('/getreservation', authMiddleware.isTeacher , userController.getreservation);
+router.get('/getreservation', authMiddleware.authenticateToken , userController.getreservation);
 
 module.exports = router;
