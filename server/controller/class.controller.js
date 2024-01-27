@@ -215,18 +215,18 @@ async function createClassTest(req, res) {
     `;
 
       // Loop through selected slots and insert class for each slot
-    for (const day in selectedSlots) {
+      for (const day in selectedSlots) {
         for (const slot of selectedSlots[day]) {
             const values = [
                 userId,
-                name,
-                courseCode,
-                room,
-                classInfo,
-                startDate,
-                endDate,
+                slot.name,        // ใช้ชื่อจาก slot
+                slot.courseCode,  // ใช้ courseCode จาก slot
+                slot.room,        // ใช้ room จาก slot
+                slot.classInfo,   // ใช้ classInfo จาก slot
+                slot.startDate,   // ใช้ startDate จาก slot
+                slot.endDate,     // ใช้ endDate จาก slot
             ];
-
+    
             try {
                 const result = await client.query(insertClassQuery, values);
                 const insertedClass = result.rows[0];
