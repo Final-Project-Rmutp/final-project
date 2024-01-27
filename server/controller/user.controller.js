@@ -108,11 +108,11 @@ async function getreservation(req, res) {
 function transformReservationStatus(status) {
     switch (status) {
       case 0:
-        return 'cancel';
+        return 'Cancel';
       case 1:
-        return 'in progress';
+        return 'In progress';
       case 2:
-        return 'success';
+        return 'Approve';
       default:
         return 'unknown';
     }

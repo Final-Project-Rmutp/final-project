@@ -88,7 +88,7 @@ const Slot: React.FC<CustomSlotProps> = ({ slot, onClick, isSelected }) => {
 
 
 const Classroom: React.FC = () => {
-
+  const [schedule, setSchedule] = useState([]);
   const [confirmedSlots, setConfirmedSlots] = useState<{ [day: string]: CustomSlot[] }>(
     daysOfWeek.reduce((acc, day) => ({ ...acc, [day]: [] }), {})
   );
@@ -194,16 +194,17 @@ const createClassRoom = async () => {
       endDate,
     });
 
-    console.log('Class created successfully:', response.data);
+    console.log('Server Response:', response.data);
 
     // Fetch the updated schedule after creating the class
     const scheduleResponse = await axiosInstance.get('/class/getschedule');
     setSchedule(scheduleResponse.data);
   } catch (error) {
-    console.error('Error creating class:', error);
+    console.error('Error creating class:');
     // Handle error as needed, e.g., show a user-friendly error message
   }
 };
+
 
   
 

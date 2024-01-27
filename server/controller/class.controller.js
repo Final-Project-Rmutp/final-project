@@ -198,40 +198,41 @@ async function createClassTest(req, res) {
         const userId = req.user.id;
 
         // Validate input data
-        const { selectedSlots, name, courseCode, room, classInfo, startDate, endDate } = req.body;
-        if (!name || !courseCode || !room || !classInfo || !startDate || !endDate) {
-        res.status(400).json({ message: 'Invalid input data' });
-        return;
+        const { name, courseCode, room, classInfo, startDate, endDate, selectedSlots } = req.body;
+        if (!name || !courseCode || !room || !classInfo || !startDate || !endDate || !selectedSlots) {
+            res.status(400).json({ message: 'Invalid input data' });
+            return;
         }
 
         const insertClassQuery = `
-        INSERT INTO classtest (user_id, name, course_code, room, class_info, start_date, end_date, timestamp)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())
-        RETURNING *;
+            INSERT INTO classtest (user_id, name, course_code, room, class_info, start_date, end_date, timestamp)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())
+            RETURNING *;
         `;
 
+        // Iterate over selectedSlots and insert each slot into the database
         for (const day in selectedSlots) {
-        for (const slot of selectedSlots[day]) {
-            const values = [
-            userId,
-            slot.name,
-            slot.courseCode,
-            slot.room,
-            slot.classInfo,
-            slot.startDate,
-            slot.endDate,
-            ];
+            for (const slot of selectedSlots[day]) {
+                const values = [
+                    userId,
+                    slot.name || name,
+                    slot.courseCode || courseCode,
+                    slot.room || room,
+                    slot.classInfo || classInfo,
+                    slot.startDate || startDate,
+                    slot.endDate || endDate,
+                ];
 
-            try {
-            const result = await client.query(insertClassQuery, values);
-            const insertedClass = result.rows[0];
-            // You can do further processing or error handling here
-            } catch (error) {
-            console.error('Error inserting class:', error);
-            res.status(500).json({ message: 'Internal server error' });
-            return;
+                try {
+                    const result = await client.query(insertClassQuery, values);
+                    const insertedClass = result.rows[0];
+                    // You can do further processing or error handling here
+                } catch (error) {
+                    console.error('Error inserting class:', error);
+                    res.status(500).json({ message: 'Internal server error' });
+                    return;
+                }
             }
-        }
         }
 
         res.status(201).json({ message: 'Class created successfully' });
