@@ -126,7 +126,7 @@ async function searchroom(req, res) {
 
             const recommendedRooms = recommendedRoomsResult.rows;
 
-            return res.status(404).json({
+            return res.status(200).json({
                 message: 'No available rooms at the specified time',
                 recommended_rooms: recommendedRooms
             });
@@ -199,7 +199,7 @@ async function reservation(req, res) {
       
       // Insert reservation into the reservations table
       const insertReservationQuery = `
-        INSERT INTO reservations (room_id, user_id, reservation_date, start_time, end_time, reservation__reason)
+        INSERT INTO reservations (room_id, user_id, reservation_date, start_time, end_time, reservation_reason)
         VALUES ($1, $2, $3, $4, $5, $6)
         RETURNING *;
       `;
