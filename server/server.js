@@ -55,10 +55,6 @@ app.use("/dashboard", DashboardRoute);
 const ClassRoute = require("./routes/class.routes.js");
 app.use("/class", ClassRoute);
 
-//ClassTest
-const ClassRouteTest = require("./routes/class.routes.js");
-app.use('/classtest', ClassRouteTest);
-
 const options = {
   definition: {
     openapi: "3.0.0", // Specify the OpenAPI version

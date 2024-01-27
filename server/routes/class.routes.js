@@ -445,6 +445,7 @@ router.patch("/updateclass/:class_id", authMiddleware.isAdmin, classController.u
 
 
 //////////////////////////////////////////////////////
-router.post('/createclass/test', classController.createClassTest);
+router.post('/createclass/test', authMiddleware.isAdmin,classController.createClassTest);
+router.get('/getschedule', authMiddleware.isAdmin,classController.getSchedule);
 //////////////////////////////////////////////////////
 module.exports = router;

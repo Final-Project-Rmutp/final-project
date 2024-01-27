@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Button, Modal, ModalClose, ModalDialog,Typography } from "@mui/joy";
 import { styled } from '@mui/system';
+import axiosInstance from "../../../environments/axiosInstance";
+
 const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 type CustomSlot = {
   start: string;
@@ -180,6 +182,28 @@ const Classroom: React.FC = () => {
   closeModal();
 };
 
+const createClassRoom = async () => {
+  try {
+    const response = await axiosInstance.post('class/createclass/test', {
+      selectedSlots,
+      name,
+      courseCode,
+      room,
+      classInfo,
+      startDate,
+      endDate,
+    });
+
+    console.log('Class created successfully:', response.data);
+
+    // ทำการดึงข้อมูลตารางใหม่หลังจากที่ทำการสร้างคลาส
+    const scheduleResponse = await axiosInstance.get('/api/getschedule');
+    setSchedule(scheduleResponse.data);
+  } catch (error) {
+    console.error('Error creating class:', error);
+  }
+};
+
   
 
 
@@ -282,7 +306,7 @@ const Classroom: React.FC = () => {
                   End Date:
                   <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
                 </label>
-                <Button onClick={handleConfirm}>Confirm</Button>
+                <Button onClick={createClassRoom}>Confirm</Button>
               </>
             )}
           </div>

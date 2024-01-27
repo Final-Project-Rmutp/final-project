@@ -247,4 +247,18 @@ async function createClassTest(req, res) {
     }
 }
 
-module.exports = { getClassSchedule, addclass, deleteclass, updateclass, createClassTest };
+async function getSchedule(req, res) {
+    try {
+      const query = 'SELECT * FROM classtest';
+      const result = await client.query(query);
+  
+      const scheduleData = result.rows;
+  
+      res.status(200).json(scheduleData);
+    } catch (error) {
+      console.error('Error fetching schedule:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  }
+
+module.exports = { getClassSchedule, addclass, deleteclass, updateclass, createClassTest,getSchedule };
