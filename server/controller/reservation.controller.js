@@ -285,28 +285,47 @@ function transformReservationStatus(status) {
 async function updatestatus(req, res) {
   try {
       const { reservation_id, reservation_status } = req.query;
-      // Check if the class exists
-      const checkClassQuery = `
+
+      // Check if the reservation exists
+      const checkReservationQuery = `
           SELECT *
           FROM reservations
           WHERE reservation_id = $1;
       `;
 
-      const checkClassResult = await client.query(checkClassQuery, [reservation_id]);
-      if (checkClassResult.rows.length === 0) {
-          return res.status(404).json({ message: 'Class not found' });
+      const checkReservationResult = await client.query(checkReservationQuery, [reservation_id]);
+
+      if (checkReservationResult.rows.length === 0) {
+          return res.status(404).json({ message: 'Reservation not found' });
       }
 
-      // Delete the class
-      const updatestatusQuery = `UPDATE reservations SET reservation_status = $2 WHERE reservation_id = $1;`;
+      const existingReservation = checkReservationResult.rows[0];
 
-      const updatestatusResult = await client.query(updatestatusQuery, [reservation_id, reservation_status]);
+      // Check if the updated status is valid (e.g., cancelled, in progress, completed)
+      // You may want to add additional validation based on your reservation status requirements
 
-      res.status(200).json({ message: 'Change status successfully'});
+      // Check if the time slot is available before updating the status
+      const roomAvailable = await isRoomAvailable(existingReservation.room_id, existingReservation.reservation_date, existingReservation.start_time, existingReservation.end_time);
+
+      if (!roomAvailable) {
+          return res.status(400).json({ message: 'Time slot is not available' });
+      }
+
+      // Update the reservation status
+      const updateStatusQuery = `
+          UPDATE reservations
+          SET reservation_status = $2
+          WHERE reservation_id = $1;
+      `;
+
+      const updateStatusResult = await client.query(updateStatusQuery, [reservation_id, reservation_status]);
+
+      res.status(200).json({ message: 'Reservation status updated successfully' });
   } catch (err) {
       console.error(err.message);
       res.status(500).json({ message: 'Internal server error' });
   }
 }
+
 
 module.exports = { getRoomSchedule, searchroom, reservation, getreservation, updatestatus };
