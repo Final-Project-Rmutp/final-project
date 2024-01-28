@@ -68,6 +68,24 @@ router.get('/getroomschedule', reservationController.getRoomSchedule);
  *     - Reservation
  *     summary: Register a new user (authentication required).
  *     description: Create a new user account by providing user information and an image file.
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *           minimum: 1
+ *           description: The page number to retrieve
+ *       - in: query
+ *         name: pageSize
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *           minimum: 1
+ *           maximum: 100
+ *           description: Number of items per page
  *     requestBody:
  *       required: true
  *       content:
