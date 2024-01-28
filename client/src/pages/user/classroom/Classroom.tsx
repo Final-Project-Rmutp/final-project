@@ -5,15 +5,20 @@ import axiosInstance from "../../../environments/axiosInstance";
 
 const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 type CustomSlot = {
-  start: string;
   end: string;
+  start: string;
+  class_id: number;
+  user_id: number;
   name: string;
-  courseCode: string;
+  course_code: string;
   room: string;
-  classInfo: string;
-  startDate: string;
-  endDate: string;
+  class_info: string;
+  start_date: string;
+  end_date: string;
+  timestamp: string;
 };
+
+
 const timeSlots: { start: string; end: string }[] = [
   { start: "08:00", end: "09:00" },
   { start: "09:00", end: "10:00" },
@@ -88,8 +93,13 @@ const Slot: React.FC<CustomSlotProps> = ({ slot, onClick, isSelected }) => {
 
 
 const Classroom: React.FC = () => {
-  const [schedule, setSchedule] = useState([]);
+  const [schedule, setSchedule] = useState<{ [day: string]: CustomSlot[] }>(
+    daysOfWeek.reduce((acc, day) => ({ ...acc, [day]: [] }), {})
+  );
   const [confirmedSlots, setConfirmedSlots] = useState<{ [day: string]: CustomSlot[] }>(
+    daysOfWeek.reduce((acc, day) => ({ ...acc, [day]: [] }), {})
+  );
+  const [createdSlots, setCreatedSlots] = useState<{ [day: string]: CustomSlot[] }>(
     daysOfWeek.reduce((acc, day) => ({ ...acc, [day]: [] }), {})
   );
   
@@ -157,54 +167,58 @@ const Classroom: React.FC = () => {
     setEndDate("");
   };
 
- const handleConfirm = () => {
-  const inputFields = {
-    name,
-    courseCode,
-    room,
-    classInfo,
-    startDate,
-    endDate,
-  };
 
-  const updatedConfirmedSlots: { [day: string]: CustomSlot[] } = { ...confirmedSlots };
-
-  daysOfWeek.forEach((day) => {
-    if (selectedSlots[day].length > 0) {
-      updatedConfirmedSlots[day] = [
-        ...updatedConfirmedSlots[day],
-        ...selectedSlots[day].map((slot) => ({ ...slot, ...inputFields })),
-      ];
+  const createClassRoom = async () => {
+    try {
+      const response = await axiosInstance.post('/class/createclass/test', {
+        selectedSlots,
+        name,
+        courseCode,
+        room,
+        classInfo,
+        startDate,
+        endDate,
+      });
+  
+      console.log('Server Response:', response.data);
+      const scheduleResponse: { [day: string]: CustomSlot[] } = { ...schedule } && await axiosInstance.get('/class/getschedule');
+      // Fetch the updated schedule after creating the class
+      const updatedConfirmedSlots: { [day: string]: CustomSlot[] } = { ...confirmedSlots } 
+      const updatedCreatedSlots: { [day: string]: CustomSlot[] } = { ...createdSlots };  // เพิ่มตัวแปรสำหรับ createdSlots
+      
+      // Merge data from confirmedSlots and the response data
+      daysOfWeek.forEach((day) => {
+        if (selectedSlots[day].length > 0) {
+          updatedConfirmedSlots[day] = [
+            ...updatedConfirmedSlots[day],
+            ...selectedSlots[day].map((slot) => ({ ...slot, ...response.data })),
+          ];
+  
+          // Update the createdSlots state with the data from response
+          updatedCreatedSlots[day] = [
+            ...updatedCreatedSlots[day],
+            ...selectedSlots[day].map((slot) => ({ ...slot, ...response.data })),
+          ];
+        }
+      });
+  
+      // Set the merged data to the state
+      setConfirmedSlots(updatedConfirmedSlots);
+      setCreatedSlots(updatedCreatedSlots);  // อัปเดต createdSlots state
+  
+      // Update the schedule state with the latest schedule data
+      setSchedule(scheduleResponse);
+  
+      // Close the modal
+      closeModal();
+    } catch (error) {
+      console.error('Error creating class:', error);
+      // Handle error as needed, e.g., show a user-friendly error message
     }
-  });
-  console.log(updatedConfirmedSlots)
-  setConfirmedSlots(updatedConfirmedSlots);
-  closeModal();
-};
-
-const createClassRoom = async () => {
-  try {
-    const response = await axiosInstance.post('/class/createclass/test', {
-      selectedSlots,
-      name,
-      courseCode,
-      room,
-      classInfo,
-      startDate,
-      endDate,
-    });
-
-    console.log('Server Response:', response.data);
-
-    // Fetch the updated schedule after creating the class
-    const scheduleResponse = await axiosInstance.get('/class/getschedule');
-    setSchedule(scheduleResponse.data);
-  } catch (error) {
-    console.error('Error creating class:');
-    // Handle error as needed, e.g., show a user-friendly error message
-  }
-};
-
+  };
+  
+  
+  
 
   
 
@@ -222,42 +236,62 @@ const createClassRoom = async () => {
       </TimeSlotRow>
       {daysOfWeek.map((day, index) => (
         <TimeSlotRow key={index}>
-          <DayColumn>{day}</DayColumn>
+        <DayColumn>{day}</DayColumn>
           {timeSlots.map((slot, index) => {
-            const isSelected = selectedSlots[day].some((s) => s.start === slot.start && s.end === slot.end);
-            const confirmedSlot = confirmedSlots[day]?.find((s) => s.start === slot.start && s.end === slot.end);
-            const createCustomSlot = (start: string, end: string): CustomSlot => {
-              return {
-                start,
-                end,
-                name: "",
-                courseCode: "",
-                room: "",
-                classInfo: "",
-                startDate: "",
-                endDate: "",
+          const isSelected = selectedSlots[day].some((s) => s.start === slot.start && s.end === slot.end);
+          const confirmedSlot = confirmedSlots[day]?.find((s) => s.start === slot.start && s.end === slot.end);
+          // const createdSlot = createdSlots[day]?.find((s) => s.start === slot.start && s.end === slot.end);
+          const scheduled = schedule[day]?.find((s) => s.start === slot.start && s.end === slot.end);
+          const createCustomSlot = (start: string, end: string): CustomSlot => {
+                return {
+                  end,
+                  start,
+                  class_id: 0,
+                  user_id: 0,
+                  name: '',
+                  course_code: '',
+                  room: '',
+                  class_info: '',
+                  start_date: '',
+                  end_date: '',
+                  timestamp: '',
+                };
               };
-            };
-            return (
-              <div key={index} className="position-relative">
-                <Slot
-                  key={index}
-                  slot={createCustomSlot(slot.start, slot.end)}
-                  onClick={() => handleSlotClick(createCustomSlot(slot.start, slot.end), day)}  
-                  isSelected={isSelected}
-                />
-                {confirmedSlot && confirmedSlots[day].length > 0 && (
-                  <div className="selected-info position-absolute" style={{ top: '-9px' }}>
-                    <div className="bg-danger">
-                      {` ${confirmedSlot.name}, ${confirmedSlot.courseCode}, ${confirmedSlot.room}, ${confirmedSlot.classInfo}, ${confirmedSlot.startDate}, ${confirmedSlot.endDate}`}
+              
+              return (
+                <div key={index} className="position-relative">
+                  <Slot
+                    key={index}
+                    slot={createCustomSlot(slot.start, slot.end)}
+                    onClick={() => handleSlotClick(createCustomSlot(slot.start, slot.end), day)}  
+                    isSelected={isSelected}
+                  />
+                  {confirmedSlot && confirmedSlots[day].length > 0 && (
+                    <div className="selected-info position-absolute" style={{ top: '-9px' }}>
+                      <div className="bg-danger">
+                        {` ${confirmedSlot.name}, ${confirmedSlot.course_code}, ${confirmedSlot.room}, ${confirmedSlot.class_info}, ${confirmedSlot.start_date}, ${confirmedSlot.end_date}`}
+                      </div>
                     </div>
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </TimeSlotRow>
-      ))}
+                  )}
+                  {/* {createdSlot && createdSlots[day].length > 0 && (
+                    <div className="created-info position-absolute" style={{ top: '9px' }}>
+                      <div className="bg-success">
+                        {` ${createdSlot.name}, ${createdSlot.courseCode}, ${createdSlot.room}, ${createdSlot.classInfo}, ${createdSlot.startDate}, ${createdSlot.endDate}`}
+                      </div>
+                    </div>
+                  )} */}
+                  {scheduled && schedule[day].length > 0 && (
+                    <div className="created-info position-absolute" style={{ top: '9px' }}>
+                      <div className="bg-success">
+                        {` ${scheduled.name}`}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </TimeSlotRow>
+        ))}
       <div className="d-flex justify-content-center align-items-center">
         <Button onClick={openModal}>Show Selected Times</Button>
       </div>
