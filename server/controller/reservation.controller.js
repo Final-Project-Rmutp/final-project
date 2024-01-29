@@ -64,77 +64,79 @@ async function getRoomSchedule(req, res) {
 }
 
 async function searchroom(req, res) {
-    try {
-        const { room_capacity, room_level, room_type, room_number, reservation_date, start_time, end_time } = req.body;
+  try {
+      const { room_capacity, room_level, room_type, room_number, reservation_date, start_time, end_time, page = 1, pageSize = 10 } = req.body;
+      const offset = (page - 1) * pageSize;
 
-        // 1. Identify available rooms at the specified time
-        const availableRoomsQuery = `
-            SELECT room_id, room_level, room_type, room_number
-            FROM rooms
-            WHERE 
-            ($1::integer IS NULL OR room_capacity >= $1::integer)
-            AND ($2::text IS NULL OR room_level = $2)
-            AND ($3::text IS NULL OR room_type = $3)
-            AND ($4::text IS NULL OR room_number = $4)
-            AND room_id NOT IN (
-                SELECT room_id
-                FROM reservations
-                WHERE reservation_date = $5
-                AND (
-                    (start_time >= $6 AND start_time < $7)
-                    OR (end_time > $6 AND end_time <= $7)
-                    OR (start_time <= $6 AND end_time >= $7)
-                )
-                AND reservation_status = 2
-            )
-            AND room_id NOT IN (
-                SELECT room_id
-                FROM class
-                WHERE day_of_week = TO_CHAR($5::date, 'Day'::text)
-                AND (
-                    (start_time >= $6 AND start_time < $7)
-                    OR (end_time > $6 AND end_time <= $7)
-                    OR (start_time <= $6 AND end_time >= $7)
-                )
-            )
-        `;
+      // 1. Identify available rooms at the specified time
+      const availableRoomsQuery = `
+          SELECT room_id, room_level, room_type, room_number
+          FROM rooms
+          WHERE 
+          ($1::integer IS NULL OR room_capacity >= $1::integer)
+          AND ($2::text IS NULL OR room_level = $2)
+          AND ($3::text IS NULL OR room_type = $3)
+          AND ($4::text IS NULL OR room_number = $4)
+          AND room_id NOT IN (
+              SELECT room_id
+              FROM reservations
+              WHERE reservation_date = $5
+              AND (
+                  (start_time >= $6 AND start_time < $7)
+                  OR (end_time > $6 AND end_time <= $7)
+                  OR (start_time <= $6 AND end_time >= $7)
+              )
+              AND reservation_status = 2
+          )
+          AND room_id NOT IN (
+              SELECT room_id
+              FROM class
+              WHERE day_of_week = TO_CHAR($5::date, 'Day'::text)
+              AND (
+                  (start_time >= $6 AND start_time < $7)
+                  OR (end_time > $6 AND end_time <= $7)
+                  OR (start_time <= $6 AND end_time >= $7)
+              )
+          )
+          LIMIT $8 OFFSET $9;
+      `;
 
-        const availableRoomsResult = await client.query(availableRoomsQuery, [
-            room_capacity || null,
-            room_level || null,
-            room_type || null,
-            room_number || null,
-            reservation_date,
-            start_time,
-            end_time
-        ]);
+      const availableRoomsResult = await client.query(availableRoomsQuery, [
+          room_capacity || null,
+          room_level || null,
+          room_type || null,
+          room_number || null,
+          reservation_date,
+          start_time,
+          end_time,
+          pageSize,
+          offset
+      ]);
 
-        const availableRooms = availableRoomsResult.rows;
-        if (availableRooms.length > 0) {
+      const availableRooms = availableRoomsResult.rows;
+      if (availableRooms.length > 0) {
+          return res.status(200).json({ availableRooms });
+      } else {
+          const recommendedRoomsQuery = `
+              SELECT room_id, room_level, room_type, room_number
+              FROM rooms
+              WHERE room_capacity >= $1
+              LIMIT 5; 
+          `;
 
-            return res.status(200).json({ availableRooms });
-        } else {
+          const recommendedRoomsResult = await client.query(recommendedRoomsQuery, [room_capacity]);
 
-            const recommendedRoomsQuery = `
-                SELECT room_id, room_level, room_type, room_number
-                FROM rooms
-                WHERE room_capacity >= $1
-                LIMIT 5; -- You can adjust the number of recommendations
-            `;
+          const recommendedRooms = recommendedRoomsResult.rows;
 
-            const recommendedRoomsResult = await client.query(recommendedRoomsQuery, [room_capacity]);
-
-            const recommendedRooms = recommendedRoomsResult.rows;
-
-            return res.status(200).json({
-                message: 'No available rooms at the specified time',
-                recommended_rooms: recommendedRooms
-            });
-        }
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).json({ message: 'Internal server error' });
-    }
+          return res.status(200).json({
+              message: 'No available rooms at the specified time',
+              recommended_rooms: recommendedRooms
+          });
+      }
+  } catch (err) {
+      console.error(err.message);
+      res.status(500).json({ message: 'Internal server error' });
+  }
 }
 
 async function isRoomAvailable(roomId, reservationDate, startTime, endTime) {
@@ -285,28 +287,44 @@ function transformReservationStatus(status) {
 async function updatestatus(req, res) {
   try {
       const { reservation_id, reservation_status } = req.query;
-      // Check if the class exists
-      const checkClassQuery = `
+
+      // Check if the reservation exists
+      const checkReservationQuery = `
           SELECT *
           FROM reservations
           WHERE reservation_id = $1;
       `;
 
-      const checkClassResult = await client.query(checkClassQuery, [reservation_id]);
-      if (checkClassResult.rows.length === 0) {
-          return res.status(404).json({ message: 'Class not found' });
+      const checkReservationResult = await client.query(checkReservationQuery, [reservation_id]);
+
+      if (checkReservationResult.rows.length === 0) {
+          return res.status(404).json({ message: 'Reservation not found' });
       }
 
-      // Delete the class
-      const updatestatusQuery = `UPDATE reservations SET reservation_status = $2 WHERE reservation_id = $1;`;
+      const existingReservation = checkReservationResult.rows[0];
 
-      const updatestatusResult = await client.query(updatestatusQuery, [reservation_id, reservation_status]);
+      // Check if the time slot is available before updating the status
+      const roomAvailable = await isRoomAvailable(existingReservation.room_id, existingReservation.reservation_date, existingReservation.start_time, existingReservation.end_time);
 
-      res.status(200).json({ message: 'Change status successfully'});
+      if (!roomAvailable) {
+          return res.status(400).json({ message: 'Time slot is not available' });
+      }
+
+      // Update the reservation status
+      const updateStatusQuery = `
+          UPDATE reservations
+          SET reservation_status = $2
+          WHERE reservation_id = $1;
+      `;
+
+      const updateStatusResult = await client.query(updateStatusQuery, [reservation_id, reservation_status]);
+
+      res.status(200).json({ message: 'Reservation status updated successfully' });
   } catch (err) {
       console.error(err.message);
       res.status(500).json({ message: 'Internal server error' });
   }
 }
+
 
 module.exports = { getRoomSchedule, searchroom, reservation, getreservation, updatestatus };
