@@ -11,6 +11,8 @@ const classController = require('../controller/class.controller.js');
  *       - Admin - class
  *     summary: Get class schedule for rooms
  *     description: Retrieve the class schedule for rooms.
+ *     security:
+ *       - Authorization: []
  *     responses:
  *       200:
  *         description: Successful response. Returns the class schedule for rooms.

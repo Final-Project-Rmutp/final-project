@@ -41,32 +41,8 @@ async function getschedule(req, res) {
         const userId = req.user.id
         const reservationsResult = await client.query(reservationsQuery, [userId]);
 
-        // Organize reservations by room_number and day_of_week
-        const reservationsByRoom = reservationsResult.rows.reduce((acc, row) => {
-            const { room_number, day_of_week, subject_name, start_time, end_time } = row;
 
-            if (!acc[room_number]) {
-                acc[room_number] = {};
-            }
-
-            acc[room_number][day_of_week] = [...(acc[room_number][day_of_week] || []), { subject_name, start_time, end_time }];
-
-            return acc;
-        }, {});
-
-        // Ensure all rooms have an entry for each day of the week
-        const uniqueRoomNumbers = [...new Set(reservationsResult.rows.map(row => row.room_number))];
-        const allDaysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-
-        const formattedResponse = uniqueRoomNumbers.reduce((acc, room_number) => {
-            acc[room_number] = allDaysOfWeek.reduce((daysAcc, day) => {
-                daysAcc[day] = reservationsByRoom[room_number]?.[day] || [];
-                return daysAcc;
-            }, {});
-            return acc;
-        }, {});
-
-        res.status(200).json(formattedResponse);
+        res.status(200).json(reservationsResult.rows);
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ message: 'Internal server error' });
