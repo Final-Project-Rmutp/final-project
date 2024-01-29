@@ -1,6 +1,6 @@
 import React,{ useEffect }from "react";
 import useReportAdminList from "./useReportList";
-import { Button, Chip, Sheet, Table, } from '@mui/joy';
+import { Button, Chip, Sheet, Table, Checkbox} from '@mui/joy';
 import {
   Tbody,
   Theader,
@@ -19,15 +19,56 @@ const ReportList: React.FC = () => {
         handleChangeRowsPerPage, 
         fetchReportList
     } = useReportAdminList();
+    const [selectedItems, setSelectedItems] = React.useState<number[]>([]);
+    const [selectAllChecked, setSelectAllChecked] = React.useState(false);
 
-    const updateReportStatus = async (reportId: number, currentStatus: string) => {
-        const newStatus = currentStatus === "1" ? "0" : "1";
+    const handleToggleCheckbox = (reportId: number) => {
+        const updatedSelection = selectedItems.includes(reportId)
+          ? selectedItems.filter((id) => id !== reportId)
+          : [...selectedItems, reportId];
+        setSelectedItems(updatedSelection);
+      };
+      
+      const handleToggleSelectAll = () => {
+        const allIds = reportList.map((item) => item.report_id);
+        const updatedSelection = selectAllChecked ? [] : allIds;
+        setSelectedItems(updatedSelection);
+        setSelectAllChecked(!selectAllChecked);
+      };
+
+      const updateReportStatus = async (reportId: number, status: string) => {
+        const newStatus = status === "Cancel" ? "0" : status === "In Progress" ? "1" : "2";
         const response = await axiosInstance.patch(`/admin/updatereportstatus/${reportId}`, {
             report_status: newStatus,
         });
         await fetchReportList();
         return response.data;
     };
+    
+    const handleCancel = async () => {
+        for (const reportId of selectedItems) {
+          await updateReportStatus(Number(reportId), "Cancel");
+        }
+        await fetchReportList();
+        setSelectedItems([]);
+      };
+      
+      const handleApprove = async () => {
+        for (const reportId of selectedItems) {
+          await updateReportStatus(Number(reportId), "Approve");
+        }
+        await fetchReportList();
+        setSelectedItems([]);
+      };
+      
+      const handleInProgress = async () => {
+        for (const reportId of selectedItems) {
+          await updateReportStatus(Number(reportId), "In Progress");
+        }
+        await fetchReportList();
+        setSelectedItems([]);
+      };
+      
     
     useEffect(() => {
         fetchReportList();
@@ -44,7 +85,7 @@ const ReportList: React.FC = () => {
                         "--Table-lastColumnWidth": "144px",
                         "--TableRow-stripeBackground": "rgba(0 0 0 / 0.04)",
                         "--TableRow-hoverBackground": "rgba(0 0 0 / 0.08)",
-                        height: 400,
+                        height: 331,
                         overflow: "auto",
                         background: (
                         theme
@@ -83,7 +124,7 @@ const ReportList: React.FC = () => {
                         }}
                     >
                 <Theader >
-                    <tr >
+                    <tr>
                         <th>No</th>
                         <th>Name</th>
                         <th>Report</th>
@@ -99,7 +140,12 @@ const ReportList: React.FC = () => {
                         <th></th>
                         <th></th>
                         <th></th>
-                        <th></th>
+                        <th>
+                            <Checkbox
+                                checked={selectAllChecked}
+                                onChange={handleToggleSelectAll}
+                            />
+                        </th>
                     </tr>
                     </Theader>
                     <Tbody>
@@ -111,14 +157,15 @@ const ReportList: React.FC = () => {
                             <th>{item.report_detail}</th>
                             <th>{formatTimestamp(item.timestamp)}</th>
                             <th>
-                                <Chip color={item.report_status.toString() === "1" ? "success" : "warning"}variant="solid" size="lg">
-                                    {item.report_status.toString() === "1"? "Success" : "Wait"}
+                                <Chip color={item.report_status === 0 ? "danger" : item.report_status === 1 ? "warning" : "success"} variant="solid" size="lg">
+                                    {item.report_status === 0 ? "Cancel" : item.report_status === 1 ? "In Progress" : "Approve"}
                                 </Chip>
                             </th>
                             <th>
-                                <Button
-                                    onClick={() => updateReportStatus(item.report_id, item.report_status.toString())}>Update Status
-                                </Button>
+                                <Checkbox
+                                    checked={selectedItems.includes(item.report_id)}
+                                    onChange={() => handleToggleCheckbox(item.report_id)}
+                                />
                             </th>
                             </tr>
                         ))}
@@ -135,6 +182,23 @@ const ReportList: React.FC = () => {
                 />
             </div>
             </TableContainer>
+            <div className="d-flex mx-auto gap-3 mt-3">
+                    <Button color="success" size="lg" onClick={handleApprove}
+                        disabled={selectedItems.length === 0}
+                        >
+                    Approve
+                    </Button>
+                    <Button color="warning" size="lg" onClick={handleInProgress}
+                        disabled={selectedItems.length === 0}
+                        >
+                    In Progress
+                    </Button>
+                    <Button color="danger" size="lg" onClick={handleCancel}
+                        disabled={selectedItems.length === 0}
+                        >
+                    Cancel
+                    </Button>
+            </div>
         </HeadList>
     );
 };

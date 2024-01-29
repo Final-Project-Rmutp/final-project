@@ -94,7 +94,7 @@ const ReservedList: React.FC = () => {
                         "--Table-lastColumnWidth": "144px",
                         "--TableRow-stripeBackground": "rgba(0 0 0 / 0.04)",
                         "--TableRow-hoverBackground": "rgba(0 0 0 / 0.08)",
-                        height: 400,
+                        height: 346,
                         overflow: "auto",
                         background: (
                         theme
@@ -173,8 +173,8 @@ const ReservedList: React.FC = () => {
                             <th>{item.account_type}</th>
                             <th>{item.reservation_reason}</th>
                             <th>
-                              <Chip color={item.reservation_status === "cancel" ? "danger" :
-                              item.reservation_status === "in progress"? "warning": "success"}
+                              <Chip color={item.reservation_status === "Cancel" ? "danger" :
+                              item.reservation_status === "In progress"? "warning": "success"}
                               variant="solid" 
                               size="lg">
                                 {item.reservation_status}
@@ -205,16 +205,22 @@ const ReservedList: React.FC = () => {
                 />
             </div>
             </TableContainer>
-              <div className="d-flex mx-auto">
-                <Button color="success" onClick={handleApprove}>
-                  Approve
-                </Button>
-                <Button color="warning" onClick={handleInProgress}>
-                  In Progress
-                </Button>
-                <Button color="danger"onClick={handleCancel}>
-                  Cancel
-                </Button>
+              <div className="d-flex mx-auto gap-3 mt-3">
+                      <Button color="success" size="lg" onClick={handleApprove}
+                          disabled={selectedItems.length === 0}
+                          >
+                      Approve
+                      </Button>
+                      <Button color="warning" size="lg" onClick={handleInProgress}
+                          disabled={selectedItems.length === 0}
+                          >
+                      In Progress
+                      </Button>
+                      <Button color="danger" size="lg" onClick={handleCancel}
+                          disabled={selectedItems.length === 0}
+                          >
+                      Cancel
+                      </Button>
               </div>
                     {/* <Modal open={isModalOpen} onClose={handleCloseModal}>
                       <ModalDialog

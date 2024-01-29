@@ -22,11 +22,11 @@ const HomeUser: React.FC = () => {
             className="py-24 sm:py-32 md:py-40 relative"
             style={{
             width: "100%",
-            height: "800px",
+            height: "100vh",
             position: "relative",
             ...(mode === "dark"
                 ? { background: "linear-gradient(to bottom, #020420, #0F172A)" }
-                : { background: "#fff" }),
+                : { background: "#AA96DA" }),
             padding: 5,
             }}
         >

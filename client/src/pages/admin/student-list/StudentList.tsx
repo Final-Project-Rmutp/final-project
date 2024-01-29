@@ -42,8 +42,12 @@ const StudentList: React.FC = () => {
     editingUser,
     searchTerm,
     // setSearchTerm,
+    citizenIdError,
+    pinIdError,
     handleAddConfirmed,
     handleInputChange,
+    handleInputChangeCitizen,
+    handleInputChangePin,
     handleInputEditChange,
     handleAdd,
     handleEdit,
@@ -82,7 +86,8 @@ const StudentList: React.FC = () => {
   );
   const [selectedItem, setSelectedItem] = React.useState<ListItem | null>(null);
   
-
+  
+  
   return (
     <HeadList>
       <TableContainer>
@@ -94,7 +99,7 @@ const StudentList: React.FC = () => {
             "--Table-lastColumnWidth": "144px",
             "--TableRow-stripeBackground": "rgba(0 0 0 / 0.04)",
             "--TableRow-hoverBackground": "rgba(0 0 0 / 0.08)",
-            height: 400,
+            height: 425,
             overflow: "auto",
             background: (
               theme
@@ -424,23 +429,27 @@ const StudentList: React.FC = () => {
                   <FormLabel>Student ID</FormLabel>
                   <Input
                     required
+                    error={pinIdError}
                     name="pin"
                     value={AddUser.pin}
-                    onChange={handleInputChange}
+                    onChange={handleInputChangePin}
                     fullWidth
                     size="lg"
                   />
+                  {pinIdError && <p style={{ color: 'red' }}>Citizen ID is required and must be valid.</p>}
                 </FormControl>
                 <FormControl>
                   <FormLabel>ID Card</FormLabel>
                   <Input
                     required
+                    error={citizenIdError}
                     name="citizen_id"
                     value={AddUser.citizen_id}
-                    onChange={handleInputChange}
+                    onChange={handleInputChangeCitizen}
                     fullWidth
                     size="lg"
                   />
+                  {citizenIdError && <p style={{ color: 'red' }}>Citizen ID is required and must be valid.</p>}
                 </FormControl>
                 <FormControl>
                   <FormLabel>FirstName</FormLabel>

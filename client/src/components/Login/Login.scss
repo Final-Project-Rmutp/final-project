@@ -1,8 +1,9 @@
+
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .login-form {
@@ -68,6 +69,7 @@ h1 {
 .input-login{
   label{
     font-size: 16px;
+    font-weight: 600;
     color: #efefef;
   }
   input{
@@ -172,13 +174,41 @@ h1 {
 }
 
 
+.login-username{
+  position: relative;
+  #input-username{
+    padding:0 48px;
+  }
+  .username-toggle-left{
+    transition: transform 0.3s ease;
+    position: absolute;
+    top: 43px;
+    left: 13px;
+    color: #D0A2F7;
+    z-index: 2;
+    font-size: 26px;
+  }
+}
+
 .login-password{
   position: relative;
+  #input-pass{
+    padding:0 48px;
+  }
+  .password-toggle-left{
+    transition: transform 0.3s ease;
+    position: absolute;
+    top: 43px;
+    left: 13px;
+    color: #D0A2F7;
+    z-index: 2;
+    font-size: 26px;
+  }
   .password-toggle{
     cursor: grab;
     transition: transform 0.3s ease;
     position: absolute;
-    top: 53px;
+    top: 45px;
     right: 20px;
     color: #D0A2F7;
 

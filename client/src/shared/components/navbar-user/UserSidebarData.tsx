@@ -17,13 +17,13 @@ export const UserSidebarData = [
     },
     {
         title: 'Status',
-        path: '',
+        path: 'status-user',
         icon:''
         // icon: <Icon icon="fluent-mdl2:sync-status-solid" color="#0077B2" />
     },
     {
         title: 'Report',
-        path: '',
+        path: 'report-user',
         icon:''
         // icon: <Icon icon="fluent-mdl2:report-warning" color="red"  />
     }

@@ -1,5 +1,6 @@
 import {useCallback, useEffect, useState } from "react";
 import axiosInstance from "../../../environments/axiosInstance";
+import RoomService from "../../../auth/service/RoomService";
 export class reservedList {
     id!:string;
     fullname!:string;
@@ -25,20 +26,15 @@ const useReservedList = () => {
       reservation_reason: "",
     });
     const fetchReservedList = useCallback(async () => {
-      const response = await axiosInstance.get("/reservation/getreservation", {
-        params: {
-          page: 0,
-          pageSize: 0,
-        },
-      });
-      setListItems(response.data);
-      return response.data;
+          const response = await RoomService.getReservationList({ page, pageSize: rowsPerPage });
+          setListItems(response);
+          return response.data;
 
-      }, []);
+    }, [page, rowsPerPage]);
 
-      useEffect(() => {
-        fetchReservedList();
-      }, [fetchReservedList]);
+    useEffect(() => {
+      fetchReservedList();
+    }, [fetchReservedList]);
 
     const searchRoom = async () => {
         const response = await axiosInstance.post("/reservation/searchroom", {
@@ -61,16 +57,6 @@ const useReservedList = () => {
         return response.data
     };
   
-    const getReservations = async () => {
-        const response = await axiosInstance.get("/reservation/getreservation", {
-          params: {
-            page: 1,
-            pageSize: 10,
-          },
-        });
-        return response.data
-
-    };
   
     const updateReservationStatus = async (
       currentStatus: string,
@@ -89,6 +75,7 @@ const useReservedList = () => {
       );
       return response.data;
     };
+    
     const handleChangePage = async (newPage: number) => {
         setPage(newPage);
         await fetchReservedList();
@@ -108,7 +95,6 @@ const useReservedList = () => {
         handleChangePage,
         handleChangeRowsPerPage,
         fetchReservedList,
-        getReservations,
         updateReservationStatus,
         reserveRoom,
         searchRoom,

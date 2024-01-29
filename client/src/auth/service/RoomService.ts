@@ -60,19 +60,22 @@ const RoomService = {
         const response = await axiosInstance.patch(`/admin/room/updateroom/${roomId}`, roomData);
         return response.data;
     },
-    getAdminReportList: async () => {
-        const response = await axiosInstance.get(`/admin/getreport/`);
+    getAdminReportList: async ({ page, pageSize }: GetAllRoomsParams) => {
+        const response = await axiosInstance.get('/admin/getreport',{
+            params: { page, pageSize },
+        });
         return response.data;
     },
     searchRoom: async (searchRoom: SearchRoomParams) => {
         const response = await axiosInstance.post('/reservation/searchroom', searchRoom);
         return response.data;
     },
-    getReservationList: async () => {
-        const response = await axiosInstance.get('/reservation/getreservation');
+    getReservationList: async ({ page, pageSize }: GetAllRoomsParams) => {
+        const response = await axiosInstance.get('/reservation/getreservation',{
+            params: { page, pageSize },
+        });
         return response.data;
     },
-
     addClass: async (classData: AddClassParams) => {
         const response = await axiosInstance.post('/class/addclass', classData);
         return response.data;

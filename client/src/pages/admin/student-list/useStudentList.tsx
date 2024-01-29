@@ -14,7 +14,6 @@ const useStudentList = () => {
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
-
   const {
     user,
     editingUser,
@@ -26,6 +25,8 @@ const useStudentList = () => {
     resetUser,
     handleInputEditChange,
   } = useUserState();
+  const [citizenIdError, setCitizenIdError] = useState(false);
+  const [pinIdError, setPinIdError] = useState(false);
 
   const [searchTerm, setSearchTerm] = React.useState("");
   const [image, setImage] = React.useState<File | null>(null);
@@ -141,6 +142,24 @@ const useStudentList = () => {
   };
 
   const handleAddConfirmed = async () => {
+    const isValidPinId = AddUser.pin.trim() !== '';
+
+    if (!isValidPinId) {
+        setPinIdError(true);
+        return;
+    }
+    setPinIdError(false);
+    
+    const isValidCitizenId = AddUser.citizen_id.trim() !== '' && AddUser.citizen_id.length === 13;
+
+    if (!isValidCitizenId) {
+        setCitizenIdError(true);
+        return;
+    }
+    setCitizenIdError(false);
+
+
+
     const formData = new FormData();
     formData.append("pin", AddUser.pin);
     formData.append("citizen_id", AddUser.citizen_id);
@@ -163,6 +182,7 @@ const useStudentList = () => {
       user_img_path: "" || null,
     }
     );
+
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -273,7 +293,34 @@ const useStudentList = () => {
     lastname: "",
     user_img_path: "" || null,
   };
+  const handleInputChangeCitizen = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    const maxLength = 13;
+  
+    // ตรวจสอบว่าข้อมูลที่กรอกเป็นตัวเลขทั้งหมดหรือไม่
+    const isValidCitizenId = /^\d+$/.test(value) && value.length <= maxLength;
+  
+    if (isValidCitizenId || value === '') {
+      setCitizenIdError(!isValidCitizenId);
+  
+      setAddUser((prevUser) => ({
+        ...prevUser,
+        [name]: value,
+      }));
+    }
+  };
+  
 
+  const handleInputChangePin = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    const isValidPinId = value.trim() !== '';
+    setPinIdError(!isValidPinId);
+
+    setAddUser((prevUser) => ({
+      ...prevUser,
+      [name]: value,
+    }));
+  };
   return {
     listItems,
     selectAll,
@@ -288,11 +335,15 @@ const useStudentList = () => {
     AddUser,
     editingUser,
     searchTerm,
+    citizenIdError,
+    pinIdError,
     setAddUser,
     setSearchTerm,
     handleSearch,
     setEditUser,
     handleInputChange,
+    handleInputChangeCitizen,
+    handleInputChangePin,
     handleImageChange,
     resetUser,
     handleSelectChange,

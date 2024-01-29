@@ -19,6 +19,8 @@ import Classroom from "./pages/user/classroom/Classroom";
 ////user 
 import UserProfileSidebar from "./shared/components/navbar-user/UserNavbar";
 import Room from "./pages/user/room/Reservation";
+import UserReportList from "./pages/user/report/UserReport";
+import ReservationStatus from "./pages/user/status/Status";
 
 
 ////admin
@@ -55,6 +57,8 @@ const App: React.FC = () => {
                 }
               >
                 <Route path="room-user" element={<Room />} />
+                <Route path="report-user" element={<UserReportList />} />
+                <Route path="status-user" element={<ReservationStatus />} />
               </Route>
               <Route
                 path="admin"

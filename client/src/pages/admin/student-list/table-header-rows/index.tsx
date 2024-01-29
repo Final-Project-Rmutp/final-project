@@ -12,11 +12,11 @@ export const TableHeaderRows: React.FC<{searchTerm: string, handleChange: (e: Re
   <tr>
     <th style={{ width: 50 }}>No</th>
     <th style={{ width: 80 }}>IMG</th>
-    <th style={{ width: 200 }}>FirstName</th>
-    <th style={{ width: 200 }}>LastName</th>
+    <th style={{ width: 150 }}>FirstName</th>
+    <th style={{ width: 150 }}>LastName</th>
     <th style={{ width: 200 }}>ID Card</th>
     <th style={{ width: 200 }}>Student ID</th>
-    <th style={{ width: 200 }}>Account Type</th>
+    <th style={{ width: 150 }}>Account Type</th>
     <th style={{ width: 100 }}>Actions</th>
     <th style={{ width: 200 }}>Active</th>
   </tr>

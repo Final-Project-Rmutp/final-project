@@ -1,6 +1,6 @@
 import React, {  useState } from 'react';
 // import Floor6 from '../../../components/floor6/Floor6';
-import {FormLabel, Grid, Sheet, Table,Button  } from '@mui/joy';
+import {FormLabel, Grid, Sheet, Table,Button,Modal,ModalDialog,Stack,FormControl,Input,Typography } from '@mui/joy';
 
 import "dayjs/locale/th";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -17,15 +17,21 @@ import {
   TableContainer,
 } from "../../admin/student-list/StudentListStyled";
 import { toast } from 'sonner'
+import UserService, { Reservation } from '../../../auth/service/UserService';
+import { useColorScheme } from "@mui/joy/styles";
+
 type ApiResponse = {
   availableRooms: SearchRoomParams[];
-  message?: string; // Make 'message' optional
+  message?: string;
   // recommended_rooms: SearchRoomParams[];
 };
 
 const Room: React.FC = () => {
   // const [selectedFloor, setSelectedFloor] = useState<string | null>(null);
-
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
+  const [reportDetail, setReportDetail] = useState<string>('');
+  const [reservationReason, setReservationReason] = useState<string>('');
   const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs | null>(dayjs());
   const [selectedStartTime, setSelectedStartTime] = useState<dayjs.Dayjs | null>(dayjs().startOf('day').hour(8));
   const [selectedEndTime, setSelectedEndTime] = useState<dayjs.Dayjs | null>(dayjs().startOf('day').hour(9));
@@ -40,8 +46,16 @@ const Room: React.FC = () => {
     start_time: '',
     end_time: '',
   }); 
+  const [reservationData, setReservationData] = useState<Reservation>({
+    id:'',
+    room_id:'',
+    room_number: '',
+    reservation_date: '',
+    reservation_reason:'',
+    start_time: '',
+    end_time: '',
+  }); 
   const [searchResults, setSearchResults] = useState<ApiResponse>({ availableRooms: []});
-  // const [searchResults, setSearchResults] = useState<{ availableRooms: SearchRoomParams[] , message:string}>({ availableRooms: [] });
   const [searchResultsRecom, setSearchResultsRecom] = useState<{ recommended_rooms: SearchRoomParams[], message: string }>({ recommended_rooms: [], message: '' });
   const availableFloors = ['1', '2', '3','4','5','6','7','8','9'];
   const roomNumber = ['9901', '9902', '9903'];  
@@ -56,7 +70,16 @@ const Room: React.FC = () => {
       [name]: value,
     }));
   };
-
+  const handleInputChangeReserve = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setReservationReason(value);
+    setReservationData((prevData) => ({
+      ...prevData,
+      reservation_reason: value,
+    }));
+  };
+  
+  
   const handleSubmit = async () => {
       const startTime = selectedStartTime?.format("HH:00");
       const endTime = selectedEndTime?.format("HH:00");
@@ -65,7 +88,7 @@ const Room: React.FC = () => {
         const endHour = parseInt(endTime.split(':')[0]);
   
         if (startHour < 8 || endHour > 18) {
-          console.error('Invalid time range. Please select a time between 08:00 and 18:00.');
+          toast.error('Invalid time range. Please select a time between 08:00 and 18:00.');
           return;
         }
       }
@@ -79,18 +102,64 @@ const Room: React.FC = () => {
         start_time: startTime || "",
         end_time: endTime || "",
       } as SearchRoomParams);
-      console.log("Full response:", response);
+      if (response.status === 500) {
+        toast.error('Internal server error. Please try again later.');
+        return;
+      }
         setSearchResultsRecom({
           message: response.message || '',
           recommended_rooms: response.recommended_rooms || []
         });
-        console.log("Available Rooms:", response.availableRooms);
+
         setSearchResults({
           availableRooms: response.availableRooms || [],
           message: response.message || ''
         });
 
+        if (searchResults.availableRooms && searchResults.availableRooms.length === 0) {
+          toast.error(response.message);
+          return;
+        }
+        if (searchResults.availableRooms) {
+          toast.success('available rooms found.');
+          return;
+        }
+
   }
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+  const handleConfirmClick = async () => {
+      if (selectedRoomId !== null) {
+        const reservationData = searchResults.availableRooms.find(room => room.room_id === selectedRoomId);
+        if (reservationData) {
+          const response = await UserService.reserveRoom({
+              room_id: reservationData.room_id,
+              reservation_date: selectedDate?.format("YYYY-MM-DD") || '',
+              start_time: selectedStartTime?.format("HH:00") || '',
+              end_time: selectedEndTime?.format("HH:00") || '',
+              reservation_reason: reservationReason,
+              room_number: reservationData.room_number
+          } as Reservation);
+          setModalOpen(false);
+          toast.success(response.message || "Reservation confirmed successfully");
+        }
+      }
+  };
+  
+  const handleReportClick = async () => {
+      if (selectedRoomId !== null) {
+        const response = await UserService.reportRoom({
+          room_id: selectedRoomId,
+          report_detail: reportDetail,
+        });
+        setModalOpen(false);
+        toast.success(response.message || "Reported successfully");
+      }
+  };
+  
+
 
   const handleDateChange = (
     value: dayjs.Dayjs | null,
@@ -117,9 +186,19 @@ const Room: React.FC = () => {
     return hour < 9 || hour > 18;
   };
 
+  const { mode } = useColorScheme();
 
   return (
-    <div className="container mx-auto">
+    <div className="py-24 sm:py-32 md:py-40 relative"
+    style={{
+    width: "100%",
+    height: "100vh",
+    position: "relative",
+    ...(mode === "dark"
+        ? { background: "linear-gradient(to bottom, #020420, #0F172A)" }
+        : { background: "#fff" }),
+    padding: 5,
+    }}>
       <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
         <Grid
           container
@@ -218,7 +297,7 @@ const Room: React.FC = () => {
         </Grid>
       </form>
         <HeadList>
-            <TableContainer>
+            <TableContainer color="primary" >
                 <Sheet
                     sx={{
                         "--TableCell-height": "40px",
@@ -244,7 +323,8 @@ const Room: React.FC = () => {
                     >
                     <Table
                         className="table mb-0"
-                        borderAxis="bothBetween"
+                        variant="plain"
+                        borderAxis={'xBetween' && 'yBetween'}
                         stickyHeader
                         hoverRow
                         sx={{
@@ -271,8 +351,12 @@ const Room: React.FC = () => {
                   <th>ชั้น</th>
                   <th>ประเภทห้อง</th>
                   <th>ห้อง</th>
+                  <th>จอง</th>
+                  <th>รายงาน</th>
                 </tr>
                 <tr>
+                  <th></th>
+                  <th></th>
                   <th></th>
                   <th></th>
                   <th></th>
@@ -282,19 +366,47 @@ const Room: React.FC = () => {
               <Tbody>
               {searchResults.availableRooms && searchResults.availableRooms.length > 0 ? (
                 searchResults.availableRooms.map((item, index) => (
-                  <tr className="text-center" key={item.room_id || index}>
-                    <th>{index + 1}</th>
-                    <th>{item.room_level}</th>
-                    <th>{item.room_type}</th>
-                    <th>{item.room_number}</th>
-                  </tr>
-                ))
-              ) : (
+                <tr className="text-center" key={item.room_id || index}>
+                  <th>{index + 1}</th>
+                  <th>{item.room_level}</th>
+                  <th>{item.room_type}</th>
+                  <th>{item.room_number}</th>
+                  <th>
+                    <Button onClick={() => {
+                      setModalOpen(true);
+                      setSelectedRoomId(item.room_id);
+                      setReservationData((prevData) => ({
+                        ...prevData,
+                        room_id: item.room_number,
+                      }));
+                    }}>
+                      Confirm
+                    </Button>
+                  </th>
+                  <th>
+                    <Button 
+                      color="warning"
+                      onClick={() => {
+                        setModalOpen(true);
+                        setSelectedRoomId(item.room_id);
+                      }}>
+                      Report
+                    </Button>
+                  </th>
+                </tr>
+              ))
+            ) : (
                 searchResultsRecom.recommended_rooms && searchResultsRecom.recommended_rooms.length > 0 ? (
                   <>
                     <tr>
-                      <th colSpan={4} className="text-center">
-                        Recommended Rooms:
+                      <th colSpan={6} className="text-center">
+                        <Typography
+                          color="success"
+                          variant="plain"
+                          level="h3"
+                        >
+                          Recommended Rooms
+                        </Typography>
                       </th>
                     </tr>
                     {searchResultsRecom.recommended_rooms.map((item, index) => (
@@ -303,22 +415,140 @@ const Room: React.FC = () => {
                         <th>{item.room_level}</th>
                         <th>{item.room_type}</th>
                         <th>{item.room_number}</th>
+                        <th>
+                        <Button onClick={() => {
+                        setModalOpen(true);
+                        setSelectedRoomId(item.room_id);
+                      }}>
+                        Confirm
+                      </Button>
+                        </th>
+                        <th>
+                          <Button  
+                          color="danger"
+                          onClick={() => {
+                            setModalOpen(true);
+                            setSelectedRoomId(item.room_id);
+                          }}>
+                            Report
+                          </Button>
+                        </th>
                       </tr>
                     ))}
                   </>
                 ) : (
-                  searchResultsRecom.message && (
-                  <tr>
-                    <th colSpan={4} className="text-center">
-                      {toast.error(searchResultsRecom.message)}
-                    </th>
-                  </tr>
-                  )
+                  null
                 )
               )}
               </Tbody>
             </Table>
-          </Sheet>
+            {isModalOpen && (
+                <Modal open={isModalOpen} onClose={closeModal}>
+                  <ModalDialog size="lg" layout="center" color="primary" sx={{ width: 450 }}>
+                    <Stack spacing={3}>
+                      <FormControl>
+                        <FormLabel>Room</FormLabel>
+                        <Input
+                          required
+                          name="room_id"
+                          value={reservationData.room_id}
+                          onChange={(e) => setReservationData((prevData) => ({
+                            ...prevData,
+                            room_id: e.target.value,
+                          }))}
+                          fullWidth
+                          size="lg"
+                          readOnly
+                        />
+                      </FormControl>
+                      {reservationData.room_id ? (
+                        <>
+                          <FormControl>
+                            <FormLabel>Select Date</FormLabel>
+                            <LocalizationProvider dateAdapter={NewAdapter} adapterLocale="th">
+                              <DateTime>
+                                <DatePicker
+                                  className='datetime-picker'
+                                  format="DD MMMM YYYY"
+                                  value={selectedDate}
+                                  onChange={handleDateChange}
+                                  readOnly
+                                />
+                              </DateTime>
+                            </LocalizationProvider>
+                          </FormControl>
+                          <FormControl>
+                            <FormLabel>Start Time</FormLabel>
+                            <LocalizationProvider dateAdapter={NewAdapter} adapterLocale="th">
+                              <DateTime>
+                                <TimePicker
+                                    className='TimePicker'
+                                    format='HH:00'
+                                    views={['hours']}
+                                    value={selectedStartTime}
+                                    onChange={handleStartTimeChange}
+                                    shouldDisableTime={shouldDisableStartTime}
+                                    readOnly
+                                />
+                              </DateTime>
+                            </LocalizationProvider>
+                          </FormControl>
+                          <FormControl>
+                            <FormLabel>End Time</FormLabel>
+                            <LocalizationProvider dateAdapter={NewAdapter} adapterLocale="th">
+                              <DateTime>
+                                <TimePicker
+                                    className='TimePicker'
+                                    format='HH:00'
+                                    views={['hours']}
+                                    value={selectedEndTime}
+                                    onChange={handleEndTimeChange}
+                                    shouldDisableTime={shouldDisableEndTime}
+                                    readOnly
+                                />
+                              </DateTime>
+                            </LocalizationProvider>
+                          </FormControl>
+                          <FormControl>
+                            <FormLabel>Reservation reason</FormLabel>
+                            <Input
+                              required
+                              name="reservation_reason"
+                              value={reservationReason}
+                              onChange={handleInputChangeReserve}
+                              fullWidth
+                              size="lg"
+                            />
+                          </FormControl>
+                          <div className='d-flex gap-3'>
+                            <Button onClick={handleConfirmClick}>Confirm</Button>
+                            <Button onClick={closeModal}>Cancel</Button>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <FormControl>
+                            <FormLabel>Report detail</FormLabel>
+                            <Input
+                              required
+                              name="report_detail"
+                              value={reportDetail}
+                              onChange={(e) => setReportDetail(e.target.value)}
+                              fullWidth
+                              size="lg"
+                            />
+                          </FormControl>
+                          <div className='d-flex gap-3'>
+                            <Button onClick={handleReportClick}>Report</Button>
+                            <Button onClick={closeModal}>Cancel</Button>
+                          </div>
+                        </>
+                      )}
+                    </Stack>
+                  </ModalDialog>
+                </Modal>
+              )}
+                </Sheet>
           {/* <div className="pagination-container">
             <CustomPagination
               count={100}

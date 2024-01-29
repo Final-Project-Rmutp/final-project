@@ -1,18 +1,18 @@
-import { AdminReportModel } from "../../../auth/model/report";
-import RoomService from "../../../auth/service/RoomService";
+import { UserReportModel } from "../../../auth/model/report";
+import UserService from "../../../auth/service/UserService";
 import { useCallback, useEffect, useState } from "react";
 
-const useReportAdminList = () => {
-    const [reportList, setListItems] = useState<AdminReportModel[]>([]);
+const useReportUserList = () => {
+    const [reportList, setListItems] = useState<UserReportModel[]>([]);
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
     const fetchReportList = useCallback(async () => {
-            const response = await RoomService.getAdminReportList({ page, pageSize: rowsPerPage });
+            const response = await UserService.getUserReportList();
             setListItems(response);
             return response.data;
 
-    }, [page, rowsPerPage]);
+    }, []);
 
     useEffect(() => {
         fetchReportList();
@@ -39,4 +39,4 @@ const useReportAdminList = () => {
     };
 };
 
-export default useReportAdminList;
+export default useReportUserList;

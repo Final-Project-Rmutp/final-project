@@ -8,6 +8,34 @@ interface GetAllUsersParams {
   offset?: number;
 }
 
+export interface ReservedListUserItem {
+  id:string;
+  fullname: string;
+  account_type: string;
+  room_number: string;
+  reservation_reason: string;
+  reservation_status: string;
+  reservation_date: string;
+  timestamp: string;
+  start_time: string;
+  end_time: string;
+}
+export interface Reservation {
+  id:string;
+  room_id: string;
+  room_number: string;
+  reservation_date: string;
+  start_time: string;
+  end_time: string;
+  reservation_reason: string;
+}
+export interface UserReportItem {
+  room_id:string;
+  report_detail:string;
+}
+
+
+
 const UserService = {
   searchUsers: async (searchTerm: string) => {
     const response = await axiosInstance.post("/admin/user/search", {
@@ -50,6 +78,25 @@ const UserService = {
     );
     return response.data;
   },
+  getUserReportList: async () => {
+      const response = await axiosInstance.get(`/user/getreport/`);
+      return response.data;
+  },
+  getReservationListUser: async ({ page, pageSize }: GetAllUsersParams) => {
+    const response = await axiosInstance.get('/user/getreservation',{
+        params: { page, pageSize },
+    });
+    return response.data;
+  },
+  reserveRoom: async (reservationData: Reservation) => {
+    const response = await axiosInstance.post('/reservation/reserve', reservationData);
+    return response.data;
+  },
+  reportRoom: async (reportData: UserReportItem) => {
+    const response = await axiosInstance.post('/user/room/report', reportData);
+    return response.data;
+  },
+  
 };
 
 export default UserService;

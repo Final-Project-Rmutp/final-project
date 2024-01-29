@@ -82,7 +82,9 @@
     }
   }
   body {
-    line-height:inherit;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
   }
   
   #layout {

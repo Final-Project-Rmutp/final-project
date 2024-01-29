@@ -185,7 +185,7 @@ const AdminProfileSidebar: React.FC = () => {
           const breadcrumbName = SidebarData.find((item) => item.path === name)?.name;
   
           return isLast ? (
-            <Typography color="primary">
+            <Typography key={index} color="primary">
               {breadcrumbName || name}
             </Typography>
           ) : (

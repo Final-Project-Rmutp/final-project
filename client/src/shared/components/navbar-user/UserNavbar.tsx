@@ -242,7 +242,7 @@ const UserProfileSidebar: React.FC = () => {
                     <Box sx={{ flexGrow: 0, marginBottom: 2 }}>
                       <div className="lg:flex-1 flex items-center gap-1.5">
                         <span>
-                          <Link to="/user">LOGO</Link>
+                          <Link to="/user"><Typography level="h2" variant="plain"sx={{color:"#3C0753"}}>Rmutp</Typography></Link>
                         </span>
                       </div>
                     </Box>

@@ -58,7 +58,7 @@ export const HeadList = styled('div')`
 
 export const TableContainer = styled(Sheet)`
   height: 100%;
-  border: 1px solid ${({ theme }) => theme.palette.primary.main};
+  border: 1px solid ${({ theme }) => theme.palette.neutral.softActiveColor};
   background-color: ${({ theme }) => theme.palette.main.bg};
   border-radius: 15px;  
   margin-top: 10px;
@@ -98,6 +98,7 @@ export const Tbody = styled('tbody')`
       text-align: center;
       vertical-align: middle;
       font-weight: 500;
+      border:0.2px solid ${({ theme }) => theme.palette.background.backdrop};
     }
   }
 `;

@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import Preloader from "./Preloader";
 import { Checkbox } from "@mui/material";
+import { Icon } from '@iconify/react';
 
 const apiUrl = environment.apiUrl;
 
@@ -150,14 +151,18 @@ const Login: React.FC = () => {
           </h1>
       </div>
       <div className="login-form-container">
-        <h1 className="text-center text-3xl font-semibold mb-6 text-gray-800">
+        <h1 className="text-center text-3xl font-semibold mb-3 mt-4 text-gray-800">
           Login
         </h1>
-        <div className={`input-login ${errorMessages.username ? "error" : ""}`}>
+        <div className={`input-login login-username ${errorMessages.username ? "error" : ""}`}>
           <label className="text-sm text-gray-600">
             ID Student
           </label>
+          <div className="username-toggle-left">
+            <Icon icon="ph:student-fill"  style={{color: "#D0A2F7"}} />
+          </div>
           <input
+            id="input-username"
             type="text"
             name="pin"
             value={loginData.pin}
@@ -173,7 +178,11 @@ const Login: React.FC = () => {
           <label className="text-sm text-gray-600">
             ID Card
           </label>
+          <div className="password-toggle-left">
+            <Icon icon="la:id-card-solid"   style={{color: "#D0A2F7"}} />
+          </div>
           <input
+            id="input-pass"
             type={showPassword ? "text" : "password"}
             name="citizen_id"
             value={loginData.citizen_id}
