@@ -246,7 +246,7 @@ async function getallsubject(req, res) {
                   SELECT s.subject_id, s.subject_name, s.subject_code, u.firstname
                   FROM subjects s
                   LEFT JOIN "user" u ON s.user_id = u.id
-                  ORDER BY s.subject_id ิ
+                  ORDER BY s.subject_id
                   LIMIT $1 OFFSET $2`;
 
     const values = [pageSize, offset];
