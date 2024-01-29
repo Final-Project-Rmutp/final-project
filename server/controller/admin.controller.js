@@ -245,8 +245,8 @@ async function getallsubject(req, res) {
     const query = `
                   SELECT s.subject_id, s.subject_name, s.subject_code, u.firstname
                   FROM subjects s
-                  LEFT JOIN "users" u ON s.user_id = u.id
-                  ORDER BY s.subject_id
+                  LEFT JOIN "user" u ON s.user_id = u.id
+                  ORDER BY s.subject_id ิ
                   LIMIT $1 OFFSET $2`;
 
     const values = [pageSize, offset];
@@ -499,7 +499,29 @@ async function updateFacility(req, res) {
   }
 }
 
+// Get room type
+async function getteacherid(req, res) {
+  try {
+      const query = `
+        SELECT id, firstname 
+        FROM "user"
+        WHERE account_type = 'teacher'
+      `;
+      const result = await client.query(query);
+
+      if (result.rows.length > 0) {
+          const roomTypes = result.rows.map(row => row.room_type);
+          res.status(200).json({ room_types: roomTypes });
+      } else {
+          res.status(404).json({ message: "Room Types not found" });
+      }
+  } catch (err) {
+      console.error(err.message);
+      res.status(500).json({ message: "Internal server error" });
+  }
+}
+
 
 module.exports = { adduser, getallusers, getUserById, deactivateUser, updateUser, searchuser ,addsubject,
                  getallsubject ,getSubjectById , deleteSubjectById, updateSubject, addfacility, getallfacility,
-                getFacilityById, deleteFacilityById, updateFacility};
+                getFacilityById, deleteFacilityById, updateFacility, getteacherid };
