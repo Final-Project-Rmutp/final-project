@@ -66,9 +66,10 @@ const Login: React.FC = () => {
 
       if (response.status === 200 && response.data && response.data.token) {
         setLoading(true);
-        const { token, account_role } = response.data;
+        const { token, account_role,account_type } = response.data;
         localStorage.setItem("token", token);
         localStorage.setItem("role", account_role);
+        localStorage.setItem("type", account_type);
 
           
         if (loginData.rememberMe && loginData.pin.trim() && loginData.citizen_id.trim()) {
@@ -84,10 +85,13 @@ const Login: React.FC = () => {
           setLoading(false);
           if (account_role === "admin") {
             navigate("/admin");
+          } else if (account_type === "teacher" || account_type === "student") {
+            navigate("/user");
           } else {
             navigate("/user");
           }
         }, 1000);
+        
       } else {
         setLoading(false);
         setErrorMessages((prevState) => ({

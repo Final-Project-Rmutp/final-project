@@ -33,7 +33,7 @@ const TimetableTd = styled.td`
 `;
 
 
-const Classroom: React.FC = () => {
+const ClassRoomAdmin: React.FC = () => {
     const [timetableData, setTimetableData] = useState<ClassSchedule[]>([]);
     useEffect(() => {
         const fetchSchedule = async () => {
@@ -828,7 +828,7 @@ const Classroom: React.FC = () => {
     );
   };
 
-export default Classroom;
+export default ClassRoomAdmin;
 // function formatTimeThai(time: string) {
 //     const [hour, minute] = time.split(':').map(Number);
 //     const formattedHour = String(hour).padStart(2, '0');

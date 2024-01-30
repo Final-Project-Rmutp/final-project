@@ -1,4 +1,5 @@
 // RoomService.ts
+import { SubjectItemList } from '../model/subject';
 import axiosInstance from '../../environments/axiosInstance';
 import { RoomListActionItem } from '../model/room-list';
 
@@ -48,6 +49,13 @@ const RoomService = {
         const response = await axiosInstance.get(`/admin/room/getallroom/${roomId}`);
         return response.data;
     },
+    getRoomTypeById: async (roomtypeId: string) => {
+        const response = await axiosInstance.get(`/admin/room/getroomtype/${roomtypeId}`, {
+        });
+        return response.data;
+    },
+
+    
     addRoom: async (roomData: RoomListActionItem) => {
         const response = await axiosInstance.post('/admin/room/add', roomData);
         return response.data;
@@ -85,7 +93,24 @@ const RoomService = {
         const response = await axiosInstance.get('/dashboard/getreserveddata');
         return response.data;
     },
-
+    getAllSubject: async ({ page, pageSize }: GetAllRoomsParams) => {
+        const response = await axiosInstance.get('/admin/subject/getallsubject',{
+            params: { page, pageSize },
+        });
+        return response.data;
+    },
+    addSubject: async (subjectData: SubjectItemList) => {
+        const response = await axiosInstance.post('/admin/subject/addsubject', subjectData);
+        return response.data;
+    },
+    deleteSubject: async (subjectId: string) => {
+        const response = await axiosInstance.delete(`/admin/subject/deletesubject/${subjectId}`);
+        return response.data;
+    },
+    updateSubject: async (subjectId: string, subjectData: SubjectItemList) => {
+        const response = await axiosInstance.patch(`/admin/subject/updatesubject/${subjectId}`, subjectData);
+        return response.data;
+    },
 };
 
 export default RoomService;

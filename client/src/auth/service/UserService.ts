@@ -34,6 +34,15 @@ export interface UserReportItem {
   report_detail:string;
 }
 
+export interface ClassSchedule {
+  reservation_id: number;
+  subject_name: string;
+  fullname: string;
+  room_number: string;
+  day_of_week: string;
+  start_time: string;
+  end_time: string;
+}
 
 
 const UserService = {
@@ -95,6 +104,10 @@ const UserService = {
   reportRoom: async (reportData: UserReportItem) => {
     const response = await axiosInstance.post('/user/room/report', reportData);
     return response.data;
+  },
+  getClassSchedule: async (): Promise<ClassSchedule> => {
+      const response = await axiosInstance.get("/user/getschedule");
+      return response.data as ClassSchedule;
   },
   
 };

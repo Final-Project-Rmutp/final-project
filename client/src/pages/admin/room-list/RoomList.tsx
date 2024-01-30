@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   DialogContent,
   DialogActions,
@@ -17,7 +17,7 @@ import {
 import useRoomList from "./useRoomList";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import CustomPagination from "../../../shared/components/pagination/Pagination";
-
+import RoomService from "../../../auth/service/RoomService";
 
 const RoomList: React.FC = () => {
   const {
@@ -59,7 +59,7 @@ const RoomList: React.FC = () => {
     if (!Array.isArray(values)) {
       return [];
     }
-  
+
     return values.map((value) => {
       switch (value) {
         case 1:
@@ -71,7 +71,18 @@ const RoomList: React.FC = () => {
       }
     });
   };
-  
+  const [roomTypes, setRoomTypes] = useState<string[]>([]);
+  useEffect(() => {
+    const fetchRoomTypes = async () => {
+      try {
+        const response = await RoomService.getRoomTypeById('1');
+        setRoomTypes(response.room_types || []);
+      } catch (error) {
+        console.error("Error fetching room types:", error);
+      }
+    };
+    fetchRoomTypes();
+  }, []);
   return (
           <HeadList>
             <TableContainer>
@@ -123,15 +134,15 @@ const RoomList: React.FC = () => {
                     >
                     <Theader >
                       <tr >
-                        <th style={{ width: 50 }}>No</th>
-                        <th style={{ width: 100 }}>Number</th>
+                        <th style={{ width: 30 }}>No</th>
+                        <th style={{ width: 50 }}>Number</th>
                         <th style={{ width: 100 }}>Type</th>
                         <th style={{ width: 50 }}>Capacity</th>
                         <th style={{ width: 100 }}>Facilities</th>
                         <th style={{ width: 50 }}>Floor</th>
                         <th style={{ width: 100 }}>Stauts</th>
-                        <th style={{ width: 80 }}>Actions</th>
-                        <th style={{ width: 150 }}>Active</th>
+                        <th style={{ width: 40 }}>Actions</th>
+                        <th style={{ width: 180 }}>Active</th>
                       </tr>
                       <tr>
                         <th></th>
@@ -292,13 +303,18 @@ const RoomList: React.FC = () => {
                     </FormControl>
                     <FormControl>
                       <FormLabel>Type</FormLabel>
-                      <Input required 
+                      <Select
+                        required
                         name="room_type"
                         value={editingRoom.room_type}
-                        onChange={handleInputEditChange}
-                        fullWidth
-                        size="lg"
-                      />
+                        sx={{ width: '100%' }}
+                      >
+                        {roomTypes.map((type) => (
+                          <Option key={type} value={type}>
+                            {type}
+                          </Option>
+                        ))}
+                      </Select>
                     </FormControl>
                     <FormControl>
                       <FormLabel>Capacity</FormLabel>

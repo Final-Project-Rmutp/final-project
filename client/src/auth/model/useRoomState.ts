@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { RoomListActionItem, RoomListItem } from "../model/room-list";
+import { SubjectItemList } from "./subject";
 
 const useRoomState = () => {
     const [room, setRoom] = useState<RoomListItem>({
@@ -35,6 +36,47 @@ const useRoomState = () => {
         room_level: "",
         room_status: "",
     });
+
+    const [subject, setSubject] = useState<SubjectItemList>({
+        id:"",
+        subject_id: "",
+        subject_name: "",
+        subject_code: "",
+        user_id: "",
+        firstname:""
+    });
+    const [editingSubject, setEditSubject] = useState<SubjectItemList>({
+        id:"",
+        subject_id: "",
+        subject_name: "",
+        subject_code: "",
+        user_id: "",
+        firstname:""
+    });
+    const [AddSubject, setAddSubject] = useState<SubjectItemList>({
+        id:"",
+        subject_id: "",
+        subject_name: "",
+        subject_code: "",
+        user_id: "",
+        firstname:""
+    });
+        const handleInputChangeSubject = (event: React.ChangeEvent<HTMLInputElement>) => {
+            const { name, value } = event.target;
+            setAddSubject((prevUser) => ({
+            ...prevUser,
+            [name]: value,
+            }));
+        };
+        const handleInputEditChangeSubject = (
+            event: React.ChangeEvent<HTMLInputElement>
+        ) => {
+            const { name, value } = event.target;
+            setEditSubject((prevRoom) => ({
+            ...prevRoom,
+            [name]: value,
+            }));
+        };
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
         setAddRoom((prevRoom) => ({
@@ -70,12 +112,22 @@ const useRoomState = () => {
         room,
         editingRoom,
         AddRoom,
+        AddSubject,
+        editingSubject,
+        subject,
+        //set
+        setSubject,
         setAddRoom,
         setEditRoom,
-        handleInputChange,
         resetRoom,
-        handleInputEditChange,
         setRoom,
+        setEditSubject,
+        setAddSubject,
+        //func
+        handleInputChange,
+        handleInputEditChange,
+        handleInputChangeSubject,
+        handleInputEditChangeSubject
     };
 };
 

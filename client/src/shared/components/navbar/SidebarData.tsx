@@ -33,6 +33,12 @@ export const SidebarData = [
         name:'RoomList',
         icon: <Icon icon="cil:room" color="#3F51B5"  />
     },
+    {   
+        title: 'subject',
+        path: 'subject-list',
+        name:'SubjectList',
+        icon: <Icon icon="cil:room" color="#3F51B5"  />
+    },
     {
         title: 'Report',
         path: 'report-list',

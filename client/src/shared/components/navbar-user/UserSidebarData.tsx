@@ -11,7 +11,7 @@ export const UserSidebarData = [
     },
     {
         title: 'Classroom',
-        path: '',
+        path: 'classroom',
         icon:''
         // icon: <Icon icon="ph:user-list-fill" color="#3F51B5"  />
     },

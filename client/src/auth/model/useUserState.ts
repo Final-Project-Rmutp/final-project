@@ -91,14 +91,19 @@ const useUserState = () => {
     editingUser,
     reservedUser,
     AddUser,
+
+    //////set
     setReservedUser,
     setAddUser,
     setEditUser,
+    resetUser,
+    setUser,
+
+
+    /////func
     handleInputChange,
     handleSelectChange,
-    resetUser,
     handleInputEditChange,
-    setUser,
     
   };
 };

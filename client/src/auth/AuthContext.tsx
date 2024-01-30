@@ -11,6 +11,7 @@ export interface UserModel {
   password: string;
   name: string;
   account_role: UserRole;
+  account_type: string;
 }
 
 export interface AuthContextProps {
@@ -32,9 +33,10 @@ interface AuthProviderProps {
 const initialUser: string | null = localStorage.getItem('user') || null;
 
 const initialValidCredentials: UserModel[] = [
-  { username: 'admin', password: 'admin', name: 'Admin', account_role: UserRole.admin },
-  { username: 'user', password: 'user', name: 'user', account_role: UserRole.user },
+  { username: 'admin', password: 'admin', name: 'Admin', account_role: UserRole.admin, account_type: 'admin' },
+  { username: 'user', password: 'user', name: 'user', account_role: UserRole.user, account_type: '' },
 ];
+
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<string | null>(initialUser);
@@ -54,13 +56,19 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const validateCredentials = (userModel: UserModel) => {
     return validCredentials.some(
-      (cred) => cred.username === userModel.username && cred.password === userModel.password
+      (cred) =>
+        cred.username === userModel.username &&
+        cred.password === userModel.password &&
+        cred.account_type === userModel.account_type
     );
   };
 
   const getUserInfo = (): UserModel => {
-    const userInfo: UserModel | undefined = validCredentials.find((cred) => cred.username === user);
-    return userInfo || { username: '', password: '', name: '', account_role: UserRole.admin };
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      return JSON.parse(storedUser);
+    }
+    return { username: '', password: '', name: '', account_role: UserRole.admin, account_type: '' };
   };
  
 

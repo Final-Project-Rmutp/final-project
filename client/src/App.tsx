@@ -29,6 +29,8 @@ import ReservedList from "./pages/admin/reserved-list/ReservedList";
 import RoomList from "./pages/admin/room-list/RoomList";
 import ReportList from "./pages/admin/report-list/ReportList";
 import AdminDashBoard from "./pages/admin/dashboard/Dashboard";
+import SubjectList from "./pages/admin/subject/SubjectList";
+import ClassRoomAdmin from "./pages/admin/class-room/ClassroomAdmin";
 
 
 
@@ -59,6 +61,7 @@ const App: React.FC = () => {
                 <Route path="room-user" element={<Room />} />
                 <Route path="report-user" element={<UserReportList />} />
                 <Route path="status-user" element={<ReservationStatus />} />
+                <Route path="classroom" element={<Classroom />} />
               </Route>
               <Route
                 path="admin"
@@ -71,9 +74,10 @@ const App: React.FC = () => {
                 <Route path="student-list" element={<StudentList />} />
                 <Route path="reserved-list" element={<ReservedList />} />
                 <Route path="room-list" element={<RoomList />} />
-                <Route path="classroom-list" element={<Classroom />} />
+                <Route path="classroom-list" element={<ClassRoomAdmin />} />
                 <Route path="report-list" element={<ReportList />} />
                 <Route path="dashboard" element={<AdminDashBoard />} />
+                <Route path="subject-list" element={<SubjectList />} />
               </Route>
             </Routes>
           </AuthProvider>
