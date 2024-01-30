@@ -146,8 +146,9 @@ async function updateUser(req, res) {
     const oldUserData = await client.query('SELECT user_img_path FROM "user" WHERE id = $1', [userId]);
     // Update the user data in the database
     const updateQuery =
-    'UPDATE "user" SET firstname = $1, lastname = $2, citizen_id = $3, pin = $4, user_img_path = $5 WHERE id = $6';
-    const result = await client.query(updateQuery, [firstname, lastname, citizen_id, pin, req.uploadedFileUrl, userId]);
+      'UPDATE "user" SET firstname = $1, lastname = $2, citizen_id = $3, pin = $4, user_img_path = $5 WHERE id = $6';
+    const values = [firstname, lastname, citizen_id, pin, user_img_path, userId];
+    const result = await client.query(updateQuery, values);
 
     if (oldUserData.rows && oldUserData.rows.length > 0) {
       const oldImageFileName = oldUserData.rows[0].user_img_path;
@@ -170,6 +171,7 @@ async function updateUser(req, res) {
     res.status(500).json({ message: "Internal server error" });
   }
 }
+
 
 // Search from pin,citizen_id
 async function searchuser(req, res) {
