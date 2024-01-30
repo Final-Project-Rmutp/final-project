@@ -2125,6 +2125,64 @@ router.patch("/facility/updatefacility/:facility_id", authMiddleware.isAdmin, ad
 
 /**
  * @swagger
+ * /admin/user/getteacherid:
+ *   get:
+ *     tags:
+ *     - Admin - RoomGET
+ *     summary: Get room number (authentication required)
+ *     description: Retrieve roomlevel details by roomlevel_id (authentication required).
+ *     security:
+ *       - Authorization: []
+ *     responses:
+ *       200:
+ *         description: Successful. Returns the roomlevel details.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  room_id:
+ *                    type: string
+ *                    example: 1
+ *                  room_number:
+ *                    type: string
+ *                    example: 9901
+ *       401:
+ *         description: No token provided/Invalid token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: No token provided/Invalid token
+ *       404:
+ *         description: Roomlevel not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Roomlevel not found
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Internal server error
+ */
+
+router.get("/user/getteacherid", authMiddleware.isAdmin, adminController.getteacherid);
+
+/**
+ * @swagger
  * /admin/room/getroomnumber:
  *   get:
  *     tags:
