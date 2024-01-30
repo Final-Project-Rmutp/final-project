@@ -38,6 +38,17 @@ export interface AddClassParams {
     end_time: string;
     room_id: string;
 }
+
+
+export interface ClassScheduleItem {
+    reservation_id: number;
+    subject_name: string;
+    fullname: string;
+    room_number: string;
+    day_of_week: string;
+    start_time: string;
+    end_time: string;
+}
 const RoomService = {
     getAllRoom: async ({ page, pageSize }: GetAllRoomsParams) => {
         const response = await axiosInstance.get('/admin/room/getallroom',{
@@ -109,6 +120,12 @@ const RoomService = {
     },
     updateSubject: async (subjectId: string, subjectData: SubjectItemList) => {
         const response = await axiosInstance.patch(`/admin/subject/updatesubject/${subjectId}`, subjectData);
+        return response.data;
+    },
+    getClassSchedule: async (userId: string): Promise<ClassScheduleItem[]> => {
+        const response = await axiosInstance.get('/class/getClassSchedule', {
+            params: { user_id: userId },
+        });
         return response.data;
     },
 };

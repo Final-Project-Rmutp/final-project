@@ -1,5 +1,6 @@
 // ClassRoomAdmin.tsx
-import UserService, { ClassSchedule } from '../../../auth/service/UserService';
+import axiosInstance from '../../../environments/axiosInstance';
+import RoomService, { ClassScheduleItem } from '../../../auth/service/RoomService';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 const TimetableContainer = styled.div`
@@ -34,22 +35,50 @@ const TimetableTd = styled.td`
 
 
 const ClassRoomAdmin: React.FC = () => {
-    const [timetableData, setTimetableData] = useState<ClassSchedule[]>([]);
+    const [timetableData, setTimetableData] = useState<ClassScheduleItem[]>([]);
+    const [teacherIds, setTeacherIds] = useState<{ id: number; firstname: string }[]>([]);
+    const [selectedUserId, setSelectedUserId] = useState<string>('');
+  
+    const getTeacherIds = async () => {
+      try {
+        const response = await axiosInstance.get("/admin/user/getteacherid");
+        setTeacherIds(response.data);
+      } catch (error) {
+        console.error('Error fetching teacher IDs:', error);
+      }
+    };
+  
+    const handleUserIdChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+      setSelectedUserId(event.target.value);
+    };
+  
+    const handleFetchClassSchedule = () => {
+      if (selectedUserId) {
+        RoomService.getClassSchedule(selectedUserId)
+          .then(response => {
+            setTimetableData(response);
+          })
+          .catch(error => {
+            console.error('Error fetching class schedule:', error);
+          });
+      }
+    };
+  
     useEffect(() => {
-        const fetchSchedule = async () => {
-          try {
-            const response = await UserService.getClassSchedule();
-            setTimetableData(Array.isArray(response) ? response : [response]);
-          } catch (error) {
-            console.error('Error fetching schedule:', error);
-          }
-        };
-      
-        fetchSchedule();
-      }, []);
+      getTeacherIds();
+    }, []);
     return (
         <TimetableContainer>
         <TimetableHeader>TIME TABLE</TimetableHeader>
+        <label>Select User ID: </label>
+        <select value={selectedUserId} onChange={handleUserIdChange}>
+        <option value="">Select a teacher</option>
+        {teacherIds.map((teacher) => (
+          <option key={teacher.id} value={teacher.id}>{teacher.firstname}</option>
+        ))}
+      </select>
+
+      <button onClick={handleFetchClassSchedule}>Fetch Class Schedule</button>
         <TimetableTable>
         <thead>
             <tr>
