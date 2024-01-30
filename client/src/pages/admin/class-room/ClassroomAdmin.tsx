@@ -3,6 +3,9 @@ import axiosInstance from '../../../environments/axiosInstance';
 import RoomService, { ClassScheduleItem } from '../../../auth/service/RoomService';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import {
+    Button,
+} from "@mui/joy";
 const TimetableContainer = styled.div`
   margin: 20px auto;
   text-align: center;
@@ -78,7 +81,7 @@ const ClassRoomAdmin: React.FC = () => {
         ))}
       </select>
 
-      <button onClick={handleFetchClassSchedule}>Fetch Class Schedule</button>
+      <Button onClick={handleFetchClassSchedule}>Fetch Class Schedule</Button>
         <TimetableTable>
         <thead>
             <tr>
@@ -103,7 +106,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Monday" && classItem.start_time === "08:00:00" && classItem.end_time === "09:00:00") ? null : <b>08:00 - 09:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Monday" && classItem.start_time === "08:00:00" && classItem.end_time === "09:00:00") ? null : <b>08:00 - 09:00</b>} */}
             </TimetableTd>
 
             <TimetableTd colSpan={3}>
@@ -114,7 +117,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Tuesday" && classItem.start_time === "08:00:00" && classItem.end_time === "09:00:00") ? null : <b>08:00 - 09:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Tuesday" && classItem.start_time === "08:00:00" && classItem.end_time === "09:00:00") ? null : <b>08:00 - 09:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>
             {timetableData.map((classItem) => (
@@ -124,7 +127,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Wednesday" && classItem.start_time === "08:00:00" && classItem.end_time === "09:00:00") ? null : <b>08:00 - 09:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Wednesday" && classItem.start_time === "08:00:00" && classItem.end_time === "09:00:00") ? null : <b>08:00 - 09:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>
             {timetableData.map((classItem) => (
@@ -134,7 +137,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Thursday" && classItem.start_time === "08:00:00" && classItem.end_time === "09:00:00") ? null : <b>08:00 - 09:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Thursday" && classItem.start_time === "08:00:00" && classItem.end_time === "09:00:00") ? null : <b>08:00 - 09:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>
             {timetableData.map((classItem) => (
@@ -144,7 +147,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Friday" && classItem.start_time === "08:00:00" && classItem.end_time === "09:00:00") ? null : <b>08:00 - 09:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Friday" && classItem.start_time === "08:00:00" && classItem.end_time === "09:00:00") ? null : <b>08:00 - 09:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>
             {timetableData.map((classItem) => (
@@ -154,7 +157,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Saturday" && classItem.start_time === "08:00:00" && classItem.end_time === "09:00:00") ? null : <b>08:00 - 09:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Saturday" && classItem.start_time === "08:00:00" && classItem.end_time === "09:00:00") ? null : <b>08:00 - 09:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>   
             {timetableData.map((classItem) => (
@@ -164,7 +167,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Sunday" && classItem.start_time === "08:00:00" && classItem.end_time === "09:00:00") ? null : <b>08:00 - 09:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Sunday" && classItem.start_time === "08:00:00" && classItem.end_time === "09:00:00") ? null : <b>08:00 - 09:00</b>} */}
             </TimetableTd>
             </tr>
         </tbody>
@@ -179,7 +182,7 @@ const ClassRoomAdmin: React.FC = () => {
                     )}
                     </p>
                 ))}
-                {timetableData.some(classItem => classItem.day_of_week === "Monday" && classItem.start_time === "09:00:00" && classItem.end_time === "10:00:00") ? null : <b>09:00 - 10:00</b>}
+                {/* {timetableData.some(classItem => classItem.day_of_week === "Monday" && classItem.start_time === "09:00:00" && classItem.end_time === "10:00:00") ? null : <b>09:00 - 10:00</b>} */}
                 </TimetableTd>
 
                 <TimetableTd colSpan={3}>
@@ -190,7 +193,7 @@ const ClassRoomAdmin: React.FC = () => {
                     )}
                     </p>
                 ))}
-                {timetableData.some(classItem => classItem.day_of_week === "Tuesday" && classItem.start_time === "09:00:00" && classItem.end_time === "10:00:00") ? null : <b>09:00 - 10:00</b>}
+                {/* {timetableData.some(classItem => classItem.day_of_week === "Tuesday" && classItem.start_time === "09:00:00" && classItem.end_time === "10:00:00") ? null : <b>09:00 - 10:00</b>} */}
                 </TimetableTd>
                 <TimetableTd colSpan={3}>
                 {timetableData.map((classItem) => (
@@ -200,7 +203,7 @@ const ClassRoomAdmin: React.FC = () => {
                     )}
                     </p>
                 ))}
-                {timetableData.some(classItem => classItem.day_of_week === "Wednesday" && classItem.start_time === "09:00:00" && classItem.end_time === "10:00:00") ? null : <b>09:00 - 10:00</b>}
+                {/* {timetableData.some(classItem => classItem.day_of_week === "Wednesday" && classItem.start_time === "09:00:00" && classItem.end_time === "10:00:00") ? null : <b>09:00 - 10:00</b>} */}
                 </TimetableTd>
                 <TimetableTd colSpan={3}>
                 {timetableData.map((classItem) => (
@@ -210,7 +213,7 @@ const ClassRoomAdmin: React.FC = () => {
                     )}
                     </p>
                 ))}
-                {timetableData.some(classItem => classItem.day_of_week === "Thursday" && classItem.start_time === "09:00:00" && classItem.end_time === "10:00:00") ? null : <b>09:00 - 10:00</b>}
+                {/* {timetableData.some(classItem => classItem.day_of_week === "Thursday" && classItem.start_time === "09:00:00" && classItem.end_time === "10:00:00") ? null : <b>09:00 - 10:00</b>} */}
                 </TimetableTd>
                 <TimetableTd colSpan={3}>
                 {timetableData.map((classItem) => (
@@ -220,7 +223,7 @@ const ClassRoomAdmin: React.FC = () => {
                     )}
                     </p>
                 ))}
-                {timetableData.some(classItem => classItem.day_of_week === "Friday" && classItem.start_time === "09:00:00" && classItem.end_time === "10:00:00") ? null : <b>09:00 - 10:00</b>}
+                {/* {timetableData.some(classItem => classItem.day_of_week === "Friday" && classItem.start_time === "09:00:00" && classItem.end_time === "10:00:00") ? null : <b>09:00 - 10:00</b>} */}
                 </TimetableTd>
                 <TimetableTd colSpan={3}>
                 {timetableData.map((classItem) => (
@@ -230,7 +233,7 @@ const ClassRoomAdmin: React.FC = () => {
                     )}
                     </p>
                 ))}
-                {timetableData.some(classItem => classItem.day_of_week === "Saturday" && classItem.start_time === "09:00:00" && classItem.end_time === "10:00:00") ? null : <b>09:00 - 10:00</b>}
+                {/* {timetableData.some(classItem => classItem.day_of_week === "Saturday" && classItem.start_time === "09:00:00" && classItem.end_time === "10:00:00") ? null : <b>09:00 - 10:00</b>} */}
                 </TimetableTd>
                 <TimetableTd colSpan={3}>   
                 {timetableData.map((classItem) => (
@@ -240,7 +243,7 @@ const ClassRoomAdmin: React.FC = () => {
                     )}
                     </p>
                 ))}
-                {timetableData.some(classItem => classItem.day_of_week === "Sunday" && classItem.start_time === "09:00:00" && classItem.end_time === "10:00:00") ? null : <b>09:00 - 10:00</b>}
+                {/* {timetableData.some(classItem => classItem.day_of_week === "Sunday" && classItem.start_time === "09:00:00" && classItem.end_time === "10:00:00") ? null : <b>09:00 - 10:00</b>} */}
                 </TimetableTd>
             </tr>
         </tbody>
@@ -255,7 +258,7 @@ const ClassRoomAdmin: React.FC = () => {
                     )}
                     </p>
                 ))}
-                {timetableData.some(classItem => classItem.day_of_week === "Monday" && classItem.start_time === "10:00:00" && classItem.end_time === "11:00:00") ? null : <b>10:00 - 11:00</b>}
+                {/* {timetableData.some(classItem => classItem.day_of_week === "Monday" && classItem.start_time === "10:00:00" && classItem.end_time === "11:00:00") ? null : <b>10:00 - 11:00</b>} */}
                 </TimetableTd>
 
                 <TimetableTd colSpan={3}>
@@ -266,7 +269,7 @@ const ClassRoomAdmin: React.FC = () => {
                     )}
                     </p>
                 ))}
-                {timetableData.some(classItem => classItem.day_of_week === "Tuesday" && classItem.start_time === "10:00:00" && classItem.end_time === "11:00:00") ? null : <b>10:00 - 11:00</b>}
+                {/* {timetableData.some(classItem => classItem.day_of_week === "Tuesday" && classItem.start_time === "10:00:00" && classItem.end_time === "11:00:00") ? null : <b>10:00 - 11:00</b>} */}
                 </TimetableTd>
                 <TimetableTd colSpan={3}>
                 {timetableData.map((classItem) => (
@@ -276,7 +279,7 @@ const ClassRoomAdmin: React.FC = () => {
                     )}
                     </p>
                 ))}
-                {timetableData.some(classItem => classItem.day_of_week === "Wednesday" && classItem.start_time === "10:00:00" && classItem.end_time === "11:00:00") ? null : <b>10:00 - 11:00</b>}
+                {/* {timetableData.some(classItem => classItem.day_of_week === "Wednesday" && classItem.start_time === "10:00:00" && classItem.end_time === "11:00:00") ? null : <b>10:00 - 11:00</b>} */}
                 </TimetableTd>
                 <TimetableTd colSpan={3}>
                 {timetableData.map((classItem) => (
@@ -286,7 +289,7 @@ const ClassRoomAdmin: React.FC = () => {
                     )}
                     </p>
                 ))}
-                {timetableData.some(classItem => classItem.day_of_week === "Thursday" && classItem.start_time === "10:00:00" && classItem.end_time === "11:00:00") ? null : <b>10:00 - 11:00</b>}
+                {/* {timetableData.some(classItem => classItem.day_of_week === "Thursday" && classItem.start_time === "10:00:00" && classItem.end_time === "11:00:00") ? null : <b>10:00 - 11:00</b>} */}
                 </TimetableTd>
                 <TimetableTd colSpan={3}>
                 {timetableData.map((classItem) => (
@@ -296,7 +299,7 @@ const ClassRoomAdmin: React.FC = () => {
                     )}
                     </p>
                 ))}
-                {timetableData.some(classItem => classItem.day_of_week === "Friday" && classItem.start_time === "10:00:00" && classItem.end_time === "11:00:00") ? null : <b>10:00 - 11:00</b>}
+                {/* {timetableData.some(classItem => classItem.day_of_week === "Friday" && classItem.start_time === "10:00:00" && classItem.end_time === "11:00:00") ? null : <b>10:00 - 11:00</b>} */}
                 </TimetableTd>
                 <TimetableTd colSpan={3}>
                 {timetableData.map((classItem) => (
@@ -306,7 +309,7 @@ const ClassRoomAdmin: React.FC = () => {
                     )}
                     </p>
                 ))}
-                {timetableData.some(classItem => classItem.day_of_week === "Saturday" && classItem.start_time === "10:00:00" && classItem.end_time === "11:00:00") ? null : <b>10:00 - 11:00</b>}
+                {/* {timetableData.some(classItem => classItem.day_of_week === "Saturday" && classItem.start_time === "10:00:00" && classItem.end_time === "11:00:00") ? null : <b>10:00 - 11:00</b>} */}
                 </TimetableTd>
                 <TimetableTd colSpan={3}>   
                 {timetableData.map((classItem) => (
@@ -316,7 +319,7 @@ const ClassRoomAdmin: React.FC = () => {
                     )}
                     </p>
                 ))}
-                {timetableData.some(classItem => classItem.day_of_week === "Sunday" && classItem.start_time === "10:00:00" && classItem.end_time === "11:00:00") ? null : <b>10:00 - 11:00</b>}
+                {/* {timetableData.some(classItem => classItem.day_of_week === "Sunday" && classItem.start_time === "10:00:00" && classItem.end_time === "11:00:00") ? null : <b>10:00 - 11:00</b>} */}
                 </TimetableTd>
             </tr>
         </tbody>
@@ -331,7 +334,7 @@ const ClassRoomAdmin: React.FC = () => {
                     )}
                     </p>
                 ))}
-                {timetableData.some(classItem => classItem.day_of_week === "Monday" && classItem.start_time === "11:00:00" && classItem.end_time === "12:00:00") ? null : <b>11:00 - 12:00</b>}
+                {/* {timetableData.some(classItem => classItem.day_of_week === "Monday" && classItem.start_time === "11:00:00" && classItem.end_time === "12:00:00") ? null : <b>11:00 - 12:00</b>} */}
                 </TimetableTd>
 
                 <TimetableTd colSpan={3}>
@@ -342,7 +345,7 @@ const ClassRoomAdmin: React.FC = () => {
                     )}
                     </p>
                 ))}
-                {timetableData.some(classItem => classItem.day_of_week === "Tuesday" && classItem.start_time === "11:00:00" && classItem.end_time === "12:00:00") ? null : <b>11:00 - 12:00</b>}
+                {/* {timetableData.some(classItem => classItem.day_of_week === "Tuesday" && classItem.start_time === "11:00:00" && classItem.end_time === "12:00:00") ? null : <b>11:00 - 12:00</b>} */}
                 </TimetableTd>
                 <TimetableTd colSpan={3}>
                 {timetableData.map((classItem) => (
@@ -352,7 +355,7 @@ const ClassRoomAdmin: React.FC = () => {
                     )}
                     </p>
                 ))}
-                {timetableData.some(classItem => classItem.day_of_week === "Wednesday" && classItem.start_time === "11:00:00" && classItem.end_time === "12:00:00") ? null : <b>11:00 - 12:00</b>}
+                {/* {timetableData.some(classItem => classItem.day_of_week === "Wednesday" && classItem.start_time === "11:00:00" && classItem.end_time === "12:00:00") ? null : <b>11:00 - 12:00</b>} */}
                 </TimetableTd>
                 <TimetableTd colSpan={3}>
                 {timetableData.map((classItem) => (
@@ -362,7 +365,7 @@ const ClassRoomAdmin: React.FC = () => {
                     )}
                     </p>
                 ))}
-                {timetableData.some(classItem => classItem.day_of_week === "Thursday" && classItem.start_time === "11:00:00" && classItem.end_time === "12:00:00") ? null : <b>11:00 - 12:00</b>}
+                {/* {timetableData.some(classItem => classItem.day_of_week === "Thursday" && classItem.start_time === "11:00:00" && classItem.end_time === "12:00:00") ? null : <b>11:00 - 12:00</b>} */}
                 </TimetableTd>
                 <TimetableTd colSpan={3}>
                 {timetableData.map((classItem) => (
@@ -372,7 +375,7 @@ const ClassRoomAdmin: React.FC = () => {
                     )}
                     </p>
                 ))}
-                {timetableData.some(classItem => classItem.day_of_week === "Friday" && classItem.start_time === "11:00:00" && classItem.end_time === "12:00:00") ? null : <b>11:00 - 12:00</b>}
+                {/* {timetableData.some(classItem => classItem.day_of_week === "Friday" && classItem.start_time === "11:00:00" && classItem.end_time === "12:00:00") ? null : <b>11:00 - 12:00</b>} */}
                 </TimetableTd>
                 <TimetableTd colSpan={3}>
                 {timetableData.map((classItem) => (
@@ -382,7 +385,7 @@ const ClassRoomAdmin: React.FC = () => {
                     )}
                     </p>
                 ))}
-                {timetableData.some(classItem => classItem.day_of_week === "Saturday" && classItem.start_time === "11:00:00" && classItem.end_time === "12:00:00") ? null : <b>11:00 - 12:00</b>}
+                {/* {timetableData.some(classItem => classItem.day_of_week === "Saturday" && classItem.start_time === "11:00:00" && classItem.end_time === "12:00:00") ? null : <b>11:00 - 12:00</b>} */}
                 </TimetableTd>
                 <TimetableTd colSpan={3}>   
                 {timetableData.map((classItem) => (
@@ -392,7 +395,7 @@ const ClassRoomAdmin: React.FC = () => {
                     )}
                     </p>
                 ))}
-                {timetableData.some(classItem => classItem.day_of_week === "Sunday" && classItem.start_time === "11:00:00" && classItem.end_time === "12:00:00") ? null : <b>11:00 - 12:00</b>}
+                {/* {timetableData.some(classItem => classItem.day_of_week === "Sunday" && classItem.start_time === "11:00:00" && classItem.end_time === "12:00:00") ? null : <b>11:00 - 12:00</b>} */}
                 </TimetableTd>
             </tr>
         </tbody>
@@ -407,7 +410,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Monday" && classItem.start_time === "12:00:00" && classItem.end_time === "13:00:00") ? null : <b>12:00 - 13:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Monday" && classItem.start_time === "12:00:00" && classItem.end_time === "13:00:00") ? null : <b>12:00 - 13:00</b>} */}
             </TimetableTd>
 
             <TimetableTd colSpan={3}>
@@ -418,7 +421,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Tuesday" && classItem.start_time === "12:00:00" && classItem.end_time === "13:00:00") ? null : <b>12:00 - 13:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Tuesday" && classItem.start_time === "12:00:00" && classItem.end_time === "13:00:00") ? null : <b>12:00 - 13:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>
             {timetableData.map((classItem) => (
@@ -428,7 +431,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Wednesday" && classItem.start_time === "12:00:00" && classItem.end_time === "13:00:00") ? null : <b>12:00 - 13:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Wednesday" && classItem.start_time === "12:00:00" && classItem.end_time === "13:00:00") ? null : <b>12:00 - 13:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>
             {timetableData.map((classItem) => (
@@ -438,7 +441,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Thursday" && classItem.start_time === "12:00:00" && classItem.end_time === "13:00:00") ? null : <b>12:00 - 13:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Thursday" && classItem.start_time === "12:00:00" && classItem.end_time === "13:00:00") ? null : <b>12:00 - 13:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>
             {timetableData.map((classItem) => (
@@ -448,7 +451,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Friday" && classItem.start_time === "12:00:00" && classItem.end_time === "13:00:00") ? null : <b>12:00 - 13:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Friday" && classItem.start_time === "12:00:00" && classItem.end_time === "13:00:00") ? null : <b>12:00 - 13:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>
             {timetableData.map((classItem) => (
@@ -458,7 +461,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Saturday" && classItem.start_time === "12:00:00" && classItem.end_time === "13:00:00") ? null : <b>12:00 - 13:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Saturday" && classItem.start_time === "12:00:00" && classItem.end_time === "13:00:00") ? null : <b>12:00 - 13:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>   
             {timetableData.map((classItem) => (
@@ -468,7 +471,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Sunday" && classItem.start_time === "12:00:00" && classItem.end_time === "13:00:00") ? null : <b>12:00 - 13:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Sunday" && classItem.start_time === "12:00:00" && classItem.end_time === "13:00:00") ? null : <b>12:00 - 13:00</b>} */}
             </TimetableTd>
             </tr>
         </tbody>
@@ -483,7 +486,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Monday" && classItem.start_time === "13:00:00" && classItem.end_time === "14:00:00") ? null : <b>13:00 - 14:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Monday" && classItem.start_time === "13:00:00" && classItem.end_time === "14:00:00") ? null : <b>13:00 - 14:00</b>} */}
             </TimetableTd>
 
             <TimetableTd colSpan={3}>
@@ -494,7 +497,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Tuesday" && classItem.start_time === "13:00:00" && classItem.end_time === "14:00:00") ? null : <b>13:00 - 14:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Tuesday" && classItem.start_time === "13:00:00" && classItem.end_time === "14:00:00") ? null : <b>13:00 - 14:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>
             {timetableData.map((classItem) => (
@@ -504,7 +507,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Wednesday" && classItem.start_time === "13:00:00" && classItem.end_time === "14:00:00") ? null : <b>13:00 - 14:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Wednesday" && classItem.start_time === "13:00:00" && classItem.end_time === "14:00:00") ? null : <b>13:00 - 14:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>
             {timetableData.map((classItem) => (
@@ -514,7 +517,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Thursday" && classItem.start_time === "13:00:00" && classItem.end_time === "14:00:00") ? null : <b>13:00 - 14:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Thursday" && classItem.start_time === "13:00:00" && classItem.end_time === "14:00:00") ? null : <b>13:00 - 14:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>
             {timetableData.map((classItem) => (
@@ -524,7 +527,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Friday" && classItem.start_time === "13:00:00" && classItem.end_time === "14:00:00") ? null : <b>13:00 - 14:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Friday" && classItem.start_time === "13:00:00" && classItem.end_time === "14:00:00") ? null : <b>13:00 - 14:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>
             {timetableData.map((classItem) => (
@@ -534,7 +537,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Saturday" && classItem.start_time === "13:00:00" && classItem.end_time === "14:00:00") ? null : <b>13:00 - 14:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Saturday" && classItem.start_time === "13:00:00" && classItem.end_time === "14:00:00") ? null : <b>13:00 - 14:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>   
             {timetableData.map((classItem) => (
@@ -544,7 +547,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Sunday" && classItem.start_time === "13:00:00" && classItem.end_time === "14:00:00") ? null : <b>13:00 - 14:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Sunday" && classItem.start_time === "13:00:00" && classItem.end_time === "14:00:00") ? null : <b>13:00 - 14:00</b>} */}
             </TimetableTd>
             </tr>
         </tbody>
@@ -559,7 +562,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Monday" && classItem.start_time === "14:00:00" && classItem.end_time === "15:00:00") ? null : <b>14:00 - 15:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Monday" && classItem.start_time === "14:00:00" && classItem.end_time === "15:00:00") ? null : <b>14:00 - 15:00</b>} */}
             </TimetableTd>
 
             <TimetableTd colSpan={3}>
@@ -570,7 +573,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Tuesday" && classItem.start_time === "14:00:00" && classItem.end_time === "15:00:00") ? null : <b>14:00 - 15:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Tuesday" && classItem.start_time === "14:00:00" && classItem.end_time === "15:00:00") ? null : <b>14:00 - 15:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>
             {timetableData.map((classItem) => (
@@ -580,7 +583,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Wednesday" && classItem.start_time === "14:00:00" && classItem.end_time === "15:00:00") ? null : <b>14:00 - 15:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Wednesday" && classItem.start_time === "14:00:00" && classItem.end_time === "15:00:00") ? null : <b>14:00 - 15:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>
             {timetableData.map((classItem) => (
@@ -590,7 +593,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Thursday" && classItem.start_time === "14:00:00" && classItem.end_time === "15:00:00") ? null : <b>14:00 - 15:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Thursday" && classItem.start_time === "14:00:00" && classItem.end_time === "15:00:00") ? null : <b>14:00 - 15:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>
             {timetableData.map((classItem) => (
@@ -600,7 +603,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Friday" && classItem.start_time === "14:00:00" && classItem.end_time === "15:00:00") ? null : <b>14:00 - 15:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Friday" && classItem.start_time === "14:00:00" && classItem.end_time === "15:00:00") ? null : <b>14:00 - 15:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>
             {timetableData.map((classItem) => (
@@ -610,7 +613,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Saturday" && classItem.start_time === "14:00:00" && classItem.end_time === "15:00:00") ? null : <b>14:00 - 15:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Saturday" && classItem.start_time === "14:00:00" && classItem.end_time === "15:00:00") ? null : <b>14:00 - 15:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>   
             {timetableData.map((classItem) => (
@@ -620,7 +623,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Sunday" && classItem.start_time === "14:00:00" && classItem.end_time === "15:00:00") ? null : <b>14:00 - 15:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Sunday" && classItem.start_time === "14:00:00" && classItem.end_time === "15:00:00") ? null : <b>14:00 - 15:00</b>} */}
             </TimetableTd>
         </tr>
         </tbody>
@@ -635,7 +638,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Monday" && classItem.start_time === "15:00:00" && classItem.end_time === "16:00:00") ? null : <b>15:00 - 16:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Monday" && classItem.start_time === "15:00:00" && classItem.end_time === "16:00:00") ? null : <b>15:00 - 16:00</b>} */}
             </TimetableTd>
 
             <TimetableTd colSpan={3}>
@@ -646,7 +649,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Tuesday" && classItem.start_time === "15:00:00" && classItem.end_time === "16:00:00") ? null : <b>15:00 - 16:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Tuesday" && classItem.start_time === "15:00:00" && classItem.end_time === "16:00:00") ? null : <b>15:00 - 16:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>
             {timetableData.map((classItem) => (
@@ -656,7 +659,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Wednesday" && classItem.start_time === "15:00:00" && classItem.end_time === "16:00:00") ? null : <b>15:00 - 16:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Wednesday" && classItem.start_time === "15:00:00" && classItem.end_time === "16:00:00") ? null : <b>15:00 - 16:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>
             {timetableData.map((classItem) => (
@@ -666,7 +669,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Thursday" && classItem.start_time === "15:00:00" && classItem.end_time === "16:00:00") ? null : <b>15:00 - 16:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Thursday" && classItem.start_time === "15:00:00" && classItem.end_time === "16:00:00") ? null : <b>15:00 - 16:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>
             {timetableData.map((classItem) => (
@@ -676,7 +679,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Friday" && classItem.start_time === "15:00:00" && classItem.end_time === "16:00:00") ? null : <b>15:00 - 16:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Friday" && classItem.start_time === "15:00:00" && classItem.end_time === "16:00:00") ? null : <b>15:00 - 16:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>
             {timetableData.map((classItem) => (
@@ -686,7 +689,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Saturday" && classItem.start_time === "15:00:00" && classItem.end_time === "16:00:00") ? null : <b>15:00 - 16:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Saturday" && classItem.start_time === "15:00:00" && classItem.end_time === "16:00:00") ? null : <b>15:00 - 16:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>   
             {timetableData.map((classItem) => (
@@ -696,7 +699,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Sunday" && classItem.start_time === "15:00:00" && classItem.end_time === "16:00:00") ? null : <b>15:00 - 16:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Sunday" && classItem.start_time === "15:00:00" && classItem.end_time === "16:00:00") ? null : <b>15:00 - 16:00</b>} */}
             </TimetableTd>
             </tr>
         </tbody>
@@ -711,7 +714,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Monday" && classItem.start_time === "16:00:00" && classItem.end_time === "17:00:00") ? null : <b>16:00 - 17:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Monday" && classItem.start_time === "16:00:00" && classItem.end_time === "17:00:00") ? null : <b>16:00 - 17:00</b>} */}
             </TimetableTd>
 
             <TimetableTd colSpan={3}>
@@ -722,7 +725,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Tuesday" && classItem.start_time === "16:00:00" && classItem.end_time === "17:00:00") ? null : <b>16:00 - 17:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Tuesday" && classItem.start_time === "16:00:00" && classItem.end_time === "17:00:00") ? null : <b>16:00 - 17:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>
             {timetableData.map((classItem) => (
@@ -732,7 +735,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Wednesday" && classItem.start_time === "16:00:00" && classItem.end_time === "17:00:00") ? null : <b>16:00 - 17:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Wednesday" && classItem.start_time === "16:00:00" && classItem.end_time === "17:00:00") ? null : <b>16:00 - 17:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>
             {timetableData.map((classItem) => (
@@ -742,7 +745,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Thursday" && classItem.start_time === "16:00:00" && classItem.end_time === "17:00:00") ? null : <b>16:00 - 17:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Thursday" && classItem.start_time === "16:00:00" && classItem.end_time === "17:00:00") ? null : <b>16:00 - 17:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>
             {timetableData.map((classItem) => (
@@ -752,7 +755,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Friday" && classItem.start_time === "16:00:00" && classItem.end_time === "17:00:00") ? null : <b>16:00 - 17:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Friday" && classItem.start_time === "16:00:00" && classItem.end_time === "17:00:00") ? null : <b>16:00 - 17:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>
             {timetableData.map((classItem) => (
@@ -762,7 +765,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Saturday" && classItem.start_time === "16:00:00" && classItem.end_time === "17:00:00") ? null : <b>16:00 - 17:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Saturday" && classItem.start_time === "16:00:00" && classItem.end_time === "17:00:00") ? null : <b>16:00 - 17:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>   
             {timetableData.map((classItem) => (
@@ -772,7 +775,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Sunday" && classItem.start_time === "16:00:00" && classItem.end_time === "17:00:00") ? null : <b>16:00 - 17:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Sunday" && classItem.start_time === "16:00:00" && classItem.end_time === "17:00:00") ? null : <b>16:00 - 17:00</b>} */}
             </TimetableTd>
             </tr>
         </tbody>
@@ -787,7 +790,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Monday" && classItem.start_time === "17:00:00" && classItem.end_time === "18:00:00") ? null : <b>17:00 - 18:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Monday" && classItem.start_time === "17:00:00" && classItem.end_time === "18:00:00") ? null : <b>17:00 - 18:00</b>} */}
             </TimetableTd>
 
             <TimetableTd colSpan={3}>
@@ -798,7 +801,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Tuesday" && classItem.start_time === "17:00:00" && classItem.end_time === "18:00:00") ? null : <b>17:00 - 18:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Tuesday" && classItem.start_time === "17:00:00" && classItem.end_time === "18:00:00") ? null : <b>17:00 - 18:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>
             {timetableData.map((classItem) => (
@@ -808,7 +811,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Wednesday" && classItem.start_time === "17:00:00" && classItem.end_time === "18:00:00") ? null : <b>17:00 - 18:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Wednesday" && classItem.start_time === "17:00:00" && classItem.end_time === "18:00:00") ? null : <b>17:00 - 18:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>
             {timetableData.map((classItem) => (
@@ -818,7 +821,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Thursday" && classItem.start_time === "17:00:00" && classItem.end_time === "18:00:00") ? null : <b>17:00 - 18:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Thursday" && classItem.start_time === "17:00:00" && classItem.end_time === "18:00:00") ? null : <b>17:00 - 18:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>
             {timetableData.map((classItem) => (
@@ -828,7 +831,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Friday" && classItem.start_time === "17:00:00" && classItem.end_time === "18:00:00") ? null : <b>17:00 - 18:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Friday" && classItem.start_time === "17:00:00" && classItem.end_time === "18:00:00") ? null : <b>17:00 - 18:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>
             {timetableData.map((classItem) => (
@@ -838,7 +841,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Saturday" && classItem.start_time === "17:00:00" && classItem.end_time === "18:00:00") ? null : <b>17:00 - 18:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Saturday" && classItem.start_time === "17:00:00" && classItem.end_time === "18:00:00") ? null : <b>17:00 - 18:00</b>} */}
             </TimetableTd>
             <TimetableTd colSpan={3}>   
             {timetableData.map((classItem) => (
@@ -848,7 +851,7 @@ const ClassRoomAdmin: React.FC = () => {
                 )}
                 </p>
             ))}
-            {timetableData.some(classItem => classItem.day_of_week === "Sunday" && classItem.start_time === "17:00:00" && classItem.end_time === "18:00:00") ? null : <b>17:00 - 18:00</b>}
+            {/* {timetableData.some(classItem => classItem.day_of_week === "Sunday" && classItem.start_time === "17:00:00" && classItem.end_time === "18:00:00") ? null : <b>17:00 - 18:00</b>} */}
             </TimetableTd>
             </tr>
         </tbody>

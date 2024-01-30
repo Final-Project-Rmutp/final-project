@@ -6,6 +6,7 @@ import {
 
 import { Checkbox, Button, Sheet, Table, ModalDialog, Modal, Divider, FormControl, FormLabel, Stack, Input, Box, Select,Option,
   DialogTitle,
+  Chip,
  } from '@mui/joy';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import {
@@ -336,7 +337,6 @@ const RoomList: React.FC = () => {
                         size="lg"
                       /> */}
                       <Select
-                        defaultValue={[1]}  // Use numeric values
                         required
                         name="facilities_id"
                         value={editingRoom.facilities_id}
@@ -364,13 +364,30 @@ const RoomList: React.FC = () => {
                     </FormControl>
                     <FormControl>
                       <FormLabel>Status</FormLabel>
-                      <Input required 
+                      <Select
+                        defaultValue="select"
+                        required
                         name="room_status"
                         value={editingRoom.room_status}
-                        onChange={handleInputEditChange}
-                        fullWidth
-                        size="lg"
-                      />
+                        onChange={(_, value) =>
+                          setEditRoom({ ...editingRoom, room_status: value as string })
+                        }
+                      >
+                        <Option value="0">
+                          <Chip
+                          color="danger"
+                          variant="solid"
+                          >ห้องใช้งานไม่ได้
+                          </Chip>
+                        </Option>
+                        <Option value="1">
+                        <Chip
+                          color="success"
+                          variant="solid"
+                          >ห้องใช้งานได้
+                          </Chip>
+                        </Option>
+                      </Select>
                     </FormControl>
                     </>
                     )}
