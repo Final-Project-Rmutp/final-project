@@ -537,7 +537,26 @@ async function getroomnumber(req, res) {
   }
 }
 
+async function getsubjectslist(req, res) {
+  try {
+      const query = `
+        SELECT subject_id, subject_name
+        FROM subjects
+        ORDER BY subject_name
+      `;
+      const result = await client.query(query);
+
+      const subjectsList = result.rows;
+  
+      res.status(200).json(subjectsList);
+  } catch (err) {
+      console.error(err.message);
+      res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+
 
 module.exports = { adduser, getallusers, getUserById, deactivateUser, updateUser, searchuser ,addsubject,
                  getallsubject ,getSubjectById , deleteSubjectById, updateSubject, addfacility, getallfacility,
-                getFacilityById, deleteFacilityById, updateFacility, getteacherid, getroomnumber };
+                getFacilityById, deleteFacilityById, updateFacility, getteacherid, getroomnumber , getsubjectslist };
