@@ -9,7 +9,6 @@ import {
   List,
 } from "@mui/joy";
 import { MenuItems, MenuItemLinks } from "../../../styles/global";
-import { UserSidebarData } from "./UserSidebarData";
 import "./UserNavbar.scss";
 import { Outlet, Route, Routes, useNavigate } from "react-router";
 import { toast } from "sonner";
@@ -90,7 +89,7 @@ const UserProfileSidebar: React.FC = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("userRole");
+    localStorage.removeItem("account_role");
     navigate("/");
     toast.success("Logout Successful");
   };
@@ -192,6 +191,36 @@ const UserProfileSidebar: React.FC = () => {
   };
 
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const UserSidebarData = [
+    {
+        isShow: true,
+        title: 'Reservation',
+        path: 'room-user',
+        icon:''
+        // icon: <Icon icon="fluent-mdl2:reservation-orders" color="#235726" />
+    },
+    {
+        isShow : localStorage.getItem('type') === 'teacher',
+        title: 'Classroom',
+        path: 'classroom-user',
+        icon:''
+        // icon: <Icon icon="ph:user-list-fill" color="#3F51B5"  />
+    },
+    {
+        isShow: true,
+        title: 'Status',
+        path: 'status-user',
+        icon:''
+        // icon: <Icon icon="fluent-mdl2:sync-status-solid" color="#0077B2" />
+    },
+    {
+        isShow: true,
+        title: 'Report',
+        path: 'report-user',
+        icon:''
+        // icon: <Icon icon="fluent-mdl2:report-warning" color="red"  />
+    }
+]
 
   return (
     <MaterialCssVarsProvider theme={{ [MATERIAL_THEME_ID]: materialTheme }}>
@@ -258,7 +287,9 @@ const UserProfileSidebar: React.FC = () => {
                     >
                       <List role="menubar" orientation="horizontal">
                         {UserSidebarData.map((item, index) => (
-                          <MenuItemsNav key={index}>
+                          <>
+                          {item.isShow && (
+                            <MenuItemsNav  key={index}>
                             <MenuItemLinksNav
                               to={item.path}
                               onClick={() => handleTabChange(item.title)}
@@ -273,6 +304,8 @@ const UserProfileSidebar: React.FC = () => {
                               </Typography>
                             </MenuItemLinksNav>
                           </MenuItemsNav>
+                          )} 
+                          </>
                         ))}
                       </List>
                     </Box>

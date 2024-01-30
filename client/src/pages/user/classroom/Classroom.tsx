@@ -5,6 +5,7 @@ import styled from 'styled-components';
 const TimetableContainer = styled.div`
   margin: 20px auto;
   text-align: center;
+  width:100%;
 `;
 
 const TimetableHeader = styled.h1`
@@ -34,20 +35,21 @@ const TimetableTd = styled.td`
 
 
 const Classroom: React.FC = () => {
-    const [timetableData, setTimetableData] = useState<ClassSchedule[]>([]);
-    useEffect(() => {
-        const fetchSchedule = async () => {
-          try {
-            const response = await UserService.getClassSchedule();
-            setTimetableData(response);
-          } catch (error) {
-            console.error('Error fetching schedule:', error);
-          }
-        };
-    
-        fetchSchedule();
-      }, []);
+  const [timetableData, setTimetableData] = useState<ClassSchedule[]>([]);
+  useEffect(() => {
+    const fetchSchedule = async () => {
+      try {
+        const response = await UserService.getClassSchedule();
+        setTimetableData(Array.isArray(response) ? response : [response]);
+      } catch (error) {
+        console.error('Error fetching schedule:', error);
+      }
+    };
+  
+    fetchSchedule();
+  }, []);
     return (
+      <div className="container d-flex justify-center align-items-center" style={{ height: "100vh" }}>
         <TimetableContainer>
         <TimetableHeader>TIME TABLE</TimetableHeader>
         <TimetableTable>
@@ -825,6 +827,7 @@ const Classroom: React.FC = () => {
         </tbody>
         </TimetableTable>
         </TimetableContainer>
+      </div>
     );
   };
 

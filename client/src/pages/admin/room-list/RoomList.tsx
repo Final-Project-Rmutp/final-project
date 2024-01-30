@@ -336,21 +336,21 @@ const RoomList: React.FC = () => {
                         size="lg"
                       /> */}
                       <Select
-                          defaultValue={['1']}
-                          required
-                          name="room_facilities"
-                          value={editingRoom.room_facilities.map(String)}
-                          onChange={(_, values) =>
-                            setEditRoom({
-                              ...editingRoom,
-                              room_facilities: values.map(Number),
-                            })
-                          }
-                          multiple
-                        >
-                          <Option value="1">{mapFacilityValueToLabel([1])}</Option>
-                          <Option value="2">{mapFacilityValueToLabel([2])}</Option>
-                        </Select>
+                        defaultValue={[1]}  // Use numeric values
+                        required
+                        name="facilities_id"
+                        value={editingRoom.facilities_id}
+                        onChange={(_, values) =>
+                          setEditRoom({
+                            ...editingRoom,
+                            facilities_id: values as number[],
+                          })
+                        }
+                        multiple
+                      >
+                        <Option value={1}>{mapFacilityValueToLabel([1])}</Option>
+                        <Option value={2}>{mapFacilityValueToLabel([2])}</Option>
+                      </Select>
                     </FormControl>
                     <FormControl>
                       <FormLabel>Floor</FormLabel>

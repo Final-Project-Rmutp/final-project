@@ -39,12 +39,12 @@ const ClassRoomAdmin: React.FC = () => {
         const fetchSchedule = async () => {
           try {
             const response = await UserService.getClassSchedule();
-            setTimetableData(response);
+            setTimetableData(Array.isArray(response) ? response : [response]);
           } catch (error) {
             console.error('Error fetching schedule:', error);
           }
         };
-    
+      
         fetchSchedule();
       }, []);
     return (

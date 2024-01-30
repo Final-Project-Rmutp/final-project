@@ -84,26 +84,24 @@ const useRoomList = () => {
   const handleEditConfirmed = async () => {
     if (editingRoom) {
       try {
-        const response = await RoomService.updateRoom(editingRoom.room_id, { ...editingRoom });
-        if (response.status === 200) {
-          console.log("Room updated successfully:", response.data);
-          setEditRoom({
-            id: "",
-            room_id: "",
-            room_number: "",
-            room_type: "",
-            room_capacity: "",
-            room_facilities:[0, 1],
-            facilities_id:[1, 2],
-            room_level: "",
-            room_status: "",
-          });
-        } else {
-          console.error("Failed to update room:", response.data);
-        }
+        await RoomService.updateRoom(editingRoom.room_id, {
+          id:editingRoom.id,
+          room_id: editingRoom.room_id,
+          room_number: editingRoom.room_number,
+          room_type: editingRoom.room_type,
+          room_capacity: editingRoom.room_capacity,
+          room_facilities: editingRoom.room_facilities,
+          facilities_id: editingRoom.facilities_id,
+          room_level: editingRoom.room_level,
+          room_status: editingRoom.room_status,
+        });
+  
+        console.log('Room updated successfully');
       } catch (error) {
-        console.error("Error updating room:", error);
+        console.error('Error updating room:', error);
+        // Handle error (show message to user, etc.)
       }
+  
       await fetchRoomList();
       setEditDialogOpen(false);
     }

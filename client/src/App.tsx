@@ -14,13 +14,14 @@ import UnAuthenticatedRoute from "./auth/UnAuthenticatedRoute";
 import { Toaster} from 'sonner'
 
 // import CssBaseline from '@mui/material/CssBaseline';
-import Classroom from "./pages/user/classroom/Classroom";
 
 ////user 
 import UserProfileSidebar from "./shared/components/navbar-user/UserNavbar";
 import Room from "./pages/user/room/Reservation";
 import UserReportList from "./pages/user/report/UserReport";
 import ReservationStatus from "./pages/user/status/Status";
+import Classroom from "./pages/user/classroom/Classroom";
+
 
 
 ////admin
@@ -61,7 +62,7 @@ const App: React.FC = () => {
                 <Route path="room-user" element={<Room />} />
                 <Route path="report-user" element={<UserReportList />} />
                 <Route path="status-user" element={<ReservationStatus />} />
-                <Route path="classroom" element={<Classroom />} />
+                <Route path="classroom-user" element={<Classroom />} />
               </Route>
               <Route
                 path="admin"
