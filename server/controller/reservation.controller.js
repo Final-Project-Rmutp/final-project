@@ -178,6 +178,7 @@ async function isRoomAvailable(roomId, reservationDate, startTime, endTime) {
   }
 
 async function reservation(req, res) {
+  const action_type = 13; // reservation
     try {
       // Extract reservation details from the request body
       const { room_id, reservation_date, start_time, end_time, reservation_reason } = req.body;
@@ -210,11 +211,12 @@ async function reservation(req, res) {
       const reservationResult = await client.query(insertReservationQuery, values);
   
       const newReservation = reservationResult.rows[0];
-  
+      const insertedId = reservationResult.rows[0].reservation_id;
+      logging(action_type, userId, "Success", `Room reservation successful. Reservation ID: ${insertedId}`);
       res.status(201).json({ message: 'Reservation created successfully', reservation: newReservation });
     } catch (error) {
       console.error(error.message);
-  
+      logging(action_type, userId, "Error", err.message);
       // Handle specific errors if needed
       if (error.code === '23505') {
         // Unique violation (e.g., duplicate reservation for the same user and room)

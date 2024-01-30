@@ -59,5 +59,37 @@ async function getreserveddata(req, res) {
     }
 }
 
+async function getdaudata(req, res) {
+    try {
+        const dashboardQuery = `
+            SELECT 
+                CAST(timestamp AS DATE) AS "Date",
+                COUNT(DISTINCT user_id) AS "DAU"
+            FROM action_logs
+            WHERE action_type_id = 1
+            GROUP BY CAST(timestamp AS DATE)
+        `;
 
-module.exports = { getreserveddata };
+        const dashboardResult = await client.query(dashboardQuery);
+        
+        // Format the data for the dashboard response
+        const formattedData = dashboardResult.rows.map(row => ({
+            x: row.Date.toISOString().split('T')[0], // Extract date portion
+            y: row.DAU
+        }));
+
+        // Construct the response object
+        const response = {
+            dataset: formattedData
+        };
+
+        res.status(200).json(response);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+
+
+module.exports = { getreserveddata, getdaudata };
