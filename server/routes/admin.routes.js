@@ -2239,4 +2239,61 @@ router.get("/user/getteacherid", authMiddleware.isAdmin, adminController.getteac
 
 router.get("/room/getroomnumber", authMiddleware.isAdmin, adminController.getroomnumber);
 
+/**
+ * @swagger
+ * /admin/subject/getsubjectslist:
+ *   get:
+ *     tags:
+ *     - Admin - subject
+ *     summary: Get subjects (authentication required)
+ *     description: Retrieve subjects details by subjects (authentication required).
+ *     security:
+ *       - Authorization: []
+ *     responses:
+ *       200:
+ *         description: Successful. Returns the Subjects details.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  subject_id:
+ *                    type: string
+ *                    example: 1
+ *                  subject_name:
+ *                    type: string
+ *                    example: HomeRoom
+ *       401:
+ *         description: No token provided/Invalid token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: No token provided/Invalid token
+ *       404:
+ *         description: Subject not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Subject not found
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Internal server error
+ */
+
+router.get("/subject/getsubjectslist", authMiddleware.isAdmin, adminController.getsubjectslist);
 module.exports = router;
