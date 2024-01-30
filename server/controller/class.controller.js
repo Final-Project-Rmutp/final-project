@@ -35,7 +35,6 @@ async function getClassSchedule(req, res) {
             const startTime = new Date(`1970-01-01T${start_time}`);
             const endTime = new Date(`1970-01-01T${end_time}`);
             const durationInHours = (endTime - startTime) / (1000 * 60 * 60);
-            console.log(durationInHours);
             if (durationInHours > 1) {
                 let currentStartTime = startTime;
                 while (currentStartTime < endTime) {
