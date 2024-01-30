@@ -104,23 +104,23 @@ const useStudentList = () => {
 
   const handleEditConfirmed = async () => {
     if (editingUser) {
-      const updatedUserData = {
-        id: editingUser.id,
-        pin: editingUser.pin,
-        citizen_id: editingUser.citizen_id,
-        firstname: editingUser.firstname,
-        lastname: editingUser.lastname,
-        user_img_path: editingUser.user_img_path,
-      };
-
-      const response = await UserService.updateUser(
-        editingUser.id,
-        updatedUserData
-      );
-
+      const formData = new FormData();
+      formData.append("pin", editingUser.pin);
+      formData.append("citizen_id", editingUser.citizen_id);
+      formData.append("firstname", editingUser.firstname);
+      formData.append("lastname", editingUser.lastname);
+  
+      if (image) {
+        // If image is provided, append it to the FormData
+        formData.append("image", image as File);
+      }
+  
+      const response = await UserService.updateUser(editingUser.id, formData);
+  
       if (response.status === 200) {
         setEditUser(initialUserState);
       }
+  
       await fetchUserList();
       markItemAsUpdated(editingUser.id);
       setEditDialogOpen(false);
@@ -184,7 +184,7 @@ const useStudentList = () => {
     );
 
   };
-
+  
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files && files.length > 0) {

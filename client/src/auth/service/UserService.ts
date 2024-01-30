@@ -80,11 +80,28 @@ const UserService = {
     );
     return response.data;
   },
-  updateUser: async (userId: string, userData: UserData) => {
-    const response = await axiosInstance.patch(
-      `/admin/user/updateuser/${userId}`,
-      userData
-    );
+  updateUser: async (userId: string, userData: UserData | FormData) => {
+    let response;
+
+    if (userData instanceof FormData) {
+      // If userData is FormData (contains an image), send as multipart/form-data
+      response = await axiosInstance.patch(
+        `/admin/user/updateuser/${userId}`,
+        userData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+    } else {
+      // If userData is UserData (no image), send as JSON
+      response = await axiosInstance.patch(
+        `/admin/user/updateuser/${userId}`,
+        userData
+      );
+    }
+
     return response.data;
   },
   getUserReportList: async () => {

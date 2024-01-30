@@ -215,9 +215,7 @@ const SubjectList: React.FC = () => {
         
             const responseData = response.data;
 
-            // ตรวจสอบ response และทำตามที่ต้องการ
             if (responseData.message === "Class added successfully") {
-              // เพิ่มข้อมูลใหม่เข้าไปใน state timetableData
                 setTimetableData([...timetableData, responseData.newClass]);
                 console.log("Class added successfully");
             } else {
@@ -225,7 +223,6 @@ const SubjectList: React.FC = () => {
             }
             handleCloseAddClassDialog();
         
-            // Reset the input values
             setAddClass({
                 subject_id: "",
                 day_of_week: "",
@@ -478,7 +475,7 @@ const SubjectList: React.FC = () => {
                 <Stack spacing={3}>
                 {editingSubject && (
                     <>
-                    <FormControl>
+                    {/* <FormControl>
                         <FormLabel>Id</FormLabel>
                         <Input
                         autoFocus
@@ -489,7 +486,7 @@ const SubjectList: React.FC = () => {
                         fullWidth
                         size="lg"
                         />
-                    </FormControl>
+                    </FormControl> */}
                     <FormControl>
                         <FormLabel>Number</FormLabel>
                         <Input
@@ -503,7 +500,7 @@ const SubjectList: React.FC = () => {
                         />
                     </FormControl>
                     <FormControl>
-                        <FormLabel>Type</FormLabel>
+                        <FormLabel>Code</FormLabel>
                         <Input
                         required
                         name="subject_code"
@@ -517,6 +514,8 @@ const SubjectList: React.FC = () => {
                         <FormLabel>User</FormLabel>
                         <Select
                             required
+                            color="neutral"
+                            variant="soft"
                             name="user_id"
                             value={editingSubject.user_id}
                             onChange={(_, value) =>
@@ -588,6 +587,8 @@ const SubjectList: React.FC = () => {
                         <FormLabel>User ID</FormLabel>
                         <Select
                             required
+                            color="neutral"
+                            variant="soft"
                             name="user_id"
                             value={AddSubject.user_id}
                             onChange={(_, value) =>
@@ -635,6 +636,8 @@ const SubjectList: React.FC = () => {
                     <FormLabel>Room Id</FormLabel>
                         <Select
                             required
+                            color="neutral"
+                            variant="soft"
                             name="room_id"
                             value={AddClass.room_id}
                             onChange={(_, value) =>
@@ -643,7 +646,7 @@ const SubjectList: React.FC = () => {
                             size="lg"
                         >
                             {roomnumber.map((user) => (
-                                <Option key={user.room_id} value={user.room_id}>
+                                <Option key={user.room_id} value={user.room_number}>
                                     {user.room_number}
                                 </Option>
                             ))}
@@ -683,7 +686,7 @@ const SubjectList: React.FC = () => {
                             size="lg"
                         />
                     </FormControl>
-                    <FormControl>
+                    {/* <FormControl>
                         <FormLabel>Subject ID</FormLabel>
                         <Input
                             required
@@ -693,7 +696,7 @@ const SubjectList: React.FC = () => {
                             fullWidth
                             size="lg"
                         />
-                    </FormControl>
+                    </FormControl> */}
                 </>
                 <DialogActions>
                     <Button type="cancel" onClick={handleCloseAddClassDialog}>

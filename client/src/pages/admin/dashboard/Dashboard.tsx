@@ -66,21 +66,24 @@ const AdminDashboard: React.FC = () => {
 
     fetchDashboardData();
   }, []);
-
+  if (!dashboardData) {
+    // If data is still loading or fetching, you can return a loading indicator
+    return <div>Loading...</div>;
+  }
   
   const mostBookedRoomData = {
-    roomNumber: dashboardData?.most_reserved_room.room_number || '',
-    bookings: dashboardData?.most_reserved_room.reservations || '0',
+    roomNumber: dashboardData?.most_reserved_room?.room_number || '',
+    bookings: dashboardData?.most_reserved_room?.reservations || '0',
   };
   
   const leastBookedRoomData = {
-    roomNumber: dashboardData?.least_reserved_room.room_number || '',
-    bookings: dashboardData?.least_reserved_room.reservations || '0',
+    roomNumber: dashboardData?.least_reserved_room?.room_number || '',
+    bookings: dashboardData?.least_reserved_room?.reservations || '0',
   };
   
   const mostCancelledRoomData = {
-    roomNumber: dashboardData?.most_cancelled_room.room_number || '',
-    cancellations: dashboardData?.most_cancelled_room.cancellations || '0',
+    roomNumber: dashboardData?.most_cancelled_room?.room_number || '',
+    cancellations: dashboardData?.most_cancelled_room?.cancellations || '0',
   };
   
   const pieChartData = [

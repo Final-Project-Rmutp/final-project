@@ -41,7 +41,10 @@ export interface AddClassParams {
 
 
 export interface ClassScheduleItem {
-    reservation_id: number;
+    id:string;
+    class_id:string;
+    subject_id: string;
+    reservation_id: string;
     subject_name: string;
     fullname: string;
     room_number: string;
@@ -126,6 +129,14 @@ const RoomService = {
         const response = await axiosInstance.get('/class/getClassSchedule', {
             params: { user_id: userId },
         });
+        return response.data;
+    },
+    deleteClass: async (classId: string) => {
+        const response = await axiosInstance.delete(`/class/deleteclass/${classId}`);
+        return response.data;
+    },
+    updateClass: async (classId: string,dataClass:ClassScheduleItem) => {
+        const response = await axiosInstance.patch(`/class/updateclass/${classId}`,dataClass);
         return response.data;
     },
 };

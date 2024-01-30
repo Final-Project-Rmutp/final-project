@@ -105,9 +105,9 @@ const ReservationStatus: React.FC = () => {
                         <tr >
                             <th>No</th>
                             <th>Name</th>
-                            <th>Report</th>
-                            <th>Status</th>
-                            <th>Date time</th>
+                            <th>Account Type</th>
+                            <th>Rooom</th>
+                            <th>Detail Report</th>
                             <th>Status</th>
                             <th>Reservation Date</th>
                             <th>Start time</th>
