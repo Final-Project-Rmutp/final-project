@@ -4,7 +4,8 @@ const { logging } = require("../middleware/loggingMiddleware.js");
 // Read RoomSchedule
 async function getClassSchedule(req, res) {
     try {
-        const reservationsQuery = `
+        const { user_id } = req.query;
+        let reservationsQuery = `
             SELECT
                 c.class_id AS reservation_id,
                 s.subject_name,
@@ -16,9 +17,15 @@ async function getClassSchedule(req, res) {
             FROM class c
             LEFT JOIN rooms r ON c.room_id = r.room_id
             LEFT JOIN subjects s ON c.subject_id = s.subject_id
-            LEFT JOIN "user" u ON s.user_id = u.id;
+            LEFT JOIN "user" u ON s.user_id = u.id
         `;
-        const reservationsResult = await client.query(reservationsQuery);
+
+        if (user_id) {
+            reservationsQuery += ` WHERE s.user_id = $1;`;
+        }
+        
+        const queryValues = user_id ? [user_id] : [];
+        const reservationsResult = await client.query(reservationsQuery, queryValues);
 
         res.status(200).json(reservationsResult.rows);
     } catch (err) {

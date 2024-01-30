@@ -13,6 +13,12 @@ const classController = require('../controller/class.controller.js');
  *     description: Retrieve the class schedule for rooms.
  *     security:
  *       - Authorization: []
+ *     parameters:
+ *       - in: query
+ *         name: user_id
+ *         description: User ID to fetch
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: Successful response. Returns the class schedule for rooms.

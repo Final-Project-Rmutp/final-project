@@ -499,7 +499,7 @@ async function updateFacility(req, res) {
   }
 }
 
-// Get room type
+// Get teacher id
 async function getteacherid(req, res) {
   try {
       const query = `
@@ -518,7 +518,26 @@ async function getteacherid(req, res) {
   }
 }
 
+// Get room number
+async function getroomnumber(req, res) {
+  try {
+      const query = `
+        SELECT room_id, room_number 
+        FROM rooms
+        ORDER BY room_number
+      `;
+      const result = await client.query(query);
+
+      const Data = result.rows;
+  
+      res.status(200).json(Data);
+  } catch (err) {
+      console.error(err.message);
+      res.status(500).json({ message: "Internal server error" });
+  }
+}
+
 
 module.exports = { adduser, getallusers, getUserById, deactivateUser, updateUser, searchuser ,addsubject,
                  getallsubject ,getSubjectById , deleteSubjectById, updateSubject, addfacility, getallfacility,
-                getFacilityById, deleteFacilityById, updateFacility, getteacherid };
+                getFacilityById, deleteFacilityById, updateFacility, getteacherid, getroomnumber };

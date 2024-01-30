@@ -2125,11 +2125,11 @@ router.patch("/facility/updatefacility/:facility_id", authMiddleware.isAdmin, ad
 
 /**
  * @swagger
- * /admin/user/getteacherid:
+ * /admin/room/getroomnumber:
  *   get:
  *     tags:
  *     - Admin - RoomGET
- *     summary: Get roomlevel by roomlevel_id (authentication required)
+ *     summary: Get room number (authentication required)
  *     description: Retrieve roomlevel details by roomlevel_id (authentication required).
  *     security:
  *       - Authorization: []
@@ -2141,12 +2141,12 @@ router.patch("/facility/updatefacility/:facility_id", authMiddleware.isAdmin, ad
  *             schema:
  *               type: object
  *               properties:
- *                  id:
+ *                  room_id:
  *                    type: string
  *                    example: 1
- *                  firstname:
+ *                  room_number:
  *                    type: string
- *                    example: "TEST"
+ *                    example: 9901
  *       401:
  *         description: No token provided/Invalid token
  *         content:
@@ -2179,6 +2179,6 @@ router.patch("/facility/updatefacility/:facility_id", authMiddleware.isAdmin, ad
  *                    example: Internal server error
  */
 
-router.get("/user/getteacherid", authMiddleware.isAdmin, adminController.getteacherid);
+router.get("/room/getroomnumber", authMiddleware.isAdmin, adminController.getroomnumber);
 
 module.exports = router;
