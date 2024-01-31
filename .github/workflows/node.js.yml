@@ -24,7 +24,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
 
-    - run: npm ci
+    - run: rm -rf node_modules && yarn install --immutable --immutable-cache --check-cache
       working-directory: server
 
     - name: Create ENV File
