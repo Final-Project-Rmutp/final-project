@@ -99,7 +99,7 @@ const StudentList: React.FC = () => {
             "--Table-lastColumnWidth": "144px",
             "--TableRow-stripeBackground": "rgba(0 0 0 / 0.04)",
             "--TableRow-hoverBackground": "rgba(0 0 0 / 0.08)",
-            height: 425,
+            height: 385,
             overflow: "auto",
             background: (
               theme

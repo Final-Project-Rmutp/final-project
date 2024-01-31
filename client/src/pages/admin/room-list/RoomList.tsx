@@ -95,7 +95,7 @@ const RoomList: React.FC = () => {
                         "--Table-lastColumnWidth": "144px",
                         "--TableRow-stripeBackground": "rgba(0 0 0 / 0.04)",
                         "--TableRow-hoverBackground": "rgba(0 0 0 / 0.08)",
-                        height: 370,
+                        height: 375,
                         overflow: "auto",
                         background: (
                         theme
