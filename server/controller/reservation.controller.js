@@ -179,10 +179,17 @@ async function isRoomAvailable(roomId, reservationDate, startTime, endTime) {
 
 async function reservation(req, res) {
   const action_type = 13; // reservation
+  const currentDate = new Date();
     try {
       // Extract reservation details from the request body
       const { room_id, reservation_date, start_time, end_time, reservation_reason } = req.body;
       const userId = req.user.id
+
+      // Validate reservation_date against the current date
+    if (new Date(reservation_date) < currentDate) {
+      return res.status(400).json({ message: 'Reservation date cannot be in the past' });
+    }
+
       // Check if the user and room exist (you may need additional validation)
       const userQuery = 'SELECT id FROM "user" WHERE id = $1';
       const roomQuery = 'SELECT room_id FROM rooms WHERE room_id = $1';
@@ -227,7 +234,7 @@ async function reservation(req, res) {
     }
   }
 
-  // Get all report
+  // Get current reservation
 async function getreservation(req, res) {
     try {
       const page = parseInt(req.query.page) || 1;
@@ -255,7 +262,6 @@ async function getreservation(req, res) {
     FROM reservations rs
     LEFT JOIN "user" u ON rs.user_id = u.id
     LEFT JOIN rooms r ON rs.room_id = r.room_id
-    WHERE reservation_date >= CURRENT_DATE
     ORDER BY account_type, reservation_date
     LIMIT $1 OFFSET $2`;
       const values = [pageSize,offset];
@@ -264,7 +270,8 @@ async function getreservation(req, res) {
         ...row,
         reservation_status: transformReservationStatus(row.reservation_status),
       }));
-      res.status(200).json(transformedRows);
+      const totalreserve = result.rowCount;
+      res.status(200).json({ totalreserve, reservelist: transformedRows });
     } catch (err) {
       console.error(err.message);
       res.status(500).json({ message: "Error fetching reports" });
