@@ -166,6 +166,7 @@ const Login: React.FC = () => {
             <Icon icon="ph:student-fill"  style={{color: "#D0A2F7"}} />
           </div>
           <input
+            data-cy="input-idStudent"
             id="input-username"
             type="text"
             name="pin"
@@ -186,6 +187,7 @@ const Login: React.FC = () => {
             <Icon icon="la:id-card-solid"   style={{color: "#D0A2F7"}} />
           </div>
           <input
+            data-cy="input-idCard"
             id="input-pass"
             type={showPassword ? "text" : "password"}
             name="citizen_id"
@@ -214,7 +216,7 @@ const Login: React.FC = () => {
           />
           <label>Remember Me</label>
         </div>
-        <button  onClick={handleLogin} className="login-button">
+        <button data-cy="login-btn" onClick={handleLogin} className="login-button">
           Login
         </button>
       </div>
