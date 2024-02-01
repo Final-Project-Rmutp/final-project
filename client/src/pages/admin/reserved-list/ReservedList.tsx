@@ -83,6 +83,7 @@ const ReservedList: React.FC = () => {
         await fetchReservedList();
         setSelectedItems([]);
     };
+    
     return (
         <HeadList>
             <TableContainer>

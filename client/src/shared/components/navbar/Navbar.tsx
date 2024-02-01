@@ -234,6 +234,7 @@ const AdminProfileSidebar: React.FC = () => {
                 <div className="item-header">
                 <CardStyle
                   onClick={handleMenuClick}
+                  data-cy="profile-admin"
                 >
                   <Box
                   
