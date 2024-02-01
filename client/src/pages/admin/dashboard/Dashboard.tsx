@@ -35,7 +35,7 @@ const StyledText = styled('text')(({ theme }) => ({
   },
 }));
 
-function PieCenterLabel({ children }: { children: React.ReactNode }) {
+const PieCenterLabel = ({ children }: { children: React.ReactNode }) => {
   const { width, height, left, top } = useDrawingArea();
   const centerX = left + width / 2;
   const centerY = top + height / 2;

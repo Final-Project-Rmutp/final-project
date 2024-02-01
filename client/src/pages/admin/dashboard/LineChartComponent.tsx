@@ -30,7 +30,7 @@ const StyledText = styled('text')(({ theme }) => ({
   fontSize: 14,
 }));
 
-function PieCenterLabel({ children }: { children: React.ReactNode }) {
+const PieCenterLabel = ({ children }: { children: React.ReactNode }) => {
   const { width, height, left, top } = useDrawingArea();
   return (
     <StyledText x={left + width / 2} y={top + height / 2}>

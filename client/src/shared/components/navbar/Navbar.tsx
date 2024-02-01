@@ -136,7 +136,7 @@ const AdminProfileSidebar: React.FC = () => {
     fetchUserProfile();
   }, []);
   
-  function ColorSchemeToggle() {
+  const ColorSchemeToggle = () => {
     const { mode, setMode } = useColorScheme();
     const [mounted, setMounted] = React.useState(false);
 

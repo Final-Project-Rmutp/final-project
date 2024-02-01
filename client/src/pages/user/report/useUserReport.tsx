@@ -15,7 +15,6 @@ const useReportUserList = () => {
     }, []);
 
     useEffect(() => {
-        fetchReportList();
     }, [fetchReportList]);
 
     const handleChangePage = async (newPage: number) => {

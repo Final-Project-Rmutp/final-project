@@ -17,7 +17,6 @@ const useStatus = () => {
     }, [page,rowsPerPage]);
 
     useEffect(() => {
-        fetchReservationList();
     }, [fetchReservationList]);
 
     const handleChangePage = async (newPage: number) => {

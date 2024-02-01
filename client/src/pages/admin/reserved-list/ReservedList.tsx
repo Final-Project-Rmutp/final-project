@@ -293,7 +293,7 @@ const ReservedList: React.FC = () => {
 
 export default ReservedList;
 
-function formatTimestamp(timestamp: string | number): string {
+const formatTimestamp = (timestamp: string | number): string => {
     const date = new Date(typeof timestamp === 'string' ? parseInt(timestamp, 10) * 1000 : timestamp * 1000);
     return `${date.toLocaleDateString()} : ${date.toLocaleTimeString()}`;
 }

@@ -81,18 +81,20 @@ const Room: React.FC = () => {
   
   
   const handleSubmit = async () => {
-      const startTime = selectedStartTime?.format("HH:00");
-      const endTime = selectedEndTime?.format("HH:00");
-      if (startTime && endTime) {
-        const startHour = parseInt(startTime.split(':')[0]);
-        const endHour = parseInt(endTime.split(':')[0]);
+    const startTime = selectedStartTime?.format("HH:00");
+    const endTime = selectedEndTime?.format("HH:00");
   
-        if (startHour < 8 || endHour > 18) {
-          toast.error('Invalid time range. Please select a time between 08:00 and 18:00.');
-          return;
-        }
+    if (startTime && endTime) {
+      const startHour = parseInt(startTime.split(':')[0]);
+      const endHour = parseInt(endTime.split(':')[0]);
+  
+      if (startHour < 8 || endHour > 18) {
+        toast.error('Invalid time range. Please select a time between 08:00 and 18:00.');
+        return;
       }
+    }
   
+    try {
       const response = await RoomService.searchRoom({
         room_capacity: searchRoom.room_capacity,
         room_level: searchRoom.room_level,
@@ -102,30 +104,38 @@ const Room: React.FC = () => {
         start_time: startTime || "",
         end_time: endTime || "",
       } as SearchRoomParams);
-      if (response.status === 500) {
-        toast.error('Internal server error. Please try again later.');
-        return;
+  
+      setSearchResultsRecom({
+        message: response.message || '',
+        recommended_rooms: response.recommended_rooms || []
+      });
+  
+      setSearchResults(prevState => ({
+        ...prevState,
+        availableRooms: response.availableRooms || [],
+        message: response.message || ''
+      }));
+  
+      if (response.availableRooms && response.availableRooms.length > 0) {
+        toast.success('Available rooms found.');
+      } else if (response.status === 500) {
+        toast.error(response.message || 'Internal server error');
       }
-        setSearchResultsRecom({
-          message: response.message || '',
-          recommended_rooms: response.recommended_rooms || []
-        });
-
-        setSearchResults({
-          availableRooms: response.availableRooms || [],
-          message: response.message || ''
-        });
-
-        if (searchResults.availableRooms && searchResults.availableRooms.length === 0) {
-          toast.error(response.message);
-          return;
-        }
-        if (searchResults.availableRooms) {
-          toast.success('available rooms found.');
-          return;
-        }
-
-  }
+  
+      if (response.recommended_rooms && response.recommended_rooms.length > 0) {
+        toast.info('Recommended rooms found.');
+      } else if (!response.availableRooms || response.availableRooms.length === 0) {
+        toast.error('No recommended rooms found.');
+      }
+  
+    } catch (error) {
+      toast.error('No rooms found');
+    }
+  };
+  
+  
+  
+  
 
   const closeModal = () => {
     setModalOpen(false);
@@ -196,9 +206,9 @@ const Room: React.FC = () => {
     position: "relative",
     ...(mode === "dark"
         ? { background: "linear-gradient(to bottom, #020420, #0F172A)" }
-        : { background: "#fff" }),
+        : { background: "#AA96DA" }),
     padding: 5,
-    }}>
+    }}> 
       <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
         <Grid
           container

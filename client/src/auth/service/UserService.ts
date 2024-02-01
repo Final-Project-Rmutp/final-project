@@ -35,6 +35,7 @@ export interface UserReportItem {
 }
 
 export interface ClassSchedule {
+  id: string;
   reservation_id: number;
   subject_name: string;
   fullname: string;

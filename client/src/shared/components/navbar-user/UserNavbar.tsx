@@ -147,9 +147,9 @@ const UserProfileSidebar: React.FC = () => {
     fetchUserProfile();
   }, []);
 
-  function ColorSchemeToggle() {
-    const { mode, setMode } = useColorScheme();
-    const [mounted, setMounted] = React.useState(false);
+    const ColorSchemeToggle = () => {
+      const { mode, setMode } = useColorScheme();
+      const [mounted, setMounted] = React.useState(false);
 
     React.useEffect(() => {
       setMounted(true);
@@ -243,19 +243,23 @@ const UserProfileSidebar: React.FC = () => {
                   </div>
                 </div>
                 <Container className="content">
-                  {UserSidebarData.map((item, index) => (
-                    <MenuItems key={index}>
-                      <MenuItemLinks
-                        to={item.path}
-                        onClick={() => handleTabChange(item.title)}
+                {UserSidebarData.map((item, index) => (
+                  <MenuItems key={index}>
+                    <MenuItemLinks
+                      to={item.path}
+                      onClick={() => handleTabChange(item.title)}
+                    >
+                      <span className="size-icon">{item.icon}</span>
+                      <Typography
+                        noWrap
+                        level="title-sm"
+                        style={{ marginLeft: "16px" }}
                       >
-                        <span className="size-icon">{item.icon}</span>
-                        <Typography level="h4" style={{ marginLeft: "16px" }}>
-                          {item.title}
-                        </Typography>
-                      </MenuItemLinks>
-                    </MenuItems>
-                  ))}
+                        {item.title}
+                      </Typography>
+                    </MenuItemLinks>
+                  </MenuItems>
+                ))}
                 </Container>
               </SidebarUser>
             </LeftUser>
@@ -270,15 +274,12 @@ const UserProfileSidebar: React.FC = () => {
                   <>
                     <Box sx={{ flexGrow: 0, marginBottom: 2 }}>
                       <div className="lg:flex-1 flex items-center gap-1.5">
-                        <span>
                           <Link to="/user">
                             <Typography 
                               level="h2" 
-                              variant="plain"
                               >Rmutp
                             </Typography>
                           </Link>
-                        </span>
                       </div>
                     </Box>
                     <Box
