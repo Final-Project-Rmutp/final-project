@@ -26,11 +26,12 @@ const useReservedList = () => {
       reservation_reason: "",
     });
     const fetchReservedList = useCallback(async () => {
-          const response = await RoomService.getReservationList({ page, pageSize: rowsPerPage });
-          setListItems(response);
-          return response.data;
-
+        const response = await RoomService.getReservationList({ page, pageSize: rowsPerPage });
+        setListItems(response.reservelist);
+        return response.data;
     }, [page, rowsPerPage]);
+    
+    
 
     useEffect(() => {
       fetchReservedList();

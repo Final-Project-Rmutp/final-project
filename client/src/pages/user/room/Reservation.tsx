@@ -345,24 +345,23 @@ const Room: React.FC = () => {
       <CardList
         data={searchResults.availableRooms || []}
         isRecommended={false}
-        onConfirmClick={(roomId, roomNumber) => {
+        onConfirmClick={(roomId) => {
           setConfirmModalOpen(true);
           setSelectedRoomId(roomId);
           setReservationData((prevData) => ({
             ...prevData,
-            room_number: roomNumber,
+            room_id: roomId,
           }));
         }}
-        onReportClick={(roomId, roomNumber) => {
+        onReportClick={(roomId ) => {
           setReportModalOpen(true);
           setSelectedRoomId(roomId);
           setReservationData((prevData) => ({
             ...prevData,
-            room_number: roomNumber,
+            room_id: roomId,
           }));
         }}
       />
-
       {searchResultsRecom.recommended_rooms &&
         searchResultsRecom.recommended_rooms.length > 0 && (
           <>
@@ -397,17 +396,16 @@ const Room: React.FC = () => {
                   color="primary"
                   sx={{ width: 450 }}
                 >
-                  <FormControl>
                     <FormControl>
                       <FormLabel>Room</FormLabel>
                       <Input
                         required
-                        name="room_id"
-                        value={reservationData.room_id}
+                        name="room_number"
+                        value={reservationData.room_number}
                         onChange={(e) =>
                           setReservationData((prevData) => ({
                             ...prevData,
-                            room_id: e.target.value,
+                            room_number: e.target.value,
                           }))
                         }
                         fullWidth
@@ -415,6 +413,8 @@ const Room: React.FC = () => {
                         readOnly
                       />
                     </FormControl>
+                    
+                  <FormControl>
                     <FormLabel>Select Date</FormLabel>
                     <LocalizationProvider
                       dateAdapter={NewAdapter}

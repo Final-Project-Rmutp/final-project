@@ -166,7 +166,7 @@ const ReservedList: React.FC = () => {
                       </tr>
                     </Theader>
                     <Tbody>
-                        {reservedtList.map((item,index) => (
+                        {Array.isArray(reservedtList) && reservedtList.map((item, index) => (
                             <tr className="text-center" key={item.id || index}>
                             <th>{index + 1}</th>
                             <th>{item.fullname}</th>
