@@ -19,10 +19,10 @@ import {
     ModalDialog,
     Modal,
     Divider,
-    FormControl,
-    FormLabel,
-    Stack,
-    Input,
+    // FormControl,
+    // FormLabel,
+    // Stack,
+    // Input,
     Box,
     DialogTitle,
     // Select,
@@ -70,24 +70,24 @@ const ClassRoomAdmin: React.FC = () => {
         teacherIds,
         selectedUserId,
         selectAll,
-        editClass,
+        // editClass,
         deleteDialogOpen,
         selectedItems,
-        editDialogOpen,
+        // editDialogOpen,
         handleUserIdChange,
         handleFetchClassSchedule,
         handleSelectAll,
-        handleCloseEditDialog,
+        // handleCloseEditDialog,
         handleDeleteConfirmed,
         handleCheckboxChange,
-        handleEditConfirmed,
+        // handleEditConfirmed,
         handleDelete,
         handleDeleteAll,
-        handleEdit,
+        // handleEdit,
         handleCloseDeleteDialog,
         handleChangePage,
         handleChangeRowsPerPage,
-        handleInputEditChangeClass
+        // handleInputEditChangeClass
     }=  useClassroomAdmin();
     
     return (
@@ -987,14 +987,14 @@ const ClassRoomAdmin: React.FC = () => {
                                 alignItems: "center",
                             }}
                             >
-                            <Button
+                            {/* <Button
                                 variant="solid"
                                 color="warning"
                                 className="edit"
                                 onClick={() => handleEdit(item)}
                             >
                                 Edit
-                            </Button>
+                            </Button> */}
                             <Button
                                 color="danger"
                                 variant="solid"
@@ -1078,7 +1078,7 @@ const ClassRoomAdmin: React.FC = () => {
             </Button>
             </div>
         </div>
-        <Modal open={editDialogOpen} onClose={handleCloseEditDialog}>
+        {/* <Modal open={editDialogOpen} onClose={handleCloseEditDialog}>
             <ModalDialog    
             size="lg"
             variant="outlined"
@@ -1149,7 +1149,7 @@ const ClassRoomAdmin: React.FC = () => {
                 </DialogActions>
                 </form>
             </ModalDialog>
-            </Modal>
+            </Modal> */}
         </HeadList>
         </>
     );

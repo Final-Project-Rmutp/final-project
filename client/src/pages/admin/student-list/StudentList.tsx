@@ -159,6 +159,7 @@ const StudentList: React.FC = () => {
                     <th style={rowStyle(item)}>
                       {item.user_img_path !== null && (
                         <img
+                        style={{cursor:"pointer"}}
                         src={`${item.user_img_path}`}
                         alt={`User ${item.id}`}
                         width="50"
@@ -220,7 +221,7 @@ const StudentList: React.FC = () => {
             </Tbody>
           </Table>
           <Modal open={deleteDialogOpen} onClose={handleCloseDeleteDialog}>
-            <ModalDialog variant="outlined" role="alertdialog">
+            <ModalDialog variant="outlined" role="alertdialog" sx={{ width: "80%", maxWidth: 400 }}>
               <DialogTitle>
                 <WarningRoundedIcon />
                 Confirmation
@@ -303,8 +304,7 @@ const StudentList: React.FC = () => {
           variant="outlined"
           layout="center"
           color="primary"
-          sx={{ width: 450 }}
-        >
+          sx={{ width: "80%", maxWidth: 400 }}>
           <DialogTitle>Edit User</DialogTitle>
           <form
             onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
@@ -312,11 +312,11 @@ const StudentList: React.FC = () => {
             }}
             encType="multipart/form-data"
           >
-            <Stack spacing={3}>
+          <Stack  spacing={0.5}  direction="column"justifyContent="flex-start"> 
               {editingUser && (
                 <>
                   <FormControl>
-                    <FormLabel>Student ID</FormLabel>
+                    <FormLabel required >Student ID</FormLabel>
                     <Input
                       autoFocus
                       required
@@ -328,7 +328,7 @@ const StudentList: React.FC = () => {
                     />
                   </FormControl>
                   <FormControl>
-                    <FormLabel>ID Card</FormLabel>
+                    <FormLabel required>ID Card</FormLabel>
                     <Input
                       required
                       name="citizen_id"
@@ -339,7 +339,7 @@ const StudentList: React.FC = () => {
                     />
                   </FormControl>
                   <FormControl>
-                    <FormLabel>FirstName</FormLabel>
+                    <FormLabel required>FirstName</FormLabel>
                     <Input
                       required
                       name="firstname"
@@ -350,7 +350,7 @@ const StudentList: React.FC = () => {
                     />
                   </FormControl>
                   <FormControl>
-                    <FormLabel>LastName</FormLabel>
+                    <FormLabel required>LastName</FormLabel>
                     <Input
                       required
                       name="lastname"
@@ -361,7 +361,7 @@ const StudentList: React.FC = () => {
                     />
                   </FormControl>
                   <FormControl>
-                    <FormLabel>Upload New Image</FormLabel>
+                    <FormLabel required>Upload New Image</FormLabel>
                     <Button
                       component="label"
                       variant="solid"
@@ -409,12 +409,12 @@ const StudentList: React.FC = () => {
           </form>
         </ModalDialog>
       </Modal>
-      <Modal open={addDialogOpen} onClose={handleCloseAddDialog}>
+      <Modal open={addDialogOpen} onClose={handleCloseAddDialog} >
         <ModalDialog
           size="lg"
           layout="center"
           color="primary"
-          sx={{ width: 450 }}
+          sx={{ width: "80%", maxWidth: 400 }}
         >
           <DialogTitle>Add New User</DialogTitle>
           <form
@@ -423,10 +423,10 @@ const StudentList: React.FC = () => {
             }}
             encType="multipart/form-data"
           >
-            <Stack spacing={3}>
+            <Stack  spacing={0.5}  direction="column"justifyContent="flex-start">
               <>
                 <FormControl>
-                  <FormLabel>Student ID</FormLabel>
+                  <FormLabel required>Student ID</FormLabel>
                   <Input
                     required
                     error={pinIdError}
@@ -439,7 +439,7 @@ const StudentList: React.FC = () => {
                   {pinIdError && <p style={{ color: 'red' }}>Citizen ID is required and must be valid.</p>}
                 </FormControl>
                 <FormControl>
-                  <FormLabel>ID Card</FormLabel>
+                  <FormLabel required>ID Card</FormLabel>
                   <Input
                     required
                     error={citizenIdError}
@@ -452,7 +452,7 @@ const StudentList: React.FC = () => {
                   {citizenIdError && <p style={{ color: 'red' }}>Citizen ID is required and must be valid.</p>}
                 </FormControl>
                 <FormControl>
-                  <FormLabel>FirstName</FormLabel>
+                  <FormLabel required>FirstName</FormLabel>
                   <Input
                     required
                     name="firstname"
@@ -463,7 +463,7 @@ const StudentList: React.FC = () => {
                   />
                 </FormControl>
                 <FormControl>
-                  <FormLabel>LastName</FormLabel>
+                  <FormLabel required>LastName</FormLabel>
                   <Input
                     required
                     name="lastname"
@@ -474,7 +474,7 @@ const StudentList: React.FC = () => {
                   />
                 </FormControl>
                 <FormControl>
-                  <FormLabel>AccountType</FormLabel>
+                  <FormLabel required>AccountType</FormLabel>
                   <Select
                     defaultValue="select"
                     required
@@ -489,7 +489,7 @@ const StudentList: React.FC = () => {
                   </Select>
                 </FormControl>
                 <FormControl>
-                  <FormLabel>Upload</FormLabel>
+                  <FormLabel required>Upload</FormLabel>
                   <Button
                     component="label"
                     role={undefined}
@@ -526,7 +526,9 @@ const StudentList: React.FC = () => {
                   <img src={AddUser.user_img_path} alt="" />
                 )}
               </>
-              <DialogActions>
+            </Stack>
+            <Stack>
+            <DialogActions >
                 <Button type="cancel" onClick={handleCloseAddDialog}>
                   Cancel
                 </Button>
@@ -544,6 +546,7 @@ const StudentList: React.FC = () => {
           variant="outlined"
           layout="center"
           color="primary"
+          sx={{ width: "80%", maxWidth: 400 }}
         >
           <DialogTitle>{selectedItem && selectedItem.firstname}</DialogTitle>
           <DialogContent>

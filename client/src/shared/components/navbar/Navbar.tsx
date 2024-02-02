@@ -237,7 +237,7 @@ const AdminProfileSidebar: React.FC = () => {
                   data-cy="profile-admin"
                 >
                   <Box
-                  
+                  style={{cursor:"pointer"}}
                     sx={{
                       p: 1,
                       display: 'flex',

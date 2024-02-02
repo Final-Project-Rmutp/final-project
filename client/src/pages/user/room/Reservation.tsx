@@ -420,7 +420,9 @@ const Room: React.FC = () => {
                       dateAdapter={NewAdapter}
                       adapterLocale="th"
                     >
-                      <DateTime>
+                      <DateTime
+                          sx={{width:"50%"}}
+                          >
                         <DatePicker
                           className="datetime-picker"
                           format="DD MMMM YYYY"
@@ -437,7 +439,9 @@ const Room: React.FC = () => {
                       dateAdapter={NewAdapter}
                       adapterLocale="th"
                     >
-                      <DateTime>
+                      <DateTime
+                          sx={{width:"50%"}}
+                          >
                         <TimePicker
                           className="TimePicker"
                           format="HH:00"
@@ -450,13 +454,16 @@ const Room: React.FC = () => {
                       </DateTime>
                     </LocalizationProvider>
                   </FormControl>
-                  <FormControl>
+                  <FormControl 
+                  >
                     <FormLabel>End Time</FormLabel>
                     <LocalizationProvider
                       dateAdapter={NewAdapter}
                       adapterLocale="th"
                     >
-                      <DateTime>
+                      <DateTime
+                          sx={{width:"50%"}}
+                      >
                         <TimePicker
                           className="TimePicker"
                           format="HH:00"
@@ -480,7 +487,7 @@ const Room: React.FC = () => {
                       size="lg"
                     />
                   </FormControl>
-                  <div className="d-flex gap-3">
+                  <div className="d-flex gap-3 w-100 w-auto">
                     <Button onClick={handleConfirmClick}>Confirm</Button>
                     <Button onClick={closeModal}>Cancel</Button>
                   </div>

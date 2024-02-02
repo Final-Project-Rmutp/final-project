@@ -121,9 +121,15 @@ const useStudentList = () => {
         setEditUser(initialUserState);
       }
   
-      await fetchUserList();
       markItemAsUpdated(editingUser.id);
+      const updatedList = await UserService.getAllUsers({
+        page,
+        pageSize: rowsPerPage,
+      });
+      
+      setListItems(updatedList);
       setEditDialogOpen(false);
+      
     }
   };
 
@@ -202,19 +208,24 @@ const useStudentList = () => {
   };
   const handleEditImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
+  
     if (files && files.length > 0) {
       const selectedImage = files[0];
-
+  
       setImage(selectedImage);
-
+  
       const reader = new FileReader();
       reader.onloadend = () => {
-        setEditUser({ ...editingUser, user_img_path: reader.result as string });
+        setEditUser((prevEditingUser) => ({
+          ...prevEditingUser,
+          user_img_path: reader.result as string,
+        }));
       };
-
+  
       reader.readAsDataURL(selectedImage);
     }
   };
+  
 
   const handleSelectAll = () => {
     setSelectAll(!selectAll);
