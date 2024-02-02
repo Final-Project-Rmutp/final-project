@@ -9,6 +9,7 @@ import {
   FormControl,
   Input,
   Typography,
+  Container,
 } from "@mui/joy";
 
 import "dayjs/locale/th";
@@ -205,12 +206,14 @@ const Room: React.FC = () => {
         width: "100%",
         height: "100vh",
         position: "relative",
+        maxHeight: "calc(100vh - 5px)", overflowY: "auto" || "hidden",
         ...(mode === "dark"
           ? { background: "linear-gradient(to bottom, #020420, #0F172A)" }
           : { background: "#AA96DA" }),
         padding: 5,
       }}
     >
+      <Container maxWidth="xl">
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -341,203 +344,205 @@ const Room: React.FC = () => {
           </Grid>
         </Grid>
       </form>
+      </Container>
+      <Container maxWidth="xl" sx={{display:"flex",backgroundColor:"red",borderRadius:10}}>
+        <CardList
+          data={searchResults.availableRooms || []}
+          isRecommended={false}
+          onConfirmClick={(roomId) => {
+            setConfirmModalOpen(true);
+            setSelectedRoomId(roomId);
+            setReservationData((prevData) => ({
+              ...prevData,
+              room_id: roomId,
+            }));
+          }}
+          onReportClick={(roomId ) => {
+            setReportModalOpen(true);
+            setSelectedRoomId(roomId);
+            setReservationData((prevData) => ({
+              ...prevData,
+              room_id: roomId,
+            }));
+          }}
+        />
+        {searchResultsRecom.recommended_rooms &&
+          searchResultsRecom.recommended_rooms.length > 0 && (
+            <Container>
+              <Typography
+                color="success"
+                variant="plain"
+                level="h3"
+                sx={{ marginTop: 2, marginBottom: 6 ,display:"flex",justifyContent:"center"}}
+              >
+                Recommended Rooms
+              </Typography>
 
-      <CardList
-        data={searchResults.availableRooms || []}
-        isRecommended={false}
-        onConfirmClick={(roomId) => {
-          setConfirmModalOpen(true);
-          setSelectedRoomId(roomId);
-          setReservationData((prevData) => ({
-            ...prevData,
-            room_id: roomId,
-          }));
-        }}
-        onReportClick={(roomId ) => {
-          setReportModalOpen(true);
-          setSelectedRoomId(roomId);
-          setReservationData((prevData) => ({
-            ...prevData,
-            room_id: roomId,
-          }));
-        }}
-      />
-      {searchResultsRecom.recommended_rooms &&
-        searchResultsRecom.recommended_rooms.length > 0 && (
-          <>
-            <Typography
-              color="success"
-              variant="plain"
-              level="h3"
-              sx={{ marginTop: 2, marginBottom: 1 }}
-            >
-              Recommended Rooms
-            </Typography>
-
-            <CardList
-              data={searchResultsRecom.recommended_rooms}
-              isRecommended={true}
-              onConfirmClick={(roomId) => {
-                setConfirmModalOpen(true);
-                setSelectedRoomId(roomId);
-              }}
-              onReportClick={(roomId) => {
-                setReportModalOpen(true);
-                setSelectedRoomId(roomId);
-              }}
-            />
-          </>
-        )}
-                    {confirmModalOpen && (
-              <Modal open={confirmModalOpen} onClose={closeModal}>
-                <ModalDialog
-                  size="lg"
-                  layout="center"
-                  color="primary"
-                  sx={{ width: 450 }}
-                >
-                    <FormControl>
-                      <FormLabel>Room</FormLabel>
-                      <Input
-                        required
-                        name="room_number"
-                        value={reservationData.room_number}
-                        onChange={(e) =>
-                          setReservationData((prevData) => ({
-                            ...prevData,
-                            room_number: e.target.value,
-                          }))
-                        }
-                        fullWidth
-                        size="lg"
-                        readOnly
-                      />
-                    </FormControl>
-                    
-                  <FormControl>
-                    <FormLabel>Select Date</FormLabel>
-                    <LocalizationProvider
-                      dateAdapter={NewAdapter}
-                      adapterLocale="th"
-                    >
-                      <DateTime
-                          sx={{width:"50%"}}
-                          >
-                        <DatePicker
-                          className="datetime-picker"
-                          format="DD MMMM YYYY"
-                          value={selectedDate}
-                          onChange={handleDateChange}
-                          readOnly
-                        />
-                      </DateTime>
-                    </LocalizationProvider>
-                  </FormControl>
-                  <FormControl>
-                    <FormLabel>Start Time</FormLabel>
-                    <LocalizationProvider
-                      dateAdapter={NewAdapter}
-                      adapterLocale="th"
-                    >
-                      <DateTime
-                          sx={{width:"50%"}}
-                          >
-                        <TimePicker
-                          className="TimePicker"
-                          format="HH:00"
-                          views={["hours"]}
-                          value={selectedStartTime}
-                          onChange={handleStartTimeChange}
-                          shouldDisableTime={shouldDisableStartTime}
-                          readOnly
-                        />
-                      </DateTime>
-                    </LocalizationProvider>
-                  </FormControl>
-                  <FormControl 
+              <CardList
+                data={searchResultsRecom.recommended_rooms}
+                isRecommended={true}
+                onConfirmClick={(roomId) => {
+                  setConfirmModalOpen(true);
+                  setSelectedRoomId(roomId);
+                }}
+                onReportClick={(roomId) => {
+                  setReportModalOpen(true);
+                  setSelectedRoomId(roomId);
+                }}
+              />
+            </Container>
+          )}
+              {confirmModalOpen && (
+                <Modal open={confirmModalOpen} onClose={closeModal}>
+                  <ModalDialog
+                    size="lg"
+                    layout="center"
+                    color="primary"
+                    sx={{ width: 450 }}
                   >
-                    <FormLabel>End Time</FormLabel>
-                    <LocalizationProvider
-                      dateAdapter={NewAdapter}
-                      adapterLocale="th"
-                    >
-                      <DateTime
-                          sx={{width:"50%"}}
-                      >
-                        <TimePicker
-                          className="TimePicker"
-                          format="HH:00"
-                          views={["hours"]}
-                          value={selectedEndTime}
-                          onChange={handleEndTimeChange}
-                          shouldDisableTime={shouldDisableEndTime}
+                      <FormControl>
+                        <FormLabel>Room</FormLabel>
+                        <Input
+                          required
+                          name="room_number"
+                          value={reservationData.room_number}
+                          onChange={(e) =>
+                            setReservationData((prevData) => ({
+                              ...prevData,
+                              room_number: e.target.value,
+                            }))
+                          }
+                          fullWidth
+                          size="lg"
                           readOnly
                         />
-                      </DateTime>
-                    </LocalizationProvider>
-                  </FormControl>
-                  <FormControl>
-                    <FormLabel>Reservation reason</FormLabel>
-                    <Input
-                      required
-                      name="reservation_reason"
-                      value={reservationReason}
-                      onChange={(e) => setReservationReason(e.target.value)}
-                      fullWidth
-                      size="lg"
-                    />
-                  </FormControl>
-                  <div className="d-flex gap-3 w-100 w-auto">
-                    <Button onClick={handleConfirmClick}>Confirm</Button>
-                    <Button onClick={closeModal}>Cancel</Button>
-                  </div>
-                </ModalDialog>
-              </Modal>
-            )}
-            {reportModalOpen && (
-              <Modal open={reportModalOpen} onClose={closeModal}>
-                <ModalDialog
-                  size="lg"
-                  layout="center"
-                  color="primary"
-                  sx={{ width: 450 }}
-                >
-                  {/* ... (existing report modal content) */}
-                  <FormControl>
+                      </FormControl>
+                      
                     <FormControl>
-                      <FormLabel>Room</FormLabel>
+                      <FormLabel>Select Date</FormLabel>
+                      <LocalizationProvider
+                        dateAdapter={NewAdapter}
+                        adapterLocale="th"
+                      >
+                        <DateTime
+                            sx={{width:"50%"}}
+                            >
+                          <DatePicker
+                            className="datetime-picker"
+                            format="DD MMMM YYYY"
+                            value={selectedDate}
+                            onChange={handleDateChange}
+                            readOnly
+                          />
+                        </DateTime>
+                      </LocalizationProvider>
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel>Start Time</FormLabel>
+                      <LocalizationProvider
+                        dateAdapter={NewAdapter}
+                        adapterLocale="th"
+                      >
+                        <DateTime
+                            sx={{width:"50%"}}
+                            >
+                          <TimePicker
+                            className="TimePicker"
+                            format="HH:00"
+                            views={["hours"]}
+                            value={selectedStartTime}
+                            onChange={handleStartTimeChange}
+                            shouldDisableTime={shouldDisableStartTime}
+                            readOnly
+                          />
+                        </DateTime>
+                      </LocalizationProvider>
+                    </FormControl>
+                    <FormControl 
+                    >
+                      <FormLabel>End Time</FormLabel>
+                      <LocalizationProvider
+                        dateAdapter={NewAdapter}
+                        adapterLocale="th"
+                      >
+                        <DateTime
+                            sx={{width:"50%"}}
+                        >
+                          <TimePicker
+                            className="TimePicker"
+                            format="HH:00"
+                            views={["hours"]}
+                            value={selectedEndTime}
+                            onChange={handleEndTimeChange}
+                            shouldDisableTime={shouldDisableEndTime}
+                            readOnly
+                          />
+                        </DateTime>
+                      </LocalizationProvider>
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel>Reservation reason</FormLabel>
                       <Input
                         required
-                        name="room_id"
-                        value={reservationData.room_id}
-                        onChange={(e) =>
-                          setReservationData((prevData) => ({
-                            ...prevData,
-                            room_id: e.target.value,
-                          }))
-                        }
+                        name="reservation_reason"
+                        value={reservationReason}
+                        onChange={(e) => setReservationReason(e.target.value)}
                         fullWidth
                         size="lg"
-                        readOnly
                       />
                     </FormControl>
-                    <FormLabel>Report detail</FormLabel>
-                    <Input
-                      required
-                      name="report_detail"
-                      value={reportDetail}
-                      onChange={(e) => setReportDetail(e.target.value)}
-                      fullWidth
-                      size="lg"
-                    />
-                  </FormControl>
-                  <div className="d-flex gap-3">
-                    <Button onClick={handleReportClick}>Report</Button>
-                    <Button onClick={closeModal}>Cancel</Button>
-                  </div>
-                </ModalDialog>
-              </Modal>
-            )}
+                    <div className="d-flex gap-3 w-100 w-auto">
+                      <Button onClick={handleConfirmClick}>Confirm</Button>
+                      <Button onClick={closeModal}>Cancel</Button>
+                    </div>
+                  </ModalDialog>
+                </Modal>
+              )}
+              {reportModalOpen && (
+                <Modal open={reportModalOpen} onClose={closeModal}>
+                  <ModalDialog
+                    size="lg"
+                    layout="center"
+                    color="primary"
+                    sx={{ width: 450 }}
+                  >
+                    {/* ... (existing report modal content) */}
+                    <FormControl>
+                      <FormControl>
+                        <FormLabel>Room</FormLabel>
+                        <Input
+                          required
+                          name="room_id"
+                          value={reservationData.room_id}
+                          onChange={(e) =>
+                            setReservationData((prevData) => ({
+                              ...prevData,
+                              room_id: e.target.value,
+                            }))
+                          }
+                          fullWidth
+                          size="lg"
+                          readOnly
+                        />
+                      </FormControl>
+                      <FormLabel>Report detail</FormLabel>
+                      <Input
+                        required
+                        name="report_detail"
+                        value={reportDetail}
+                        onChange={(e) => setReportDetail(e.target.value)}
+                        fullWidth
+                        size="lg"
+                      />
+                    </FormControl>
+                    <div className="d-flex gap-3">
+                      <Button onClick={handleReportClick}>Report</Button>
+                      <Button onClick={closeModal}>Cancel</Button>
+                    </div>
+                  </ModalDialog>
+                </Modal>
+              )}
+      </Container>
     </div>
   );
 };

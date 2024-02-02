@@ -8,7 +8,7 @@ import {
   Container,
   List,
 } from "@mui/joy";
-import { MenuItems, MenuItemLinks } from "../../../styles/global";
+import { MenuItems, MenuItemLinks } from "../../../styles/navbar-user";
 import "./UserNavbar.scss";
 import { Outlet, Route, Routes, useNavigate } from "react-router";
 import { toast } from "sonner";
@@ -169,16 +169,19 @@ const UserProfileSidebar: React.FC = () => {
           boxShadow: "none",
           marginBottom: 2,
         }}
+        
       >
         {mode === "light" ? (
           <Icon
             icon="line-md:sunny-filled-loop-to-moon-filled-loop-transition"
             color="black"
+            fontSize={16}
           />
         ) : (
           <Icon
             icon="line-md:moon-filled-alt-to-sunny-filled-loop-transition"
             color="#fecf49"
+            fontSize={16}
           />
         )}
       </IconButtonUser>
@@ -313,7 +316,9 @@ const UserProfileSidebar: React.FC = () => {
                   </>
                 )}
                 <div className="flex items-center justify-end gap-1.5">
-                  <ColorSchemeToggle />
+                  <Box sx={{width:"20px"}}>
+                    <ColorSchemeToggle />
+                  </Box>
                   <CardStyleUser onClick={handleMenuClick}>
                     <Box
                       sx={{

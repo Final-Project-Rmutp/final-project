@@ -1,9 +1,9 @@
 import React from 'react';
-import { Card, CardContent, CardActions, Button, Typography,} from '@mui/joy';
+import { Card, CardContent, CardActions, Button, Typography, Grid,} from '@mui/joy';
 import { SearchRoomParams } from '../../../auth/service/RoomService';
 
 type CardListProps = {
-  data: SearchRoomParams[]; // Replace 'any' with the actual type of your data
+  data: SearchRoomParams[];
   isRecommended: boolean;
   onConfirmClick: (roomId: string ,roomNumber:string) => void;
   onReportClick: (roomId: string,roomNumber:string) => void;
@@ -11,9 +11,9 @@ type CardListProps = {
 
 const CardList: React.FC<CardListProps> = ({ data, onConfirmClick, onReportClick }) => {
   return (
-    <div style={{ maxHeight: "calc(100vh - 220px)", overflowY: "auto" }}>
+    <Grid container spacing={2} sx={{display:"flex",justifyContent:"center",alignItems:"center"}}>
       {data.map((item, index) => (
-        <Card key={item.room_id || index} sx={{ marginBottom: 2 }}>
+        <Card key={item.room_id || index} sx={{ marginBottom: 2, marginRight:5,display:"flex",justifyContent:"center" }}>
           <CardContent>
             <Typography>ชั้น : {item.room_level}</Typography>
             <Typography>รูปแบบห้อง : {item.room_type}</Typography>
@@ -32,7 +32,7 @@ const CardList: React.FC<CardListProps> = ({ data, onConfirmClick, onReportClick
           </CardActions>
         </Card>
       ))}
-    </div>
+    </Grid>
   );
 };
 

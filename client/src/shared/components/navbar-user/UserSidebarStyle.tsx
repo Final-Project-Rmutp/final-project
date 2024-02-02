@@ -79,24 +79,11 @@ export const MenuItemLinksNav = styled(Link)`
   &:hover {
     width: 100%;
     text-align: center;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.5rem;  
     border-radius: 20px;
     .MuiTypography-h4 {
     }
     .size-icon{
-    }
-  }
-
-  &:focus,
-  &:active {
-    width: 100%;
-    height: 45px;
-    text-align: center;
-    margin: 0 0.5rem;
-    // border:1px solid #6167C9;
-    .MuiTypography-h4 {
-      font-size: 18px;
-      color: #6167C9;
     }
   }
 `;
