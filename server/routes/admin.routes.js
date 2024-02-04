@@ -1499,10 +1499,10 @@ router.delete("/subject/deletesubject/:subject_id", authMiddleware.isAdmin, admi
 
 /**
  * @swagger
- * /admin/room/getroomlevel/{roomlevel_id}:
+ * /admin/room/getroomlevel:
  *   get:
  *     tags:
- *     - Admin - RoomGET
+ *     - Admin - GET
  *     summary: Get roomlevel by roomlevel_id (authentication required)
  *     description: Retrieve roomlevel details by roomlevel_id (authentication required).
  *     security:
@@ -1559,14 +1559,14 @@ router.delete("/subject/deletesubject/:subject_id", authMiddleware.isAdmin, admi
  *                    example: Internal server error
  */
 
-router.get("/room/getroomlevel/:roomlevel_id", authMiddleware.isAdmin, roomController.getroomlevel);
+router.get("/room/getroomlevel", authMiddleware.authenticateToken, roomController.getroomlevel);
 
 /**
  * @swagger
  * /admin/room/getroomnumber/{roomnumber_id}:
  *   get:
  *     tags:
- *     - Admin - RoomGET
+ *     - Admin - GET
  *     summary: Get roomnumber by roomnumber_id (authentication required)
  *     description: Retrieve roomnumber details by roomnumber_id (authentication required).
  *     security:
@@ -1614,14 +1614,14 @@ router.get("/room/getroomlevel/:roomlevel_id", authMiddleware.isAdmin, roomContr
  *                    example: Internal server error
  */
 
-router.get("/room/getroomnumber/:roomnumber_id", authMiddleware.isAdmin, roomController.getroomnumber);
+router.get("/room/getroomnumber/:roomnumber_id", authMiddleware.authenticateToken, roomController.getroomnumber);
 
 /**
  * @swagger
  * /admin/room/getroomtype/{roomtype_id}:
  *   get:
  *     tags:
- *     - Admin - RoomGET
+ *     - Admin - GET
  *     summary: Get roomtype by roomtype_id (authentication required)
  *     description: Retrieve roomtype details by roomtype_id (authentication required).
  *     security:
@@ -1669,7 +1669,7 @@ router.get("/room/getroomnumber/:roomnumber_id", authMiddleware.isAdmin, roomCon
  *                    example: Internal server error
  */
 
-router.get("/room/getroomtype/:roomtype_id", authMiddleware.isAdmin, roomController.getroomtype);
+router.get("/room/getroomtype/:roomtype_id", authMiddleware.authenticateToken, roomController.getroomtype);
 
 /**
  * @swagger
@@ -2128,7 +2128,7 @@ router.patch("/facility/updatefacility/:facility_id", authMiddleware.isAdmin, ad
  * /admin/user/getteacherid:
  *   get:
  *     tags:
- *     - Admin - RoomGET
+ *     - Admin - GET
  *     summary: Get room number (authentication required)
  *     description: Retrieve roomlevel details by roomlevel_id (authentication required).
  *     security:
@@ -2179,14 +2179,14 @@ router.patch("/facility/updatefacility/:facility_id", authMiddleware.isAdmin, ad
  *                    example: Internal server error
  */
 
-router.get("/user/getteacherid", authMiddleware.isAdmin, adminController.getteacherid);
+router.get("/user/getteacherid", authMiddleware.authenticateToken, adminController.getteacherid);
 
 /**
  * @swagger
  * /admin/room/getroomnumber:
  *   get:
  *     tags:
- *     - Admin - RoomGET
+ *     - Admin - GET
  *     summary: Get room number (authentication required)
  *     description: Retrieve roomlevel details by roomlevel_id (authentication required).
  *     security:
@@ -2237,14 +2237,14 @@ router.get("/user/getteacherid", authMiddleware.isAdmin, adminController.getteac
  *                    example: Internal server error
  */
 
-router.get("/room/getroomnumber", authMiddleware.isAdmin, adminController.getroomnumber);
+router.get("/room/getroomnumber", authMiddleware.authenticateToken, adminController.getroomnumber);
 
 /**
  * @swagger
  * /admin/subject/getsubjectslist:
  *   get:
  *     tags:
- *     - Admin - subject
+ *     - Admin - GET
  *     summary: Get subjects (authentication required)
  *     description: Retrieve subjects details by subjects (authentication required).
  *     security:
@@ -2295,5 +2295,6 @@ router.get("/room/getroomnumber", authMiddleware.isAdmin, adminController.getroo
  *                    example: Internal server error
  */
 
-router.get("/subject/getsubjectslist", authMiddleware.isAdmin, adminController.getsubjectslist);
+router.get("/subject/getsubjectslist", authMiddleware.authenticateToken, adminController.getsubjectslist);
+
 module.exports = router;

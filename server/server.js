@@ -4,18 +4,8 @@ const app = express();
 const client = require("./configs/database.js");
 const swaggerUi = require("swagger-ui-express");
 const swaggerJsdoc = require("swagger-jsdoc");
-const multer = require("multer");
 
 const port = process.env.PORT || 5000;
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./uploads");
-  },
-  filename: function (req, file, cb) {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
-});
 
 app.use(cors());
 app.use(express.json());
