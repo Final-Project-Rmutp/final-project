@@ -414,7 +414,6 @@ async function getallfacility(req, res) {
 async function getFacilityById(req, res) {
   try {
     const facilityId = req.params.facility_id;
-    console.log(facilityId);
     const query = `
       SELECT facility_id, facility_name
       FROM facility
@@ -521,12 +520,14 @@ async function getteacherid(req, res) {
 // Get room number
 async function getroomnumber(req, res) {
   try {
+      const room_level = req.params.room_level;
       const query = `
         SELECT room_id, room_number 
         FROM rooms
+        WHERE room_level = $1
         ORDER BY room_number
       `;
-      const result = await client.query(query);
+      const result = await client.query(query, [room_level]);
 
       const Data = result.rows;
   

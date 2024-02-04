@@ -1563,61 +1563,6 @@ router.get("/room/getroomlevel", authMiddleware.authenticateToken, roomControlle
 
 /**
  * @swagger
- * /admin/room/getroomnumber/{roomnumber_id}:
- *   get:
- *     tags:
- *     - Admin - GET
- *     summary: Get roomnumber by roomnumber_id (authentication required)
- *     description: Retrieve roomnumber details by roomnumber_id (authentication required).
- *     security:
- *       - Authorization: []
- *     responses:
- *       200:
- *         description: Successful. Returns the roomnumber details.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                  roomnumber_id:
- *                    type: string
- *                    example: 1
- *       401:
- *         description: No token provided/Invalid token
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                  message:
- *                    type: string
- *                    example: No token provided/Invalid token
- *       404:
- *         description: Roomlevel not found
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                  message:
- *                    type: string
- *                    example: Roomlevel not found
- *       500:
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                  message:
- *                    type: string
- *                    example: Internal server error
- */
-
-router.get("/room/getroomnumber/:roomnumber_id", authMiddleware.authenticateToken, roomController.getroomnumber);
-
-/**
- * @swagger
  * /admin/room/getroomtype/{roomtype_id}:
  *   get:
  *     tags:
@@ -2183,7 +2128,7 @@ router.get("/user/getteacherid", authMiddleware.authenticateToken, adminControll
 
 /**
  * @swagger
- * /admin/room/getroomnumber:
+ * /admin/room/getroomnumber/{room_level}:
  *   get:
  *     tags:
  *     - Admin - GET
@@ -2191,6 +2136,13 @@ router.get("/user/getteacherid", authMiddleware.authenticateToken, adminControll
  *     description: Retrieve roomlevel details by roomlevel_id (authentication required).
  *     security:
  *       - Authorization: []
+ *     parameters:
+ *       - in: path
+ *         name: room_level
+ *         required: true
+ *         description: room_level to querry
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: Successful. Returns the roomlevel details.
@@ -2237,7 +2189,7 @@ router.get("/user/getteacherid", authMiddleware.authenticateToken, adminControll
  *                    example: Internal server error
  */
 
-router.get("/room/getroomnumber", authMiddleware.authenticateToken, adminController.getroomnumber);
+router.get("/room/getroomnumber/:room_level", authMiddleware.authenticateToken, adminController.getroomnumber);
 
 /**
  * @swagger
