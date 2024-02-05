@@ -39,7 +39,7 @@ async function adduser(req, res) {
     const id = req.user.id;
 
     logging(action_type, id, "Success", `User registration successful. User ID: ${insertedId}`);
-    res.status(201).json({ message: "User registration successful" });
+    res.status(201).json({ message: "User registration successful" , user_id:insertedId });
   } catch (err) {
     const id = req.user.id;
     console.error(err.message);
