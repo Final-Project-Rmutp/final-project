@@ -68,14 +68,6 @@ const useStudentList = () => {
   }, [page, rowsPerPage]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      await Promise.all([fetchUserList(), handleSearch()]);
-      setListItems((items) =>
-        items.map((item) => ({ ...item, updated: false }))
-      );
-    };
-
-    fetchData();
   }, [fetchUserList, handleSearch]);
 
   const handleAdd = () => {
@@ -122,14 +114,8 @@ const useStudentList = () => {
       }
   
       markItemAsUpdated(editingUser.id);
-      const updatedList = await UserService.getAllUsers({
-        page,
-        pageSize: rowsPerPage,
-      });
-      
-      setListItems(updatedList);
       setEditDialogOpen(false);
-      
+      fetchUserList()
     }
   };
 

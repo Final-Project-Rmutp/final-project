@@ -143,11 +143,12 @@ const StudentList: React.FC = () => {
               handleSelectAll={handleSelectAll}
               selectAll={selectAll}
             />
+            
             <Tbody>
               {listItems.map((item, index) => {
                 // const rowRandomImageNumber = randomImageNumber + index;
                 // const rowRandomImageUrl = `https://xsgames.co/randomusers/avatar.php?g=pixel&=${rowRandomImageNumber}`;
-
+                
                 return (
                   <tr
                     key={item.id}
@@ -160,7 +161,7 @@ const StudentList: React.FC = () => {
                       {item.user_img_path !== null && (
                         <img
                         style={{cursor:"pointer"}}
-                        src={`${item.user_img_path}`}
+                        src={`${item.user_img_path}?time=${new Date().toLocaleString()} `}
                         alt={`User ${item.id}`}
                         width="50"
                         height="50"

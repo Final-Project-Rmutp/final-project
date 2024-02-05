@@ -369,7 +369,7 @@ const UserProfileSidebar: React.FC = () => {
                 </div>
               </div>
             </HeaderNav>
-            <div className="content-user">
+            <div  style={{height:"100vh", overflowY:"auto"}}>
               <Outlet></Outlet>
               <Routes>
                 <Route path="/" element={<HomeUser />} />
