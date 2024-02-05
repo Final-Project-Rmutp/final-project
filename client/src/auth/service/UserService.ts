@@ -127,6 +127,11 @@ const UserService = {
       const response = await axiosInstance.get("/user/getschedule");
       return response.data as ClassSchedule;
   },
+  getRoomTypeById : async (roomTypeId: string) => {
+    const response = await axiosInstance.get(`/admin/room/getroomtype/${roomTypeId}`);
+    return response.data;
+    
+  },
   
 };
 

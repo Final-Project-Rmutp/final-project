@@ -43,13 +43,9 @@ html, body  {
 }
 
 
-  * {
-    scrollbar-width: none;
-    scrollbar-color: #B4D4FF #B4D4FF;
-  }
 
   *::-webkit-scrollbar {
-    width: 5px;
+    width: 10px;
     height: 8px;
   }
 

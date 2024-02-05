@@ -11,9 +11,9 @@ type CardListProps = {
 
 const CardList: React.FC<CardListProps> = ({ data, onConfirmClick, onReportClick }) => {
   return (
-    <Grid container spacing={2} sx={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+    <Grid container spacing={2} sx={{display:"flex",justifyContent:"center",alignItems:"center",gap:2}}>
       {data.map((item, index) => (
-        <Card key={item.room_id || index} sx={{ marginBottom: 2, marginRight:5,display:"flex",justifyContent:"center" }}>
+        <Card key={item.room_id || index} sx={{display:"flex",justifyContent:"center", }}>
           <CardContent>
             <Typography>ชั้น : {item.room_level}</Typography>
             <Typography>รูปแบบห้อง : {item.room_type}</Typography>

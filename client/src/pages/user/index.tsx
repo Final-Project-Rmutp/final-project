@@ -17,7 +17,7 @@ const HomeUser: React.FC = () => {
     const { mode } = useColorScheme();
 
     return (
-        <div className="">
+        <div style={{ height: "100vh",overflow:"auto" }}>
         <div
             className="py-24 sm:py-32 md:py-40 relative"
             style={{

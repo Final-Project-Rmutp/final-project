@@ -42,9 +42,16 @@ const useClassroomAdmin = () => {
         }
     };
 
-    const handleUserIdChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedUserId(event.target.value);
+    const handleUserIdChange = (_event: React.MouseEvent<Element, MouseEvent> | React.KeyboardEvent<Element> | React.FocusEvent<Element, Element> | null, value: string | null) => {
+        setSelectedUserId(value || ''); // Make sure to handle the case where value is null
     };
+    
+    
+    
+    
+    
+    
+    
 
 
     
@@ -63,6 +70,7 @@ const useClassroomAdmin = () => {
     useEffect(() => {
         getTeacherIds();
         handleFetchClassSchedule();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleSelectAll = () => {

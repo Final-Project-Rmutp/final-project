@@ -1,5 +1,5 @@
 
-import { Box, Breadcrumbs, Card, Sheet } from '@mui/joy';
+import { Box, Breadcrumbs, Card, Sheet,Menu } from '@mui/joy';
 import { Link } from 'react-router-dom';
 import { styled } from '@mui/system';
 
@@ -11,7 +11,7 @@ export const HeaderNav = styled(Sheet)`
     box-sizing: border-box;
     flex-shrink: 0;
     position: fixed;
-    z-index: 2;
+    z-index: 3;
     padding: 8px 16px;
     transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0,  0.10);
@@ -28,6 +28,10 @@ export const SidebarUser = styled(Card)`
     border-width: 1px 0px ;
     padding:none;
 `;
+export const MenuContainer = styled(Menu)`
+  background-color: ${({ theme }) => theme.palette.menu.bg};
+  color:${({ theme }) => theme.palette.nav.color};
+  `
 export const LeftUser = styled(Sheet)`
   background-color: ${({ theme }) => theme.palette.background.backdrop};
   padding:0 !important;
@@ -72,18 +76,13 @@ export const MenuItemLinksNav = styled(Link)`
   padding: 0 0.5rem;
   font-size: 18px;
   text-decoration: none;
-  color: #ffffff;
+  color: #D0D5DC;
   transition: all 0.2s ease;
   border-radius: 20px;
 
   &:hover {
-    width: 100%;
-    text-align: center;
-    margin-bottom: 0.5rem;  
-    border-radius: 20px;
-    .MuiTypography-h4 {
-    }
-    .size-icon{
+    .MuiTypography-root {
+      color:#fff;
     }
   }
 `;

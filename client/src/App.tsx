@@ -34,7 +34,6 @@ import SubjectList from "./pages/admin/subject/SubjectList";
 import ClassRoomAdmin from "./pages/admin/class-room/ClassroomAdmin";
 
 
-
 const App: React.FC = () => {
 
   return (
@@ -55,7 +54,7 @@ const App: React.FC = () => {
                 path="/user"
                 element={
                   <AuthenticatedRoute>
-                    <UserProfileSidebar />
+                      <UserProfileSidebar />
                   </AuthenticatedRoute>
                 }
               >

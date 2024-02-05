@@ -30,6 +30,14 @@ import DeleteForever from "@mui/icons-material/DeleteForever";
 import CustomPagination from "../../../shared/components/pagination/Pagination";
 import axiosInstance from "../../../environments/axiosInstance";
 import AddIcon from '@mui/icons-material/Add';
+
+import "dayjs/locale/th";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import dayjs from "dayjs";
+import NewAdapter from "../../user/room/AdapterDay";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import { DateTime } from "../../../pages/user/room/ReservationStyled";
+
 // import styled from 'styled-components';
 
 // const TimetableContainer = styled.div`
@@ -113,19 +121,60 @@ const SubjectList: React.FC = () => {
   } = useSubjectList();
     const [userOptions, setUserOptions] = useState<{ id: string; firstname: string }[]>([]);
     const [roomnumber, setRoomnumber] = useState<{ room_id: string; room_number: string }[]>([]);
+    const [selectedFloor, setSelectedFloor] = useState<string | null>(null);
+    const availableFloors = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+    const [selectedStartTime] =
+    useState<dayjs.Dayjs | null>(dayjs().startOf("day").hour(8));
+  const [selectedEndTime] = useState<dayjs.Dayjs | null>(
+    dayjs().startOf("day").hour(9)
+  );
+
+  const handleStartTimeChange = (value: dayjs.Dayjs | null) => {
+    setAddClass((prevClass) => ({
+        ...prevClass,
+        start_time: value ? value.format("HH:mm") : "",
+    }));
+};
+
+const handleEndTimeChange = (value: dayjs.Dayjs | null) => {
+    setAddClass((prevClass) => ({
+        ...prevClass,
+        end_time: value ? value.format("HH:mm") : "",
+    }));
+};
+  const shouldDisableStartTime = (value: dayjs.Dayjs) => {
+    const hour = value.hour();
+    return hour < 8 || hour > 18;
+  };
+  const shouldDisableEndTime = (value: dayjs.Dayjs) => {
+    const hour = value.hour();
+    return hour < 9 || hour > 18;
+  };
+    useEffect(() => {
+        const fetchRoomNumber = async () => {
+          if (selectedFloor) {
+            try {
+              const response = await axiosInstance.get(`/admin/room/getroomnumber/${selectedFloor}`);
+              setRoomnumber(response.data);
+            } catch (error) {
+              console.error("Error fetching room numbers:", error);
+            }
+          }
+        };
+    
+        if (selectedFloor) {
+          fetchRoomNumber();
+        }
+      }, [selectedFloor]);
     useEffect(() => {
         fetchUserOptions();
-        fetchRoomNumber();
     }, []);
     const fetchUserOptions = async () => {
         const response = await axiosInstance.get("/admin/user/getteacherid");
         setUserOptions(response.data);
     }
 
-    const fetchRoomNumber = async () => {
-        const response = await axiosInstance.get("/admin/room/getroomnumber");
-        setRoomnumber(response.data);
-    }
+
 
 
 
@@ -633,7 +682,20 @@ const SubjectList: React.FC = () => {
                 <Stack spacing={3}>
                 <>
                     <FormControl>
-                    <FormLabel>Room Id</FormLabel>
+                        <FormLabel>ชั้น</FormLabel>
+                        <Select
+                            placeholder="เลือกชั้น"
+                            onChange={(_, value) => setSelectedFloor(value as string | null)}
+                        >
+                            {availableFloors.map((floor) => (
+                            <Option key={floor} value={floor}>
+                                {floor}
+                            </Option>
+                            ))}
+                        </Select>
+                    </FormControl>
+                    <FormControl>
+                    <FormLabel>Room</FormLabel>
                         <Select
                             required
                             color="neutral"
@@ -646,7 +708,7 @@ const SubjectList: React.FC = () => {
                             size="lg"
                         >
                             {roomnumber.map((user) => (
-                                <Option key={user.room_id} value={user.room_number}>
+                                <Option key={user.room_id} value={user.room_id}>
                                     {user.room_number}
                                 </Option>
                             ))}
@@ -665,7 +727,20 @@ const SubjectList: React.FC = () => {
                     />
                     </FormControl>
                     <FormControl>
-                        <FormLabel>Start Time</FormLabel>
+                    <LocalizationProvider dateAdapter={NewAdapter} adapterLocale="th">
+                        <DateTime sx={{width:"100%"}}>
+                        <TimePicker
+                            sx={{width:"100%"}}
+                            className="TimePicker"
+                            format="HH:00"
+                            views={["hours"]}
+                            value={selectedStartTime ? dayjs(AddClass.start_time) : null}
+                            onChange={handleStartTimeChange}
+                            shouldDisableTime={shouldDisableStartTime}
+                        />
+                        </DateTime>
+                    </LocalizationProvider>
+                        {/* <FormLabel>Start Time</FormLabel>
                         <Input
                             required
                             name="start_time"
@@ -673,10 +748,23 @@ const SubjectList: React.FC = () => {
                             onChange={handleInputChangeAddClass}
                             fullWidth
                             size="lg"
-                        />
+                        /> */}
                     </FormControl>
-                    <FormControl>
-                        <FormLabel>End Time</FormLabel>
+                    <FormControl >
+                    <LocalizationProvider dateAdapter={NewAdapter} adapterLocale="th" >
+                        <DateTime sx={{width:"100%"}}>
+                        <TimePicker
+                            sx={{width:"100%"}}
+                            className="TimePicker"
+                            format="HH:00"
+                            views={["hours"]}
+                            value={selectedEndTime ? dayjs(AddClass.end_time) : null}
+                            onChange={handleEndTimeChange}
+                            shouldDisableTime={shouldDisableEndTime}
+                        />
+                        </DateTime>
+                    </LocalizationProvider>
+                        {/* <FormLabel>End Time</FormLabel>
                         <Input
                             required
                             name="end_time"
@@ -684,7 +772,7 @@ const SubjectList: React.FC = () => {
                             onChange={handleInputChangeAddClass}
                             fullWidth
                             size="lg"
-                        />
+                        /> */}
                     </FormControl>
                     {/* <FormControl>
                         <FormLabel>Subject ID</FormLabel>
