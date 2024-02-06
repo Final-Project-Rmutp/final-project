@@ -9,7 +9,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import Preloader from "./Preloader";
 import { Checkbox } from "@mui/material";
 import { Icon } from '@iconify/react';
-
+import ImgLogin from '../../img/rmutp-logo.png'
 const apiUrl = environment.apiUrl;
 
 const Login: React.FC = () => {
@@ -149,7 +149,7 @@ const Login: React.FC = () => {
     {!loading &&  (
       <div className="login-form">
       <div className="login-logo text-center text-3xl font-semibold mb-6 text-gray-800 text-white">
-        <img src="../../../dist/assets/img/rmutp-logo.png" alt="" />
+        <img src={ImgLogin} alt="" />
           <h1>
           Room Reservation System at RMUTP
           </h1>

@@ -168,7 +168,7 @@ const ReservedList: React.FC = () => {
                     <Tbody>
                         {Array.isArray(reservedtList) && reservedtList.map((item, index) => (
                             <tr className="text-center" key={item.id || index}>
-                            <th>{index + 1}</th>
+                            <th>{(page - 1) * rowsPerPage + index + 1}</th>
                             <th>{item.fullname}</th>
                             <th>{item.room_number}</th>
                             <th>{item.account_type}</th>

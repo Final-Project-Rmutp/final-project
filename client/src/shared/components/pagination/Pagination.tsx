@@ -30,9 +30,9 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
 
   return (
     <Stack
-    direction={{ xs:'column',sm:'row'}}
-    spacing={{ xs: 1, sm: 2, md: 4 }}
-    alignItems="center"
+      direction={{ xs: "column", sm: "row" }}
+      spacing={{ xs: 1, sm: 2, md: 4 }}
+      alignItems="center"
       sx={{ marginTop: 2 }}
     >
       <Typography>

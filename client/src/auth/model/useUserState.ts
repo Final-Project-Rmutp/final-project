@@ -14,6 +14,8 @@ const useUserState = () => {
     account_type: "",
     user_img_path: "" || null,
     updated: false,
+    imageFileName: "",
+
   });
 
   const [reservedUser, setReservedUser] = useState<ReservedListItem>({
@@ -35,6 +37,7 @@ const useUserState = () => {
     firstname: "",
     lastname: "",
     user_img_path: "" || null,
+    imageFileName: "",
 
   });
   const [AddUser, setAddUser] = useState<AdduserListItem>({
@@ -45,6 +48,8 @@ const useUserState = () => {
     lastname: "",
     account_type: "",
     user_img_path: "" || null,
+    imageFileName: "",
+
   });
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,6 +88,7 @@ const useUserState = () => {
       account_type: "",
       user_img_path: "" || null,
       updated: false,
+      imageFileName:""
     });
   };
 

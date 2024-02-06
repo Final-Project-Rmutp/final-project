@@ -107,6 +107,15 @@ const RoomService = {
         const response = await axiosInstance.get('/dashboard/getreserveddata');
         return response.data;
     },
+    getdaudata: async (token: string) => {
+        const response = await axiosInstance.get('/dashboard/getdaudata', {
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    },
     getAllSubject: async ({ page, pageSize }: GetAllRoomsParams) => {
         const response = await axiosInstance.get('/admin/subject/getallsubject',{
             params: { page, pageSize },

@@ -33,7 +33,6 @@ import AdminDashBoard from "./pages/admin/dashboard/Dashboard";
 import SubjectList from "./pages/admin/subject/SubjectList";
 import ClassRoomAdmin from "./pages/admin/class-room/ClassroomAdmin";
 
-
 const App: React.FC = () => {
 
   return (

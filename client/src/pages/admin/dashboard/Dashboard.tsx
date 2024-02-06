@@ -5,6 +5,7 @@ import { PieChart } from '@mui/x-charts/PieChart';
 import { useDrawingArea } from '@mui/x-charts/hooks';
 import { styled } from '@mui/material/styles';
 import RoomService from '../../../auth/service/RoomService';
+import LineDashBoard from './LinesChartComponent';
 
 export class RoomData {
   room_number!: string;
@@ -108,9 +109,9 @@ const AdminDashboard: React.FC = () => {
   ];
 
   return (
-    <div className="container mx-auto w-50">
+    <div className="container mx-auto" style={{width:"100%",maxWidth:"70rem"}}>
       <Grid container spacing={4}>
-        <Grid item xs={12} md={6} lg={12}>
+        <Grid item xs={12} md={12} lg={12}>
           <Card>
             <CardContent>
               <Typography variant="h6">Total Bookings</Typography>
@@ -119,7 +120,7 @@ const AdminDashboard: React.FC = () => {
           </Card>
         </Grid>
 
-        <Grid item xs={12} md={6} lg={12}>
+        <Grid item xs={12} md={12} lg={12}>
           <Card sx={{ width: '100%' }}>
             <CardContent sx={{ width: '100%' }}>
               <Typography variant="h6">Booking Stats</Typography>
@@ -141,13 +142,14 @@ const AdminDashboard: React.FC = () => {
           </Card>
         </Grid>
 
-        {/* <Grid item xs={12} md={12} lg={12}>
+        <Grid item xs={12} md={12} lg={12}>
           <Card>
             <CardContent>
-              <Typography variant="h6">Bar Chart</Typography>
+              <Typography variant="h6">Line Chart</Typography>
+              <LineDashBoard></LineDashBoard>
             </CardContent>
           </Card>
-        </Grid> */}
+        </Grid>
       </Grid>
     </div>
   );

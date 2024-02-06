@@ -28,6 +28,7 @@ import { CardStyle, Header, IconButtonHeader, Layout, Left, Main, MenuContainer,
 import Hamburger from "./Hamburger";
 import { Icon } from '@iconify/react';
 import { useLocation } from 'react-router-dom';
+import LogoRmutp from '../../../img/logo.png'
 interface LayoutState {
   leftOpen: boolean;
   rightOpen: boolean;
@@ -211,7 +212,7 @@ const AdminProfileSidebar: React.FC = () => {
               >
                 <div className="header-left">
                   <div className="logo-header">
-                    <Typography level="h2">LOGO</Typography>
+                    <img src={LogoRmutp} alt="" />
                   </div>
                 </div>
                 <Container className="content">

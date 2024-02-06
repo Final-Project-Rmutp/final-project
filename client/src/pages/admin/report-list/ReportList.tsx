@@ -131,7 +131,7 @@ const ReportList: React.FC = () => {
                         <th>Room</th>
                         <th>Date time</th>
                         <th>Status</th>
-                        <th>Action</th>
+                        <th>Select</th>
                     </tr>
                     <tr>
                         <th></th>
@@ -151,7 +151,7 @@ const ReportList: React.FC = () => {
                     <Tbody>
                         {reportList.map((item,index) => (
                             <tr className="text-center" key={item.id || index}>
-                            <th>{index + 1}</th>
+                            <th>{(page - 1) * rowsPerPage + index + 1}</th>
                             <th>{item.fullname}</th>
                             <th>{item.room_number}</th>
                             <th>{item.report_detail}</th>

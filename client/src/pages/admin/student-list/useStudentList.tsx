@@ -80,6 +80,8 @@ const useStudentList = () => {
       lastname: "",
       account_type: "",
       user_img_path: "" || null,
+      imageFileName:""
+
     }
     );
   };
@@ -129,6 +131,8 @@ const useStudentList = () => {
       lastname: "",
       account_type: "",
       user_img_path: "" || null,
+      imageFileName:""
+
     }
     );
   };
@@ -172,6 +176,8 @@ const useStudentList = () => {
       lastname: "",
       account_type: "",
       user_img_path: "" || null,
+      imageFileName:""
+
     }
     );
 
@@ -179,17 +185,18 @@ const useStudentList = () => {
   
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
+  
     if (files && files.length > 0) {
       const selectedImage = files[0];
-
+  
+      const imageUrl = URL.createObjectURL(selectedImage);
+  
       setImage(selectedImage);
-
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setAddUser({ ...AddUser, user_img_path: reader.result as string });
-      };
-
-      reader.readAsDataURL(selectedImage);
+      setAddUser((prevEditingUser) => ({
+        ...prevEditingUser,
+        user_img_path: imageUrl,
+        imageFileName: selectedImage.name
+      }));
     }
   };
   const handleEditImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -198,19 +205,17 @@ const useStudentList = () => {
     if (files && files.length > 0) {
       const selectedImage = files[0];
   
+      const imageUrl = URL.createObjectURL(selectedImage);
+  
       setImage(selectedImage);
-  
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setEditUser((prevEditingUser) => ({
-          ...prevEditingUser,
-          user_img_path: reader.result as string,
-        }));
-      };
-  
-      reader.readAsDataURL(selectedImage);
+      setEditUser((prevEditingUser) => ({
+        ...prevEditingUser,
+        user_img_path: imageUrl,
+        imageFileName: selectedImage.name
+      }));
     }
   };
+  
   
 
   const handleSelectAll = () => {
@@ -289,6 +294,7 @@ const useStudentList = () => {
     firstname: "",
     lastname: "",
     user_img_path: "" || null,
+    imageFileName:""
   };
   const handleInputChangeCitizen = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;

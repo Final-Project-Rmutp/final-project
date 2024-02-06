@@ -6,7 +6,7 @@ export interface UserData {
   firstname: string;
   lastname: string;
   user_img_path:string | null;
-
+  imageFileName:string;
 }
 
 export interface ListItem {
@@ -20,6 +20,8 @@ export interface ListItem {
   account_type: string;
   accountstatus: string;
   account_role: string;
+  imageFileName:string;
+
 }
 
 export interface AdduserListItem {
@@ -30,6 +32,8 @@ export interface AdduserListItem {
   citizen_id: string;
   user_img_path:string | null;
   account_type: string;
+  imageFileName:string;
+
 }
 
 

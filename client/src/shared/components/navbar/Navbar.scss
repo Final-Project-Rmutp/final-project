@@ -14,13 +14,7 @@ body {
 }
 
 
-img {
-  display: block; 
-  margin: 0 auto;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-}
+
 
 // .content {
 //   padding-bottom:4rem;
@@ -47,6 +41,10 @@ img {
   margin-top: 20px;
   margin-left: 10px;
   border-radius: 50%;
+  img{
+    height: 60px;
+    width: 80px;
+  }
 }
 
 
@@ -66,7 +64,7 @@ img {
   --landscape-width: 18;
   --portrait-width: 250px;
   --header-height: 4.5rem;
-  --secs: 0.4s;
+  --secs: 0.3s;
   --bg-left: #212B36;
   --bg-right: rgba(128, 42, 150, 0.8);
   --bg-main: #161C24;
@@ -169,7 +167,7 @@ body {
     //   width: calc(20px * var(--landscape-width));
     // }
     .header-left {
-      width: calc(50% - var(--header-height));
+      width: calc(100% - var(--header-height));
     }
   }
 }

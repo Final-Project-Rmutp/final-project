@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import {
   Checkbox,
@@ -85,9 +85,8 @@ const StudentList: React.FC = () => {
     null
   );
   const [selectedItem, setSelectedItem] = React.useState<ListItem | null>(null);
-  
-  
-  
+  const currentTime = useMemo(() => new Date().toLocaleTimeString(), []);
+
   return (
     <HeadList>
       <TableContainer>
@@ -143,12 +142,9 @@ const StudentList: React.FC = () => {
               handleSelectAll={handleSelectAll}
               selectAll={selectAll}
             />
-            
+
             <Tbody>
               {listItems.map((item, index) => {
-                // const rowRandomImageNumber = randomImageNumber + index;
-                // const rowRandomImageUrl = `https://xsgames.co/randomusers/avatar.php?g=pixel&=${rowRandomImageNumber}`;
-                
                 return (
                   <tr
                     key={item.id}
@@ -160,16 +156,24 @@ const StudentList: React.FC = () => {
                     <th style={rowStyle(item)}>
                       {item.user_img_path !== null && (
                         <img
-                        style={{cursor:"pointer"}}
-                        src={`${item.user_img_path}?time=${new Date().toLocaleString()} `}
-                        alt={`User ${item.id}`}
-                        width="50"
-                        height="50"
-                        onClick={() => {
-                          setClickedImageUrl(item.user_img_path);
-                          setSelectedItem(item);
-                        }}
-                      />
+                          style={{
+                            cursor: "pointer",
+                            display: "block",
+                            width: "50px",
+                            height: "50px",
+                            borderRadius: "50%",
+                          }}
+                          src={`${item.user_img_path}?t=${currentTime} `}
+                          alt={`User ${item.id}`}
+                          width="50"
+                          height="50"
+                          onClick={() => {
+                            setClickedImageUrl(
+                              `${item.user_img_path}?t=${currentTime}`
+                            );
+                            setSelectedItem(item);
+                          }}
+                        />
                       )}
                     </th>
                     <th style={rowStyle(item)}>{item.firstname}</th>
@@ -222,7 +226,11 @@ const StudentList: React.FC = () => {
             </Tbody>
           </Table>
           <Modal open={deleteDialogOpen} onClose={handleCloseDeleteDialog}>
-            <ModalDialog variant="outlined" role="alertdialog" sx={{ width: "80%", maxWidth: 400 }}>
+            <ModalDialog
+              variant="outlined"
+              role="alertdialog"
+              sx={{ width: "80%", maxWidth: 400 }}
+            >
               <DialogTitle>
                 <WarningRoundedIcon />
                 Confirmation
@@ -305,7 +313,8 @@ const StudentList: React.FC = () => {
           variant="outlined"
           layout="center"
           color="primary"
-          sx={{ width: "80%", maxWidth: 400 }}>
+          sx={{ width: "80%", maxWidth: 400 }}
+        >
           <DialogTitle>Edit User</DialogTitle>
           <form
             onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
@@ -313,11 +322,11 @@ const StudentList: React.FC = () => {
             }}
             encType="multipart/form-data"
           >
-          <Stack  spacing={0.5}  direction="column"justifyContent="flex-start"> 
+            <Stack spacing={0.5} direction="column" justifyContent="flex-start">
               {editingUser && (
                 <>
                   <FormControl>
-                    <FormLabel required >Student ID</FormLabel>
+                    <FormLabel required>Student ID</FormLabel>
                     <Input
                       autoFocus
                       required
@@ -369,19 +378,19 @@ const StudentList: React.FC = () => {
                       color="success"
                       startDecorator={
                         <SvgIcon>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
-                          />
-                        </svg>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
+                            />
+                          </svg>
                         </SvgIcon>
                       }
                     >
@@ -394,8 +403,8 @@ const StudentList: React.FC = () => {
                     </Button>
                   </FormControl>
                   {editingUser.user_img_path !== null && (
-                  <img src={editingUser.user_img_path} alt="" />
-                )}
+                    <span>FileName : {editingUser.imageFileName}</span>
+                  )}
                 </>
               )}
               <DialogActions>
@@ -410,7 +419,7 @@ const StudentList: React.FC = () => {
           </form>
         </ModalDialog>
       </Modal>
-      <Modal open={addDialogOpen} onClose={handleCloseAddDialog} >
+      <Modal open={addDialogOpen} onClose={handleCloseAddDialog}>
         <ModalDialog
           size="lg"
           layout="center"
@@ -424,7 +433,7 @@ const StudentList: React.FC = () => {
             }}
             encType="multipart/form-data"
           >
-            <Stack  spacing={0.5}  direction="column"justifyContent="flex-start">
+            <Stack spacing={0.5} direction="column" justifyContent="flex-start">
               <>
                 <FormControl>
                   <FormLabel required>Student ID</FormLabel>
@@ -437,7 +446,11 @@ const StudentList: React.FC = () => {
                     fullWidth
                     size="lg"
                   />
-                  {pinIdError && <p style={{ color: 'red' }}>Citizen ID is required and must be valid.</p>}
+                  {pinIdError && (
+                    <p style={{ color: "red" }}>
+                      Citizen ID is required and must be valid.
+                    </p>
+                  )}
                 </FormControl>
                 <FormControl>
                   <FormLabel required>ID Card</FormLabel>
@@ -450,7 +463,11 @@ const StudentList: React.FC = () => {
                     fullWidth
                     size="lg"
                   />
-                  {citizenIdError && <p style={{ color: 'red' }}>Citizen ID is required and must be valid.</p>}
+                  {citizenIdError && (
+                    <p style={{ color: "red" }}>
+                      Citizen ID is required and must be valid.
+                    </p>
+                  )}
                 </FormControl>
                 <FormControl>
                   <FormLabel required>FirstName</FormLabel>
@@ -524,12 +541,12 @@ const StudentList: React.FC = () => {
                   </Button>
                 </FormControl>
                 {AddUser.user_img_path !== null && (
-                  <img src={AddUser.user_img_path} alt="" />
-                )}
+                    <span>FileName : {AddUser.imageFileName}</span>
+                  )}
               </>
             </Stack>
             <Stack>
-            <DialogActions >
+              <DialogActions>
                 <Button type="cancel" onClick={handleCloseAddDialog}>
                   Cancel
                 </Button>
