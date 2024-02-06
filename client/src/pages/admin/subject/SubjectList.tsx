@@ -123,8 +123,9 @@ const SubjectList: React.FC = () => {
     const [userOptions, setUserOptions] = useState<{ id: string; firstname: string }[]>([]);
     const [roomnumber, setRoomnumber] = useState<{ room_id: string; room_number: string }[]>([]);
     const [selectedFloor, setSelectedFloor] = useState<string | null>(null);
-    const availableFloors = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
     const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    const [availableFloorsApi, setRoomFloorsApi] = useState<string[]>([]);
+
     const [selectedStartTime] =
     useState<dayjs.Dayjs | null>(dayjs().startOf("day").hour(8));
   const [selectedEndTime] = useState<dayjs.Dayjs | null>(
@@ -152,6 +153,20 @@ const handleEndTimeChange = (value: dayjs.Dayjs | null) => {
     const hour = value.hour();
     return hour < 9 || hour > 18;
   };
+
+  useEffect(() => {
+    const fetchRoomLevel = async () => {
+      try {
+        const response = await axiosInstance.get(`/admin/room/getroomlevel`);
+        setRoomFloorsApi(response.data.roomlevel);
+      } catch (error) {
+        console.error('Error fetching room types:', error);
+      }
+    };
+    
+    fetchRoomLevel();
+    
+  }, []); 
     useEffect(() => {
         const fetchRoomNumber = async () => {
           if (selectedFloor) {
@@ -284,7 +299,7 @@ const handleEndTimeChange = (value: dayjs.Dayjs | null) => {
             await fetchSubjectList();
         } catch (error) {
             console.error("Error creating class:", error);
-            toast.error("Room is not available for the new class");
+            toast.error("Error data or room is not available for the new class");
         }
     };
 
@@ -684,7 +699,7 @@ const handleEndTimeChange = (value: dayjs.Dayjs | null) => {
                             placeholder="เลือกชั้น"
                             onChange={(_, value) => setSelectedFloor(value as string | null)}
                         >
-                            {availableFloors.map((floor) => (
+                            {availableFloorsApi.map((floor) => (
                             <Option key={floor} value={floor}>
                                 {floor}
                             </Option>
