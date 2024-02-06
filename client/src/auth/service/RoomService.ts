@@ -65,8 +65,9 @@ const RoomService = {
     },
     getRoomTypeById: async (roomtypeId: string) => {
         const response = await axiosInstance.get(`/admin/room/getroomtype/${roomtypeId}`, {
+            
         });
-        return response.data;
+        return response.data.room_types;
     },
 
     

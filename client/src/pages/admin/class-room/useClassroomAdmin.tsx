@@ -3,6 +3,7 @@ import RoomService, {
 } from "../../../auth/service/RoomService";
 import axiosInstance from "../../../environments/axiosInstance";
 import { useEffect, useState } from "react";
+import {  toast } from 'sonner'
 
 const useClassroomAdmin = () => {
     const [itemToDelete, setItemToDelete] = useState<string | null>(null);
@@ -131,11 +132,14 @@ const useClassroomAdmin = () => {
                 const updatedList = timetableData.filter((item) => item.reservation_id !== itemToDelete);
                 setTimetableData(updatedList);
                 setItemToDelete(null);
+                toast.success("Class deleted successfully");
+
             } else {
             await Promise.all(selectedItems.map(async (id) => RoomService.deleteClass(id)));
             const updatedList = timetableData.filter((item) => !selectedItems.includes(item.reservation_id));
             setTimetableData(updatedList);
             setSelectedItems([]);
+            toast.success("Class deleted successfully");
             }
             handleFetchClassSchedule();
             setDeleteDialogOpen(false);

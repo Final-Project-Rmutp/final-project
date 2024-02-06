@@ -3,6 +3,7 @@ import UserService from "../../../auth/service/UserService";
 import useUserState from "../../../auth/model/useUserState";
 import { ListItem, UserData } from "../../../auth/model/authTypes";
 import React from "react";
+import {  toast } from 'sonner'
 
 const useStudentList = () => {
   const [listItems, setListItems] = useState<ListItem[]>([]);
@@ -109,11 +110,19 @@ const useStudentList = () => {
         formData.append("image", image as File);
       }
   
-      const response = await UserService.updateUser(editingUser.id, formData);
-  
-      if (response.status === 200) {
-        setEditUser(initialUserState);
-      }
+      try {
+        const response = await UserService.updateUser(editingUser.id, formData);
+
+        if (response.status === 200) {
+            setEditUser(initialUserState);
+        }
+        toast.success("User updated successfully");
+
+    } catch (error) {
+        console.error("Error updating user:", error);
+        toast.error("An error occurred while updating user");
+    }
+
   
       markItemAsUpdated(editingUser.id);
       setEditDialogOpen(false);
@@ -165,22 +174,25 @@ const useStudentList = () => {
     formData.append("image", image as File);
     console.log(formData);
 
-    await UserService.addUser(formData);
-    await fetchUserList();
-    setAddDialogOpen(false);
-    setAddUser({
-      id: "",
-      pin: "",
-      citizen_id: "",
-      firstname: "",
-      lastname: "",
-      account_type: "",
-      user_img_path: "" || null,
-      imageFileName:""
-
+    try {
+      await UserService.addUser(formData);
+      await fetchUserList();
+      toast.success("User added successfully");
+      setAddDialogOpen(false);
+      setAddUser({
+        id: "",
+        pin: "",
+        citizen_id: "",
+        firstname: "",
+        lastname: "",
+        account_type: "",
+        user_img_path: "" || null,
+        imageFileName:""
+      });
+    } catch (error) {
+      console.error("Error adding user:", error);
+      toast.error("An error occurred while adding user");
     }
-    );
-
   };
   
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {

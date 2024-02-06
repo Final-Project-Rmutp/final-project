@@ -66,9 +66,10 @@ const Room: React.FC = () => {
     recommended_rooms: SearchRoomParams[];
     message: string;
   }>({ recommended_rooms: [], message: "" });
-  const availableFloors = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+  // const availableFloors = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
   // const roomNumber = ["9901", "9902", "9903"];
-  // const roomTypes = ["ห้องปฏิบัติการ", "ห้องประชุม", "ลานกิจกรรม"];
+  const [roomTypes, setRoomTypes] = useState<string[]>([]);
+  const [availableFloorsApi, setRoomFloorsApi] = useState<string[]>([]);
   const numberOfPeopleOptions = ["10", "20", "30", "40", "55"];
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   const [reportModalOpen, setReportModalOpen] = useState(false);
@@ -81,9 +82,7 @@ const Room: React.FC = () => {
     start_time: "",
     end_time: "",
   });
-  const [availableRoomTypes, setAvailableRoomTypes] = useState<string[]>([]);
   const [roomnumber, setRoomnumber] = useState<{ room_id: string; room_number: string }[]>([]);
-
   useEffect(() => {
     const fetchRoomNumber = async () => {
       if (selectedFloor) {
@@ -101,28 +100,40 @@ const Room: React.FC = () => {
     }
   }, [selectedFloor]);
 
-  
-  
-  const handleInputChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-  
-    if (name === 'room_type') {
+  useEffect(() => {
+    const fetchRoomTypes = async () => {
       try {
-        const response = await UserService.getRoomTypeById(value);
-        const roomTypesFromApi = response.room_types || [];
-  
-        setAvailableRoomTypes(roomTypesFromApi);
+        const response = await axiosInstance.get(`/admin/room/getroomtype/{roomtype_id}`);
+        setRoomTypes(response.data.room_types);
       } catch (error) {
         console.error('Error fetching room types:', error);
       }
-    }
+    };
+    
+    fetchRoomTypes();
+    
+  }, []); 
+  useEffect(() => {
+    const fetchRoomLevel = async () => {
+      try {
+        const response = await axiosInstance.get(`/admin/room/getroomlevel`);
+        setRoomFloorsApi(response.data.roomlevel);
+      } catch (error) {
+        console.error('Error fetching room types:', error);
+      }
+    };
+    
+    fetchRoomLevel();
+    
+  }, []); 
   
+  const handleInputChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
     setSearchRoom((prevUser) => ({
       ...prevUser,
       [name]: value,
     }));
   };
-
 
   const handleSubmit = async () => {
     const startTime = selectedStartTime?.format("HH:00");
@@ -237,6 +248,10 @@ const Room: React.FC = () => {
 
   const { mode } = useColorScheme();
 
+
+  
+  
+  
   return (
     <div
       className="py-24 sm:py-32 md:py-40 relative"
@@ -312,9 +327,14 @@ const Room: React.FC = () => {
               <FormLabel>ชั้น</FormLabel>
               <SelectStyle
                 placeholder="เลือกชั้น"
-                onChange={(_, value) => setSelectedFloor(value as string | null)}
+                onChange={(_, value) => {
+                  handleInputChange({
+                    target: { name: "room_level", value },
+                  } as React.ChangeEvent<HTMLInputElement>);
+                  setSelectedFloor(value as string | null);
+                }}
               >
-                {availableFloors.map((floor) => (
+                {availableFloorsApi.map((floor) => (
                   <OptionStyle key={floor} value={floor}>
                     {floor}
                   </OptionStyle>
@@ -341,18 +361,18 @@ const Room: React.FC = () => {
             <Grid>
               <FormLabel>ประเภทห้อง</FormLabel>
               <SelectStyle
-                placeholder="เลือกประเภอห้อง"
+                placeholder="เลือกประเภทห้อง"
                 onChange={(_, value) =>
                   handleInputChange({
                     target: { name: "room_type", value },
                   } as React.ChangeEvent<HTMLInputElement>)
                 }
               >
-                  {availableRoomTypes.map((roomType) => (
-                    <OptionStyle key={roomType} value={roomType}>
-                      {roomType}
-                    </OptionStyle>
-                  ))}
+                {roomTypes.map((roomTypes) => (
+                  <OptionStyle key={roomTypes} value={roomTypes}>
+                    {roomTypes}
+                  </OptionStyle>
+                ))}
               </SelectStyle>
             </Grid>
             <Grid>

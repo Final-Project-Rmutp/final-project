@@ -82,6 +82,16 @@ const useRoomList = () => {
   };
 
   const handleEditConfirmed = async () => {
+    if (
+      !editingRoom.room_number ||
+      !editingRoom.room_type ||
+      !editingRoom.room_capacity ||
+      !editingRoom.facilities_id ||
+      !editingRoom.room_level ||
+      !editingRoom.room_status
+    ) {
+        return;
+    }
     if (editingRoom) {
       try {
         await RoomService.updateRoom(editingRoom.room_id, {

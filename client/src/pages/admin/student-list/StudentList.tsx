@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect } from "react";
 import { DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import {
   Checkbox,
@@ -85,7 +85,7 @@ const StudentList: React.FC = () => {
     null
   );
   const [selectedItem, setSelectedItem] = React.useState<ListItem | null>(null);
-  const currentTime = useMemo(() => new Date().toLocaleTimeString(), []);
+  // const currentTime = useMemo(() => new Date().toLocaleTimeString(), []);
 
   return (
     <HeadList>
@@ -163,13 +163,13 @@ const StudentList: React.FC = () => {
                             height: "50px",
                             borderRadius: "50%",
                           }}
-                          src={`${item.user_img_path}?t=${currentTime} `}
+                          src={`${item.user_img_path}?t=${new Date().toLocaleTimeString()} `}
                           alt={`User ${item.id}`}
                           width="50"
                           height="50"
                           onClick={() => {
                             setClickedImageUrl(
-                              `${item.user_img_path}?t=${currentTime}`
+                              `${item.user_img_path}?t=${new Date().toLocaleTimeString()}`
                             );
                             setSelectedItem(item);
                           }}

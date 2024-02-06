@@ -31,8 +31,8 @@ const useRoomState = () => {
         room_number: "",
         room_type: "",
         room_capacity: "",
-        room_facilities: [1, 2],
-        facilities_id:[1, 2],
+        room_facilities: [],
+        facilities_id:[],
         room_level: "",
         room_status: "",
     });
@@ -101,8 +101,8 @@ const useRoomState = () => {
         room_number: "",
         room_type: "",
         room_capacity: "",
-        room_facilities: [0, 1],
-        facilities_id:[1, 2],
+        room_facilities: [],
+        facilities_id:[],
         room_level: "",
         room_status: "",
         });

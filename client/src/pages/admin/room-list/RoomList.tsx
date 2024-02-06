@@ -18,7 +18,7 @@ import {
 import useRoomList from "./useRoomList";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import CustomPagination from "../../../shared/components/pagination/Pagination";
-import RoomService from "../../../auth/service/RoomService";
+import axiosInstance from "../../../environments/axiosInstance";
 
 const RoomList: React.FC = () => {
   const {
@@ -56,34 +56,36 @@ const RoomList: React.FC = () => {
   useEffect(() => {
     fetchRoomList();
   }, [fetchRoomList]);
-  const mapFacilityValueToLabel = (values: number[]) => {
-    if (!Array.isArray(values)) {
-      return [];
-    }
-
-    return values.map((value) => {
-      switch (value) {
-        case 1:
-          return "computer";
-        case 2:
-          return "projector";
-        default:
-          return "";
-      }
-    });
-  };
+  
   const [roomTypes, setRoomTypes] = useState<string[]>([]);
+  const [facilities, setFacilities] = useState<{ facility_id: string; facility_name: string }[]>([]);
+
   useEffect(() => {
     const fetchRoomTypes = async () => {
       try {
-        const response = await RoomService.getRoomTypeById('1');
-        setRoomTypes(response.room_types || []);
+        const response = await axiosInstance.get(`/admin/room/getroomtype/{roomtype_id}`);
+        setRoomTypes(response.data.room_types);
       } catch (error) {
-        console.error("Error fetching room types:", error);
+        console.error('Error fetching room types:', error);
       }
     };
+    
     fetchRoomTypes();
-  }, []);
+  }, []); 
+
+
+  useEffect(() => {
+    const fetchFacilities = async () => {
+      try {
+        const response = await axiosInstance.get('/admin/facility/getallfacility');
+        setFacilities(response.data);
+      } catch (error) {
+        console.error('Error fetching facilities:', error);
+      }
+    };
+    
+    fetchFacilities();
+  }, []); 
   return (
           <HeadList>
             <TableContainer>
@@ -293,7 +295,7 @@ const RoomList: React.FC = () => {
                   {editingRoom && (
                     <>
                     <FormControl>
-                      <FormLabel>Number</FormLabel>
+                      <FormLabel required>Number</FormLabel>
                       <Input autoFocus required 
                         name="room_number"
                         value={editingRoom.room_number}
@@ -303,12 +305,15 @@ const RoomList: React.FC = () => {
                       />
                     </FormControl>
                     <FormControl>
-                      <FormLabel>Type</FormLabel>
+                      <FormLabel required>Type</FormLabel>
                       <Select
                         required
                         name="room_type"
                         value={editingRoom.room_type}
                         sx={{ width: '100%' }}
+                        onChange={(_, value) =>
+                          setEditRoom({ ...editingRoom, room_type: value as string })
+                        }
                       >
                         {roomTypes.map((type) => (
                           <Option key={type} value={type}>
@@ -318,7 +323,7 @@ const RoomList: React.FC = () => {
                       </Select>
                     </FormControl>
                     <FormControl>
-                      <FormLabel>Capacity</FormLabel>
+                      <FormLabel required>Capacity</FormLabel>
                       <Input required 
                         name="room_capacity"
                         value={editingRoom.room_capacity}
@@ -328,15 +333,8 @@ const RoomList: React.FC = () => {
                       />
                     </FormControl>
                     <FormControl>
-                      <FormLabel>Facilities</FormLabel>
-                      {/* <Input required 
-                        name="room_facilities"
-                        value={editingRoom.room_facilities}
-                        onChange={handleInputEditChange}
-                        fullWidth
-                        size="lg"
-                      /> */}
-                      <Select
+                      <FormLabel required>Facilities</FormLabel>
+                      {/* <Select
                         required
                         name="facilities_id"
                         value={editingRoom.facilities_id}
@@ -350,11 +348,30 @@ const RoomList: React.FC = () => {
                       >
                         <Option value={1}>{mapFacilityValueToLabel([1])}</Option>
                         <Option value={2}>{mapFacilityValueToLabel([2])}</Option>
+                      </Select> */}
+                      <Select
+                        required
+                        name="facilities_id"
+                        value={editingRoom.facilities_id}
+                        onChange={(_, values) =>
+                          setEditRoom({
+                            ...editingRoom,
+                            facilities_id: values as number[],
+                          })
+                        }
+                        multiple
+                      >
+                        {facilities.map((facility) => (
+                          <Option key={facility.facility_id} value={facility.facility_id.toString()}>
+                            {facility.facility_name}
+                          </Option>
+                        ))}
                       </Select>
                     </FormControl>
                     <FormControl>
-                      <FormLabel>Floor</FormLabel>
-                      <Input required 
+                      <FormLabel required>Floor</FormLabel>
+                      <Input 
+                        required 
                         name="room_level"
                         value={editingRoom.room_level}
                         onChange={handleInputEditChange}
@@ -363,7 +380,7 @@ const RoomList: React.FC = () => {
                       />
                     </FormControl>
                     <FormControl>
-                      <FormLabel>Status</FormLabel>
+                      <FormLabel required>Status</FormLabel>
                       <Select
                         defaultValue="select"
                         required
@@ -415,7 +432,7 @@ const RoomList: React.FC = () => {
                   <Stack spacing={3}>
                     <>
                     <FormControl>
-                      <FormLabel>Number</FormLabel>
+                      <FormLabel required>Number</FormLabel>
                       <Input autoFocus required 
                         name="room_number"
                         value={AddRoom.room_number}
@@ -425,17 +442,36 @@ const RoomList: React.FC = () => {
                       />
                     </FormControl>
                     <FormControl>
-                      <FormLabel>Type</FormLabel>
-                      <Input required 
+                      <FormLabel required>Type</FormLabel>
+                      <Select
+                        required
+                        name="room_type"
+                        value={AddRoom.room_type}
+                        sx={{ width: '100%' }}
+                        onChange={(_, values) =>
+                          setAddRoom({
+                            ...AddRoom,
+                            room_type: values as string,
+                          })
+                        }
+                        
+                      >
+                        {roomTypes.map((type) => (
+                          <Option key={type} value={type}>
+                            {type}
+                          </Option>
+                        ))}
+                      </Select>
+                      {/* <Input required 
                         name="room_type"
                         value={AddRoom.room_type}
                         onChange={handleInputChange}
                         fullWidth
                         size="lg"
-                      />
+                      /> */}
                     </FormControl>
                     <FormControl>
-                      <FormLabel>Capacity</FormLabel>
+                      <FormLabel required>Capacity</FormLabel>
                       <Input required 
                         name="room_capacity"
                         value={AddRoom.room_capacity}
@@ -445,33 +481,28 @@ const RoomList: React.FC = () => {
                       />
                     </FormControl>
                     <FormControl>
-                      <FormLabel>Facilities</FormLabel>
-                      {/* <Input required 
-                        name="room_facilities"
-                        value={AddRoom.room_facilities}
-                        onChange={handleInputChange}
-                        fullWidth
-                        size="lg"
-                      /> */}
+                      <FormLabel required>Facilities</FormLabel>
                       <Select
-                          defaultValue={['1']}
-                          required
-                          name="facilities_id"
-                          value={AddRoom.facilities_id.map(String)}
-                          onChange={(_, values) =>
-                            setAddRoom({
-                              ...AddRoom,
-                              facilities_id: values.map(Number),
-                            })
-                          }
-                          multiple
-                        >
-                          <Option value="1">{mapFacilityValueToLabel([1])}</Option>
-                          <Option value="2">{mapFacilityValueToLabel([2])}</Option>
-                        </Select>
+                        required
+                        name="facilities_id"
+                        value={AddRoom.facilities_id.map(String)}
+                        onChange={(_, values) =>
+                          setAddRoom({
+                            ...AddRoom,
+                            facilities_id: values.map(Number),
+                          })
+                        }
+                        multiple
+                      >
+                        {facilities.map((facility) => (
+                          <Option key={facility.facility_id} value={facility.facility_id.toString()}>
+                            {facility.facility_name}
+                          </Option>
+                        ))}
+                      </Select>
                     </FormControl>
                     <FormControl>
-                      <FormLabel>Floor</FormLabel>
+                      <FormLabel required>Floor</FormLabel>
                       <Input required 
                         name="room_level"
                         value={AddRoom.room_level}

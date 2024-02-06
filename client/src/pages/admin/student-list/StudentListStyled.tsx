@@ -75,7 +75,6 @@ tr {
     text-align: center;
     padding: 10px;
     border: none !important;
-    background-color: ${({ theme }) => theme.palette.main.bg};
 
   }
   td {
