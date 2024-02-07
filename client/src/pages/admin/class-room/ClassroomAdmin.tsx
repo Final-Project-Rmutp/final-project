@@ -1,7 +1,6 @@
 // ClassRoomAdmin.tsx
 import useClassroomAdmin from './useClassroomAdmin';
 import React from 'react';
-import styled from 'styled-components';
 import { DialogContent, DialogActions } from "@mui/material";
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import DeleteForever from '@mui/icons-material/DeleteForever';
@@ -30,86 +29,102 @@ import {
     Option
   } from "@mui/joy";
 import CustomPagination from "../../../shared/components/pagination/Pagination";
-const TimetableContainer = styled.div`
-    margin: 20px auto;
-    text-align: center;
-    width: 100%;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    `;
+import { styled } from '@mui/system'; 
 
-    const TimetableTable = styled.table`
-    border-collapse: collapse;
-    width: 70%;
-    margin: 30px auto;
-    `;
+const TimetableContainer = styled('div')`
+  margin: 20px auto;
+  text-align: center;
+  width: 80%;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top:5%;
+  
+`;
 
-    const TimetableTh = styled.th`
-    color: black;
-    border: 1px solid black;
-    height: 50px;
-    text-align: center;
-    background-color: #f2f2f2;
-    `;
+const TimetableHeader = styled(Typography)`
+  font-size: 24px;
+  margin-top:3%;
 
+`;
 
-    interface TimetableDaysColumnProps {
-    day: string;
+const TimetableTable = styled('table')`
+  border-collapse: collapse;
+  width: 70%;
+  margin: 30px auto;
+`;
+
+const TimetableTh = styled('th')`
+  color: black;
+  border: 1px solid black;
+  height: 50px;
+  text-align: center;
+  background-color: #f2f2f2;
+`;
+
+interface TimetableDaysColumnProps {
+  day: string;
+}
+const TimetableDaysColumn = styled('td')<TimetableDaysColumnProps>`
+  color: black;
+  border: 1px solid black;
+  height: 50px;
+  text-align: center;
+  width: 100px;
+  padding:10px;
+  background-color: ${props => {
+    switch (props.day) {
+      case 'Monday':
+        return '#ff9999'; // สีแดง
+      case 'Tuesday':
+        return '#99ff99'; // สีเขียว
+      case 'Wednesday':
+        return '#9999ff'; // สีน้ำเงิน
+      case 'Thursday':
+        return '#ffff99'; // สีเหลือง
+      case 'Friday':
+        return '#ffccff'; // สีชมพู
+      case 'Saturday':
+        return '#ccffcc'; // สีม่วง
+      case 'Sunday':
+        return '#ffcc99'; // สีส้ม
+      default:
+        return '#f2f2f2'; // สีพื้นหลังทั่วไป
     }
-    const TimetableDaysColumn = styled.td<TimetableDaysColumnProps>`
-    color: black;
-    border: 1px solid black;
-    height: 50px;
-    text-align: center;
-    width: 100px;
-    background-color: ${props => {
-        switch (props.day) {
-        case 'Monday':
-            return '#ff9999'; // สีแดง
-        case 'Tuesday':
-            return '#99ff99'; // สีเขียว
-        case 'Wednesday':
-            return '#9999ff'; // สีน้ำเงิน
-        case 'Thursday':
-            return '#ffff99'; // สีเหลือง
-        case 'Friday':
-            return '#ffccff'; // สีชมพู
-        case 'Saturday':
-            return '#ccffcc'; // สีม่วง
-        case 'Sunday':
-            return '#ffcc99'; // สีส้ม
-        default:
-            return '#f2f2f2'; // สีพื้นหลังทั่วไป
-        }
-    }};
-    @media (max-width: 600px) {
-        width: 70px; // Adjust width for smaller screens
-    }
-    `;
+  }};
+  @media (max-width: 600px) {
+    width: 70px; // Adjust width for smaller screens
+  }
+`;
 
-    const TimetableTd = styled.td`
-    color: black;
-    border: 1px solid black;
-    height: 50px;
-    text-align: center;
-    width: 150px;
-    @media (max-width: 600px) {
-        width: 100px; // Adjust width for smaller screens
-    }
-    `;
+const TimetableTd = styled('td')`
+  color: black;
+  border: 1px solid black;
+  height: 50px;
+  text-align: center;
+  width: auto;
+  background-color: #fff;
+  padding: 5px;
+  margin: 2px;
+  @media (max-width: 600px) {
+    width: auto;
+  }
+`;
 
-    const TimetableTimeSlot = styled.th`
-    color: black;
-    border: 1px solid black;
-    height: 50px;
-    text-align: center;
-    background-color: #f2f2f2;
-    font-size: 14px;
-    @media (max-width: 600px) {
-        font-size: 12px; // Adjust font size for smaller screens
-    }
-    `;
+const ScrollableTableContainer = styled('div')`
+  overflow-x: auto;
+`;
+
+const TimetableTimeSlot = styled('th')`
+  color: black;
+  border: 1px solid black;
+  height: 50px;
+  text-align: center;
+  background-color: #f2f2f2;
+  font-size: 12px;
+  @media (max-width: 600px) {
+    font-size: 12px;
+  }
+`;
 
 const ClassRoomAdmin: React.FC = () => {
 
@@ -180,33 +195,34 @@ const ClassRoomAdmin: React.FC = () => {
             const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
         
             return (
-            <>
-                {daysOfWeek.map((day) => (
-                <tr key={day}>
-                    <TimetableDaysColumn day={day} key={day}><b>{day}</b></TimetableDaysColumn>
-                    {timeSlotsBody.map((timeSlot) => (
-                    <TimetableTd  colSpan={3} key={`${day}-${timeSlot.start}`}>
-                        {timetableData.map((item) => (
-                        item &&
-                        item.day_of_week === day &&
-                        item.start_time === timeSlot.start &&
-                        item.end_time === timeSlot.end && (
-                            <p key={item.id}>
-                            <b className="text-danger">{`${item.subject_name} - ${item.room_number}`}</b>
-                            </p>
-                        )
-                        ))}
-                    </TimetableTd>
-                    ))}
-                </tr>
-                ))}
-            </>
-            );
+                <>
+                  {daysOfWeek.map((day) => (
+                    <tr key={day}>
+                      <TimetableDaysColumn day={day} key={day}><b>{day}</b></TimetableDaysColumn>
+                      {timeSlotsBody.map((timeSlot) => (
+                        <TimetableTd  colSpan={3} key={`${day}-${timeSlot.start}`}>
+                          {timetableData.map((item) => (
+                            item &&
+                            item.day_of_week === day &&
+                            item.start_time === timeSlot.start &&
+                            item.end_time === timeSlot.end && (
+                            <div key={item.id} style={{padding:'5px',margin:'2px',fontSize:'12px'}}>
+                              <div><b className="text-danger" >{item.subject_name}</b></div>
+                              <div><b className="text-danger" >{item.room_number}</b></div>
+                            </div>
+                            )
+                          ))}
+                        </TimetableTd>
+                      ))}
+                    </tr>
+                  ))}
+                </>
+              );
         };
     return (
         <>
         <TimetableContainer>
-        <Typography level="h1">TIME TABLE</Typography>
+        <TimetableHeader>{timetableData.length > 0 ? timetableData[0].fullname : 'Unknown'}</TimetableHeader>
         <div style={{width:"100%"}} className='d-flex justify-center align-items-center gap-4'>
         <Typography level="h4">Select User ID: </Typography>
         <Select value={selectedUserId} onChange={handleUserIdChange}>
@@ -221,19 +237,21 @@ const ClassRoomAdmin: React.FC = () => {
         </Select>
         <Button onClick={handleFetchClassSchedule}>Fetch Class Schedule</Button>
         </div>
-      <TimetableTable>
-          <thead>
-            <tr>
-              <TimetableTh><b>Day/Period</b></TimetableTh>
-              {headerTimeSlots.map((timeSlot) => (
-                <TimetableTimeSlot  colSpan={3} key={timeSlot.start}><b>{`${timeSlot.start} - ${timeSlot.end}`}</b></TimetableTimeSlot>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {generateTimetableRows()}
-          </tbody>
-        </TimetableTable>
+        <ScrollableTableContainer>
+          <TimetableTable>
+            <thead>
+              <tr>
+                <TimetableTh><b>Day/Period</b></TimetableTh>
+                {headerTimeSlots.map((timeSlot) => (
+                  <TimetableTimeSlot  colSpan={3} key={timeSlot.start}><b>{`${timeSlot.start} - ${timeSlot.end}`}</b></TimetableTimeSlot>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {generateTimetableRows()}
+            </tbody>
+          </TimetableTable>
+        </ScrollableTableContainer>
         </TimetableContainer>
 
 

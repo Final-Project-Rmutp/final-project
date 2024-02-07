@@ -82,7 +82,7 @@ export const MenuItemLinksNav = styled(Link)`
 
   &:hover {
     .MuiTypography-root {
-      color:#fff;
+      color:${({ theme }) => theme.palette.main.bgStyle};
     }
   }
 `;

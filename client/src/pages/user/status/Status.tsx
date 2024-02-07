@@ -1,6 +1,6 @@
 import React,{ useEffect }from "react";
 import useStatus from "./useStatus";
-import {  Chip, Sheet, Table } from '@mui/joy';
+import {  Chip, Sheet, Table, useColorScheme } from '@mui/joy';
 import {
   Tbody,
   Theader,
@@ -50,9 +50,22 @@ const ReservationStatus: React.FC = () => {
     useEffect(() => {
         fetchReservationList();
     }, [fetchReservationList]);
+    const { mode } = useColorScheme();
 
     return (
-        <div className="container mx-auto d-flex justify-center align-items-center" style={{ height: "100vh" }}>
+        <div className="py-24 sm:py-32 md:py-40 relative d-flex justify-center align-items-center"
+                    style={{
+                    width: "100%",
+                    height: "100vh",
+                    position: "relative",
+                    maxHeight: "calc(100vh - 5px)",
+                    overflowY: "auto" || "hidden",
+                    ...(mode === "dark"
+                        ? { background: "linear-gradient(to bottom, #020420, #0F172A)" }
+                        : { background: "#AA96DA" }),
+                    padding: 5,
+                    }}
+                >       
             <HeadList>
                 <TableContainer>
                     <Sheet

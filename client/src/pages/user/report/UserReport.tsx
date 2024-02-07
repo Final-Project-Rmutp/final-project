@@ -1,6 +1,6 @@
 import React,{ useEffect }from "react";
 import useReportUserList from "./useUserReport";
-import {  Chip, Sheet, Table, } from '@mui/joy';
+import {  Chip, Container, Sheet, Table, useColorScheme, } from '@mui/joy';
 import {
   Tbody,
   Theader,
@@ -23,10 +23,25 @@ const UserReportList: React.FC = () => {
     useEffect(() => {
         fetchReportList();
     }, [fetchReportList]);
+    const { mode } = useColorScheme();
 
     return (
-        <div className="container mx-auto d-flex justify-center align-items-center" style={{ height: "100vh" }}>
-            <HeadList>
+        <div
+      className="py-24 sm:py-32 md:py-40 relative d-flex justify-center align-items-center"
+      style={{
+        width: "100%",
+        height: "100vh",
+        position: "relative",
+        maxHeight: "calc(100vh - 5px)",
+        overflowY: "auto" || "hidden",
+        ...(mode === "dark"
+          ? { background: "linear-gradient(to bottom, #020420, #0F172A)" }
+          : { background: "#AA96DA" }),
+        padding: 5,
+      }}
+    >       
+        <Container>
+        <HeadList>
                 <TableContainer>
                     <Sheet
                         sx={{
@@ -124,6 +139,7 @@ const UserReportList: React.FC = () => {
                 </div>
                 </TableContainer>
             </HeadList>
+        </Container>
         </div>
     );
 };
