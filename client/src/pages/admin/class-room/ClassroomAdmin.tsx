@@ -74,21 +74,21 @@ const TimetableDaysColumn = styled('td')<TimetableDaysColumnProps>`
   background-color: ${props => {
     switch (props.day) {
       case 'Monday':
-        return '#ff9999'; // สีแดง
+        return '#FFFF99';
       case 'Tuesday':
-        return '#99ff99'; // สีเขียว
+        return '#FFC0CB ';
       case 'Wednesday':
-        return '#9999ff'; // สีน้ำเงิน
+        return '#99ff99';
       case 'Thursday':
-        return '#ffff99'; // สีเหลือง
+        return '#ffcc99';
       case 'Friday':
-        return '#ffccff'; // สีชมพู
+        return '#87CEEB'; 
       case 'Saturday':
-        return '#ccffcc'; // สีม่วง
+        return '#b06ae6 ';
       case 'Sunday':
-        return '#ffcc99'; // สีส้ม
+        return '#ff6978';
       default:
-        return '#f2f2f2'; // สีพื้นหลังทั่วไป
+        return '#f2f2f2'; 
     }
   }};
   @media (max-width: 600px) {
