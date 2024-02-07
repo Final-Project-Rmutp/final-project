@@ -58,7 +58,7 @@ const ReservationStatus: React.FC = () => {
                     width: "100%",
                     height: "100vh",
                     position: "relative",
-                    maxHeight: "calc(100vh - 5px)",
+                    maxHeight: "calc(100vh - 0  px)",
                     overflowY: "auto" || "hidden",
                     ...(mode === "dark"
                         ? { background: "linear-gradient(to bottom, #020420, #0F172A)" }
