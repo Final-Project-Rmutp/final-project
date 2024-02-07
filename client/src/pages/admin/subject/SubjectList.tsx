@@ -707,7 +707,7 @@ const handleEndTimeChange = (value: dayjs.Dayjs | null) => {
                         </Select>
                     </FormControl>
                     <FormControl>
-                    <FormLabel required>Room</FormLabel>
+                        <FormLabel required>Room</FormLabel>
                         <Select
                             required
                             color="neutral"

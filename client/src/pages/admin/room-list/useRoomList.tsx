@@ -1,7 +1,8 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import RoomService from "../../../auth/service/RoomService";
 import useRoomState from "../../../auth/model/useRoomState";
 import { RoomListActionItem, RoomListItem } from "../../../auth/model/room-list";
+import axiosInstance from "../../../environments/axiosInstance";
 
 const useRoomList = () => {
   const [listItems, setListItems] = useState<RoomListItem[]>([]);
@@ -13,6 +14,7 @@ const useRoomList = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [facilities, setFacilities] = useState<{ facility_id: string; facility_name: string }[]>([]);
 
   const {
     room,
@@ -34,9 +36,17 @@ const useRoomList = () => {
     }
   }, [page, rowsPerPage]);
 
-  useEffect(() => {
-    fetchRoomList();
-  }, [fetchRoomList]);
+  const fetchFacilities = useCallback(async () => {
+    try {
+      const response = await axiosInstance.get('/admin/facility/getallfacility');
+      setFacilities(response.data);
+    } catch (error) {
+      console.error('Error fetching facilities:', error);
+    }
+  }, []); 
+
+  
+
 
   const handleSelectAll = () => {
     setSelectAll(!selectAll);
@@ -53,6 +63,7 @@ const useRoomList = () => {
 
   const handleDelete = async (roomId: string) => {
     await fetchRoomList();
+    await fetchFacilities();
     setItemToDelete(roomId);
     setDeleteDialogOpen(true);
   };
@@ -71,6 +82,7 @@ const useRoomList = () => {
         setSelectedItems([]);
       }
       await fetchRoomList();
+      await fetchFacilities();
       setDeleteDialogOpen(false);
     } catch (error) {
       console.error("Error deactivating room(s):", error);
@@ -107,13 +119,12 @@ const useRoomList = () => {
         });
   
         console.log('Room updated successfully');
+        setEditDialogOpen(false);
+        await fetchRoomList(); 
+        await fetchFacilities();
       } catch (error) {
         console.error('Error updating room:', error);
-        // Handle error (show message to user, etc.)
       }
-  
-      await fetchRoomList();
-      setEditDialogOpen(false);
     }
   };
 
@@ -121,9 +132,11 @@ const useRoomList = () => {
     try {
       const response = await RoomService.addRoom(AddRoom);
       console.log("API Response:", response);
-      await fetchRoomList();
       setAddDialogOpen(false);
       resetRoom();
+      await fetchRoomList();
+      await fetchFacilities();
+      window.location.reload();
     } catch (error) {
       console.error("Error adding room:", error);
     }
@@ -165,17 +178,22 @@ const useRoomList = () => {
   const handleChangePage = async (newPage: number) => {
     setPage(newPage);
     await fetchRoomList();
+    await fetchFacilities();
+
   };
 
   const handleChangeRowsPerPage = (newRowsPerPage: number) => {
     setRowsPerPage(newRowsPerPage);
     setPage(1);
     fetchRoomList();
+    fetchFacilities();
+
   };
 
   return {
     listItems,
     selectAll,
+    facilities,
     selectedItems,
     page,
     rowsPerPage,
@@ -205,6 +223,7 @@ const useRoomList = () => {
     handleAdd,
     handleAddConfirmed,
     handleEditConfirmed,
+    fetchFacilities,
     setAddRoom,
   };
 };
