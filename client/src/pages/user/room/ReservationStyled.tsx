@@ -10,14 +10,14 @@ export const DateTime = styled(Sheet)`
     width:180px;
     height:38px;
 
-    .css-fliaa7-MuiInputBase-root-MuiOutlinedInput-root{
+    .MuiInputBase-root{
         border-radius:8px;
         height:38px;
         color:${({ theme }) => theme.palette.pf.color};
     }
-    .css-i4bv87-MuiSvgIcon-root{
+    .MuiSvgIcon-root{
         color:${({ theme }) => theme.palette.pf.color};
-    }
+    }   
 `;
 export const SelectStyle = styled(Select)`
     width:160px;

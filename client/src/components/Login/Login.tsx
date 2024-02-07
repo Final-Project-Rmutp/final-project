@@ -84,7 +84,7 @@ const Login: React.FC = () => {
         setTimeout(() => {
           setLoading(false);
           if (account_role === "admin") {
-            navigate("/admin");
+            navigate("/admin/dashboard");
           } else if (account_type === "teacher" || account_type === "student") {
             navigate("/user");
           } else {
