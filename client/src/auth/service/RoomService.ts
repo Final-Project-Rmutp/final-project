@@ -117,6 +117,11 @@ const RoomService = {
         });
         return response.data;
     },
+    getReportData: async () => {
+        const response = await axiosInstance.get('/dashboard/getreportdata', {
+        });
+        return response.data;
+    },
     getAllSubject: async ({ page, pageSize }: GetAllRoomsParams) => {
         const response = await axiosInstance.get('/admin/subject/getallsubject',{
             params: { page, pageSize },

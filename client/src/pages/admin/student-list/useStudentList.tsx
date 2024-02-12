@@ -4,6 +4,7 @@ import useUserState from "../../../auth/model/useUserState";
 import { ListItem, UserData } from "../../../auth/model/authTypes";
 import React from "react";
 import {  toast } from 'sonner'
+import { useDebounce } from "./Debounced";
 
 const useStudentList = () => {
   const [listItems, setListItems] = useState<ListItem[]>([]);
@@ -31,7 +32,7 @@ const useStudentList = () => {
 
   const [searchTerm, setSearchTerm] = React.useState("");
   const [image, setImage] = React.useState<File | null>(null);
-
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const markItemAsUpdated = (itemId: string) => {
     setListItems((prevListItems) =>
       prevListItems.map((item) =>
@@ -40,24 +41,20 @@ const useStudentList = () => {
     );
   };
 
-  const handleSearch = useCallback(async () => {
-    if (searchTerm.trim() !== "") {
-      const searchData = await UserService.searchUsers(searchTerm);
+  const handleSearch = useCallback(async (term: string) => {
+    if (term.trim() !== "") {
+      const searchData = await UserService.searchUsers(term);
       setListItems(searchData);
+    } else {
+      fetchUserList();
     }
-  }, [searchTerm]);
+  }, []);
+  useEffect(() => {
+    handleSearch(debouncedSearchTerm);
+  }, [debouncedSearchTerm, handleSearch]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
-    handleSearch();
-
-    // if (
-    //   e.target.value === '' &&
-    //   e.nativeEvent &&
-    //   (e.nativeEvent as InputEvent).inputType === 'deleteContentBackward'
-    // ) {
-    //   handleSearch();
-    // }
   };
 
   const fetchUserList = useCallback(async () => {
@@ -293,11 +290,12 @@ const useStudentList = () => {
     await fetchUserList();
   };
 
-  const handleChangeRowsPerPage = (newRowsPerPage: number) => {
+  const handleChangeRowsPerPage = async (newRowsPerPage: number) => {
     setRowsPerPage(newRowsPerPage);
     setPage(1);
-    fetchUserList();
+    await fetchUserList();
   };
+  
 
   const initialUserState: UserData = {
     id: "",
@@ -320,7 +318,7 @@ const useStudentList = () => {
   
       setAddUser((prevUser) => ({
         ...prevUser,
-        [name]: value,
+        [name]: value,useEffect
       }));
     }
   };

@@ -70,7 +70,7 @@ const StudentList: React.FC = () => {
   } = useStudentList();
   useEffect(() => {
     fetchUserList();
-  }, [fetchUserList]);
+  }, [fetchUserList, page, rowsPerPage]);
   interface Item {
     updated: boolean;
   }

@@ -249,7 +249,7 @@ const AdminProfileSidebar: React.FC = () => {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      height: '0px',
+                      height: '0px',  
                     }}
                   >
                     <Avatar src={userProfile.user_img_path} />

@@ -2,7 +2,8 @@ import RoomService from '../../../auth/service/RoomService';
 import { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-const MyLineChart = () => {
+
+const LineChartComponent: React.FC = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -20,14 +21,14 @@ const MyLineChart = () => {
         data={data}
         margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
       >
-        <XAxis dataKey="x" />
-        <YAxis />
+        <XAxis dataKey="x" stroke="#27005D"  />
+        <YAxis stroke="#27005D"/>
         <Tooltip />
         <Legend />
-        <Line type="monotone" dataKey="y" stroke="#8884d8" />
+        <Line type="monotone" dataKey="y" stroke="#9400FF" name='จำนวน' />
       </LineChart>
     </ResponsiveContainer>
   );
 };
 
-export default MyLineChart;
+export default LineChartComponent;

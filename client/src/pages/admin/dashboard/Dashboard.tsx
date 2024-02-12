@@ -5,7 +5,8 @@ import { PieChart } from '@mui/x-charts/PieChart';
 import { useDrawingArea } from '@mui/x-charts/hooks';
 import { styled } from '@mui/material/styles';
 import RoomService from '../../../auth/service/RoomService';
-import LineDashBoard from './LinesChartComponent';
+import LineChartComponent from './LinesChartComponent';
+import ComposedChartComponent from './ComposedChart';
 
 export class RoomData {
   room_number!: string;
@@ -92,19 +93,19 @@ const AdminDashboard: React.FC = () => {
       id: 0,
       value: Number(mostBookedRoomData.bookings),
       label: `Room ${mostBookedRoomData.roomNumber} - Most Booked`,
-      color: '#0088FE',
+      color: '#7F27FF',
     },
     {
       id: 1,
       value: Number(leastBookedRoomData.bookings),
       label: `Room ${leastBookedRoomData.roomNumber} - Least Booked`,
-      color: '#FF8042',
+      color: '#FF8911 ',
     },
     {
       id: 2,
       value: Number(mostCancelledRoomData.cancellations),
       label: `Room ${mostCancelledRoomData.roomNumber} - Most Cancelled`,
-      color: '#00C49F',
+      color: '#E23E57',
     },
   ];
 
@@ -136,17 +137,24 @@ const AdminDashboard: React.FC = () => {
                 ]}
                 height={300}
               >
-                <PieCenterLabel>จองทั้งหมด {dashboardData?.total_reserved || '0'}</PieCenterLabel>
+                <PieCenterLabel>Booking {dashboardData?.total_reserved || '0'}</PieCenterLabel>
               </PieChart>
             </CardContent>
           </Card>
         </Grid>
-
         <Grid item xs={12} md={12} lg={12}>
           <Card>
             <CardContent>
-              <Typography variant="h6">Line Chart</Typography>
-              <LineDashBoard></LineDashBoard>
+              <Typography variant="h6">Bookings/day</Typography>
+              <LineChartComponent></LineChartComponent>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={12} lg={12}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6">Report Stats</Typography>
+              <ComposedChartComponent ></ComposedChartComponent >
             </CardContent>
           </Card>
         </Grid>
