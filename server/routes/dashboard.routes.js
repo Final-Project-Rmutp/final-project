@@ -102,4 +102,52 @@ router.get('/getreserveddata', authMiddleware.isAdmin, dashboardController.getre
 
 router.get('/getdaudata', authMiddleware.isAdmin, dashboardController.getdaudata);
 
+/**
+ * @swagger
+ * /dashboard/getreportdata:
+ *   get:
+ *     tags:
+ *     - Dashboard
+ *     summary: Get Most reported room (authentication required)
+ *     description: Retrieve a number of reported room (authentication required).
+ *     security:
+ *       - Authorization: []
+ *     responses:
+ *       200:
+ *         description: authenticate successful. Returns the users profile.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  x:
+ *                    type: string
+ *                    example: "9901"
+ *                  y:
+ *                    type: string
+ *                    example: "3"
+ *       401:
+ *         description: No token provided , Invalid token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: No token provided , Invalid token
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  message:
+ *                    type: string
+ *                    example: Internal server error
+ */
+
+router.get('/getreportdata', authMiddleware.isAdmin, dashboardController.getreportdata);
+
 module.exports = router;

@@ -90,6 +90,33 @@ async function getdaudata(req, res) {
     }
 }
 
+async function getreportdata(req, res) {
+    try {
+        const dashboardQuery = `
+        SELECT r.room_number as roomnumber, COUNT(*) AS reports
+        FROM reports rp
+        LEFT JOIN rooms r ON rp.room_id = r.room_id
+        GROUP BY r.room_number
+        ORDER BY reports DESC
+        LIMIT 3
+        `;
 
+        const dashboardResult = await client.query(dashboardQuery);
+        
+        const formattedData = dashboardResult.rows.map(row => ({
+            x: row.roomnumber,
+            y: row.reports
+        }));
 
-module.exports = { getreserveddata, getdaudata };
+        const response = {
+            dataset: formattedData
+        };
+
+        res.status(200).json(response);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+module.exports = { getreserveddata, getdaudata, getreportdata };
