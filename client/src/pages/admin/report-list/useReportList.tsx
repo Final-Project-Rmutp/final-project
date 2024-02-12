@@ -23,10 +23,10 @@ const useReportAdminList = () => {
         await fetchReportList();
     };
 
-    const handleChangeRowsPerPage = (newRowsPerPage: number) => {
+    const handleChangeRowsPerPage = async (newRowsPerPage: number) => {
         setRowsPerPage(newRowsPerPage);
         setPage(1);
-        fetchReportList();
+        await fetchReportList();
     };
 
     return {

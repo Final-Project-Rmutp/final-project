@@ -37,7 +37,7 @@ const useReservedList = () => {
 
     useEffect(() => {
       fetchReservedList();
-    }, [fetchReservedList]);
+    }, [fetchReservedList,page, rowsPerPage]);
 
     const searchRoom = async () => {
         const response = await axiosInstance.post("/reservation/searchroom", {
@@ -89,10 +89,10 @@ const useReservedList = () => {
         await fetchReservedList();
     };
 
-    const handleChangeRowsPerPage = (newRowsPerPage: number) => {
+    const handleChangeRowsPerPage = async (newRowsPerPage: number) => {
         setRowsPerPage(newRowsPerPage);
         setPage(1);
-        fetchReservedList();
+        await fetchReservedList();
     };
 
     return {

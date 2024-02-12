@@ -72,7 +72,7 @@ const ReportList: React.FC = () => {
     
     useEffect(() => {
         fetchReportList();
-    }, [fetchReportList]);
+    }, [fetchReportList,page, rowsPerPage]);
 
     return (
         <HeadList>

@@ -60,7 +60,7 @@ const RoomList: React.FC = () => {
   useEffect(() => {
     fetchRoomList();
     fetchFacilities();
-  }, [fetchRoomList,fetchFacilities]);
+  }, [fetchRoomList,fetchFacilities,page, rowsPerPage]);
   
   const [roomTypes, setRoomTypes] = useState<string[]>([]);
   const [roomnumber, setRoomnumber] = useState<{ room_id: string; room_number: string }[]>([]);

@@ -182,11 +182,11 @@ const useRoomList = () => {
 
   };
 
-  const handleChangeRowsPerPage = (newRowsPerPage: number) => {
+  const handleChangeRowsPerPage = async (newRowsPerPage: number) => {
     setRowsPerPage(newRowsPerPage);
     setPage(1);
-    fetchRoomList();
-    fetchFacilities();
+    await fetchRoomList();
+    await fetchFacilities();
 
   };
 
