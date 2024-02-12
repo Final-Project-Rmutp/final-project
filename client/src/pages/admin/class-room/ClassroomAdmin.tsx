@@ -331,6 +331,8 @@ const ClassRoomAdmin: React.FC = () => {
                             checked={selectAll}
                             onChange={handleSelectAll}
                             color="primary"
+                            disabled={false}
+                            size="md"
                         />
                         </th>
                         <th></th>
@@ -352,6 +354,8 @@ const ClassRoomAdmin: React.FC = () => {
                             checked={selectedItems.includes(item.reservation_id)}
                             onChange={() => handleCheckboxChange(item.reservation_id)}
                             color="primary"
+                            disabled={false}
+                            size="md"
                             />
                         </th>
                         <th>

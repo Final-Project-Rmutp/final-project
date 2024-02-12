@@ -188,6 +188,8 @@ const RoomList: React.FC = () => {
                             checked={selectAll}
                             onChange={handleSelectAll}
                             color="primary"
+                            disabled={false}
+                            size="md"
                           />
                         </th>
                         <th></th>
@@ -210,6 +212,8 @@ const RoomList: React.FC = () => {
                               checked={selectedItems.includes(item.room_id)}
                               onChange={() => handleCheckboxChange(item.room_id)}
                               color="primary"
+                              disabled={false}
+                              size="md"
                             />
                             </th>
                             <th>

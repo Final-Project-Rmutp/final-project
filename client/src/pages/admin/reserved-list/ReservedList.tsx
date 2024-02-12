@@ -161,6 +161,9 @@ const ReservedList: React.FC = () => {
                           <Checkbox
                             checked={selectAllChecked}
                             onChange={handleToggleSelectAll}
+                            color="primary"
+                            disabled={false}
+                            size="md"
                           />
                         </th>
                       </tr>
@@ -189,6 +192,9 @@ const ReservedList: React.FC = () => {
                               <Checkbox
                                   checked={selectedItems.includes(item.reservation_id)}
                                   onChange={() => handleToggleCheckbox(item.reservation_id)}
+                                  color="primary"
+                                  disabled={false}
+                                  size="md"
                               />
                             </th>
                             </tr>

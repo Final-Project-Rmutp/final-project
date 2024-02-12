@@ -144,6 +144,9 @@ const ReportList: React.FC = () => {
                             <Checkbox
                                 checked={selectAllChecked}
                                 onChange={handleToggleSelectAll}
+                                color="primary"
+                                disabled={false}
+                                size="md"
                             />
                         </th>
                     </tr>
@@ -165,6 +168,9 @@ const ReportList: React.FC = () => {
                                 <Checkbox
                                     checked={selectedItems.includes(item.report_id)}
                                     onChange={() => handleToggleCheckbox(item.report_id)}
+                                    color="primary"
+                                    disabled={false}
+                                    size="md"
                                 />
                             </th>
                             </tr>

@@ -39,6 +39,8 @@ export const TableHeaderRows: React.FC<{searchTerm: string, handleChange: (e: Re
         checked={selectAll}
         onChange={handleSelectAll}
         color="primary"
+        disabled={false}
+        size="md"
       />
     </th>
     <th></th>

@@ -374,6 +374,8 @@ const handleEndTimeChange = (value: dayjs.Dayjs | null) => {
                         checked={selectAll}
                         onChange={handleSelectAll}
                         color="primary"
+                        disabled={false}
+                        size="md"
                     />
                     </th>
                     <th></th>
@@ -391,6 +393,8 @@ const handleEndTimeChange = (value: dayjs.Dayjs | null) => {
                         checked={selectedItems.includes(item.subject_id)}
                         onChange={() => handleCheckboxChange(item.subject_id)}
                         color="primary"
+                        disabled={false}
+                        size="md"
                         />
                     </th>
                     <th>
