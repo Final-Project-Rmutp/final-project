@@ -292,7 +292,7 @@ function transformReservationStatus(status) {
     }
   }
 
-// Function to approve a reservation
+// Function to update a reservation status (eg. 0 = cancel, 1 = in progress, 2 = approve)
 async function updatestatus(req, res) {
   try {
       const { reservation_id, reservation_status } = req.query;
@@ -326,14 +326,33 @@ async function updatestatus(req, res) {
           WHERE reservation_id = $1;
       `;
 
-      const updateStatusResult = await client.query(updateStatusQuery, [reservation_id, reservation_status]);
+      await client.query('BEGIN'); 
+
+      await client.query(updateStatusQuery, [reservation_id, reservation_status]);
+
+      if (reservation_status === '2') { // If updating status to 'reserved'
+
+        const updateOtherReservationsQuery = `
+        UPDATE reservations
+        SET reservation_status = '0'
+        WHERE room_id = $1
+        AND reservation_date = $2
+        AND start_time >= $3
+        AND end_time <= $4
+        AND reservation_id <> $5; -- Exclude the current reservation
+    `;
+
+    await client.query(updateOtherReservationsQuery, [existingReservation.room_id, existingReservation.reservation_date, existingReservation.start_time, existingReservation.end_time, reservation_id]);
+      }
+
+      await client.query('COMMIT');
 
       res.status(200).json({ message: 'Reservation status updated successfully' });
   } catch (err) {
+      await client.query('ROLLBACK');
       console.error(err.message);
       res.status(500).json({ message: 'Internal server error' });
   }
 }
-
 
 module.exports = { getRoomSchedule, searchroom, reservation, getreservation, updatestatus };
