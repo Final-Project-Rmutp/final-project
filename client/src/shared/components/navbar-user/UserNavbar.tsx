@@ -27,7 +27,7 @@ import {
   MenuContainer,
   MenuItemContainer,
 } from "../navbar/NavbarStyled";
-import Hamburger from "../navbar/Hamburger";
+import '../navbar/Hamburger.scss'
 import {
   HeaderNav,
   MenuItemLinksNav,
@@ -211,14 +211,14 @@ const UserProfileSidebar: React.FC = () => {
     },
     {
         isShow: true,
-        title: 'Status',
+        title: 'Reservation Status',
         path: 'status-user',
         icon:''
         // icon: <Icon icon="fluent-mdl2:sync-status-solid" color="#0077B2" />
     },
     {
         isShow: true,
-        title: 'Report',
+        title: 'Reported Status',
         path: 'report-user',
         icon:''
         // icon: <Icon icon="fluent-mdl2:report-warning" color="red"  />
@@ -237,7 +237,12 @@ const UserProfileSidebar: React.FC = () => {
           {isMobile && (
             <LeftUser id="left" className={state.leftOpen ? "open" : "closed"}>
               <div className="icon" onClick={handleHamburgerClick}>
-                <Hamburger isActive={state.leftOpen} onClick={toggleSidebar} />
+                <div className={`hamburger ${state.leftOpen ? 'is-active' : ''}`} onClick={toggleSidebar}>
+                    <div className="hamburger__container">
+                      <div className="hamburger__inner"></div>
+                      <div className="hamburger__hidden"></div>
+                    </div>
+                  </div>
               </div>
               <SidebarUser className={`sidebar ${leftOpen}`}>
                 <div className="header-left">

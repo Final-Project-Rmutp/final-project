@@ -195,6 +195,8 @@ const Room: React.FC = () => {
   const closeModal = () => {
     setConfirmModalOpen(false);
     setReportModalOpen(false);
+    setReservationReason("");
+    setReportDetail("");
   };
   const handleConfirmClick = async () => {
     if (selectedRoomId !== null) {
@@ -296,7 +298,7 @@ const Room: React.FC = () => {
             <Grid>
               <FormLabel>Select Start Time</FormLabel>
               <LocalizationProvider dateAdapter={NewAdapter} adapterLocale="th">
-                <DateTime>
+                <DateTime style={{width:"120px"}}>
                   <TimePicker
                     className="TimePicker"
                     format="HH:00"
@@ -311,7 +313,7 @@ const Room: React.FC = () => {
             <Grid>
               <FormLabel>Select End Time</FormLabel>
               <LocalizationProvider dateAdapter={NewAdapter} adapterLocale="th">
-                <DateTime>
+                <DateTime style={{width:"120px"}}>
                   <TimePicker
                     className="TimePicker"
                     format="HH:00"
@@ -326,7 +328,8 @@ const Room: React.FC = () => {
             <Grid>
               <FormLabel>ชั้น</FormLabel>
               <SelectStyle
-                placeholder="เลือกชั้น"
+                style={{width:"100%"}}
+                placeholder="ชั้น"
                 onChange={(_, value) => {
                   handleInputChange({
                     target: { name: "room_level", value },
@@ -344,7 +347,8 @@ const Room: React.FC = () => {
             <Grid>
               <FormLabel>ห้อง</FormLabel>
               <SelectStyle
-                placeholder="เลือกห้อง"
+                style={{width:"100%"}}
+                placeholder="ห้อง"
                 onChange={(_, value) =>
                   handleInputChange({
                     target: { name: "room_number", value },
@@ -361,6 +365,7 @@ const Room: React.FC = () => {
             <Grid>
               <FormLabel>ประเภทห้อง</FormLabel>
               <SelectStyle
+                style={{width:"100%"}}
                 placeholder="เลือกประเภทห้อง"
                 onChange={(_, value) =>
                   handleInputChange({
@@ -378,6 +383,7 @@ const Room: React.FC = () => {
             <Grid>
               <FormLabel>จำนวนคน</FormLabel>
               <SelectStyle
+                style={{width:"100%"}}
                 placeholder="เลือกจำนวนคน"
                 onChange={(_, value) =>
                   handleInputChange({

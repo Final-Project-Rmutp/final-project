@@ -25,10 +25,10 @@ import { CssVarsProvider, useColorScheme } from '@mui/joy/styles';
 import CssBaseline from '@mui/joy/CssBaseline';
 import UserService from "../../../auth/service/UserService";
 import { CardStyle, Header, IconButtonHeader, Layout, Left, Main, MenuContainer, Sidebar ,MenuItemContainer} from "./NavbarStyled";
-import Hamburger from "./Hamburger";
 import { Icon } from '@iconify/react';
 import { useLocation } from 'react-router-dom';
 import LogoRmutp from '../../../img/logo.png'
+import './Hamburger.scss'
 interface LayoutState {
   leftOpen: boolean;
   rightOpen: boolean;
@@ -206,7 +206,12 @@ const AdminProfileSidebar: React.FC = () => {
           <Layout id="layout" data-left={state.leftOpen ? 'open' : 'closed'}>
             <Left id="left" className={state.leftOpen ? "open" : "closed"}>
               <div className="icon" onClick={handleHamburgerClick}>
-              <Hamburger isActive={state.leftOpen} onClick={toggleSidebar} />
+                  <div className={`hamburger ${state.leftOpen ? 'is-active' : ''}`} onClick={toggleSidebar}>
+                    <div className="hamburger__container">
+                      <div className="hamburger__inner"></div>
+                      <div className="hamburger__hidden"></div>
+                    </div>
+                  </div>
               </div>
               <Sidebar className={`sidebar ${leftOpen}`}
               >

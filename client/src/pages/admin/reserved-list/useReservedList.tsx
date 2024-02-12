@@ -1,6 +1,8 @@
 import {useCallback, useEffect, useState } from "react";
 import axiosInstance from "../../../environments/axiosInstance";
 import RoomService from "../../../auth/service/RoomService";
+import { toast } from 'sonner'
+
 export class reservedList {
     id!:string;
     fullname!:string;
@@ -64,17 +66,22 @@ const useReservedList = () => {
       reservationId: string
     ) => {
       const newStatus = currentStatus;
-      const response = await axiosInstance.patch(
-        "/reservation/updatestatus",
-        {},
-        {
-          params: {
-            reservation_id: reservationId,
-            reservation_status: newStatus,
-          },
-        }
-      );
-      return response.data;
+      try {
+        const response = await axiosInstance.patch(
+          "/reservation/updatestatus",
+          {},
+          {
+            params: {
+              reservation_id: reservationId,
+              reservation_status: newStatus,
+            },
+          }
+        );
+        await fetchReservedList();
+        return response.data;
+      } catch (error) {
+        toast.error("Time slot is not available");
+      }
     };
     
     const handleChangePage = async (newPage: number) => {

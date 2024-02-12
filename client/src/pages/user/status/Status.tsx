@@ -95,40 +95,19 @@ const ReservationStatus: React.FC = () => {
                             className="table mb-0"
                             borderAxis="bothBetween"
                             stickyHeader
-                            hoverRow
-                            sx={{
-                            "--Table-headerUnderlineThickness": "1px",
-                            "--TableCell-paddingX": "10px",
-                            "--TableCell-paddingY": "7px",
-                            "& tr > *:first-of-type": {
-                                position: "sticky",
-                                zIndex: 1,
-                                left: 0,
-                                boxShadow: "1px 0 var(--TableCell-borderColor)",
-                                // bgcolor: 'background.surface',
-                            },
-                            "& tr > *:last-child": {
-                                position: "sticky",
-                                right: 0,
-                                bgcolor: "var(--TableCell-headBackground)",
-                            },
-                            }}
+                            
                         >
                     <Theader >
-                        <tr >
-                            <th>No</th>
-                            <th>Name</th>
-                            <th>Account Type</th>
-                            <th>Rooom</th>
-                            <th>Detail Report</th>
-                            <th>Status</th>
-                            <th>Reservation Date</th>
-                            <th>Start time</th>
-                            <th>End time</th>
+                        <tr>
+                            <th style={{width:150}}>No</th>
+                            <th style={{width:150}}>Rooom</th>
+                            <th style={{width:150}}>Detail</th>
+                            <th style={{width:150}}>Status</th>
+                            <th style={{width:150}}>Reservation Date</th>
+                            <th style={{width:150}}>Start time</th>
+                            <th style={{width:150}}>End time</th>
                         </tr>
                         <tr>
-                            <th></th>
-                            <th></th>
                             <th></th>
                             <th></th>
                             <th></th>
@@ -142,8 +121,6 @@ const ReservationStatus: React.FC = () => {
                             {reservation.map((item,index) => (
                                 <tr className="text-center" key={item.id || index}>
                                 <th>{index + 1}</th>
-                                <th>{item.fullname}</th>
-                                <th>{item.account_type}</th>
                                 <th>{item.room_number}</th>
                                 <th>{item.reservation_reason}</th>
                                 <th>
@@ -218,7 +195,12 @@ const ReservationStatus: React.FC = () => {
 
 export default ReservationStatus;
 
-const formatTimestamp = (timestamp: string | number) : string => {
-    const date = new Date(typeof timestamp === 'string' ? parseInt(timestamp, 10) * 1000 : timestamp * 1000);
-    return `${date.toLocaleDateString()} : ${date.toLocaleTimeString()}`;
-}
+const formatTimestamp = (timestamp: string | number): string => {
+    const date = new Date(timestamp);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${day}/${month}/${year}`;
+  }
+  
+

@@ -92,7 +92,7 @@ const UserReportList: React.FC = () => {
                     <Theader >
                         <tr >
                             <th>No</th>
-                            <th>Name</th>
+                            <th>Room</th>
                             <th>Report</th>
                             <th>Status</th>
                             <th>Date time</th>
@@ -147,6 +147,13 @@ const UserReportList: React.FC = () => {
 export default UserReportList;
 
 const formatTimestamp = (timestamp: string | number): string => {
-    const date = new Date(typeof timestamp === 'string' ? parseInt(timestamp, 10) * 1000 : timestamp * 1000);
-    return `${date.toLocaleDateString()} : ${date.toLocaleTimeString()}`;
+    const date = new Date(timestamp);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${day}/${month}/${year} ${hours}:${minutes}`;
 }
+
+
