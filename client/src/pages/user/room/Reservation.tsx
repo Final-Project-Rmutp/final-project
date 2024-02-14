@@ -8,7 +8,6 @@ import {
   ModalDialog,
   FormControl,
   Input,
-  Typography,
   Container,
   Box
 } from "@mui/joy";
@@ -17,7 +16,7 @@ import "dayjs/locale/th";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 import NewAdapter from "./AdapterDay";
-import { DateTime, OptionStyle, SelectStyle } from "./ReservationStyled";
+import { DateTime, OptionStyle, SelectStyle ,TimeSelect} from "./ReservationStyled";
 import RoomService, {
   SearchRoomParams,
 } from "../../../auth/service/RoomService";
@@ -220,14 +219,24 @@ const Room: React.FC = () => {
 
   const handleReportClick = async () => {
     if (selectedRoomId !== null) {
-      const response = await UserService.reportRoom({
-        room_id: selectedRoomId,
-        report_detail: reportDetail,
-      });
-      setReportModalOpen(false);
-      toast.success(response.message || "Reported successfully");
+      try {
+        const response = await UserService.reportRoom({
+          room_id: selectedRoomId,
+          report_detail: reportDetail,
+        });
+        setReportModalOpen(false);
+        toast.success(response.message || "Reported successfully");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        toast.error("All fields are required");
+      }
+    } else {
+      toast.error("Please select a room before reporting");
     }
   };
+  
+  
+  
 
   const handleDateChange = (value: dayjs.Dayjs | null) => {
     setSelectedDate(value);
@@ -265,7 +274,7 @@ const Room: React.FC = () => {
         overflowY: "auto" || "hidden",
         ...(mode === "dark"
           ? { background: "linear-gradient(to bottom, #020420, #0F172A)" }
-          : { background: "#AA96DA" }),
+          : { background: "linear-gradient(to bottom, #AA96DA, #6962AD" }),
         padding: 5,
       }}
     >
@@ -285,20 +294,24 @@ const Room: React.FC = () => {
             <Grid>
               <FormLabel>Select Date</FormLabel>
               <LocalizationProvider dateAdapter={NewAdapter} adapterLocale="th">
-                <DateTime>
+                <DateTime style={{position:'relative'}}
+                >
                   <DatePicker
                     className="datetime-picker"
                     format="DD MMMM YYYY"
                     value={selectedDate}
                     onChange={handleDateChange}
                   />
+                  <img className="position-absolute top-0 right-0"
+                  style={{pointerEvents:'none', transform:'translate(-50%,20%)',}}
+                  src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Tear-Off%20Calendar.png" alt="Stopwatch" width="25" height="25" />
                 </DateTime>
               </LocalizationProvider>
             </Grid>
             <Grid>
               <FormLabel>Select Start Time</FormLabel>
               <LocalizationProvider dateAdapter={NewAdapter} adapterLocale="th">
-                <DateTime style={{width:"120px"}}>
+                <TimeSelect style={{width:"120px",position:'relative'}}>
                   <TimePicker
                     className="TimePicker"
                     format="HH:00"
@@ -307,13 +320,16 @@ const Room: React.FC = () => {
                     onChange={handleStartTimeChange}
                     shouldDisableTime={shouldDisableStartTime}
                   />
-                </DateTime>
+                  <img className="position-absolute top-0 right-0"
+                  style={{pointerEvents:'none', transform:'translate(-50%,20%)',}}
+                  src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Stopwatch.png" alt="Stopwatch" width="25" height="25" />
+                </TimeSelect>
               </LocalizationProvider>
             </Grid>
             <Grid>
               <FormLabel>Select End Time</FormLabel>
               <LocalizationProvider dateAdapter={NewAdapter} adapterLocale="th">
-                <DateTime style={{width:"120px"}}>
+                <TimeSelect style={{width:"120px",position:'relative'}}>
                   <TimePicker
                     className="TimePicker"
                     format="HH:00"
@@ -322,7 +338,10 @@ const Room: React.FC = () => {
                     onChange={handleEndTimeChange}
                     shouldDisableTime={shouldDisableEndTime}
                   />
-                </DateTime>
+                  <img className="position-absolute top-0 right-0"
+                  style={{pointerEvents:'none', transform:'translate(-50%,20%)',}}
+                  src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Stopwatch.png" alt="Stopwatch" width="25" height="25" />
+                </TimeSelect>
               </LocalizationProvider>
             </Grid>
             <Grid>
@@ -412,7 +431,6 @@ const Room: React.FC = () => {
           sx={{
             display: "flex",
             justifyContent: "center",
-            backgroundColor: "red",
             borderRadius: 10,
             padding: 6,
             width: "100%",
@@ -443,20 +461,6 @@ const Room: React.FC = () => {
           {searchResultsRecom.recommended_rooms &&
             searchResultsRecom.recommended_rooms.length > 0 && (
               <Container>
-                <Typography
-                  color="success"
-                  variant="plain"
-                  level="h3"
-                  sx={{
-                    marginTop: 2,
-                    marginBottom: 6,
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  Recommended Rooms
-                </Typography>
-
                 <CardList
                   data={searchResultsRecom.recommended_rooms}
                   isRecommended={true}
@@ -502,6 +506,7 @@ const Room: React.FC = () => {
                       fullWidth
                       size="lg"
                       readOnly
+                      color="primary"
                     />
                 </FormControl>
 
@@ -528,7 +533,7 @@ const Room: React.FC = () => {
                     dateAdapter={NewAdapter}
                     adapterLocale="th"
                   >
-                    <DateTime sx={{ width: "50%" }}>
+                    <TimeSelect sx={{ width: "50%" }}>
                       <TimePicker
                         className="TimePicker"
                         format="HH:00"
@@ -538,7 +543,7 @@ const Room: React.FC = () => {
                         shouldDisableTime={shouldDisableStartTime}
                         readOnly
                       />
-                    </DateTime>
+                    </TimeSelect>
                   </LocalizationProvider>
                 </FormControl>
                 <FormControl>
@@ -547,7 +552,7 @@ const Room: React.FC = () => {
                     dateAdapter={NewAdapter}
                     adapterLocale="th"
                   >
-                    <DateTime sx={{ width: "50%" }}>
+                    <TimeSelect sx={{ width: "50%" }}>
                       <TimePicker
                         className="TimePicker"
                         format="HH:00"
@@ -557,12 +562,13 @@ const Room: React.FC = () => {
                         shouldDisableTime={shouldDisableEndTime}
                         readOnly
                       />
-                    </DateTime>
+                    </TimeSelect>
                   </LocalizationProvider>
                 </FormControl>
                 <FormControl>
-                  <FormLabel>Reservation reason</FormLabel>
+                  <FormLabel >Reservation reason</FormLabel>
                   <Input
+                    color="primary"
                     required
                     name="reservation_reason"
                     value={reservationReason}
@@ -573,7 +579,7 @@ const Room: React.FC = () => {
                 </FormControl>
                 <div className="d-flex gap-3 w-100 w-auto">
                   <Button onClick={handleConfirmClick}>Confirm</Button>
-                  <Button onClick={closeModal}>Cancel</Button>
+                  <Button color="neutral" onClick={closeModal}>Cancel</Button>
                 </div>
               </ModalDialog>
             </Modal>
@@ -603,9 +609,10 @@ const Room: React.FC = () => {
                       fullWidth
                       size="lg"
                       readOnly
+                      color="primary"
                     />
                   </FormControl>
-                  <FormLabel>Report detail</FormLabel>
+                  <FormLabel required>Report detail</FormLabel>
                   <Input
                     required
                     name="report_detail"
@@ -613,11 +620,12 @@ const Room: React.FC = () => {
                     onChange={(e) => setReportDetail(e.target.value)}
                     fullWidth
                     size="lg"
+                    color="primary"
                   />
                 </FormControl>
                 <div className="d-flex gap-3">
-                  <Button onClick={handleReportClick}>Report</Button>
-                  <Button onClick={closeModal}>Cancel</Button>
+                  <Button color="danger" onClick={handleReportClick}>Report</Button>
+                  <Button color="neutral" onClick={closeModal}>Cancel</Button>
                 </div>
               </ModalDialog>
             </Modal>

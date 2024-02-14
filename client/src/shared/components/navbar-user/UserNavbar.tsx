@@ -39,7 +39,7 @@ import {
   LeftUser,
 } from "./UserSidebarStyle";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { Icon } from "@iconify/react";
+// import { Icon } from "@iconify/react";
 import { Link } from 'react-router-dom';
 import HomeUser from "../../../pages/user/index";
 
@@ -172,17 +172,9 @@ const UserProfileSidebar: React.FC = () => {
         
       >
         {mode === "light" ? (
-          <Icon
-            icon="line-md:sunny-filled-loop-to-moon-filled-loop-transition"
-            color="black"
-            fontSize={16}
-          />
+          <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/New%20Moon%20Face.png" alt="New Moon Face" width="25" height="25" />
         ) : (
-          <Icon
-            icon="line-md:moon-filled-alt-to-sunny-filled-loop-transition"
-            color="#fecf49"
-            fontSize={16}
-          />
+<img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Sun%20with%20Face.png" alt="Sun with Face" width="25" height="25" />
         )}
       </IconButtonUser>
     );
@@ -374,7 +366,7 @@ const UserProfileSidebar: React.FC = () => {
                 </div>
               </div>
             </HeaderNav>
-            <div  style={{height:"100vh", overflowY:"auto"}}>
+            <div className="content-user">
               <Outlet></Outlet>
               <Routes>
                 <Route path="/" element={<HomeUser />} />

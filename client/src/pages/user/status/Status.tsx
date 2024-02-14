@@ -100,7 +100,7 @@ const ReservationStatus: React.FC = () => {
                     <Theader >
                         <tr>
                             <th style={{width:150}}>No</th>
-                            <th style={{width:150}}>Rooom</th>
+                            <th style={{width:150}}>Room</th>
                             <th style={{width:150}}>Detail</th>
                             <th style={{width:150}}>Status</th>
                             <th style={{width:150}}>Reservation Date</th>

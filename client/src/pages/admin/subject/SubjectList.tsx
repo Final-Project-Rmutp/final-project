@@ -562,6 +562,7 @@ const handleEndTimeChange = (value: dayjs.Dayjs | null) => {
                         onChange={handleInputEditChangeSubject}
                         fullWidth
                         size="lg"
+                        color="primary"
                         />
                     </FormControl>
                     <FormControl>
@@ -573,14 +574,15 @@ const handleEndTimeChange = (value: dayjs.Dayjs | null) => {
                         onChange={handleInputEditChangeSubject}
                         fullWidth
                         size="lg"
+                        color="primary"
                         />
                     </FormControl>
                     <FormControl>
                         <FormLabel required>User</FormLabel>
                         <Select
+                        variant="solid"
+                        color="primary"
                             required
-                            color="neutral"
-                            variant="soft"
                             name="user_id"
                             value={editingSubject.user_id}
                             onChange={(_, value) =>
@@ -635,6 +637,7 @@ const handleEndTimeChange = (value: dayjs.Dayjs | null) => {
                         onChange={handleInputChangeSubject}
                         fullWidth
                         size="lg"
+                        color="primary"
                     />
                     </FormControl>
                     <FormControl>
@@ -646,14 +649,15 @@ const handleEndTimeChange = (value: dayjs.Dayjs | null) => {
                         onChange={handleInputChangeSubject}
                         fullWidth
                         size="lg"
+                        color="primary"
                     />
                     </FormControl>
                     <FormControl>
                         <FormLabel required>User ID</FormLabel>
                         <Select
+                        variant="solid"
+                        color="primary"
                             required
-                            color="neutral"
-                            variant="soft"
                             name="user_id"
                             value={AddSubject.user_id}
                             onChange={(_, value) =>
@@ -700,6 +704,8 @@ const handleEndTimeChange = (value: dayjs.Dayjs | null) => {
                     <FormControl>
                         <FormLabel required>ชั้น</FormLabel>
                         <Select
+                        variant="solid"
+                        color="primary"
                             placeholder="เลือกชั้น"
                             onChange={(_, value) => setSelectedFloor(value as string | null)}
                         >
@@ -713,9 +719,9 @@ const handleEndTimeChange = (value: dayjs.Dayjs | null) => {
                     <FormControl>
                         <FormLabel required>Room</FormLabel>
                         <Select
+                            variant="solid"
+                            color="primary"
                             required
-                            color="neutral"
-                            variant="soft"
                             name="room_id"
                             value={AddClass.room_id}
                             onChange={(_, value) =>
@@ -733,9 +739,9 @@ const handleEndTimeChange = (value: dayjs.Dayjs | null) => {
                     <FormControl>
                         <FormLabel required>Day</FormLabel>
                         <Select
+                            variant="solid"
+                            color="primary"
                             required
-                            color="neutral"
-                            variant="soft"
                             name="day_of_week"
                             value={AddClass.day_of_week}
                             onChange={(_, value) =>

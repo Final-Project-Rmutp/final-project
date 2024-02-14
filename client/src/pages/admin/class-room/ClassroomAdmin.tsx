@@ -225,7 +225,9 @@ const ClassRoomAdmin: React.FC = () => {
         <TimetableHeader>{timetableData.length > 0 ? timetableData[0].fullname : 'Unknown'}</TimetableHeader>
         <div style={{width:"100%"}} className='d-flex justify-center align-items-center gap-4'>
         <Typography level="h4">Select User ID: </Typography>
-        <Select value={selectedUserId} onChange={handleUserIdChange}>
+        <Select value={selectedUserId} onChange={handleUserIdChange}
+                    variant="solid"
+                    color="primary">
             <Option value="" disabled>
                 Select a teacher
             </Option>
@@ -310,7 +312,7 @@ const ClassRoomAdmin: React.FC = () => {
                         <th style={{ width: 100 }}>Name</th>
                         <th style={{ width: 100 }}>Room</th>
                         <th style={{ width: 100 }}>Name Teacher</th>
-                        <th style={{ width: 100 }}>Weeked</th>
+                        <th style={{ width: 100 }}>Day</th>
                         <th style={{ width: 100 }}>Start Time</th>
                         <th style={{ width: 100 }}>End Time</th>
                         <th style={{ width: 100 }}>Select</th>

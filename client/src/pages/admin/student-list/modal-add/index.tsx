@@ -50,6 +50,7 @@ export const ModalAdd: React.FC<ModalAddProps> = ({ open, onClose, onConfirm }) 
               onChange={handleInputChange}
               fullWidth
               size="lg"
+              color="primary"
             />
           </FormControl>
           <FormControl>
@@ -61,6 +62,7 @@ export const ModalAdd: React.FC<ModalAddProps> = ({ open, onClose, onConfirm }) 
               onChange={handleInputChange}
               fullWidth
               size="lg"
+              color="primary"
             />
           </FormControl>
           <FormControl>
@@ -72,6 +74,7 @@ export const ModalAdd: React.FC<ModalAddProps> = ({ open, onClose, onConfirm }) 
               onChange={handleInputChange}
               fullWidth
               size="lg"
+              color="primary"
             />
           </FormControl>
           <FormControl>
@@ -83,11 +86,14 @@ export const ModalAdd: React.FC<ModalAddProps> = ({ open, onClose, onConfirm }) 
               onChange={handleInputChange}
               fullWidth
               size="lg"
+              color="primary"
             />
           </FormControl>
           <FormControl>
             <FormLabel>AccountType</FormLabel>
             <Select
+            variant="solid"
+            color="primary"
               defaultValue="select"
               required
               name="account_type"
@@ -107,6 +113,7 @@ export const ModalAdd: React.FC<ModalAddProps> = ({ open, onClose, onConfirm }) 
               name="image"
               onChange={handleImageChange}
               fullWidth
+              color="primary"
             />
           </FormControl>
           <DialogActions>

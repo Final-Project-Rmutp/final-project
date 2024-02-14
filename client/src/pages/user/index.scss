@@ -1,6 +1,779 @@
-
 @keyframes scroll-reveal {
+    from {
+        background-size: -100%;
+    }
     to {
         background-size: 100% 100%;
     }
 }
+
+@media (max-width: 768px) {
+    @keyframes scroll-reveal {
+        from {
+            background-size: -100%;
+        }
+        to {
+            background-size: 100% 100%;
+        }
+    }
+}
+
+.pixelbackground {    
+    left: 0;
+    top: 0;
+    position:absolute;
+    height: 100%;
+    width: 100%;
+    
+    .pixel {
+      height: 1rem;
+      width: 1rem;
+      position: absolute;
+    }
+  
+    .pixel:nth-child(1) {
+      background-color: powderblue;
+      animation: random-pixel1 8s infinite;
+    }
+    .pixel:nth-child(2) {
+      background-color: palegreen;
+      animation: random-pixel2 8s infinite;
+      animation-delay: 0.2s;
+    }
+    .pixel:nth-child(3) {
+      background-color: ghostwhite;
+      animation: random-pixel3 8s infinite;
+      animation-delay: 0.4s;
+    }
+    .pixel:nth-child(4) {
+      background-color: coral;
+      animation: random-pixel4 8s infinite;
+      animation-delay: 0.6s;
+      }
+    .pixel:nth-child(5) {
+      background-color: mediumslateblue;
+      animation: random-pixel5 8s infinite;
+      animation-delay: 0.8s;
+    }
+    .pixel:nth-child(6) {
+      background-color: hotpink;
+      animation: random-pixel6 8s infinite;
+      animation-delay: 1s;
+    }
+    .pixel:nth-child(7) {
+      background-color: lightseagreen;
+      animation: random-pixel7 8s infinite;
+      animation-delay: 1.2s;
+    }
+    .pixel:nth-child(8) {
+      background-color: gold;
+      animation: random-pixel8 8s infinite;
+      animation-delay: 1.4s;
+    }
+    .pixel:nth-child(9) {
+      background-color: lightslategray;
+      animation: random-pixel9 8s infinite;
+      animation-delay: 1.6s;
+    }
+    .pixel:nth-child(10) {
+      background-color: tomato;
+      animation: random-pixel10 8s infinite;
+      animation-delay: 1.8s;
+    }
+    .pixel:nth-child(11) {
+      background-color: lightcoral;
+      animation: random-pixel11 8s infinite;
+      animation-delay: 2s;
+    }
+    .pixel:nth-child(12) {
+      background-color: darkseagreen;
+      animation: random-pixel12 8s infinite;
+      animation-delay: 2.2s;
+    }
+    .pixel:nth-child(13) {
+      background-color: burlywood;
+      animation: random-pixel13 8s infinite;
+      animation-delay: 2.4s;
+    }
+    .pixel:nth-child(14) {
+      background-color: mediumorchid;
+      animation: random-pixel14 8s infinite;
+      animation-delay: 2.6s;
+    }
+    .pixel:nth-child(15) {
+      background-color: sandybrown;
+      animation: random-pixel15 8s infinite;
+      animation-delay: 2.8s;
+    }
+  }
+  
+
+.pixel {
+  height: 1rem;
+  width: 1rem;
+  position: absolute;
+}
+
+
+
+//Animations
+//Pixel random
+@keyframes random-pixel1 {
+    0%, 10% {
+        opacity: 1;
+        top: random(20) + rem;
+        left: random(20) + rem;
+    }
+    10% {
+        opacity: 0;
+    }
+    20%, 30%, 40% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    30% {
+        opacity: 1;
+    }
+    40% {
+        opacity: 0;
+    }
+    50%, 60%, 70% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    60% {
+        opacity: 1;
+    }
+    70% {
+        opacity: 0;
+    }
+   80%, 90%, 100% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes random-pixel2 {
+    0%, 10% {
+        opacity: 1;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    10% {
+        opacity: 0;
+    }
+    20%, 30%, 40% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    30% {
+        opacity: 1;
+    }
+    40% {
+        opacity: 0;
+    }
+    50%, 60%, 70% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    60% {
+        opacity: 1;
+    }
+    70% {
+        opacity: 0;
+    }
+   80%, 90%, 100% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes random-pixel3 {
+    0%, 10% {
+        opacity: 1;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    10% {
+        opacity: 0;
+    }
+    20%, 30%, 40% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    30% {
+        opacity: 1;
+    }
+    40% {
+        opacity: 0;
+    }
+    50%, 60%, 70% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    60% {
+        opacity: 1;
+    }
+    70% {
+        opacity: 0;
+    }
+   80%, 90%, 100% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes random-pixel4 {
+    0%, 10% {
+        opacity: 1;
+        top: random(20) + rem;
+        left: random(20) + rem;
+    }
+    10% {
+        opacity: 0;
+    }
+    20%, 30%, 40% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    30% {
+        opacity: 1;
+    }
+    40% {
+        opacity: 0;
+    }
+    50%, 60%, 70% {
+        opacity: 0;
+       top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    60% {
+        opacity: 1;
+    }
+    70% {
+        opacity: 0;
+    }
+   80%, 90%, 100% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes random-pixel5 {
+    0%, 10% {
+        opacity: 1;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    10% {
+        opacity: 0;
+    }
+    20%, 30%, 40% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    30% {
+        opacity: 1;
+    }
+    40% {
+        opacity: 0;
+    }
+    50%, 60%, 70% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    60% {
+        opacity: 1;
+    }
+    70% {
+        opacity: 0;
+    }
+   80%, 90%, 100% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes random-pixel6 {
+    0%, 10% {
+        opacity: 1;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    10% {
+        opacity: 0;
+    }
+    20%, 30%, 40% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    30% {
+        opacity: 1;
+    }
+    40% {
+        opacity: 0;
+    }
+    50%, 60%, 70% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    60% {
+        opacity: 1;
+    }
+    70% {
+        opacity: 0;
+    }
+   80%, 90%, 100% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+
+
+@keyframes random-pixel7 {
+    0%, 10% {
+        opacity: 1;
+        top: random(110) + rem;
+        left: random(110) + rem;
+    }
+    10% {
+        opacity: 0;
+    }
+    20%, 30%, 40% {
+        opacity: 0;
+        top: random(90) + vh;
+        left: random(90) + vw;
+    }
+    30% {
+        opacity: 1;
+    }
+    40% {
+        opacity: 0;
+    }
+    50%, 60%, 70% {
+        opacity: 0;
+        top: random(90) + vh;
+        left: random(90) + vw;
+    }
+    60% {
+        opacity: 1;
+    }
+    70% {
+        opacity: 0;
+    }
+   80%, 90%, 100% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes random-pixel8 {
+    0%, 10% {
+        opacity: 1;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    10% {
+        opacity: 0;
+    }
+    20%, 30%, 40% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    30% {
+        opacity: 1;
+    }
+    40% {
+        opacity: 0;
+    }
+    50%, 60%, 70% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    60% {
+        opacity: 1;
+    }
+    70% {
+        opacity: 0;
+    }
+   80%, 90%, 100% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes random-pixel9 {
+    0%, 10% {
+        opacity: 1;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    10% {
+        opacity: 0;
+    }
+    20%, 30%, 40% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    30% {
+        opacity: 1;
+    }
+    40% {
+        opacity: 0;
+    }
+    50%, 60%, 70% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    60% {
+        opacity: 1;
+    }
+    70% {
+        opacity: 0;
+    }
+   80%, 90%, 100% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes random-pixel10 {
+    0%, 10% {
+        opacity: 1;
+        top: random(20) + rem;
+        left: random(20) + rem;
+    }
+    10% {
+        opacity: 0;
+    }
+    20%, 30%, 40% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    30% {
+        opacity: 1;
+    }
+    40% {
+        opacity: 0;
+    }
+    50%, 60%, 70% {
+        opacity: 0;
+       top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    60% {
+        opacity: 1;
+    }
+    70% {
+        opacity: 0;
+    }
+   80%, 90%, 100% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes random-pixel11 {
+    0%, 10% {
+        opacity: 1;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    10% {
+        opacity: 0;
+    }
+    20%, 30%, 40% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    30% {
+        opacity: 1;
+    }
+    40% {
+        opacity: 0;
+    }
+    50%, 60%, 70% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    60% {
+        opacity: 1;
+    }
+    70% {
+        opacity: 0;
+    }
+   80%, 90%, 100% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes random-pixel12 {
+    0%, 10% {
+        opacity: 1;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    10% {
+        opacity: 0;
+    }
+    20%, 30%, 40% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    30% {
+        opacity: 1;
+    }
+    40% {
+        opacity: 0;
+    }
+    50%, 60%, 70% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    60% {
+        opacity: 1;
+    }
+    70% {
+        opacity: 0;
+    }
+   80%, 90%, 100% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+@keyframes random-pixel13 {
+    0%, 10% {
+        opacity: 1;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    10% {
+        opacity: 0;
+    }
+    20%, 30%, 40% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    30% {
+        opacity: 1;
+    }
+    40% {
+        opacity: 0;
+    }
+    50%, 60%, 70% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    60% {
+        opacity: 1;
+    }
+    70% {
+        opacity: 0;
+    }
+   80%, 90%, 100% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+@keyframes random-pixel14 {
+    0%, 10% {
+        opacity: 1;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    10% {
+        opacity: 0;
+    }
+    20%, 30%, 40% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    30% {
+        opacity: 1;
+    }
+    40% {
+        opacity: 0;
+    }
+    50%, 60%, 70% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    60% {
+        opacity: 1;
+    }
+    70% {
+        opacity: 0;
+    }
+   80%, 90%, 100% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+@keyframes random-pixel15 {
+    0%, 10% {
+        opacity: 1;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    10% {
+        opacity: 0;
+    }
+    20%, 30%, 40% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    30% {
+        opacity: 1;
+    }
+    40% {
+        opacity: 0;
+    }
+    50%, 60%, 70% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    60% {
+        opacity: 1;
+    }
+    70% {
+        opacity: 0;
+    }
+   80%, 90%, 100% {
+        opacity: 0;
+        top: random(100) + vh;
+        left: random(100) + vw;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+

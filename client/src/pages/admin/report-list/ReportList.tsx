@@ -127,8 +127,8 @@ const ReportList: React.FC = () => {
                     <tr>
                         <th>No</th>
                         <th>Name</th>
-                        <th>Report</th>
                         <th>Room</th>
+                        <th>Report</th>
                         <th>Date time</th>
                         <th>Status</th>
                         <th>Select</th>

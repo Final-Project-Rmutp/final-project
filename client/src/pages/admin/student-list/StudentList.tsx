@@ -337,6 +337,7 @@ const StudentList: React.FC = () => {
                       onChange={handleInputEditChange}
                       fullWidth
                       size="lg"
+                      color="primary"
                     />
                   </FormControl>
                   <FormControl>
@@ -348,6 +349,7 @@ const StudentList: React.FC = () => {
                       onChange={handleInputEditChange}
                       fullWidth
                       size="lg"
+                      color="primary"
                     />
                   </FormControl>
                   <FormControl>
@@ -359,6 +361,7 @@ const StudentList: React.FC = () => {
                       onChange={handleInputEditChange}
                       fullWidth
                       size="lg"
+                      color="primary"
                     />
                   </FormControl>
                   <FormControl>
@@ -370,6 +373,7 @@ const StudentList: React.FC = () => {
                       onChange={handleInputEditChange}
                       fullWidth
                       size="lg"
+                      color="primary"
                     />
                   </FormControl>
                   <FormControl>
@@ -447,6 +451,7 @@ const StudentList: React.FC = () => {
                     onChange={handleInputChangePin}
                     fullWidth
                     size="lg"
+                    color="primary"
                   />
                   {pinIdError && (
                     <p style={{ color: "red" }}>
@@ -464,6 +469,7 @@ const StudentList: React.FC = () => {
                     onChange={handleInputChangeCitizen}
                     fullWidth
                     size="lg"
+                    color="primary"
                   />
                   {citizenIdError && (
                     <p style={{ color: "red" }}>
@@ -480,6 +486,7 @@ const StudentList: React.FC = () => {
                     onChange={handleInputChange}
                     fullWidth
                     size="lg"
+                    color="primary"
                   />
                 </FormControl>
                 <FormControl>
@@ -491,12 +498,15 @@ const StudentList: React.FC = () => {
                     onChange={handleInputChange}
                     fullWidth
                     size="lg"
+                    color="primary"
                   />
                 </FormControl>
                 <FormControl>
                   <FormLabel required>AccountType</FormLabel>
                   <Select
                     defaultValue="select"
+                    variant="solid"
+                    color="primary"
                     required
                     name="account_type"
                     value={AddUser.account_type}
