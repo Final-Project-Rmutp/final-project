@@ -274,156 +274,179 @@ const Room: React.FC = () => {
         overflowY: "auto" || "hidden",
         ...(mode === "dark"
           ? { background: "linear-gradient(to bottom, #020420, #0F172A)" }
-          : { background: "linear-gradient(to bottom, #AA96DA, #6962AD" }),
+          : { background: "linear-gradient(to bottom, #AA96DA, #6962AD)" }),
         padding: 5,
       }}
     >
-      <Container maxWidth="xl">
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSubmit();
-          }}
-        >
-          <Grid
-            container
-            spacing={2}
-            columns={{ xs: 12, sm: 6, md: 4, lg: 2 }}
-            sx={{ alignItems: "center", flexGrow: 1, padding: 8, marginTop: 3 }}
+      <Container maxWidth="xl" sx={{
+        position:'sticky',
+        top:'3.25rem',
+        left:0,
+        width:'100%',
+        zIndex:2,
+        flexGrow: 1, 
+        marginTop: 10,
+        padding:3,
+        overflowX:'auto',
+        overflowY:'hidden',
+        }}>
+          <Container>
+            <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit();
+            }}
           >
-            <Grid>
-              <FormLabel>Select Date</FormLabel>
-              <LocalizationProvider dateAdapter={NewAdapter} adapterLocale="th">
-                <DateTime style={{position:'relative'}}
+            <Grid
+              container
+              spacing={2}
+              direction="row"
+              sx={{ 
+                display:'flex',
+                justifyContent:'center',
+              alignItems: "center", 
+              ...(mode === "dark"
+              ? { background: "linear-gradient(to bottom, #040822, #040822)" }
+              : { background: "linear-gradient(to bottom, #fff, #fff)" }),
+              borderRadius:'50px',
+              width:'78rem',
+            }}
+            >
+              <Grid>
+                <FormLabel>Select Date</FormLabel>
+                <LocalizationProvider dateAdapter={NewAdapter} adapterLocale="th">
+                  <DateTime style={{position:'relative'}}
+                  >
+                    <DatePicker
+                      className="datetime-picker"
+                      format="DD MMMM YYYY"
+                      value={selectedDate}
+                      onChange={handleDateChange}
+                    />
+                    <img className="position-absolute top-0 right-0"
+                    style={{pointerEvents:'none', transform:'translate(-50%,20%)',}}
+                    src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Tear-Off%20Calendar.png" alt="Stopwatch" width="25" height="25" />
+                  </DateTime>
+                </LocalizationProvider>
+              </Grid>
+              <Grid>
+                <FormLabel>Select Start Time</FormLabel>
+                <LocalizationProvider dateAdapter={NewAdapter} adapterLocale="th">
+                  <TimeSelect style={{width:"120px",position:'relative'}}>
+                    <TimePicker
+                      className="TimePicker"
+                      format="HH:00"
+                      views={["hours"]}
+                      value={selectedStartTime}
+                      onChange={handleStartTimeChange}
+                      shouldDisableTime={shouldDisableStartTime}
+                    />
+                    <img className="position-absolute top-0 right-0"
+                    style={{pointerEvents:'none', transform:'translate(-50%,20%)',}}
+                    src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Stopwatch.png" alt="Stopwatch" width="25" height="25" />
+                  </TimeSelect>
+                </LocalizationProvider>
+              </Grid>
+              <Grid>
+                <FormLabel>Select End Time</FormLabel>
+                <LocalizationProvider dateAdapter={NewAdapter} adapterLocale="th">
+                  <TimeSelect style={{width:"120px",position:'relative'}}>
+                    <TimePicker
+                      className="TimePicker"
+                      format="HH:00"
+                      views={["hours"]}
+                      value={selectedEndTime}
+                      onChange={handleEndTimeChange}
+                      shouldDisableTime={shouldDisableEndTime}
+                    />
+                    <img className="position-absolute top-0 right-0"
+                    style={{pointerEvents:'none', transform:'translate(-50%,20%)',}}
+                    src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Stopwatch.png" alt="Stopwatch" width="25" height="25" />
+                  </TimeSelect>
+                </LocalizationProvider>
+              </Grid>
+              <Grid>
+                <FormLabel>ชั้น</FormLabel>
+                <SelectStyle
+                  style={{width:"100%"}}
+                  placeholder="ชั้น"
+                  onChange={(_, value) => {
+                    handleInputChange({
+                      target: { name: "room_level", value },
+                    } as React.ChangeEvent<HTMLInputElement>);
+                    setSelectedFloor(value as string | null);
+                  }}
                 >
-                  <DatePicker
-                    className="datetime-picker"
-                    format="DD MMMM YYYY"
-                    value={selectedDate}
-                    onChange={handleDateChange}
-                  />
-                  <img className="position-absolute top-0 right-0"
-                  style={{pointerEvents:'none', transform:'translate(-50%,20%)',}}
-                  src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Tear-Off%20Calendar.png" alt="Stopwatch" width="25" height="25" />
-                </DateTime>
-              </LocalizationProvider>
+                  {availableFloorsApi.map((floor) => (
+                    <OptionStyle key={floor} value={floor}>
+                      {floor}
+                    </OptionStyle>
+                  ))}
+                </SelectStyle>
+              </Grid>
+              <Grid>
+                <FormLabel>ห้อง</FormLabel>
+                <SelectStyle
+                  style={{width:"100%"}}
+                  placeholder="ห้อง"
+                  onChange={(_, value) =>
+                    handleInputChange({
+                      target: { name: "room_number", value },
+                    } as React.ChangeEvent<HTMLInputElement>)
+                  }
+                >
+                  {roomnumber.map((room) => (
+                    <OptionStyle key={room.room_id} value={room.room_number}>
+                      {room.room_number}
+                    </OptionStyle>
+                  ))}
+                </SelectStyle>
+              </Grid>
+              <Grid>
+                <FormLabel>ประเภทห้อง</FormLabel>
+                <SelectStyle
+                  style={{width:"100%"}}
+                  placeholder="เลือกประเภทห้อง"
+                  onChange={(_, value) =>
+                    handleInputChange({
+                      target: { name: "room_type", value },
+                    } as React.ChangeEvent<HTMLInputElement>)
+                  }
+                >
+                  {roomTypes.map((roomTypes) => (
+                    <OptionStyle key={roomTypes} value={roomTypes}>
+                      {roomTypes}
+                    </OptionStyle>
+                  ))}
+                </SelectStyle>
+              </Grid>
+              <Grid>
+                <FormLabel>จำนวนคน</FormLabel>
+                <SelectStyle
+                  style={{width:"100%"}}
+                  placeholder="เลือกจำนวนคน"
+                  onChange={(_, value) =>
+                    handleInputChange({
+                      target: { name: "room_capacity", value },
+                    } as React.ChangeEvent<HTMLInputElement>)
+                  }
+                >
+                  {numberOfPeopleOptions.map((numberOfPeople) => (
+                    <OptionStyle key={numberOfPeople} value={numberOfPeople}>
+                      {numberOfPeople}
+                    </OptionStyle>
+                  ))}
+                </SelectStyle>
+              </Grid>
+              <Grid>
+                <Button sx={{marginTop:2}} type="submit" color="primary" variant="solid">
+                <img style={{marginRight:'10px'}} src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Magnifying%20Glass%20Tilted%20Left.webp" alt="Magnifying Glass Tilted Left" width="25" height="25" />
+                  Search Room
+                </Button>
+              </Grid>
             </Grid>
-            <Grid>
-              <FormLabel>Select Start Time</FormLabel>
-              <LocalizationProvider dateAdapter={NewAdapter} adapterLocale="th">
-                <TimeSelect style={{width:"120px",position:'relative'}}>
-                  <TimePicker
-                    className="TimePicker"
-                    format="HH:00"
-                    views={["hours"]}
-                    value={selectedStartTime}
-                    onChange={handleStartTimeChange}
-                    shouldDisableTime={shouldDisableStartTime}
-                  />
-                  <img className="position-absolute top-0 right-0"
-                  style={{pointerEvents:'none', transform:'translate(-50%,20%)',}}
-                  src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Stopwatch.png" alt="Stopwatch" width="25" height="25" />
-                </TimeSelect>
-              </LocalizationProvider>
-            </Grid>
-            <Grid>
-              <FormLabel>Select End Time</FormLabel>
-              <LocalizationProvider dateAdapter={NewAdapter} adapterLocale="th">
-                <TimeSelect style={{width:"120px",position:'relative'}}>
-                  <TimePicker
-                    className="TimePicker"
-                    format="HH:00"
-                    views={["hours"]}
-                    value={selectedEndTime}
-                    onChange={handleEndTimeChange}
-                    shouldDisableTime={shouldDisableEndTime}
-                  />
-                  <img className="position-absolute top-0 right-0"
-                  style={{pointerEvents:'none', transform:'translate(-50%,20%)',}}
-                  src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Stopwatch.png" alt="Stopwatch" width="25" height="25" />
-                </TimeSelect>
-              </LocalizationProvider>
-            </Grid>
-            <Grid>
-              <FormLabel>ชั้น</FormLabel>
-              <SelectStyle
-                style={{width:"100%"}}
-                placeholder="ชั้น"
-                onChange={(_, value) => {
-                  handleInputChange({
-                    target: { name: "room_level", value },
-                  } as React.ChangeEvent<HTMLInputElement>);
-                  setSelectedFloor(value as string | null);
-                }}
-              >
-                {availableFloorsApi.map((floor) => (
-                  <OptionStyle key={floor} value={floor}>
-                    {floor}
-                  </OptionStyle>
-                ))}
-              </SelectStyle>
-            </Grid>
-            <Grid>
-              <FormLabel>ห้อง</FormLabel>
-              <SelectStyle
-                style={{width:"100%"}}
-                placeholder="ห้อง"
-                onChange={(_, value) =>
-                  handleInputChange({
-                    target: { name: "room_number", value },
-                  } as React.ChangeEvent<HTMLInputElement>)
-                }
-              >
-                {roomnumber.map((room) => (
-                  <OptionStyle key={room.room_id} value={room.room_number}>
-                    {room.room_number}
-                  </OptionStyle>
-                ))}
-              </SelectStyle>
-            </Grid>
-            <Grid>
-              <FormLabel>ประเภทห้อง</FormLabel>
-              <SelectStyle
-                style={{width:"100%"}}
-                placeholder="เลือกประเภทห้อง"
-                onChange={(_, value) =>
-                  handleInputChange({
-                    target: { name: "room_type", value },
-                  } as React.ChangeEvent<HTMLInputElement>)
-                }
-              >
-                {roomTypes.map((roomTypes) => (
-                  <OptionStyle key={roomTypes} value={roomTypes}>
-                    {roomTypes}
-                  </OptionStyle>
-                ))}
-              </SelectStyle>
-            </Grid>
-            <Grid>
-              <FormLabel>จำนวนคน</FormLabel>
-              <SelectStyle
-                style={{width:"100%"}}
-                placeholder="เลือกจำนวนคน"
-                onChange={(_, value) =>
-                  handleInputChange({
-                    target: { name: "room_capacity", value },
-                  } as React.ChangeEvent<HTMLInputElement>)
-                }
-              >
-                {numberOfPeopleOptions.map((numberOfPeople) => (
-                  <OptionStyle key={numberOfPeople} value={numberOfPeople}>
-                    {numberOfPeople}
-                  </OptionStyle>
-                ))}
-              </SelectStyle>
-            </Grid>
-            <Grid>
-              <Button type="submit" color="primary">
-                Search Room
-              </Button>
-            </Grid>
-          </Grid>
-        </form>
+          </form>
+          </Container>
       </Container>
       <Container>
         <Box

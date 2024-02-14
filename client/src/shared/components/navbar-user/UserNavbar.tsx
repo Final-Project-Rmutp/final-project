@@ -168,13 +168,17 @@ const UserProfileSidebar: React.FC = () => {
           zIndex: 2,
           boxShadow: "none",
           marginBottom: 2,
+          width:'30px',
+          "&:hover": {
+            transform: "scale(1.4)",
+          }
         }}
         
       >
         {mode === "light" ? (
-          <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/New%20Moon%20Face.png" alt="New Moon Face" width="25" height="25" />
+          <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Animals%20and%20Nature/Star.webp" alt="Star" width="25" height="25" />
         ) : (
-<img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Sun%20with%20Face.png" alt="Sun with Face" width="25" height="25" />
+          <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Animals%20and%20Nature/Sun.webp" alt="Sun" width="25" height="25" />
         )}
       </IconButtonUser>
     );

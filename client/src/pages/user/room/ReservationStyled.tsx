@@ -1,10 +1,11 @@
 import { styled } from '@mui/system';
-import { Select, Option, Sheet } from '@mui/joy';
+import { Select, Option, Sheet,Grid } from '@mui/joy';
 export const DateTime = styled(Sheet)`
     border-radius: 12px;
     color: ${({ theme }) => theme.palette.common.white};
     border-color: ${({ theme }) => theme.palette.common.white};
-    background-color: ${({ theme }) => theme.palette.nav.bg};
+    background-color: ${({ theme }) => theme.palette.background.backdrop};
+
     width: 200px;
     height: 38px;
 
@@ -13,7 +14,7 @@ export const DateTime = styled(Sheet)`
         height: 38px;
         color: ${({ theme }) => theme.palette.pf.color};
     }
-
+    
     .MuiSvgIcon-root {
         // background-image: url('https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Tear-Off%20Calendar.png');
         background-size: cover;
@@ -29,7 +30,7 @@ export const TimeSelect = styled(Sheet)`
     border-radius: 12px;
     color: ${({ theme }) => theme.palette.common.white};
     border-color: ${({ theme }) => theme.palette.common.white};
-    background-color: ${({ theme }) => theme.palette.nav.bg};
+    background-color: ${({ theme }) => theme.palette.background.backdrop};
     width: 200px;
     height: 38px;
 
@@ -54,10 +55,19 @@ export const SelectStyle = styled(Select)`
     width: 160px;
     border-radius: 10px;
     color: ${({ theme }) => theme.palette.pf.color};
-    background-color: ${({ theme }) => theme.palette.nav.bg};
+    background-color: ${({ theme }) => theme.palette.background.backdrop};
+    .MuiOption-root .Mui-expanded{
+        background-color: ${({ theme }) => theme.palette.background.backdrop};
+    }
+
 `;
 
 export const OptionStyle = styled(Option)`
     color: ${({ theme }) => theme.palette.pf.color};
-    background-color: ${({ theme }) => theme.palette.main.bg};
+    background-color: ${({ theme }) => theme.palette.background.backdrop};
+
+`;
+export const GridContainerSearch = styled(Grid)`
+    color: ${({ theme }) => theme.palette.pf.color};
+    background-color: ${({ theme }) => theme.palette.divider};
 `;

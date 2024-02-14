@@ -1,33 +1,31 @@
 // ClassRoomAdmin.tsx
-import UserService, { ClassSchedule } from '../../../auth/service/UserService';
-import React, { useEffect, useState } from 'react';
-import { styled } from '@mui/system'; 
-import { Typography, useColorScheme } from '@mui/joy';
-const TimetableContainer = styled('div')`
+import UserService, { ClassSchedule } from "../../../auth/service/UserService";
+import React, { useEffect, useState } from "react";
+import { styled } from "@mui/system";
+import { Typography, useColorScheme } from "@mui/joy";
+const TimetableContainer = styled("div")`
   margin: 20px auto;
   text-align: center;
-  width: 80%;
+  width: 90%;
   border-radius: 10px;
   overflow: hidden;
-  margin-top:5%;
-  background-color:#fff;
-  
+  margin-top: 5%;
+  background-color: #fff;
 `;
 
 const TimetableHeader = styled(Typography)`
   font-size: 24px;
-  margin-top:3%;
-  color:#000;
-
+  margin-top: 3%;
+  color: #000;
 `;
 
-const TimetableTable = styled('table')`
+const TimetableTable = styled("table")`
   border-collapse: collapse;
-  width: 70%;
+  width: 98%;
   margin: 30px auto;
 `;
 
-const TimetableTh = styled('th')`
+const TimetableTh = styled("th")`
   color: black;
   border: 1px solid black;
   height: 50px;
@@ -38,31 +36,31 @@ const TimetableTh = styled('th')`
 interface TimetableDaysColumnProps {
   day: string;
 }
-const TimetableDaysColumn = styled('td')<TimetableDaysColumnProps>`
+const TimetableDaysColumn = styled("td")<TimetableDaysColumnProps>`
   color: black;
   border: 1px solid black;
   height: 50px;
   text-align: center;
   width: 100px;
-  padding:10px;
-  background-color: ${props => {
+  padding: 10px;
+  background-color: ${(props) => {
     switch (props.day) {
-      case 'Monday':
-        return '#FFFF99';
-      case 'Tuesday':
-        return '#FFC0CB ';
-      case 'Wednesday':
-        return '#99ff99';
-      case 'Thursday':
-        return '#ffcc99';
-      case 'Friday':
-        return '#87CEEB'; 
-      case 'Saturday':
-        return '#b06ae6 ';
-      case 'Sunday':
-        return '#ff6978';
+      case "Monday":
+        return "#FFFF99";
+      case "Tuesday":
+        return "#FFC0CB ";
+      case "Wednesday":
+        return "#99ff99";
+      case "Thursday":
+        return "#ffcc99";
+      case "Friday":
+        return "#87CEEB";
+      case "Saturday":
+        return "#b06ae6 ";
+      case "Sunday":
+        return "#ff6978";
       default:
-        return '#f2f2f2'; 
+        return "#f2f2f2";
     }
   }};
   @media (max-width: 600px) {
@@ -70,25 +68,25 @@ const TimetableDaysColumn = styled('td')<TimetableDaysColumnProps>`
   }
 `;
 
-const TimetableTd = styled('td')`
+const TimetableTd = styled("td")`
   color: black;
   border: 1px solid black;
   height: 50px;
   text-align: center;
-  width: auto;
+  width: 120px;
   background-color: #fff;
   padding: 5px;
   margin: 2px;
   @media (max-width: 600px) {
-    width: auto;
+    width: 120px;
   }
 `;
 
-const ScrollableTableContainer = styled('div')`
+const ScrollableTableContainer = styled("div")`
   overflow-x: auto;
 `;
 
-const TimetableTimeSlot = styled('th')`
+const TimetableTimeSlot = styled("th")`
   color: black;
   border: 1px solid black;
   height: 50px;
@@ -100,8 +98,8 @@ const TimetableTimeSlot = styled('th')`
   }
 `;
 const generateTimeSlots = () => {
-  const startTime = '08:00:00';
-  const endTime = '18:00:00';
+  const startTime = "08:00:00";
+  const endTime = "18:00:00";
   const timeSlots = [];
 
   let currentSlot = startTime;
@@ -115,58 +113,97 @@ const generateTimeSlots = () => {
 };
 
 const generateHeaderTimeSlots = () => {
-  const startTime = '08:00:00';
-  const endTime = '18:00:00';
+  const startTime = "08:00:00";
+  const endTime = "18:00:00";
   const timeSlots = [];
 
   let currentSlot = startTime;
 
   while (currentSlot < endTime) {
-    timeSlots.push({ start: currentSlot.slice(0, 5), end: addHour(currentSlot).slice(0, 5) });
+    timeSlots.push({
+      start: currentSlot.slice(0, 5),
+      end: addHour(currentSlot).slice(0, 5),
+    });
     currentSlot = addHour(currentSlot);
   }
 
   return timeSlots;
 };
 const addHour = (time: string): string => {
-  const [hours, minutes, seconds] = time.split(':').map(Number);
+  const [hours, minutes, seconds] = time.split(":").map(Number);
   const newDate = new Date(0, 0, 0, hours, minutes, seconds + 60 * 60);
   return newDate.toTimeString().slice(0, 8);
 };
 
 const Classroom: React.FC = () => {
   const [timetableData, setTimetableData] = useState<ClassSchedule[]>([]);
+  const [dayColors, setDayColors] = useState<{ [key: string]: string }>({
+    Monday: "#FFFF99",
+    Tuesday: "#FFC0CB",
+    Wednesday: "#99ff99",
+    Thursday: "#ffcc99",
+    Friday: "#87CEEB",
+    Saturday: "#b06ae6",
+    Sunday: "#ff6978",
+  });
   const timeSlotsBody = generateTimeSlots();
   const headerTimeSlots = generateHeaderTimeSlots();
 
   const generateTimetableRows = () => {
-    const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-
+    const daysOfWeek = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ];
+  
     return (
       <>
         {daysOfWeek.map((day) => (
           <tr key={day}>
-            <TimetableDaysColumn day={day} key={day}><b>{day}</b></TimetableDaysColumn>
-            {timeSlotsBody.map((timeSlot) => (
-              <TimetableTd  colSpan={3} key={`${day}-${timeSlot.start}`}>
-                {timetableData.map((item) => (
-                  item &&
-                  item.day_of_week === day &&
-                  item.start_time === timeSlot.start &&
-                  item.end_time === timeSlot.end && (
-                  <div key={item.id} style={{padding:'5px',margin:'2px',fontSize:'12px'}}>
-                    <div><b className="text-danger" >{item.subject_name}</b></div>
-                    <div><b className="text-danger" >{item.room_number}</b></div>
-                  </div>
-                  )
-                ))}
-              </TimetableTd>
-            ))}
+            <TimetableDaysColumn day={day} key={day}>
+              <b>{day}</b>
+            </TimetableDaysColumn>
+            {timeSlotsBody.map((timeSlot) => {
+              const itemsInTimeSlot = timetableData.filter((item) => item.day_of_week === day && item.start_time === timeSlot.start);
+              const colspan = itemsInTimeSlot.length;
+
+              return (
+                <TimetableTd colSpan={colspan > 0 ? colspan : 1} key={`${day}-${timeSlot.start}`}>
+                  {itemsInTimeSlot.map((item) => (
+                    <div
+                      key={item.reservation_id}
+                      style={{
+                        width: "100%",
+                        padding: 4,
+                        margin: "2px",
+                        fontSize: "12px",
+                        backgroundColor: dayColors[item.day_of_week],
+                        borderRadius: "7px",
+                        border: "1px solid",
+                      }}
+                    >
+                      <div style={{ width: "120px" }}>
+                        <b className="text-dark">วิชา : {item.subject_name}</b>
+                      </div>
+                      <div style={{ width: "120px" }}>
+                        <b className="text-danger">ห้อง : {item.room_number}</b>
+                      </div>
+                    </div>
+                  ))}
+                </TimetableTd>
+              );
+            })}
           </tr>
         ))}
+
       </>
     );
   };
+  
 
   useEffect(() => {
     const fetchSchedule = async () => {
@@ -174,12 +211,40 @@ const Classroom: React.FC = () => {
         const response = await UserService.getClassSchedule();
         setTimetableData(Array.isArray(response) ? response : [response]);
       } catch (error) {
-        console.error('Error fetching schedule:', error);
+        console.error("Error fetching schedule:", error);
       }
     };
 
     fetchSchedule();
   }, []);
+  useEffect(() => {
+    const newDayColors = { ...dayColors };
+    timetableData.forEach((item) => {
+      newDayColors[item.day_of_week] = getDayColor(item.day_of_week);
+    });
+    setDayColors(newDayColors);
+  }, [timetableData]);
+
+  const getDayColor = (day: string): string => {
+    switch (day) {
+      case "Monday":
+        return "#FFFF99";
+      case "Tuesday":
+        return "#FFC0CB";
+      case "Wednesday":
+        return "#99ff99";
+      case "Thursday":
+        return "#ffcc99";
+      case "Friday":
+        return "#87CEEB";
+      case "Saturday":
+        return "#b06ae6";
+      case "Sunday":
+        return "#ff6978";
+      default:
+        return "#f2f2f2";
+    }
+  };
   const { mode } = useColorScheme();
 
   return (
@@ -198,20 +263,24 @@ const Classroom: React.FC = () => {
       }}
     >
       <TimetableContainer>
-        <TimetableHeader>{timetableData.length > 0 ? timetableData[0].fullname : 'Unknown'}</TimetableHeader>
+        <TimetableHeader>
+          {timetableData.length > 0 ? timetableData[0].fullname : "Unknown"}
+        </TimetableHeader>
         <ScrollableTableContainer>
           <TimetableTable>
             <thead>
               <tr>
-                <TimetableTh><b>Day/Period</b></TimetableTh>
+                <TimetableTh>
+                  <b>Day/Period</b>
+                </TimetableTh>
                 {headerTimeSlots.map((timeSlot) => (
-                  <TimetableTimeSlot  colSpan={3} key={timeSlot.start}><b>{`${timeSlot.start} - ${timeSlot.end}`}</b></TimetableTimeSlot>
+                  <TimetableTimeSlot key={timeSlot.start}>
+                    <b>{`${timeSlot.start} - ${timeSlot.end}`}</b>
+                  </TimetableTimeSlot>
                 ))}
               </tr>
             </thead>
-            <tbody>
-              {generateTimetableRows()}
-            </tbody>
+            <tbody>{generateTimetableRows()}</tbody>
           </TimetableTable>
         </ScrollableTableContainer>
       </TimetableContainer>
