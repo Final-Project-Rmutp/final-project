@@ -1,85 +1,73 @@
 import React from "react";
 import { useColorScheme } from "@mui/joy/styles";
-import { Typography, Sheet } from "@mui/joy";
+import {  Sheet ,Typography ,Button} from "@mui/joy";
 import "./index.scss";
+import HomeStyle from "./Homestyle";
+import { styled  } from '@mui/system';
 
-interface CommonStyles {
-    color: string;
-    backgroundClip: string;
-    backgroundRepeat: string;
-    backgroundSize: string;
-    backgroundImage: string;
-    animation?: string;
-    animationTimeline?: string;
-    animationRange?: string;
-}
+const GlassButton = styled(Button)`
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.375rem;
+  border-radius: 50px;
+  backdrop-filter: blur(15px);
+  background-color: rgba(255, 255, 255, 0.15);
+  color: white;
+  border: 1px solid white;
+  transition: transform 0.3s ease;
 
-const commonStyles: CommonStyles = {
-    color: "transparent",
-    backgroundClip: "text",
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "0% 100%",
-    backgroundImage: `linear-gradient(to right, #ff008c 0%, #43008c 50%, #009688 100%)`,
-};
+  &:hover {
+    background: rgba(176, 37, 237, 0.19);
+  }
 
-if (window.innerWidth > 768) {
-    commonStyles.animation = "scroll-reveal linear forwards";
-    commonStyles.animationTimeline = "view(y)";
-    commonStyles.animationRange = "contain";
-}
+  &:active {
+    transform: translate(-50%, -50%) scale(0.7);
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+`;
 
+    const BackgroundIndex = () => {
+        return (
+        <div className="area" >
+                <ul className="circles">
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                </ul>
+        </div >
+        );
+    };
+  
 const HomeUser: React.FC = () => {
     const { mode } = useColorScheme();
-
     return (
-        <div>
+        <div style={{ height: "100vh", overflowX: "auto" }}>
             <div
                 className="py-24 sm:py-32 md:py-40 relative"
                 style={{
                 width: "100%",
                 height: "100vh",
                 position: "relative",
+                paddingTop:"80px",
                 ...(mode === "dark"
                     ? { background: "linear-gradient(to bottom, #020420, #0F172A)" }
-                    : { background: "linear-gradient(to bottom, #AA96DA, #fff" , }),
+                    : { background: "linear-gradient(to bottom, #AA96DA,#6962AD" }),
                 padding: 5,
+                zIndex:1
                 }}
             >
-                                    <section className="hero is-dark is-fullheight">
-                <div className='pixelbackground'>
-                    <div className='pixel'></div>
-                    <div className='pixel'></div>
-                    <div className='pixel'></div>
-                    <div className='pixel'></div>
-                    <div className='pixel'></div>
-                    <div className='pixel'></div>
-                    <div className='pixel'></div>
-                    <div className='pixel'></div>
-                    <div className='pixel'></div>
-                    <div className='pixel'></div>
-                    <div className='pixel'></div>
-                    <div className='pixel'></div>
-                    <div className='pixel'></div>
-                    <div className='pixel'></div>
-                    <div className='pixel'></div>
-                </div>
-                <div className="hero-body">
-                    <div className="container has-text-centered">
-                    
-                </div>
-                </div>
-                </section>
-                <Typography
-                sx={{
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    position: 'absolute',
-                    fontSize: '4rem',
-                }}
-                >
-                Reservation Room
-                </Typography>
+                    {BackgroundIndex()}
+                    <HomeStyle></HomeStyle>
+                    <GlassButton variant="outlined">Reserve</GlassButton>
             </div>
             <Sheet
                 sx={{
@@ -96,52 +84,20 @@ const HomeUser: React.FC = () => {
                 className="d-flex flex-column justify-center align-items-center text-center m-0"
                 style={{ paddingBlock: "clamp(5rem, 25vh, 0.5rem)" }}
                 >
-                <Typography
-                    level="h1"
-                    sx={{
-                    ...commonStyles,
-                    animationRangeStart: "cover5vh",
-                    animationRangeEnd: "cover 50vh",
-                    }}
-                >
-                    Reservation Room
-                </Typography>
-                <Typography
-                    level="title-md"
-                    sx={{
-                    maxWidth: "100ch",
-                    ...commonStyles,
-                    animationRangeStart: "cover 55vh",
-                    animationRangeEnd: "cover 65vh",
-                    }}
-                >
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia nam sit fugiat quis. Ullam non id necessitatibus, tempore sint dolore.
-                </Typography>
-                <Typography
-                    level="title-md"
-                    sx={{
-                    maxWidth: "90ch",
-                    ...commonStyles,
-                    animationRangeStart: "cover 60vh",
-                    animationRangeEnd: "cover 70vh",
-                    }}
-                >
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Perspiciatis?
-                </Typography>
+                
                 </section>
             </Sheet>
             <Sheet
                 sx={{
                 ...(mode === "dark"
                     ? { background: "linear-gradient(to bottom, #080D1A, #101726)" }
-                    : { background: "#fff" }),
+                    : { background: "linear-gradient(to bottom, #AA96DA,#6962AD)" }),
                 padding: 5,
                 height: "800px",
 
                 }}
             >
-            
+                <Typography >sdfdsfsd</Typography>
             </Sheet>
         </div>
     );
