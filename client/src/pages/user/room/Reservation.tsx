@@ -9,7 +9,8 @@ import {
   FormControl,
   Input,
   Container,
-  Box
+  Box,
+  Typography
 } from "@mui/joy";
 
 import "dayjs/locale/th";
@@ -203,19 +204,29 @@ const Room: React.FC = () => {
         (room) => room.room_id === selectedRoomId
       );
       if (reservationData) {
-        const response = await UserService.reserveRoom({
-          room_id: reservationData.room_id,
-          reservation_date: selectedDate?.format("YYYY-MM-DD") || "",
-          start_time: selectedStartTime?.format("HH:00") || "",
-          end_time: selectedEndTime?.format("HH:00") || "",
-          reservation_reason: reservationReason,
-          room_number: reservationData.room_number,
-        } as Reservation);
-        setConfirmModalOpen(false);
-        toast.success(response.message || "Reservation confirmed successfully");
+        try {
+          const response = await UserService.reserveRoom({
+            room_id: reservationData.room_id,
+            reservation_date: selectedDate?.format("YYYY-MM-DD") || "",
+            start_time: selectedStartTime?.format("HH:00") || "",
+            end_time: selectedEndTime?.format("HH:00") || "",
+            reservation_reason: reservationReason,
+            room_number: reservationData.room_number,
+          } as Reservation);
+          setConfirmModalOpen(false);
+          toast.success(response.message || "Reservation confirmed successfully");
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+          // Handle API error response here
+          toast.error(error.response?.data?.message || "Reservation failed");
+        }
+      } else {
+        toast.error("Please select a room before confirming reservation");
       }
     }
   };
+  
+  
 
   const handleReportClick = async () => {
     if (selectedRoomId !== null) {
@@ -459,53 +470,79 @@ const Room: React.FC = () => {
             width: "100%",
             margin:0
           }}
-        >
-            <CardList
-              data={searchResults.availableRooms || []}
-              isRecommended={false}
-              onConfirmClick={(roomId, roomNumber) => {
-                setConfirmModalOpen(true);
-                setSelectedRoomId(roomId);
-                setReservationData((prevData) => ({
-                  ...prevData,
-                  room_id: roomNumber,
-                }));
-              }}
-              onReportClick={(roomId, roomNumber) => {
-                setReportModalOpen(true);
-                setSelectedRoomId(roomId);
-                setReservationData((prevData) => ({
-                  ...prevData,
-                  room_id: roomNumber,
-                }));
-              }}
-            />
+        >   
+            {searchResultsRecom.recommended_rooms && searchResultsRecom.recommended_rooms.length > 0 ? (
+  <Container>
+    <CardList
+      data={searchResultsRecom.recommended_rooms}
+      isRecommended={true}
+      onConfirmClick={(roomId, roomNumber) => {
+        setConfirmModalOpen(true);
+        setSelectedRoomId(roomId);
+        setReservationData((prevData) => ({
+          ...prevData,
+          room_id: roomNumber,
+        }));
+      }}
+      onReportClick={(roomId, roomNumber) => {
+        setReportModalOpen(true);
+        setSelectedRoomId(roomId);
+        setReservationData((prevData) => ({
+          ...prevData,
+          room_id: roomNumber,
+        }));
+      }}
+    />
+  </Container>
+) : searchResults.availableRooms && searchResults.availableRooms.length > 0 ? (
+  <Container>
+    <CardList
+      data={searchResults.availableRooms}
+      isRecommended={false}
+      onConfirmClick={(roomId, roomNumber) => {
+        setConfirmModalOpen(true);
+        setSelectedRoomId(roomId);
+        setReservationData((prevData) => ({
+          ...prevData,
+          room_id: roomNumber,
+        }));
+      }}
+      onReportClick={(roomId, roomNumber) => {
+        setReportModalOpen(true);
+        setSelectedRoomId(roomId);
+        setReservationData((prevData) => ({
+          ...prevData,
+          room_id: roomNumber,
+        }));
+      }}
+    />
+  </Container>
+) : (
+  <Container
+    sx={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: 2,
+      flexDirection: "column",
+      background: "white",
+      borderRadius: "20px",
+      padding: 5,
+    }}
+  >
+    <Typography level="h1" color="primary">
+      No Data
+    </Typography>
+    <img
+      src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People%20with%20professions/Detective%20Light%20Skin%20Tone.png"
+      alt="Detective Light Skin Tone"
+      width="200"
+      height="200"
+    />
+  </Container>
+)}
 
-          {searchResultsRecom.recommended_rooms &&
-            searchResultsRecom.recommended_rooms.length > 0 && (
-              <Container>
-                <CardList
-                  data={searchResultsRecom.recommended_rooms}
-                  isRecommended={true}
-                  onConfirmClick={(roomId, roomNumber) => {
-                    setConfirmModalOpen(true);
-                    setSelectedRoomId(roomId);
-                    setReservationData((prevData) => ({
-                      ...prevData,
-                      room_id: roomNumber,
-                    }));
-                  }}
-                  onReportClick={(roomId, roomNumber) => {
-                    setReportModalOpen(true);
-                    setSelectedRoomId(roomId);
-                    setReservationData((prevData) => ({
-                      ...prevData,
-                      room_id: roomNumber,
-                    }));
-                  }}
-                />
-              </Container>
-            )}
+
           {confirmModalOpen && (
             <Modal open={confirmModalOpen} onClose={closeModal}>
               <ModalDialog

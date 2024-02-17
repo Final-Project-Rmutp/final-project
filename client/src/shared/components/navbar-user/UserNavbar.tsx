@@ -42,6 +42,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 // import { Icon } from "@iconify/react";
 import { Link } from 'react-router-dom';
 import HomeUser from "../../../pages/user/index";
+import LogoRmutp from '../../../img/logo.png'
 
 interface LayoutState {
   leftOpen: boolean;
@@ -243,7 +244,9 @@ const UserProfileSidebar: React.FC = () => {
               <SidebarUser className={`sidebar ${leftOpen}`}>
                 <div className="header-left">
                   <div className="logo-header">
-                    <Typography level="h2">LOGO</Typography>
+                    <Link to="/user">
+                      <img src={LogoRmutp} alt=""  style={{width:"60px", height:"50px"}}/>
+                    </Link>
                   </div>
                 </div>
                 <Container className="content">
@@ -271,24 +274,21 @@ const UserProfileSidebar: React.FC = () => {
           <Main id="main">
             <HeaderNav>
               <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl flex items-center justify-between gap-5 h-[--header-height]">
-                <Box sx={{ flexGrow: 0, marginBottom: 2 }}>
+                <Box sx={{ flexGrow: 0,}}>
                   <span></span>
                 </Box>
                 {!isMobile && (
                   <>
-                    <Box sx={{ flexGrow: 0, marginBottom: 2 }}>
-                      <div className="lg:flex-1 flex items-center gap-1.5">
+                    <Box sx={{ flexGrow: 0,}}>
+                      <div className="lg:flex-1 flex items-center">
                           <Link to="/user">
-                            <Typography 
-                              level="h2" 
-                              >Rmutp
-                            </Typography>
+                          <img src={LogoRmutp} alt=""  style={{width:"60px", height:"50px"}}/>
                           </Link>
                       </div>
                     </Box>
                     <Box
                       component="nav"
-                      sx={{ flexGrow: 0, marginBottom: 2 }}
+                      sx={{ flexGrow: 0,}}
                     >
                       <List role="menubar" orientation="horizontal">
                         {UserSidebarData.map((item, index) => (
@@ -303,7 +303,6 @@ const UserProfileSidebar: React.FC = () => {
                               <Typography
                                 noWrap
                                 level="title-sm"
-                                style={{ marginLeft: "16px" }}
                               >
                                 {item.title}
                               </Typography>
@@ -317,17 +316,15 @@ const UserProfileSidebar: React.FC = () => {
                   </>
                 )}
                 <div className="flex items-center justify-end gap-1.5">
-                  <Box sx={{width:"20px"}}>
+                  <Box sx={{width:"20px", marginTop:2}}>
                     <ColorSchemeToggle />
                   </Box>
                   <CardStyleUser onClick={handleMenuClick}>
                     <Box
                       sx={{
-                        p: 0.8,
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        marginBottom: 2,
                       }}
                     >
                       <Avatar variant="solid" src={userProfile.user_img_path}>

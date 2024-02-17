@@ -7,6 +7,8 @@ declare module '@mui/joy/styles' {
     pf:true;
     menu:true;
     bgSty?:string;
+    bgStyLight?:string;
+    bgStyDark?:string;
     navSide?:string;
     userNav?:string;
   }
@@ -17,16 +19,20 @@ declare module '@mui/joy/styles' {
     hoverBg?: string;
     menu?: string;
     bgSty?:string;
+    bgStyLight?:string;
+    bgStyDark?:string;
     navSide?:string;
     userNav?:string;
   }
 
   interface Palette {
     nav: PaletteRange & NavPaletteOptions;
-    main:PaletteRange & NavPaletteOptions;
+    main: PaletteRange & NavPaletteOptions;
     pf:PaletteRange & NavPaletteOptions;
     menu:PaletteRange & NavPaletteOptions;
     bgSty:PaletteRange & NavPaletteOptions;
+    bgStyLight:PaletteRange & NavPaletteOptions;
+    bgStyDark:PaletteRange & NavPaletteOptions;
     navSide:PaletteRange & NavPaletteOptions;
     userNav:PaletteRange & NavPaletteOptions;
 
@@ -38,6 +44,8 @@ declare module '@mui/joy/styles' {
     pf?:NavPaletteOptions;
     menu?:NavPaletteOptions;
     bgSty?:NavPaletteOptions;
+    bgStyLight?:NavPaletteOptions;
+    bgStyDark?:NavPaletteOptions;
     navSide?:NavPaletteOptions;
     userNav?:NavPaletteOptions;
   }
@@ -54,11 +62,13 @@ const neutral = {
   700: '#434356',
   800: '#25252D',
   900: '#131318',
-  dark:'#1D232A',
-  nav:'#191E24',
+  dark:'#040722',
+  nav:'#040722 ',
   navSide:'#161720',
   border:'#383F47',
-  bgStyle:'#101728',
+  bgSty:'',
+  bgStyLight:'linear-gradient(to bottom, #AA96DA,#6962AD)',
+  bgStyDark:'linear-gradient(to bottom, #020420, #0F172A)',
   usNav: 'rgba(2, 4, 32, 0.2)'
 };
 
@@ -127,7 +137,8 @@ const theme = extendTheme({
           bg: 'var(--joy-palette-neutral-50)',
           color: 'var(--joy-palette-neutral-900)',
           hoverBg: 'var(--joy-palette-neutral-50)',
-          bgSty:'var(--joy-plaette-neutral-bgStyle)'
+          bgStyLight:'linear-gradient(to bottom, #AA96DA,#6962AD)'
+          
         },
         background: {
           body: 'var(--joy-palette-neutral-100)',
@@ -196,6 +207,7 @@ const theme = extendTheme({
           bg: 'var(--joy-palette-neutral-dark)',
           color: 'var(--joy-palette-neutral-900)',
           hoverBg: 'var(--joy-palette-neutral-5)0',
+          bgStyDark:'linear-gradient(to bottom, #020420, #0F172A)'
         },
         background: {
           body: 'var(--joy-palette-neutral-900)',

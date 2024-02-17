@@ -135,17 +135,17 @@ const ReservedList: React.FC = () => {
                     >
                     <Theader>
                       <tr>
-                        <th>No</th>
-                        <th>Name</th>
-                        <th>Room</th>
-                        <th>Account Type</th>
-                        <th>Reason</th>
-                        <th>Status</th>
-                        <th>Reservation Date</th>
+                        <th style={{ width: 150 }}>No</th>
+                        <th style={{ width: 150 }}>Name</th>
+                        <th style={{ width: 150 }}>Room</th>
+                        <th style={{ width: 150 }}>Account Type</th>
+                        <th style={{ width: 150 }}>Reason</th>
+                        <th style={{ width: 150 }}>Status</th>
+                        <th style={{ width: 150 }}>Reservation Date</th>
                         {/* <th>Date Time</th> */}
-                        <th>Start Time</th>
-                        <th>End Time</th>
-                        <th>Action</th>
+                        <th style={{ width: 150 }}>Start Time</th>
+                        <th style={{ width: 150 }}>End Time</th>
+                        <th style={{ width: 150 }}>Action</th>
                       </tr>
                       <tr>
                         <th></th>

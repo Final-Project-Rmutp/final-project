@@ -1,32 +1,153 @@
-import React,{ useEffect }from "react";
-import useReportUserList from "./useUserReport";
-import {  Chip, Container, Sheet, Table, useColorScheme, } from '@mui/joy';
-import {
-  Tbody,
-  Theader,
-  HeadList,
-  TableContainer,
-} from "../../admin/student-list/StudentListStyled";
-import CustomPagination from "../../../shared/components/pagination/Pagination";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
+import React, { useEffect, useState } from "react";
+import useReportUserList from "./useUserReport";
+import { Chip, Container, Table, useColorScheme } from "@mui/joy";
+import { Tbody, Theader, TableContainer } from "../style-list/StyleListUser";
+import { UserReportModel } from "auth/model/report";
+import { SlArrowDown } from "react-icons/sl";
+import { SlArrowUp } from "react-icons/sl";
 
 const UserReportList: React.FC = () => {
-    const { 
-        reportList,
-        page,
-        rowsPerPage,
-        handleChangePage,
-        handleChangeRowsPerPage, 
-        fetchReportList
-    } = useReportUserList();
+  const {
+    reportList,
 
-    useEffect(() => {
-        fetchReportList();
-    }, [fetchReportList]);
-    const { mode } = useColorScheme();
+    fetchReportList,
+  } = useReportUserList();
 
+  useEffect(() => {
+    fetchReportList();
+  }, [fetchReportList]);
+  const [openStatus, setOpenStatus] = useState<{ [key: string]: boolean }>({});
+  const { mode } = useColorScheme();
+  const [expandedRows, setExpandedRows] = useState<string[]>([]);
+
+  const toggleStatus = (status: string) => {
+    setExpandedRows((prevExpandedRows) =>
+      prevExpandedRows.includes(status)
+        ? prevExpandedRows.filter((row) => row !== status)
+        : [...prevExpandedRows, status]
+    );
+
+    setOpenStatus((prevOpenStatus) => ({
+      ...prevOpenStatus,
+      [status]: !prevOpenStatus[status],
+    }));
+  };
+
+  type StatusColor = "primary" | "secondary" | "success" | "warning" | "danger";
+
+  const renderStatusRow = (status: string, color: StatusColor) => {
+    const filteredReport =
+      reportList?.filter((item) => item.report_status === status) || [];
     return (
-        <div
+      <>
+        {filteredReport.length > 0 ? (
+          <tr
+            key={status}
+            className={`text-center ${
+              expandedRows.includes(status) ? "expanded" : ""
+            }`}
+          >
+            <th colSpan={5} className="cursor-pointer">
+              <div
+                className="d-flex justify-content-between p-3"
+                style={{
+                  border: "1px solid",
+                  padding: 5,
+                  borderRadius: "15px",
+                }}
+                onClick={() => toggleStatus(status)}
+              >
+                <div className="d-flex gap-4 align-items-center">
+                  <span>
+                    {expandedRows.includes(status) ? (
+                      <SlArrowDown />
+                    ) : (
+                      <SlArrowUp />
+                    )}
+                  </span>
+                  <Chip color={color as any} variant="solid">
+                    {status}
+                  </Chip>
+                </div>
+                <span className="text-success fw-bold">
+                  Found Data {status}
+                </span>
+              </div>
+            </th>
+          </tr>
+        ) : (
+          <tr key={status} className="text-center">
+            <th colSpan={5} className="cursor-no-drop">
+              <div
+                className="d-flex justify-content-between p-3"
+                style={{
+                  border: "1px solid",
+                  padding: 5,
+                  borderRadius: "15px",
+                }}
+              >
+                <div className="d-flex gap-4 align-items-center">
+                  <span>
+                    {expandedRows.includes(status) ? (
+                      <SlArrowDown />
+                    ) : (
+                      <SlArrowUp />
+                    )}
+                  </span>
+                  <Chip color={color as any} variant="solid">
+                    {status}
+                  </Chip>
+                </div>
+                <span className="text-danger fw-bold">
+                  No data for {status}
+                </span>
+              </div>
+            </th>
+          </tr>
+        )}
+        {openStatus[status] && (
+          <tr>
+            <td colSpan={5}>
+              <Table>
+                <Tbody>
+                  {filteredReport.map((item, index) =>
+                    renderReportDetails(item, index)
+                  )}
+                </Tbody>
+              </Table>
+            </td>
+          </tr>
+        )}
+      </>
+    );
+  };
+  const renderReportDetails = (item: UserReportModel, index: number) => (
+    <tr className="text-center" key={item.id || index}>
+      <th>{index + 1}</th>
+      <th>{item.room_number}</th>
+      <th>{item.report_detail}</th>
+      <th>
+        <Chip
+          color={
+            item.report_status.toString() === "Canceled"
+              ? "danger"
+              : item.report_status.toString() === "In progress"
+              ? "warning"
+              : "success"
+          }
+          variant="solid"
+          size="lg"
+        >
+          {item.report_status}
+        </Chip>
+      </th>
+      <th>{formatTimestamp(item.timestamp)}</th>
+    </tr>
+  );
+  return (
+    <div
       className="py-24 sm:py-32 md:py-40 relative d-flex justify-center align-items-center"
       style={{
         width: "100%",
@@ -35,125 +156,55 @@ const UserReportList: React.FC = () => {
         maxHeight: "calc(100vh - 0px)",
         overflowY: "auto" || "hidden",
         ...(mode === "dark"
-          ? { background: "linear-gradient(to bottom, #020420, #0F172A)" }
-          : { background: "#AA96DA" }),
+        ? { background: "linear-gradient(to bottom, #020420, #0F172A)" }
+        : { background: "linear-gradient(to bottom, #AA96DA, #6962AD)" }),
         padding: 5,
       }}
-    >       
-        <Container>
-        <HeadList>
-                <TableContainer>
-                    <Sheet
-                        sx={{
-                            "--TableCell-height": "40px",
-                            "--TableHeader-height": "calc(1 * var(--TableCell-height))",
-                            "--Table-firstColumnWidth": "80px",
-                            "--Table-lastColumnWidth": "144px",
-                            "--TableRow-stripeBackground": "rgba(0 0 0 / 0.04)",
-                            "--TableRow-hoverBackground": "rgba(0 0 0 / 0.08)",
-                            height: 400,
-                            overflow: "auto",
-                            background: (
-                            theme
-                            ) => `linear-gradient(${theme.vars.palette.background.surface} ,
-                                    0 100%`,
-                            backgroundSize:
-                            "40px calc(100% - var(--TableCell-height)), 40px calc(100% - var(--TableCell-height)), 14px calc(100% - var(--TableCell-height)), 14px calc(100% - var(--TableCell-height))",
-                            backgroundRepeat: "no-repeat",
-                            backgroundAttachment: "local, local, scroll, scroll",
-                            backgroundPosition:
-                            "var(--Table-firstColumnWidth) var(--TableCell-height), calc(100% - var(--Table-lastColumnWidth)) var(--TableCell-height), var(--Table-firstColumnWidth) var(--TableCell-height), calc(100% - var(--Table-lastColumnWidth)) var(--TableCell-height)",
-                            backgroundColor: "nav.bg",
-                        }}
-                        >
-                        <Table
-                            className="table mb-0"
-                            borderAxis="bothBetween"
-                            stickyHeader
-                            hoverRow
-                            sx={{
-                            "--Table-headerUnderlineThickness": "1px",
-                            "--TableCell-paddingX": "10px",
-                            "--TableCell-paddingY": "7px",
-                            "& tr > *:first-of-type": {
-                                position: "sticky",
-                                zIndex: 1,
-                                left: 0,
-                                boxShadow: "1px 0 var(--TableCell-borderColor)",
-                                // bgcolor: 'background.surface',
-                            },
-                            "& tr > *:last-child": {
-                                position: "sticky",
-                                right: 0,
-                                bgcolor: "var(--TableCell-headBackground)",
-                            },
-                            }}
-                        >
-                    <Theader >
-                        <tr >
-                            <th>No</th>
-                            <th>Room</th>
-                            <th>Report</th>
-                            <th>Status</th>
-                            <th>Date time</th>
-                        </tr>
-                        <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                        </Theader>
-                        <Tbody>
-                            {reportList.map((item,index) => (
-                                <tr className="text-center" key={item.id || index}>
-                                <th>{index + 1}</th>
-                                <th>{item.room_number}</th>
-                                <th>{item.report_detail}</th>
-                                <th>
-                                <Chip color={item.report_status.toString() === "Canceled" ? "danger" : item.report_status.toString() === "In progress" ? "warning" : "success"} variant="solid" size="lg">
-                                    {item.report_status}
-                                </Chip>
-                                </th>   
-                                
-                                <th>{formatTimestamp(item.timestamp)}</th>
-                                {/* <th>
-                                    <Chip color={item.report_status.toString() === "1" ? "success" : "warning"}variant="solid" size="lg">
-                                        {item.report_status.toString() === "1"? "Success" : "Wait"}
-                                    </Chip>
-                                </th> */}
-                                </tr>
-                            ))}
-                        </Tbody>
-                    </Table>
-                    </Sheet>
-                <div className="pagination-container">
-                    <CustomPagination
-                        count={100}
-                        page={page}
-                        rowsPerPage={rowsPerPage}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                    />
-                </div>
-                </TableContainer>
-            </HeadList>
-        </Container>
-        </div>
-    );
+    >
+      <Container>
+        <TableContainer>
+          <Table
+            className="table mb-0"
+            borderAxis="none"
+            color="primary"
+            stickyHeader
+          >
+            <Theader>
+              <tr>
+                <th style={{ width: 150 }}>No</th>
+                <th style={{ width: 150 }}>Room</th>
+                <th style={{ width: 150 }}>Report</th>
+                <th style={{ width: 150 }}>Status</th>
+                <th style={{ width: 150 }}>Date time</th>
+              </tr>
+              <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+            </Theader>
+            <Tbody>
+              {renderStatusRow("Success", "success")}
+              {renderStatusRow("In progress", "warning")}
+              {renderStatusRow("Cancel", "danger")}
+            </Tbody>
+          </Table>
+        </TableContainer>
+      </Container>
+    </div>
+  );
 };
 
 export default UserReportList;
 
 const formatTimestamp = (timestamp: string | number): string => {
-    const date = new Date(timestamp);
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    return `${day}/${month}/${year} ${hours}:${minutes}`;
-}
-
-
+  const date = new Date(timestamp);
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const day = date.getDate().toString().padStart(2, "0");
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  return `${day}/${month}/${year} ${hours}:${minutes}`;
+};

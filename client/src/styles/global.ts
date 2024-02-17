@@ -51,15 +51,15 @@ export const MenuItems = styled.li`
   align-items: center;
   justify-content: start;
   width: 100%;
-  height: 90px;
-  padding: 2rem 0 1.25rem;
+  height: 75px;
+  padding: 1rem 0 1.25rem;
 `;
 
 export const MenuItemLinks = styled(Link)`
   display: flex;
   align-items: center;
   padding: 0 2rem;
-  font-size: 20px;
+  font-size: 18px;
   text-decoration: none;
   color: #ffffff;
   transition: all 0.2s ease;
@@ -68,16 +68,15 @@ export const MenuItemLinks = styled(Link)`
 
   &:hover {
     width: 100%;
-    height: 45px;
     text-align: center;
     margin: 0 0.5rem;
     padding:1rem; 
     border-radius: 20px;
     .MuiTypography-h4 {
-      font-size: 25px;
+      font-size: 20px;
     }
     .size-icon{
-      font-size: 35px;
+      font-size: 20px;
     }
   }
 
@@ -102,7 +101,7 @@ export const GlobalStyles = createGlobalStyle`
     border-radius: 10px;
 
     a {
-      font-size: 16px;
+      font-size: 14px;
       color: rgb(163, 214, 197);
       margin-left: 30px;
 

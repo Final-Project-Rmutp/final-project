@@ -1,10 +1,10 @@
 import React from "react";
 import { useColorScheme } from "@mui/joy/styles";
-import {  Sheet ,Typography ,Button} from "@mui/joy";
+import { Button} from "@mui/joy";
 import "./index.scss";
 import HomeStyle from "./Homestyle";
 import { styled  } from '@mui/system';
-
+import { useNavigate } from 'react-router-dom';
 const GlassButton = styled(Button)`
   position: absolute;
   bottom: 10%;
@@ -23,7 +23,7 @@ const GlassButton = styled(Button)`
   }
 
   &:active {
-    transform: translate(-50%, -50%) scale(0.7);
+    transform: translate(-50%, -50%) scale(0.9);
     background-color: rgba(255, 255, 255, 0.15);
   }
 `;
@@ -49,6 +49,11 @@ const GlassButton = styled(Button)`
   
 const HomeUser: React.FC = () => {
     const { mode } = useColorScheme();
+    const navigate = useNavigate();
+
+    const handleReserveClick = () => {
+      navigate('/user/room-user');
+    };
     return (
         <div style={{ height: "100vh", overflowX: "auto" }}>
             <div
@@ -67,9 +72,11 @@ const HomeUser: React.FC = () => {
             >
                     {BackgroundIndex()}
                     <HomeStyle></HomeStyle>
-                    <GlassButton variant="outlined">Reserve</GlassButton>
+                    <GlassButton variant="outlined" onClick={handleReserveClick}>
+                        Reserve
+                        </GlassButton>
             </div>
-            <Sheet
+            {/* <Sheet
                 sx={{
                 ...(mode === "dark"
                     ? { background: " #080D1A" }
@@ -98,7 +105,7 @@ const HomeUser: React.FC = () => {
                 }}
             >
                 <Typography >sdfdsfsd</Typography>
-            </Sheet>
+            </Sheet> */}
         </div>
     );
 };

@@ -8,6 +8,9 @@ export const HeaderNav = styled(Sheet)`
     height:4.5rem;
     background-color: ${({ theme }) => theme.palette.userNav.bg};
     width: 100%;
+    display:flex;
+    justicy-content:center;
+    align-items:center;
     box-sizing: border-box;
     flex-shrink: 0;
     position: fixed;
@@ -77,12 +80,14 @@ export const MenuItemLinksNav = styled(Link)`
   font-size: 18px;
   text-decoration: none;
   color: #D0D5DC;
-  transition: all 0.2s ease;
   border-radius: 20px;
-
-  &:hover {
-    .MuiTypography-root {
-      color:${({ theme }) => theme.palette.main.bgStyle};
-    }
-  }
+  margin:9px;
+  padding:10px;
+  // &:hover {
+  //   .MuiTypography-root {
+  //     color:${({ theme }) => theme.palette.main.bgStyle};
+  //   }
+  //   transform:scale(0.9);
+  //   border:1px solid;
+  // }
 `;

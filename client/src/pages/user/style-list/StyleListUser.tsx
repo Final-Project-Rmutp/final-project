@@ -59,7 +59,8 @@ export const HeadList = styled('div')`
 export const TableContainer = styled(Sheet)`
   height: 100%;
   border: 1px solid ${({ theme }) => theme.palette.neutral.softActiveColor};
-  background-color: ${({ theme }) => theme.palette.main.bg};
+  background-color: white;
+  color:black;
   border-radius: 15px;  
   margin-top: 10px;
   padding: 20px;
@@ -75,10 +76,17 @@ tr {
     text-align: center;
     padding: 10px;
     border: none !important;
+    background-color: white;
+    color:black;
+
 
   }
   td {
     z-index: 1 !important;
+    background-color: white;
+
+    color:black;
+
   }
 }
 `;
@@ -99,6 +107,9 @@ export const Tbody = styled('tbody')`
       text-align: center;
       vertical-align: middle;
       font-weight: 500;
+        background-color: white;
+        color:black;
+
     }
   }
 `;

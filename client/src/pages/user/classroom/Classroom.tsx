@@ -102,17 +102,14 @@ const TimetableTd = styled("td")`
   text-align: center;
   width: 120px;
   background-color: #fff;
-  padding: 0; /* ลด padding เป็น 0 */
-  overflow: hidden; /* เพื่อให้สีเต็มช่อง */
-  position: relative;
 
   @media (max-width: 600px) {
     width: 120px;
   }
 
   &:hover {
-    transform: scale(1.05);
-    padding: 0px;
+    transform: scale(1.3);
+    border-radius:10px;
     z-index:2;
   }
 `;
@@ -223,7 +220,7 @@ const Classroom: React.FC = () => {
                         height: "100%",
                         backgroundColor: dayColors[item.day_of_week],
                         textAlign:'center',
-                        padding:0
+                        padding:5
                       }}
                     >
                       <div style={{ width: "120px"}}>
@@ -263,6 +260,7 @@ const Classroom: React.FC = () => {
       newDayColors[item.day_of_week] = getDayColor(item.day_of_week);
     });
     setDayColors(newDayColors);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timetableData]);
 
   const getDayColor = (day: string): string => {
@@ -305,8 +303,8 @@ const Classroom: React.FC = () => {
         maxHeight: "calc(100vh - 0px)",
         overflowY: "auto" || "hidden",
         ...(mode === "dark"
-          ? { background: "linear-gradient(to bottom, #020420, #0F172A)" }
-          : { background: "#AA96DA" }),
+        ? { background: "linear-gradient(to bottom, #020420, #0F172A)" }
+        : { background: "linear-gradient(to bottom, #AA96DA, #6962AD)" }),
         padding: 1,
       }}
     >
