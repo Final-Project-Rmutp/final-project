@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import useReportUserList from "./useUserReport";
 import { Chip, Container, Table, useColorScheme,Button } from "@mui/joy";
 import { Tbody, Theader, TableContainer } from "../style-list/StyleListUser";
-import { UserReportModel } from "auth/model/report";
+import { UserReportModel } from "../../../auth/model/report";
 import { SlArrowDown } from "react-icons/sl";
 import { SlArrowUp } from "react-icons/sl";
 
