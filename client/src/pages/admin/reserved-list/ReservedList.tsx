@@ -97,16 +97,6 @@ const ReservedList: React.FC = () => {
                         "--TableRow-hoverBackground": "rgba(0 0 0 / 0.08)",
                         height: 346,
                         overflow: "auto",
-                        background: (
-                        theme
-                        ) => `linear-gradient(${theme.vars.palette.background.surface} ,
-                                0 100%`,
-                        backgroundSize:
-                        "40px calc(100% - var(--TableCell-height)), 40px calc(100% - var(--TableCell-height)), 14px calc(100% - var(--TableCell-height)), 14px calc(100% - var(--TableCell-height))",
-                        backgroundRepeat: "no-repeat",
-                        backgroundAttachment: "local, local, scroll, scroll",
-                        backgroundPosition:
-                        "var(--Table-firstColumnWidth) var(--TableCell-height), calc(100% - var(--Table-lastColumnWidth)) var(--TableCell-height), var(--Table-firstColumnWidth) var(--TableCell-height), calc(100% - var(--Table-lastColumnWidth)) var(--TableCell-height)",
                         backgroundColor: "nav.bg",
                     }}
                     >

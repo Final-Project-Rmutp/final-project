@@ -315,7 +315,7 @@ const UserProfileSidebar: React.FC = () => {
                     </Box>
                   </>
                 )}
-                <div className="flex items-center justify-end gap-1.5">
+                <div className="flex items-center justify-content-end gap-1.5">
                   <Box sx={{width:"20px", marginTop:2}}>
                     <ColorSchemeToggle />
                   </Box>

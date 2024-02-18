@@ -29,6 +29,7 @@ import UserService, { Reservation } from "../../../auth/service/UserService";
 import { useColorScheme } from "@mui/joy/styles";
 import CardList from "./CardList";
 import axiosInstance from "../../../environments/axiosInstance";
+import theme from "../../../styles/theme";
 
 type ApiResponse = {
   availableRooms: SearchRoomParams[];
@@ -528,9 +529,10 @@ const Room: React.FC = () => {
       background: "white",
       borderRadius: "20px",
       padding: 5,
+      backgroundColor: theme.palette.background.backdrop,
     }}
   >
-    <Typography level="h1" color="primary">
+    <Typography level="h1" color="primary" sx={{width:'100%',fontSize:'3vw'}}>
       No Data
     </Typography>
     <img

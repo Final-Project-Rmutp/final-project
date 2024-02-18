@@ -9,7 +9,7 @@ export const HeaderNav = styled(Sheet)`
     background-color: ${({ theme }) => theme.palette.userNav.bg};
     width: 100%;
     display:flex;
-    justicy-content:center;
+    justicy-content:end;
     align-items:center;
     box-sizing: border-box;
     flex-shrink: 0;

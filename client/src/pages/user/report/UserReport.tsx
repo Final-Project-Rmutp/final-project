@@ -162,7 +162,16 @@ const UserReportList: React.FC = () => {
       }}
     >
       <Container>
-        <TableContainer>
+        <TableContainer
+            style={{
+                overflowX: 'auto',
+                width: '100%',
+                height:'100%',
+                maxHeight:500,
+                minWidth: 650,
+                padding:5
+            }}
+        >
           <Table
             className="table mb-0"
             borderAxis="none"

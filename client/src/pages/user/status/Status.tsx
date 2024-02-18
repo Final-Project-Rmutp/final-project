@@ -8,6 +8,7 @@ import {
   Tbody,
   Theader,
   TableContainer,
+  HeadList,
 } from "../style-list/StyleListUser";
 import { ReservedListUserItem } from "../../../auth/service/UserService";
 import "./Status.scss";
@@ -104,10 +105,10 @@ const renderStatusRow = (status: string, color: StatusColor) => {
 
   const renderReservationDetails = (item: ReservedListUserItem, index: number) => (
     <tr  key={item.id || index} className="text-center">
-      <th>{index + 1}</th>
-      <th>{item.room_number}</th>
-      <th>{item.reservation_reason}</th>
-      <th>
+      <th style={{ width: 100 }}>{index + 1}</th>
+      <th style={{ width: 100 }}>{item.room_number}</th>
+      <th style={{ width: 100 }}>{item.reservation_reason}</th>
+      <th style={{ width: 100 }}>
         <Chip
           color={
             item.reservation_status.toString() === "Cancel"
@@ -122,9 +123,9 @@ const renderStatusRow = (status: string, color: StatusColor) => {
           {item.reservation_status}
         </Chip>
       </th>
-      <th>{formatTimestamp(item.reservation_date)}</th>
-      <th>{item.start_time}</th>
-      <th>{item.end_time}</th>
+      <th style={{ width: 100 }}>{formatTimestamp(item.reservation_date)}</th>
+      <th style={{ width: 100 }}>{item.start_time}</th>
+      <th style={{ width: 100 }}>{item.end_time}</th>
     </tr>
   );
 
@@ -151,49 +152,62 @@ const renderStatusRow = (status: string, color: StatusColor) => {
       }}
     >
         <Container>
-            <TableContainer>
-                
-                    <Table
-                    className="table mb-0"
-                    borderAxis="bothBetween"
-                    stickyHeader
-                    >
-                    <Theader>
-                        <tr>
-                        <th style={{ width: 150 }}>No</th>
-                        <th style={{ width: 150 }}>Room</th>
-                        <th style={{ width: 150 }}>Detail</th>
-                        <th style={{ width: 150 }}>Status</th>
-                        <th style={{ width: 150 }}>Reservation Date</th>
-                        <th style={{ width: 150 }}>Start time</th>
-                        <th style={{ width: 150 }}>End time</th>
-                        </tr>
-                        <tr>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        </tr>
-                    </Theader>
-                    <Tbody >
-                        {renderStatusRow("Success", "success")}
-                        {renderStatusRow("In progress", "warning")}
-                        {renderStatusRow("Cancel", "danger")}
-                    </Tbody>
-                    </Table>
-                {/* <div className="pagination-container">
-                    <CustomPagination
-                    count={100}
-                    page={page}
-                    rowsPerPage={rowsPerPage}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                    />
-                </div> */}
-                </TableContainer>
+            <HeadList>
+                <TableContainer 
+                style={{
+                    overflowX: 'auto',
+                    width: '100%',
+                    height:'100%',
+                    maxHeight:500,
+                    minWidth: 650,
+                    padding:5
+                  }}
+                >
+                    
+                        <Table
+                        className="table mb-0"
+                        borderAxis="bothBetween"
+                        stickyHeader
+                        >
+                        <Theader>
+                            <tr>
+                            <th style={{ width: 150 }}>No</th>
+                            <th style={{ width: 150 }}>Room</th>
+                            <th style={{ width: 150 }}>Detail</th>
+                            <th style={{ width: 150 }}>Status</th>
+                            <th style={{ width: 150 }}>Reservation Date</th>
+                            <th style={{ width: 150 }}>Start time</th>
+                            <th style={{ width: 150 }}>End time</th>
+                            </tr>
+                            <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            </tr>
+                        </Theader>
+                        <Tbody 
+                        sx={{ width:'100%', minWidth: 650 }}
+                        >
+                            {renderStatusRow("Success", "success")}
+                            {renderStatusRow("In progress", "warning")}
+                            {renderStatusRow("Cancel", "danger")}
+                        </Tbody>
+                        </Table>
+                    {/* <div className="pagination-container">
+                        <CustomPagination
+                        count={100}
+                        page={page}
+                        rowsPerPage={rowsPerPage}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                        />
+                    </div> */}
+                    </TableContainer>
+            </HeadList>
         </Container>
     </div>
   );

@@ -9,7 +9,7 @@ const StyledCard = styled(Card)`
   height: 280px;
   backdrop-filter: blur(0px);  
   transition: all .3s;
-  // background-color: rgba(24, 43, 60, .089);
+  background-color: rgba(24, 43, 60, .089);
   background-color: ${({ theme }) => theme.palette.background.backdrop};
 
 &::before,
