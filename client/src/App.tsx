@@ -19,7 +19,7 @@ const Classroom = lazy(() => import('./pages/user/classroom/Classroom'));
 
 ////admin
 const StudentList = lazy(() => import('./pages/admin/student-list/StudentList'));
-const ReservedList = lazy(() => import('./pages/admin/reserved-list/ReservedList'));
+import ReservedList from './pages/admin/reserved-list/ReservedList';
 const RoomList = lazy(() => import('./pages/admin/room-list/RoomList'));
 const ReportList = lazy(() => import('./pages/admin/report-list/ReportList'));
 const AdminDashBoard = lazy(() => import('./pages/admin/dashboard/Dashboard'));
