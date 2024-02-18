@@ -118,23 +118,20 @@ const HomeUser: React.FC = () => {
 
       </div>
       <Sheet
-    sx={{
-        ...(mode === "dark"
-        ? { background: " #080D1A" }
-        : { background: "#fff" }),
-        padding: 15,
-        marginTop: "0",
-        zIndex: "1",
-        height: "700px",
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'center',
-        '@media (max-width: 768px)': {
-        height: 'auto',
-        },
-    }}
+sx={{
+    ...(mode === "dark"
+      ? { background: " #080D1A" }
+      : { background: "#fff" }),
+    padding: 'calc(40px + 5%)',
+    marginTop: "0",
+    zIndex: "1",
+    minHeight: "700px",
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+  }}
       >
         <Typography level="h2" style={{ marginBottom: '1rem', fontWeight: 'bold',}}>Welcome to Room Reservation System</Typography>
         <Typography level="body-lg" style={{ marginBottom: '1rem' }}>

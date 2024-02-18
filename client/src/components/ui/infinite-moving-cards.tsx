@@ -80,14 +80,7 @@ export const InfiniteMovingCards = ({
             className
         )}
         sx={{
-        width:'100%',
-        maxWidth:'800px',
-        '@media (max-width: 768px)': {
-            maxWidth: '500px',
-        },
-        '@media (max-width: 431px)': {
-            maxWidth: '320px',
-        },
+        width: 'calc(100vw - 10px)'
         }}
     >
       <ul
