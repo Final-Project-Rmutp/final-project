@@ -1,5 +1,5 @@
 // styles.ts
-import { Link } from 'react-router-dom';
+import { NavLink,Link } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 
 export const TeamText = styled.div`
@@ -55,7 +55,7 @@ export const MenuItems = styled.li`
   padding: 2rem 0 1.25rem;
 `;
 
-export const MenuItemLinks = styled(Link)`
+export const MenuItemLinks = styled(NavLink)`
   display: flex;
   align-items: center;
   padding: 0 2rem;
@@ -64,7 +64,14 @@ export const MenuItemLinks = styled(Link)`
   color: #ffffff;
   transition: all 0.2s ease;
   border-radius: 20px;
-
+    .icon-active{
+      display:none;
+    }
+    &.active{
+        .icon-active {
+            display:block;
+        };
+    }
 `;
 
 export const GlobalStyles = createGlobalStyle`

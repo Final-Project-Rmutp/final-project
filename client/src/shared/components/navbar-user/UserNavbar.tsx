@@ -196,28 +196,28 @@ const UserProfileSidebar: React.FC = () => {
         isShow: true,
         title: 'Reservation',
         path: 'room-user',
-        icon:''
+        icon:'<img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Books.webp" alt="Books" width="25" height="25" />',
         // icon: <Icon icon="fluent-mdl2:reservation-orders" color="#235726" />
     },
     {
         isShow : localStorage.getItem('type') === 'teacher',
         title: 'Classroom',
         path: 'classroom-user',
-        icon:''
+        icon:'<img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Books.webp" alt="Books" width="25" height="25" />',
         // icon: <Icon icon="ph:user-list-fill" color="#3F51B5"  />
     },
     {
         isShow: true,
         title: 'Reservation Status',
         path: 'status-user',
-        icon:''
+        icon:'<img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Books.webp" alt="Books" width="25" height="25" />',
         // icon: <Icon icon="fluent-mdl2:sync-status-solid" color="#0077B2" />
     },
     {
         isShow: true,
         title: 'Reported Status',
         path: 'report-user',
-        icon:''
+        icon:'<img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Books.webp" alt="Books" width="25" height="25" />',
         // icon: <Icon icon="fluent-mdl2:report-warning" color="red"  />
     }
 ]
@@ -258,7 +258,7 @@ const UserProfileSidebar: React.FC = () => {
                       to={item.path}
                       onClick={() => handleTabChange(item.title)}
                     >
-                      <span className="size-icon">{item.icon}</span>
+                      <span className="icon-active" dangerouslySetInnerHTML={{__html: item.icon}}></span>
                       <Typography
                         noWrap
                         level="title-sm"
@@ -303,13 +303,14 @@ const UserProfileSidebar: React.FC = () => {
                               to={item.path}
                               onClick={() => handleTabChange(item.title)}
                             >
-                              <span className="size-icon">{item.icon}</span>
                               <Typography
                                 noWrap
                                 level="title-sm"
                               >
                                 {item.title}
                               </Typography>
+                              <span className="icon-active" dangerouslySetInnerHTML={{__html: item.icon}}></span>
+
                             </MenuItemLinksNav>
                           </MenuItemsNav>
                           )} 

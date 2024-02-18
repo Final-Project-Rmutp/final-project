@@ -67,7 +67,7 @@ const neutral = {
   navSide:'#161720',
   border:'#383F47',
   bgSty:'',
-  bgStyLight:'linear-gradient(to bottom, #AA96DA,#6962AD)',
+  bgStyLight:'',
   bgStyDark:'linear-gradient(to bottom, #020420, #0F172A)',
   usNav: 'rgba(2, 4, 32, 0.2)'
 };
@@ -137,8 +137,8 @@ const theme = extendTheme({
           bg: 'var(--joy-palette-neutral-50)',
           color: 'var(--joy-palette-neutral-900)',
           hoverBg: 'var(--joy-palette-neutral-50)',
-          bgStyLight:'linear-gradient(to bottom, #AA96DA,#6962AD)'
-          
+          bgStyLight:'#D7D1EC',
+          bgStyDark:'#000'
         },
         background: {
           body: 'var(--joy-palette-neutral-100)',
@@ -207,7 +207,9 @@ const theme = extendTheme({
           bg: 'var(--joy-palette-neutral-dark)',
           color: 'var(--joy-palette-neutral-900)',
           hoverBg: 'var(--joy-palette-neutral-5)0',
-          bgStyDark:'linear-gradient(to bottom, #020420, #0F172A)'
+          bgStyLight:'rgba(255, 255, 255, 0.15)',
+          bgStyDark:'#fff'
+
         },
         background: {
           body: 'var(--joy-palette-neutral-900)',
