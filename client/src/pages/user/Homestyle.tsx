@@ -9,7 +9,10 @@ const HomeStyle: React.FC = () => {
     const handleScroll = () => {
       const scrollY = window.scrollY || window.pageYOffset;
       const translateY = scrollY * 0.5; // Adjust the multiplier for the desired parallax effect
-      document.documentElement.style.setProperty("--translateY", `${translateY}px`);
+      document.documentElement.style.setProperty(
+        "--translateY",
+        `${translateY}px`
+      );
     };
 
     setIsIntroAnimated(true);
@@ -25,45 +28,100 @@ const HomeStyle: React.FC = () => {
   const { mode } = useColorScheme();
 
   return (
-    <div >
+    <div>
       <svg
         className={`intro ${isIntroAnimated ? "go" : ""}`}
         viewBox="0 0 200 86"
         style={{
-            borderRadius:'30px',
+          borderRadius: "30px",
           ...(mode === "dark"
-                    ? { background: "linear-gradient(135deg, #582a7e, #0F172A)",
-                        boxShadow: "0 20px 60px 0px rgb(46, 6, 100)" }
-                    : { background: "linear-gradient(135deg, #8F43EE,#BFDCE5",
-                    boxShadow: "0 20px 60px 10px rgb(110, 80, 190)"  }),
+            ? {
+                background: "linear-gradient(135deg, #582a7e, #0F172A)",
+                boxShadow: "0 20px 60px 0px rgb(46, 6, 100)",
+              }
+            : {
+                background: "linear-gradient(135deg, #8F43EE,#BFDCE5",
+                boxShadow: "0 20px 60px 10px rgb(110, 80, 190)",
+              }),
+          width:'calc(100% - 2rem)'
         }}
+      >
+        <text
+          text-anchor="start"
+          x="10"
+          y="30"
+          className="text text-stroke"
+          clip-path="url(#text1)"
         >
-
-
-        <text text-anchor="start" x="10" y="30" className="text text-stroke" clip-path="url(#text1)">Room</text>
-        <text text-anchor="start" x="10" y="50" className="text text-stroke" clip-path="url(#text2)">Reservation</text>
-        <text text-anchor="start" x="10" y="70" className="text text-stroke" clip-path="url(#text3)">Rmutp</text>
-        <text text-anchor="start" x="10" y="30" className="text text-stroke text-stroke-2" clip-path="url(#text1)">Room</text>
-        <text text-anchor="start" x="10" y="50" className="text text-stroke text-stroke-2" clip-path="url(#text2)">Reservation</text>
-        <text text-anchor="start" x="10" y="70" className="text text-stroke text-stroke-2 text-rmutp" clip-path="url(#text3)">Rmutp</text>
+          Room
+        </text>
+        <text
+          text-anchor="start"
+          x="10"
+          y="50"
+          className="text text-stroke"
+          clip-path="url(#text2)"
+        >
+          Reservation
+        </text>
+        <text
+          text-anchor="start"
+          x="10"
+          y="70"
+          className="text text-stroke"
+          clip-path="url(#text3)"
+        >
+          Rmutp
+        </text>
+        <text
+          text-anchor="start"
+          x="10"
+          y="30"
+          className="text text-stroke text-stroke-2"
+          clip-path="url(#text1)"
+        >
+          Room
+        </text>
+        <text
+          text-anchor="start"
+          x="10"
+          y="50"
+          className="text text-stroke text-stroke-2"
+          clip-path="url(#text2)"
+        >
+          Reservation
+        </text>
+        <text
+          text-anchor="start"
+          x="10"
+          y="70"
+          className="text text-stroke text-stroke-2 text-rmutp"
+          clip-path="url(#text3)"
+        >
+          Rmutp
+        </text>
 
         <defs>
           <clipPath id="text1">
-            <text textAnchor="start" x="10" y="30" className="text">Room</text>
+            <text textAnchor="start" x="10" y="30" className="text">
+              Room
+            </text>
           </clipPath>
           <clipPath id="text2">
-            <text textAnchor="start" x="10" y="50" className="text">Reservation</text>
+            <text textAnchor="start" x="10" y="50" className="text">
+              Reservation
+            </text>
           </clipPath>
           <clipPath id="text3">
-            <text textAnchor="start" x="10" y="70" className="text">Rmutp</text>
+            <text textAnchor="start" x="10" y="70" className="text">
+              Rmutp
+            </text>
           </clipPath>
         </defs>
       </svg>
-      <div>
-      </div>
+      <div></div>
     </div>
   );
 };
 
 export default HomeStyle;
-
