@@ -186,7 +186,7 @@ const HomeUser: React.FC = () => {
         <div className="d-flex justify-content-center align-items-center flex-column">
           <Typography
             level="h4"
-            style={{ marginTop: "1rem", fontWeight: "bold" }}
+            style={{ marginTop: "1rem", fontWeight: "bold",color: '#fff'}}
           >
             Developer Team
           </Typography>

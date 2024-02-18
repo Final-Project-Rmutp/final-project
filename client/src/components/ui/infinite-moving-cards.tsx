@@ -117,10 +117,10 @@ export const InfiniteMovingCards = ({
               </span>
               <div className="relative z-20 mt-6 flex flex-row items-center">
                 <span className="flex flex-col gap-1">
-                  <Typography level='h4' className=" text-sm leading-[1.6] text-gray-400 font-normal">
+                  <Typography level='h4' className=" text-sm leading-[1.6] text-gray-400 font-normal" sx={{color: '#fff'}}>
                     {item.name}
                   </Typography>
-                  <Typography level='title-lg' className=" text-sm leading-[1.6] text-gray-400 font-normal">
+                  <Typography level='title-lg' className=" text-sm leading-[1.6] text-gray-400 font-normal" sx={{color: '#fff'}}>
                     {item.title}
                   </Typography>
                 </span>
