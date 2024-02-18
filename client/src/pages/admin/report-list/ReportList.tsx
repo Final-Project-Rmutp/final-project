@@ -115,13 +115,13 @@ const ReportList: React.FC = () => {
                     >
                 <Theader >
                     <tr>
-                        <th>No</th>
-                        <th>Name</th>
-                        <th>Room</th>
-                        <th>Report</th>
-                        <th>Date time</th>
-                        <th>Status</th>
-                        <th>Select</th>
+                        <th style={{width:50}}>No</th>
+                        <th style={{width:150}}>Name</th>
+                        <th style={{width:150}}>Room</th>
+                        <th style={{width:150}}>Report</th>
+                        <th style={{width:150}}>Date time</th>
+                        <th style={{width:150}}>Status</th>
+                        <th style={{width:50}}>Select</th>
                     </tr>
                     <tr>
                         <th></th>

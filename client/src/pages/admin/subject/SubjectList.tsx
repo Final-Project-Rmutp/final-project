@@ -346,14 +346,14 @@ const handleEndTimeChange = (value: dayjs.Dayjs | null) => {
             >
                 <Theader>
                 <tr>
-                    <th style={{ width: 30 }}>No</th>
+                    <th style={{ width: 50 }}>No</th>
                     <th style={{ width: 100 }}>Name</th>
                     <th style={{ width: 100 }}>Code</th>
                     <th style={{ width: 100 }}>User</th>
-                    <th style={{ width: 40 }}>Select</th>
+                    <th style={{ width: 100 }}>Select</th>
                     <th style={{ width: 230 }}>Action</th>
                 </tr>
-                <tr>
+                <tr> 
                     <th></th>
                     <th></th>
                     <th></th>

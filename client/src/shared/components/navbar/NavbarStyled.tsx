@@ -83,6 +83,12 @@ export const IconButtonHeader = styled(IconButton)`
 export const MenuContainer = styled(Menu)`
   background-color: ${({ theme }) => theme.palette.menu.bg};
   color:${({ theme }) => theme.palette.nav.color};
+  display:flex;
+  justify-content: center;
+  align-items:center;
+  flex-direction: row;
+  gap:5px;
+  padding:10px;
   `
 export const MenuItemContainer = styled(MenuItem)`
   background-color: ${({ theme }) => theme.palette.menu.bg};

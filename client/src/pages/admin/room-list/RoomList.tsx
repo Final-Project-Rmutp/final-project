@@ -154,14 +154,14 @@ const RoomList: React.FC = () => {
                     >
                     <Theader >
                       <tr >
-                        <th style={{ width: 30 }}>No</th>
-                        <th style={{ width: 50 }}>Number</th>
+                        <th style={{ width: 50 }}>No</th>
+                        <th style={{ width: 150 }}>Number</th>
                         <th style={{ width: 100 }}>Type</th>
-                        <th style={{ width: 50 }}>Capacity</th>
-                        <th style={{ width: 100 }}>Facilities</th>
-                        <th style={{ width: 50 }}>Floor</th>
-                        <th style={{ width: 100 }}>Status</th>
-                        <th style={{ width: 40 }}>Actions</th>
+                        <th style={{ width: 100 }}>Capacity</th>
+                        <th style={{ width: 150 }}>Facilities</th>
+                        <th style={{ width: 100 }}>Floor</th>
+                        <th style={{ width: 150 }}>Status</th>
+                        <th style={{ width: 100 }}>Actions</th>
                         <th style={{ width: 180 }}>Active</th>
                       </tr>
                       <tr>

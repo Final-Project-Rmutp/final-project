@@ -9,7 +9,7 @@ import {
 
 import { CssVarsProvider } from "@mui/joy/styles";
 import CssBaseline from "@mui/joy/CssBaseline";
-import { Layout } from "./NavbarStyled"; // Assuming NavbarStyled contains Layout
+import { Layout } from "./NavbarStyled"
 import MainNavBar from "./MainNavBar";
 import SideBarAdmin from "./SidebarAdmin";
 

@@ -106,7 +106,10 @@ const MainNavBar: React.FC = () => {
     >
       <Header className="header">
         <div className="item-header">
-          <CardStyle onClick={handleMenuClick} data-cy="profile-admin">
+        <div className="d-flex justify-content-center align-items-center">
+                <ColorSchemeToggle/>
+              </div>
+          <CardStyle  data-cy="profile-admin" onClick={handleMenuClick}>
             <Box
               style={{ cursor: "pointer" }}
               sx={{
@@ -129,10 +132,10 @@ const MainNavBar: React.FC = () => {
             id="profile-menu"
             anchorEl={state.anchorEl}
             open={state.menuOpen}
-            sx={{ width: 190 }}
+            sx={{ width: 150 }}
             ref={menuRef}
           >
-            <ColorSchemeToggle />
+            {/* <ColorSchemeToggle /> */}
             <Button
               color="danger"
               variant="solid"

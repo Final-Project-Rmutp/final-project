@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import useReportUserList from "./useUserReport";
-import { Chip, Container, Table, useColorScheme } from "@mui/joy";
+import { Chip, Container, Table, useColorScheme,Button } from "@mui/joy";
 import { Tbody, Theader, TableContainer } from "../style-list/StyleListUser";
 import { UserReportModel } from "auth/model/report";
 import { SlArrowDown } from "react-icons/sl";
@@ -80,12 +80,15 @@ const UserReportList: React.FC = () => {
         ) : (
           <tr key={status} className="text-center">
             <th colSpan={5} className="cursor-no-drop">
-              <div
+              <Button
+                disabled
+                variant="outlined"
                 className="d-flex justify-content-between p-3"
                 style={{
                   border: "1px solid",
                   padding: 5,
                   borderRadius: "15px",
+                  width:'100%'
                 }}
               >
                 <div className="d-flex gap-4 align-items-center">
@@ -103,7 +106,7 @@ const UserReportList: React.FC = () => {
                 <span className="text-danger fw-bold">
                   No data for {status}
                 </span>
-              </div>
+              </Button>
             </th>
           </tr>
         )}
@@ -161,7 +164,7 @@ const UserReportList: React.FC = () => {
         padding: 5,
       }}
     >
-      <Container>
+      <Container sx={{width:'60%',maxWidth:'800px'}}>
         <TableContainer
             style={{
                 overflowX: 'auto',
@@ -180,11 +183,11 @@ const UserReportList: React.FC = () => {
           >
             <Theader>
               <tr>
-                <th style={{ width: 150 }}>No</th>
-                <th style={{ width: 150 }}>Room</th>
-                <th style={{ width: 150 }}>Report</th>
-                <th style={{ width: 150 }}>Status</th>
-                <th style={{ width: 150 }}>Date time</th>
+                <th style={{ width: 100 }}>No</th>
+                <th style={{ width: 100 }}>Room</th>
+                <th style={{ width: 100 }}>Report</th>
+                <th style={{ width: 100 }}>Status</th>
+                <th style={{ width: 100 }}>Date time</th>
               </tr>
               <tr>
                 <th></th>

@@ -324,7 +324,7 @@ const ClassRoomAdmin: React.FC = () => {
           <div style={{width:'100%',display:'flex',justifyContent:'center', alignItems:'center', flexDirection:'column', gap:10}}>
             <TimetableHeader>{timetableData.length > 0 ? timetableData[0].fullname : '-'}</TimetableHeader>
             <div style={{width:"100%",marginBottom:10}} className='d-flex justify-center align-items-center gap-4'>
-            <Typography level="title-md">Select User ID: </Typography>
+            <Typography level="title-md">Select User: </Typography>
             <Select value={selectedUserId} onChange={handleUserIdChange}
                         variant="solid"
                         color="primary">
@@ -405,10 +405,10 @@ const ClassRoomAdmin: React.FC = () => {
                     <Theader>
                     <tr>
                         <th style={{ width: 100 }}>No</th>
-                        <th style={{ width: 100 }}>No</th>
+                        <th style={{ width: 100 }}>Class Id</th>
                         <th style={{ width: 100 }}>Name</th>
                         <th style={{ width: 100 }}>Room</th>
-                        <th style={{ width: 100 }}>Name Teacher</th>
+                        <th style={{ width: 150 }}>Teacher</th>
                         <th style={{ width: 100 }}>Day</th>
                         <th style={{ width: 100 }}>Start Time</th>
                         <th style={{ width: 100 }}>End Time</th>

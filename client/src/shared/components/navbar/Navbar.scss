@@ -31,7 +31,9 @@ body {
   position: relative;
   min-height: 4rem;
   .item-header {
-    position: absolute;
+    display:flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 

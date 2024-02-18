@@ -8,9 +8,6 @@ export const HeaderNav = styled(Sheet)`
     height:4.5rem;
     background-color: ${({ theme }) => theme.palette.userNav.bg};
     width: 100%;
-    display:flex;
-    justicy-content:end;
-    align-items:center;
     box-sizing: border-box;
     flex-shrink: 0;
     position: fixed;

@@ -532,7 +532,7 @@ const Room: React.FC = () => {
       backgroundColor: theme.palette.background.backdrop,
     }}
   >
-    <Typography level="h1" color="primary" sx={{width:'100%',fontSize:'3vw'}}>
+    <Typography level="h1" color="primary" sx={{width:'100%',fontSize:'24px'}}>
       No Data
     </Typography>
     <img

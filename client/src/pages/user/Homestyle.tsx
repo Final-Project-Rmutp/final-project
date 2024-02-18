@@ -40,19 +40,19 @@ const HomeStyle: React.FC = () => {
         >
 
 
-        <text text-anchor="start" x="10" y="30" className="text text-stroke" clip-path="url(#text1)">Reservation</text>
-        <text text-anchor="start" x="10" y="50" className="text text-stroke" clip-path="url(#text2)">Room</text>
+        <text text-anchor="start" x="10" y="30" className="text text-stroke" clip-path="url(#text1)">Room</text>
+        <text text-anchor="start" x="10" y="50" className="text text-stroke" clip-path="url(#text2)">Reservation</text>
         <text text-anchor="start" x="10" y="70" className="text text-stroke" clip-path="url(#text3)">Rmutp</text>
-        <text text-anchor="start" x="10" y="30" className="text text-stroke text-stroke-2" clip-path="url(#text1)">Reservation</text>
-        <text text-anchor="start" x="10" y="50" className="text text-stroke text-stroke-2" clip-path="url(#text2)">Room</text>
+        <text text-anchor="start" x="10" y="30" className="text text-stroke text-stroke-2" clip-path="url(#text1)">Room</text>
+        <text text-anchor="start" x="10" y="50" className="text text-stroke text-stroke-2" clip-path="url(#text2)">Reservation</text>
         <text text-anchor="start" x="10" y="70" className="text text-stroke text-stroke-2 text-rmutp" clip-path="url(#text3)">Rmutp</text>
 
         <defs>
           <clipPath id="text1">
-            <text textAnchor="start" x="10" y="30" className="text">Reservation</text>
+            <text textAnchor="start" x="10" y="30" className="text">Room</text>
           </clipPath>
           <clipPath id="text2">
-            <text textAnchor="start" x="10" y="50" className="text">Room</text>
+            <text textAnchor="start" x="10" y="50" className="text">Reservation</text>
           </clipPath>
           <clipPath id="text3">
             <text textAnchor="start" x="10" y="70" className="text">Rmutp</text>

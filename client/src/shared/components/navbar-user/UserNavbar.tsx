@@ -24,7 +24,6 @@ import CssBaseline from "@mui/joy/CssBaseline";
 import UserService from "../../../auth/service/UserService";
 import {
   Main,
-  MenuContainer,
   MenuItemContainer,
 } from "../navbar/NavbarStyled";
 import '../navbar/Hamburger.scss'
@@ -37,6 +36,7 @@ import {
   CardStyleUser,
   LayoutUser,
   LeftUser,
+  MenuContainer
 } from "./UserSidebarStyle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 // import { Icon } from "@iconify/react";
@@ -242,8 +242,8 @@ const UserProfileSidebar: React.FC = () => {
                   </div>
               </div>
               <SidebarUser className={`sidebar ${leftOpen}`}>
-                <div className="header-left">
-                  <div className="logo-header">
+                <div style={{width:"100%"}}>
+                  <div className="logo-header d-flex justify-content-center ">
                     <Link to="/user">
                       <img src={LogoRmutp} alt=""  style={{width:"60px", height:"50px"}}/>
                     </Link>
@@ -251,6 +251,8 @@ const UserProfileSidebar: React.FC = () => {
                 </div>
                 <Container className="content">
                 {UserSidebarData.map((item, index) => (
+                  <>
+                  {item.isShow && (
                   <MenuItems key={index}>
                     <MenuItemLinks
                       to={item.path}
@@ -266,6 +268,8 @@ const UserProfileSidebar: React.FC = () => {
                       </Typography>
                     </MenuItemLinks>
                   </MenuItems>
+                  )} 
+                  </>
                 ))}
                 </Container>
               </SidebarUser>
@@ -273,7 +277,7 @@ const UserProfileSidebar: React.FC = () => {
           )}
           <Main id="main">
             <HeaderNav>
-              <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl flex items-center justify-between gap-5 h-[--header-height]">
+              <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl flex items-center justify-between gap-5 h-[--header-height] pb-3">
                 <Box sx={{ flexGrow: 0,}}>
                   <span></span>
                 </Box>
@@ -315,6 +319,7 @@ const UserProfileSidebar: React.FC = () => {
                     </Box>
                   </>
                 )}
+                
                 <div className="flex items-center justify-content-end gap-1.5">
                   <Box sx={{width:"20px", marginTop:2}}>
                     <ColorSchemeToggle />
@@ -345,7 +350,7 @@ const UserProfileSidebar: React.FC = () => {
                     id="profile-menu"
                     anchorEl={state.anchorEl}
                     open={Boolean(state.anchorEl)}
-                    sx={{ width: 120 }}
+                    sx={{ width: 130 }}
                     ref={menuRef}
                   >
                     <MenuItemContainer

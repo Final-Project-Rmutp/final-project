@@ -1,11 +1,10 @@
 import { useColorScheme } from "@mui/joy";
 import React from "react";
-import { IconButtonHeader} from "./NavbarStyled";
-import { Icon } from '@iconify/react';
+import { IconButtonUser } from "../navbar-user/UserSidebarStyle";
 
 export const ColorSchemeToggle = () => {
-    const { mode, setMode } = useColorScheme();
-    const [mounted, setMounted] = React.useState(false);
+      const { mode, setMode } = useColorScheme();
+      const [mounted, setMounted] = React.useState(false);
 
     React.useEffect(() => {
       setMounted(true);
@@ -15,22 +14,26 @@ export const ColorSchemeToggle = () => {
       return null;
     }
 
-
-
     return (
-      <IconButtonHeader
+      <IconButtonUser
         id="toggle-mode"
-        size="lg"
-        variant="soft"
         color="neutral"
-        onClick={() => setMode(mode === 'dark' ? 'light' : 'dark')}
+        onClick={() => setMode(mode === "dark" ? "light" : "dark")}
         sx={{
-          zIndex: 999,
-          boxShadow: 'sm',
-          width:"100%"
+          zIndex: 2,
+          boxShadow: "none",
+          width:'30px',
+          "&:hover": {
+            transform: "scale(1.4)",
+          },
         }}
+        
       >
-        {mode === 'light' ? <Icon icon="line-md:sunny-filled-loop-to-moon-filled-loop-transition" color="#235726" /> : <Icon icon="line-md:moon-filled-alt-to-sunny-filled-loop-transition" color="#235726" />}
-      </IconButtonHeader>
+        {mode === "light" ? (
+          <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Animals%20and%20Nature/Star.webp" alt="Star" width="25" height="25" />
+        ) : (
+          <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Animals%20and%20Nature/Sun.webp" alt="Sun" width="25" height="25" />
+        )}
+      </IconButtonUser>
     );
   }
