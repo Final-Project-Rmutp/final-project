@@ -26,7 +26,8 @@ import {
     DialogTitle,
     Typography,
     Select,
-    Option
+    Option,
+    Tooltip
   } from "@mui/joy";
 import CustomPagination from "../../../shared/components/pagination/Pagination";
 import { styled } from '@mui/system'; 
@@ -441,13 +442,41 @@ const ClassRoomAdmin: React.FC = () => {
                     {timetableData.map((item, index) => (
                         <tr className="text-center" key={item?.id || index}>
                         <th>{(page - 1) * rowsPerPage + index + 1}</th>
-                        <th>{item.reservation_id}</th>
-                        <th>{item.subject_name}</th>
-                        <th>{item.room_number}</th>
-                        <th>{item.fullname}</th>
-                        <th>{item.day_of_week}</th>
-                        <th>{item.start_time}</th>
-                        <th>{item.end_time}</th>
+                        <th>
+                          <Tooltip  title={item.reservation_id} arrow>
+                            <span>{item.reservation_id}</span>
+                          </Tooltip> 
+                        </th>
+                        <th>
+                          <Tooltip  title={item.subject_name} arrow>
+                            <span>{item.subject_name}</span>
+                          </Tooltip> 
+                        </th>
+                        <th>
+                          <Tooltip  title={item.room_number} arrow>
+                            <span>{item.room_number}</span>
+                          </Tooltip> 
+                        </th>
+                        <th>
+                          <Tooltip  title={item.fullname} arrow>
+                            <span>{item.fullname}</span>
+                          </Tooltip> 
+                        </th>
+                        <th>
+                          <Tooltip  title={item.day_of_week} arrow>
+                            <span>{item.day_of_week}</span>
+                          </Tooltip> 
+                        </th>
+                        <th>
+                          <Tooltip  title={item.start_time} arrow>
+                            <span>{item.start_time}</span>
+                          </Tooltip> 
+                        </th>
+                        <th>
+                          <Tooltip  title={item.end_time} arrow>
+                            <span>{item.end_time}</span>
+                          </Tooltip> 
+                        </th>
                         <th>
                             <Checkbox
                             checked={selectedItems.includes(item.reservation_id)}

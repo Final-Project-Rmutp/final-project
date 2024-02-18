@@ -145,7 +145,7 @@ const AdminDashboard: React.FC = () => {
         <Grid item xs={12} md={12} lg={12}>
           <Card>
             <CardContent>
-              <Typography variant="h6">Bookings/day</Typography>
+              <Typography variant="h6">Users/day</Typography>
               <LineChartComponent></LineChartComponent>
             </CardContent>
           </Card>

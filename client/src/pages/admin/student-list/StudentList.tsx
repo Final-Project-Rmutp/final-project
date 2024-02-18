@@ -16,6 +16,7 @@ import {
   Select,
   Option,
   SvgIcon,
+  Tooltip
 } from "@mui/joy";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
@@ -166,11 +167,31 @@ const StudentList: React.FC = () => {
                         />
                       )}
                     </th>
-                    <th style={rowStyle(item)}>{item.firstname}</th>
-                    <th style={rowStyle(item)}>{item.lastname}</th>
-                    <th style={rowStyle(item)}>{item.pin}</th>
-                    <th style={rowStyle(item)}>{item.citizen_id}</th>
-                    <th style={rowStyle(item)}>{item.account_type}</th>
+                    <th>
+                      <Tooltip  title={item.firstname} arrow>
+                        <span>{item.firstname}</span>
+                      </Tooltip> 
+                    </th>
+                    <th>
+                      <Tooltip  title={item.lastname} arrow>
+                        <span>{item.lastname}</span>
+                      </Tooltip> 
+                    </th>
+                    <th>
+                      <Tooltip  title={item.pin} arrow>
+                        <span>{item.pin}</span>
+                      </Tooltip> 
+                    </th>
+                    <th>
+                      <Tooltip  title={item.citizen_id} arrow>
+                        <span>{item.citizen_id}</span>
+                      </Tooltip> 
+                    </th>
+                    <th>
+                      <Tooltip  title={item.account_type} arrow>
+                        <span>{item.account_type}</span>
+                      </Tooltip> 
+                    </th>
                     <th>
                       <Checkbox
                         checked={selectedItems.includes(item.id)}

@@ -17,7 +17,8 @@ import {
   Box,
   DialogTitle,
   Select,
-  Option
+  Option,
+  Tooltip
 } from "@mui/joy";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import {
@@ -375,9 +376,21 @@ const handleEndTimeChange = (value: dayjs.Dayjs | null) => {
                 {listItems.map((item, index) => (
                     <tr className="text-center" key={item.id || index}>
                     <th>{(page - 1) * rowsPerPage + index + 1}</th>
-                    <th>{item.subject_name}</th>
-                    <th>{item.subject_code}</th>
-                    <th>{item.firstname}</th>
+                    <th>
+                    <Tooltip  title={item.subject_name} arrow>
+                        <span>{item.subject_name}</span>
+                    </Tooltip>
+                    </th>
+                    <th>
+                    <Tooltip  title={item.subject_code} arrow>
+                        <span>{item.subject_code}</span>
+                    </Tooltip>
+                    </th>
+                    <th>
+                    <Tooltip  title={item.firstname} arrow>
+                        <span>{item.firstname}</span>
+                    </Tooltip>
+                    </th>
                     <th>
                         <Checkbox
                         checked={selectedItems.includes(item.subject_id)}

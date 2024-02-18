@@ -7,6 +7,7 @@ import {
 import { Checkbox, Button, Sheet, Table, ModalDialog, Modal, Divider, FormControl, FormLabel, Stack, Input, Box, Select,Option,
   DialogTitle,
   Chip,
+  Tooltip
  } from '@mui/joy';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import {
@@ -190,13 +191,35 @@ const RoomList: React.FC = () => {
                           <tr className="text-center" key={item.id || index}>
                             <th>{(page - 1) * rowsPerPage + index + 1}</th>
                             <th>
-                                {item.room_number}
+                            <Tooltip  title={item.room_number} arrow>
+                                <span>{item.room_number}</span>
+                            </Tooltip>  
                             </th>
-                            <th>{item.room_type}</th>
-                            <th>{item.room_capacity}</th>
-                            <th>{Array.isArray(item.room_facilities) ? item.room_facilities.join(", ") : item.room_facilities}</th>
-                            <th>{item.room_level}</th>
-                            <th>{parseInt(item.room_status, 10) === 1 ? "ห้องใช้งานได้" : "ห้องใช้งานไม่ได้"}</th>
+                            <th>
+                            <Tooltip  title={item.room_type} arrow>
+                                <span>{item.room_type}</span>
+                            </Tooltip> 
+                            </th>
+                            <th>
+                            <Tooltip  title={item.room_capacity} arrow>
+                                <span>{item.room_capacity}</span>
+                            </Tooltip> 
+                            </th>
+                            <th>
+                            <Tooltip  title={Array.isArray(item.room_facilities) ? item.room_facilities.join(", ") : item.room_facilities} arrow>
+                                <span>{Array.isArray(item.room_facilities) ? item.room_facilities.join(", ") : item.room_facilities}</span>
+                            </Tooltip> 
+                            </th>
+                            <th>
+                            <Tooltip  title={item.room_level} arrow>
+                                <span>{item.room_level}</span>
+                            </Tooltip> 
+                            </th>
+                            <th>
+                            <Tooltip  title={parseInt(item.room_status, 10) === 1 ? "ห้องใช้งานได้" : "ห้องใช้งานไม่ได้"} arrow>
+                                <span>{parseInt(item.room_status, 10) === 1 ? "ห้องใช้งานได้" : "ห้องใช้งานไม่ได้"}</span>
+                            </Tooltip> 
+                            </th>
                             <th>
                             <Checkbox
                               checked={selectedItems.includes(item.room_id)}

@@ -1,6 +1,6 @@
 import React,{ useEffect }from "react";
 import useReportAdminList from "./useReportList";
-import { Button, Chip, Sheet, Table, Checkbox} from '@mui/joy';
+import { Button, Chip, Sheet, Table, Checkbox,Tooltip } from '@mui/joy';
 import {
   Tbody,
   Theader,
@@ -145,10 +145,26 @@ const ReportList: React.FC = () => {
                         {reportList.map((item,index) => (
                             <tr className="text-center" key={item.id || index}>
                             <th>{(page - 1) * rowsPerPage + index + 1}</th>
-                            <th>{item.fullname}</th>
-                            <th>{item.room_number}</th>
-                            <th>{item.report_detail}</th>
-                            <th>{formatTimestamp(item.timestamp)}</th>
+                            <th>
+                                <Tooltip  title={item.fullname} arrow>
+                                            <span>{item.fullname}</span>
+                                </Tooltip >
+                            </th>
+                            <th>
+                                <Tooltip  title={item.room_number} arrow>
+                                            <span>{item.room_number}</span>
+                                </Tooltip >
+                            </th>
+                            <th>
+                                <Tooltip  title={item.report_detail} arrow>
+                                            <span>{item.report_detail}</span>
+                                </Tooltip >
+                            </th>
+                            <th>
+                                <Tooltip  title={formatTimestamp(item.timestamp)} arrow>
+                                            <span>{formatTimestamp(item.timestamp)}</span>
+                                </Tooltip >
+                            </th>
                             <th>
                                 <Chip color={item.report_status === 0 ? "danger" : item.report_status === 1 ? "warning" : "success"} variant="solid" size="lg">
                                     {item.report_status === 0 ? "Cancel" : item.report_status === 1 ? "In Progress" : "Approve"}
