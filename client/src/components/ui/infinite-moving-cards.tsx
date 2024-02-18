@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
-import { Typography } from '@mui/joy';
+import { Typography,Container } from '@mui/joy';
 import { cn } from "../../utils/cn";
 import React, { useEffect, useState } from "react";
 
@@ -73,12 +73,22 @@ export const InfiniteMovingCards = ({
     }
   };
   return (
-    <div
-      ref={containerRef}
-      className={cn(
-        "scroller relative z-20  max-w-7xl overflow-hidden  [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
-        className
-      )}
+    <Container
+        ref={containerRef}
+        className={cn(
+            "scroller relative z-20 overflow-hidden [mask-image:linear-gradient(to_left,transparent,white_20%,white_80%,transparent)]",
+            className
+        )}
+        sx={{
+        width:'100%',
+        maxWidth:'800px',
+        '@media (max-width: 768px)': {
+            maxWidth: '500px',
+        },
+        '@media (max-width: 431px)': {
+            maxWidth: '320px',
+        },
+        }}
     >
       <ul
         ref={scrollerRef}
@@ -126,6 +136,7 @@ export const InfiniteMovingCards = ({
           </li>
         ))}
       </ul>
-    </div>
+    </Container>
+
   );
 };

@@ -8,7 +8,7 @@ import { InfiniteMovingCards } from "../../components/ui/infinite-moving-cards";
 
 export function InfiniteMovingCardsDemo() {
     return (
-      <div className="h-[20rem] rounded-md flex flex-col items-center justify-center relative ">
+      <div className="h-[20rem] w-max rounded-md flex flex-col items-center justify-center relative ">
         <InfiniteMovingCards
           items={testimonials}
           direction="right"
@@ -118,23 +118,23 @@ const HomeUser: React.FC = () => {
 
       </div>
       <Sheet
-sx={{
-    ...(mode === "dark"
-      ? { background: " #080D1A" }
-      : { background: "#fff" }),
-    padding: 40,
-    marginTop: "0",
-    zIndex: "1",
-    height: "700px",
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
-    '@media (max-width: 768px)': {
-      height: 'auto',
-    },
-  }}
+    sx={{
+        ...(mode === "dark"
+        ? { background: " #080D1A" }
+        : { background: "#fff" }),
+        padding: 15,
+        marginTop: "0",
+        zIndex: "1",
+        height: "700px",
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+        '@media (max-width: 768px)': {
+        height: 'auto',
+        },
+    }}
       >
         <Typography level="h2" style={{ marginBottom: '1rem', fontWeight: 'bold',}}>Welcome to Room Reservation System</Typography>
         <Typography level="body-lg" style={{ marginBottom: '1rem' }}>
