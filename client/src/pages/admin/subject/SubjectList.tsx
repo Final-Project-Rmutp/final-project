@@ -17,7 +17,6 @@ import {
   Box,
   DialogTitle,
   Select,
-  Option,
   Tooltip
 } from "@mui/joy";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
@@ -26,6 +25,7 @@ import {
   Theader,
   HeadList,
   TableContainer,
+  OptionStyle
 } from "../student-list/StudentListStyled";
 import useSubjectList from "./useSubjectList";
 import DeleteForever from "@mui/icons-material/DeleteForever";
@@ -583,7 +583,7 @@ const handleEndTimeChange = (value: dayjs.Dayjs | null) => {
                     <FormControl>
                         <FormLabel required>User</FormLabel>
                         <Select
-                        variant="solid"
+                        variant="outlined"
                         color="primary"
                             required
                             name="user_id"
@@ -594,9 +594,9 @@ const handleEndTimeChange = (value: dayjs.Dayjs | null) => {
                             size="lg"
                         >
                             {userOptions.map((user) => (
-                                <Option key={user.id} value={user.id}>
+                                <OptionStyle key={user.id} value={user.id}>
                                     {user.firstname}
-                                </Option>
+                                </OptionStyle>
                             ))}
                         </Select>
                     </FormControl>
@@ -658,7 +658,7 @@ const handleEndTimeChange = (value: dayjs.Dayjs | null) => {
                     <FormControl>
                         <FormLabel required>User ID</FormLabel>
                         <Select
-                        variant="solid"
+                        variant="outlined"
                         color="primary"
                             required
                             name="user_id"
@@ -669,9 +669,9 @@ const handleEndTimeChange = (value: dayjs.Dayjs | null) => {
                             size="lg"
                         >
                             {userOptions.map((user) => (
-                                <Option key={user.id} value={user.id}>
+                                <OptionStyle key={user.id} value={user.id}>
                                     {user.firstname}
-                                </Option>
+                                </OptionStyle>
                             ))}
                         </Select>
                     </FormControl>
@@ -707,22 +707,22 @@ const handleEndTimeChange = (value: dayjs.Dayjs | null) => {
                     <FormControl>
                         <FormLabel required>ชั้น</FormLabel>
                         <Select
-                        variant="solid"
+                        variant="outlined"
                         color="primary"
                             placeholder="เลือกชั้น"
                             onChange={(_, value) => setSelectedFloor(value as string | null)}
                         >
                             {availableFloorsApi.map((floor) => (
-                            <Option key={floor} value={floor}>
+                            <OptionStyle key={floor} value={floor}>
                                 {floor}
-                            </Option>
+                            </OptionStyle>
                             ))}
                         </Select>
                     </FormControl>
                     <FormControl>
                         <FormLabel required>Room</FormLabel>
                         <Select
-                            variant="solid"
+                            variant="outlined"
                             color="primary"
                             required
                             name="room_id"
@@ -733,16 +733,16 @@ const handleEndTimeChange = (value: dayjs.Dayjs | null) => {
                             size="lg"
                         >
                             {roomnumber.map((user) => (
-                                <Option key={user.room_id} value={user.room_id}>
+                                <OptionStyle key={user.room_id} value={user.room_id}>
                                     {user.room_number}
-                                </Option>
+                                </OptionStyle>
                             ))}
                         </Select>
                     </FormControl>
                     <FormControl>
                         <FormLabel required>Day</FormLabel>
                         <Select
-                            variant="solid"
+                            variant="outlined"
                             color="primary"
                             required
                             name="day_of_week"
@@ -753,9 +753,9 @@ const handleEndTimeChange = (value: dayjs.Dayjs | null) => {
                             size="lg"
                         >
                             {daysOfWeek.map((day) => (
-                                <Option key={day} value={day}>
+                                <OptionStyle key={day} value={day}>
                                     {day}
-                                </Option>
+                                </OptionStyle>
                             ))}
                         </Select>
                     </FormControl>

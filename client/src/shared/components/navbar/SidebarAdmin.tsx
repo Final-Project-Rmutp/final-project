@@ -1,5 +1,4 @@
 // SideBarAdmin.tsx
-
 import React, { MouseEvent } from "react";
 import {
   Typography,
@@ -15,12 +14,14 @@ interface SideBarBarProps {
   state: LayoutState;
   setState: React.Dispatch<React.SetStateAction<LayoutState>>;
 }
+
 interface LayoutState {
-    leftOpen: boolean;
-    rightOpen: boolean;
-    selectedTab: string;
-    anchorEl: null | HTMLElement;
-  }
+  leftOpen: boolean;
+  rightOpen: boolean;
+  selectedTab: string;
+  anchorEl: null | HTMLElement;
+}
+
 export const SideBarAdmin: React.FC<SideBarBarProps> = ({ state, setState }) => {
   const toggleSidebar = (event: MouseEvent<HTMLDivElement>) => {
     const parentNode = event.currentTarget.parentNode as HTMLElement | null;
@@ -32,7 +33,10 @@ export const SideBarAdmin: React.FC<SideBarBarProps> = ({ state, setState }) => 
       }));
     }
   };
-
+  const handleHamburgerClick = (event: MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+    toggleSidebar(event);
+  };
   const handleTabChange = (tab: string) => {
     setState((prevState) => ({
       ...prevState,
@@ -44,20 +48,23 @@ export const SideBarAdmin: React.FC<SideBarBarProps> = ({ state, setState }) => 
   const { mode } = useColorScheme();
 
   return (
-    <Left id="left" className={state.leftOpen ? "open" : "closed"}
-    style={{
+    <Left
+      id="left"
+      className={state.leftOpen ? "open" : "closed"}
+      style={{
         ...(mode === "dark"
           ? { background: "linear-gradient(to bottom, #020420, #0F172A)" }
-          : { background: "linear-gradient(to bottom, #AA96DA,#6962AD" }),
-      }}>
-      <div className="icon" onClick={toggleSidebar}>
-        <div className={`hamburger ${state.leftOpen ? "is-active" : ""}`}>
-          <div className="hamburger__container">
-            <div className="hamburger__inner"></div>
-            <div className="hamburger__hidden"></div>
-          </div>
-        </div>
-      </div>
+          : { background: "linear-gradient(to bottom, #AA96DA,#6962AD)" }),
+      }}
+    >
+              <div className="icon" onClick={handleHamburgerClick}>
+                <div className={`hamburger ${state.leftOpen ? 'is-active' : ''}`} onClick={toggleSidebar}>
+                    <div className="hamburger__container">
+                      <div className="hamburger__inner"></div>
+                      <div className="hamburger__hidden"></div>
+                    </div>
+                  </div>
+              </div>
       <Sidebar className={`sidebar ${leftOpen}`}>
         <div className="header-left">
           <div className="logo-header">
@@ -72,10 +79,7 @@ export const SideBarAdmin: React.FC<SideBarBarProps> = ({ state, setState }) => 
                 onClick={() => handleTabChange(item.title)}
               >
                 <span className="size-icon">{item.icon}</span>
-                <Typography
-                  level="h4"
-                  style={{ marginLeft: "16px" }}
-                >
+                <Typography level="h4" style={{ marginLeft: "16px" }}>
                   {item.title}
                 </Typography>
               </MenuItemLinks>

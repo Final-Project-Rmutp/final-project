@@ -106,12 +106,12 @@ export const InfiniteMovingCards = ({
                 className="user-select-none -z-1 pointer-events-none absolute -left-0.5 -top-0.5 h-[calc(100%_+_4px)] w-[calc(100%_+_4px)]"
               ></div>
 
-              <span className=" relative z-20 text-sm leading-[1.6] text-gray-100 font-normal">
+              <div className=" relative z-20 text-sm leading-[1.6] text-gray-100 font-normal">
                 <img src={item.img} alt={item.name} style={{ width: '50px', borderRadius: '8px' }} />
                 <a href={item.githubLink} target="_blank" rel="noopener noreferrer" >
                     <i className="fa fa-github" style={{ position: 'absolute', top: '0', right: '0', fontSize: '30px',border:'1px solid white',padding:5,borderRadius:'7px' }}></i>
                 </a>
-              </span>
+              </div>
               <span className=" relative z-20 text-sm leading-[1.6] text-gray-100 font-normal">
 
               </span>

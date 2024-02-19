@@ -1,11 +1,10 @@
 import { useColorScheme } from "@mui/joy/styles";
-import { Button, Sheet, Typography, Grid } from "@mui/joy";
+import { Button, Sheet, Typography, Grid ,Container} from "@mui/joy";
 import { styled } from "@mui/system";
 import { useNavigate } from "react-router-dom";
 import HomeStyle from "./Homestyle";
 import React from "react";
 import { InfiniteMovingCards } from "../../components/ui/infinite-moving-cards";
-
 export function InfiniteMovingCardsDemo() {
   return (
     <div className="h-[20rem] w-max rounded-md flex flex-col items-center justify-center relative ">
@@ -67,6 +66,7 @@ const GlassButton = styled(Button)`
   }
 };
 `;
+
 const BackgroundIndex = () => {
   return (
     <div className="area">
@@ -85,7 +85,12 @@ const BackgroundIndex = () => {
     </div>
   );
 };
-
+const HomeUserContent = styled(Container)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
 const HomeUser: React.FC = () => {
   const { mode } = useColorScheme();
   const navigate = useNavigate();
@@ -111,7 +116,9 @@ const HomeUser: React.FC = () => {
         }}
       >
         {BackgroundIndex()}
-        <HomeStyle ></HomeStyle>
+        <HomeUserContent >
+          <HomeStyle ></HomeStyle>
+        </HomeUserContent>
         <GlassButton variant="outlined" onClick={handleReserveClick}>
           Reserve
         </GlassButton>

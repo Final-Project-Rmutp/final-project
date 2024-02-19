@@ -1,5 +1,5 @@
 import { styled } from '@mui/system';
-import { Button, Checkbox, Table, ModalDialog,Sheet } from '@mui/joy';
+import { Button, Table,Sheet,Option } from '@mui/joy';
 
 export const StyledTable = styled(Table)`
   overflow: auto;
@@ -102,14 +102,11 @@ export const Tbody = styled('tbody')`
     }
   }
 `;
-export const StyledCheckbox = styled(Checkbox)`
-  // Add your styles for Checkbox here
-`;
 
-export const StyledModalDialog = styled(ModalDialog)`
-  // Add your styles for ModalDialog here
+export const OptionStyle = styled(Option)`
+    color: ${({ theme }) => theme.palette.pf.color};
+    background-color: ${({ theme }) => theme.palette.background.backdrop};
 `;
-
 export const VisuallyHiddenInput = styled('input')`
   clip: rect(0 0 0 0);
   clip-path: inset(50%);

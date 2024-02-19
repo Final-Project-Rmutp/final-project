@@ -13,14 +13,13 @@ import {
   Stack,
   Input,
   Box,
-  Select,
-  Option,
   SvgIcon,
-  Tooltip
+  Tooltip,
+  Select
 } from "@mui/joy";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
-import { Tbody, HeadList, TableContainer } from "./StudentListStyled";
+import { Tbody, HeadList, TableContainer ,OptionStyle} from "./StudentListStyled";
 import useStudentList from "./useStudentList";
 import CustomPagination from "../../../shared/components/pagination/Pagination";
 import { VisuallyHiddenInput } from "./StudentListStyled";
@@ -516,17 +515,17 @@ const StudentList: React.FC = () => {
                   <FormLabel required>AccountType</FormLabel>
                   <Select
                     defaultValue="select"
-                    variant="solid"
-                    color="primary"
                     required
+                    color="primary"
+                    variant="outlined"
                     name="account_type"
                     value={AddUser.account_type}
                     onChange={(_, value) =>
                       setAddUser({ ...AddUser, account_type: value as string })
                     }
                   >
-                    <Option value="student">Student</Option>
-                    <Option value="teacher">Teacher</Option>
+                    <OptionStyle value="student">Student</OptionStyle>
+                    <OptionStyle value="teacher">Teacher</OptionStyle>
                   </Select>
                 </FormControl>
                 <FormControl>

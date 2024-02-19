@@ -55,7 +55,7 @@ const UserProfileSidebar: React.FC = () => {
   const navigate = useNavigate();
 
   const [state, setState] = useState<LayoutState>({
-    leftOpen: true,
+    leftOpen: !performance.navigation.type,
     rightOpen: true,
     selectedTab: "Team",
     anchorEl: null,
@@ -187,8 +187,10 @@ const UserProfileSidebar: React.FC = () => {
 
   const materialTheme = materialExtendTheme();
   const handleHamburgerClick = (event: MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
     toggleSidebar(event);
   };
+  
 
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const UserSidebarData = [
@@ -277,7 +279,7 @@ const UserProfileSidebar: React.FC = () => {
           )}
           <Main id="main">
             <HeaderNav>
-              <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl flex items-center justify-between gap-5 h-[--header-height] pb-3">
+              <div className="mx-auto  max-w-7xl flex items-center justify-between h-[--header-height] pb-3">
                 <Box sx={{ flexGrow: 0,}}>
                   <span></span>
                 </Box>

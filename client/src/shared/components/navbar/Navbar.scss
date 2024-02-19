@@ -53,6 +53,7 @@ body {
   color: white;
   cursor: pointer;
   user-select: none;
+  z-index: 9999;
 }
 .icon p {
   margin: 0;
@@ -116,7 +117,6 @@ body {
   overflow: hidden; 
   transition: margin-left var(--secs);
   transition: width var(--secs);
-  margin-left: var(--left-width);
   .header {
     @media (orientation: landscape) {
       .title {
@@ -213,7 +213,7 @@ body {
 
 #main {
   flex-grow: 1;
-  width: calc(100% - var(--portrait-width) - 3rem);
+  width: calc(100% - var(--portrait-width) - 2rem);
   transition: width var(--secs);
   .header {
     @media (orientation: landscape) {

@@ -1,35 +1,96 @@
-import React, { useEffect, useState } from "react";
-import "./index.scss";
+import { useEffect, useState } from "react";
+import styled, { keyframes } from "styled-components";
 import { useColorScheme } from "@mui/joy/styles";
+import throttle from 'lodash/throttle';
+const dash = keyframes`
+  100% {
+    stroke-dashoffset: 0;
+  }
+`;
 
-const HomeStyle: React.FC = () => {
+const IntroSvg = styled.svg`
+  max-width: 800px;
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  .text {
+    display: none;
+  }
+
+  &.go {
+    .text {
+      font-family: Arial, sans-serif;
+      font-size: 20px;
+      text-transform: uppercase;
+      display: block;
+    }
+    .text-stroke {
+      fill: none;
+      stroke: #51256f;
+      stroke-width: 2.8px;
+      stroke-dashoffset: -115;
+      stroke-dasharray: 120;
+      stroke-linecap: butt;
+      stroke-linejoin: round;
+      animation: ${dash} 1.2s ease-in-out forwards;
+    }
+    .text-stroke:nth-child(2) {
+      animation-delay: 0.3s;
+    }
+    .text-stroke:nth-child(3) {
+      animation-delay: 0.9s;
+    }
+    .text-stroke-2 {
+      stroke: #f6bdfa;
+      animation-delay: 1.2s;
+    }
+    .text-stroke-2:nth-child(0) {
+      stroke: #fff;
+    }
+    .text-stroke:nth-child(5) {
+      animation-delay: 1.5s;
+    }
+    .text-stroke:nth-child(6) {
+      animation-delay: 1.8s;
+    }
+  }
+`;
+
+const IntroWrapper = styled.div`
+  will-change: transform;
+  transition: transform 0.3s ease-out;
+`;
+
+const HomeStyle = () => {
   const [isIntroAnimated, setIsIntroAnimated] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll = throttle(() => {
       const scrollY = window.scrollY || window.pageYOffset;
-      const translateY = scrollY * 0.5; // Adjust the multiplier for the desired parallax effect
-      document.documentElement.style.setProperty(
-        "--translateY",
-        `${translateY}px`
-      );
-    };
-
+      const translateY = scrollY * 0.5;
+      requestAnimationFrame(() => {
+        document.documentElement.style.setProperty("--translateY", `${translateY}px`);
+      });
+    }, 16); // 60 frames per second
+  
     setIsIntroAnimated(true);
-
-    // Add an event listener to handle scroll
+  
     window.addEventListener("scroll", handleScroll);
-
+  
     return () => {
-      // Remove the event listener on component unmount
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+    
+
   const { mode } = useColorScheme();
 
   return (
-    <div>
-      <svg
+    <IntroWrapper>
+      <IntroSvg
         className={`intro ${isIntroAnimated ? "go" : ""}`}
         viewBox="0 0 200 86"
         style={{
@@ -43,7 +104,7 @@ const HomeStyle: React.FC = () => {
                 background: "linear-gradient(135deg, #8F43EE,#BFDCE5",
                 boxShadow: "0 20px 60px 10px rgb(110, 80, 190)",
               }),
-          width:'calc(100% - 2rem)'
+          width: "calc(100% - 2rem)",
         }}
       >
         <text
@@ -118,9 +179,9 @@ const HomeStyle: React.FC = () => {
             </text>
           </clipPath>
         </defs>
-      </svg>
+      </IntroSvg>
       <div></div>
-    </div>
+    </IntroWrapper>
   );
 };
 

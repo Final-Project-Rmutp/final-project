@@ -4,7 +4,7 @@ import {
   DialogActions,
 } from "@mui/material";
 
-import { Checkbox, Button, Sheet, Table, ModalDialog, Modal, Divider, FormControl, FormLabel, Stack, Input, Box, Select,Option,
+import { Checkbox, Button, Sheet, Table, ModalDialog, Modal, Divider, FormControl, FormLabel, Stack, Input, Box, Select,
   DialogTitle,
   Chip,
   Tooltip
@@ -15,6 +15,7 @@ import {
   Theader,
   HeadList,
   TableContainer,
+  OptionStyle
 } from "../student-list/StudentListStyled";
 import useRoomList from "./useRoomList";
 import DeleteForever from "@mui/icons-material/DeleteForever";
@@ -341,15 +342,15 @@ const RoomList: React.FC = () => {
                     <FormControl>
                         <FormLabel required>Floor</FormLabel>
                         <Select
-                            variant="solid"
+                            variant="outlined"
                             color="primary"
                             placeholder="เลือกชั้น"
                             onChange={(_, value) => setSelectedFloor(value as string | null)}
                         >
                             {availableFloorsApi.map((floor) => (
-                            <Option key={floor} value={floor}>
+                            <OptionStyle key={floor} value={floor}>
                                 {floor}
-                            </Option>
+                            </OptionStyle>
                             ))}
                         </Select>
                     </FormControl>
@@ -357,7 +358,7 @@ const RoomList: React.FC = () => {
                         <FormLabel required>Room</FormLabel>
                         <Select
                             required
-                            variant="solid"
+                            variant="outlined"
                             color="primary"
                             name="room_id"
                             value={editingRoom.room_id}
@@ -367,9 +368,9 @@ const RoomList: React.FC = () => {
                             size="lg"
                         >
                             {roomnumber.map((user) => (
-                                <Option key={user.room_id} value={user.room_id}>
+                                <OptionStyle key={user.room_id} value={user.room_id}>
                                     {user.room_number}
-                                </Option>
+                                </OptionStyle>
                             ))}
                         </Select>
                     </FormControl>
@@ -386,7 +387,7 @@ const RoomList: React.FC = () => {
                     <FormControl>
                       <FormLabel required>Type</FormLabel>
                       <Select
-                        variant="solid"
+                        variant="outlined"
                         color="primary"
                         required
                         name="room_type"
@@ -397,9 +398,9 @@ const RoomList: React.FC = () => {
                         }
                       >
                         {roomTypes.map((type) => (
-                          <Option key={type} value={type}>
+                          <OptionStyle key={type} value={type}>
                             {type}
-                          </Option>
+                          </OptionStyle>
                         ))}
                       </Select>
                     </FormControl>
@@ -417,7 +418,7 @@ const RoomList: React.FC = () => {
                     <FormControl>
                       <FormLabel required>Facilities</FormLabel>
                       <Select
-                      variant="solid"
+                      variant="outlined"
                       color="primary"
                         required
                         name="facilities_id"
@@ -431,16 +432,16 @@ const RoomList: React.FC = () => {
                         multiple
                       >
                         {facilities.map((facility) => (
-                          <Option key={facility.facility_id} value={facility.facility_id.toString()}>
+                          <OptionStyle key={facility.facility_id} value={facility.facility_id.toString()}>
                             {facility.facility_name}
-                          </Option>
+                          </OptionStyle>
                         ))}
                       </Select>
                     </FormControl>
                     <FormControl>
                       <FormLabel required>Status</FormLabel>
                       <Select
-                      variant="solid"
+                      variant="outlined"
                       color="primary"
                         defaultValue="select"
                         required
@@ -450,20 +451,20 @@ const RoomList: React.FC = () => {
                           setEditRoom({ ...editingRoom, room_status: value as string })
                         }
                       >
-                        <Option value="0">
+                        <OptionStyle value="0">
                           <Chip
                           color="danger"
-                          variant="solid"
+                          variant="outlined"
                           >ห้องใช้งานไม่ได้
                           </Chip>
-                        </Option>
-                        <Option value="1">
+                        </OptionStyle>
+                        <OptionStyle value="1">
                         <Chip
                           color="success"
-                          variant="solid"
+                          variant="outlined"
                           >ห้องใช้งานได้
                           </Chip>
-                        </Option>
+                        </OptionStyle>
                       </Select>
                     </FormControl>
                     </>
@@ -516,7 +517,7 @@ const RoomList: React.FC = () => {
                     <FormControl>
                       <FormLabel required>Type</FormLabel>
                       <Select
-                        variant="solid"
+                        variant="outlined"
                         color="primary"
                         required
                         name="room_type"
@@ -531,9 +532,9 @@ const RoomList: React.FC = () => {
                         
                       >
                         {roomTypes.map((type) => (
-                          <Option key={type} value={type}>
+                          <OptionStyle key={type} value={type}>
                             {type}
-                          </Option>
+                          </OptionStyle>
                         ))}
                       </Select>
                       {/* <Input required 
@@ -558,7 +559,7 @@ const RoomList: React.FC = () => {
                     <FormControl>
                       <FormLabel required>Facilities</FormLabel>
                       <Select
-                      variant="solid"
+                      variant="outlined"
                       color="primary"
                         required
                         name="facilities_id"
@@ -572,9 +573,9 @@ const RoomList: React.FC = () => {
                         multiple
                       >
                         {facilities.map((facility) => (
-                          <Option key={facility.facility_id} value={facility.facility_id.toString()}>
+                          <OptionStyle key={facility.facility_id} value={facility.facility_id.toString()}>
                             {facility.facility_name}
-                          </Option>
+                          </OptionStyle>
                         ))}
                       </Select>
                     </FormControl>

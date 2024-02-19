@@ -9,6 +9,7 @@ import {
     Theader,
     HeadList,
     TableContainer,
+    OptionStyle
 } from "../student-list/StudentListStyled";
 import {
     Checkbox,
@@ -26,7 +27,6 @@ import {
     DialogTitle,
     Typography,
     Select,
-    Option,
     Tooltip
   } from "@mui/joy";
 import CustomPagination from "../../../shared/components/pagination/Pagination";
@@ -327,15 +327,15 @@ const ClassRoomAdmin: React.FC = () => {
             <div style={{width:"100%",marginBottom:10}} className='d-flex justify-center align-items-center gap-4'>
             <Typography level="title-md">Select User: </Typography>
             <Select value={selectedUserId} onChange={handleUserIdChange}
-                        variant="solid"
+                        variant="outlined"
                         color="primary">
-                <Option value="" disabled>
+                <OptionStyle value="" disabled>
                     Select a teacher
-                </Option>
+                </OptionStyle>
                 {teacherIds.map((item) => (
-                    <Option key={item?.id} value={item.id}>
+                    <OptionStyle key={item?.id} value={item.id}>
                         {item.firstname}
-                    </Option>
+                    </OptionStyle>
                 ))}
             </Select>
             <Button onClick={handleFetchClassSchedule}>Fetch Class Schedule</Button>
