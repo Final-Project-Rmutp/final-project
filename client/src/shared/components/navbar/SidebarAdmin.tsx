@@ -9,6 +9,7 @@ import { SidebarData } from "./SidebarData";
 import { Left, Sidebar } from "./NavbarStyled";
 import LogoRmutp from "../../../img/logo.png";
 import { useColorScheme } from "@mui/joy/styles";
+import Hamburger from "./Hamburger";
 
 interface SideBarBarProps {
   state: LayoutState;
@@ -57,14 +58,9 @@ export const SideBarAdmin: React.FC<SideBarBarProps> = ({ state, setState }) => 
           : { background: "linear-gradient(to bottom, #AA96DA,#6962AD)" }),
       }}
     >
-              <div className="icon" onClick={handleHamburgerClick}>
-                <div className={`hamburger ${state.leftOpen ? 'is-active' : ''}`} onClick={toggleSidebar}>
-                    <div className="hamburger__container">
-                      <div className="hamburger__inner"></div>
-                      <div className="hamburger__hidden"></div>
-                    </div>
-                  </div>
-              </div>
+    <div className="icon" onClick={handleHamburgerClick}>
+        <Hamburger isActive={state.leftOpen} onClick={toggleSidebar} />
+      </div>
       <Sidebar className={`sidebar ${leftOpen}`}>
         <div className="header-left">
           <div className="logo-header">
