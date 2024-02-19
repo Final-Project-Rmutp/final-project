@@ -42,7 +42,7 @@ position: fixed;
 z-index: 3;
 padding: 8px 16px;
 transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-box-shadow: 0 8px 32px 0 rgba(0, 0, 0,  0.10);
+box-shadow: 0 0px 30px 0 rgba(0, 0, 0,  0.9);
 backdrop-filter: blur(10px);
 -webkit-backdrop-filter:blur(10px);
 border-color: rgba(197, 202, 233, 0.08);

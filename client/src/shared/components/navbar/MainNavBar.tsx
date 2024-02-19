@@ -101,7 +101,7 @@ const MainNavBar: React.FC = () => {
       style={{
         ...(mode === "dark"
           ? { background: "linear-gradient(to bottom, #020420, #0F172A)" }
-          : { background: "linear-gradient(to bottom, #AA96DA,#6962AD" }),
+          : { background: "linear-gradient(to bottom, #fff,#fff" }),
       }}
     >
       <Header className="header">

@@ -41,7 +41,8 @@ const TimetableContainer = styled("div")`
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(1.2px);
   -webkit-backdrop-filter: blur(1.2px);
-  border: 1px solid rgba(255, 255, 255, 0.01);
+  border: 1px solid ${({ theme }) => theme.palette.neutral.softActiveColor};
+
 `;
 const TimetableContainerIn = styled("div")`
   margin:10px;
