@@ -1,7 +1,7 @@
 // ClassRoomAdmin.tsx
 import UserService, { ClassSchedule } from "../../../auth/service/UserService";
 import React, { useEffect, useState } from "react";
-import { styled } from "@mui/system";
+import { Container, styled } from "@mui/system";
 import { Typography, useColorScheme } from "@mui/joy";
 const TimetableContainer = styled("div")`
   margin: 20px auto;
@@ -14,6 +14,11 @@ const TimetableContainer = styled("div")`
   backdrop-filter: blur(1.2px);
   -webkit-backdrop-filter: blur(1.2px);
   border: 1px solid rgba(255, 255, 255, 0.01);
+  height:100%;
+  max-height:550px;
+  @media (max-width: 768px) {
+    width: 95%;
+  }
 `;
 const TimetableContainerIn = styled("div")`
   margin:10px;
@@ -86,7 +91,7 @@ const TimetableDaysColumn = styled("td")<TimetableDaysColumnProps>`
     }
   }};
   @media (max-width: 600px) {
-    width: 70px; // Adjust width for smaller screens
+    width: 70px;
   }
 `;
 
@@ -104,7 +109,7 @@ const TimetableTd = styled("td")`
   background-color: #fff;
 
   @media (max-width: 600px) {
-    width: 120px;
+    width: 100%;
   }
 
   &:hover {
@@ -308,61 +313,59 @@ const Classroom: React.FC = () => {
         padding: 1,
       }}
     >
-      <div className="container pt-5">
-      <TimetableContainer>
-        <TimetableHeader>
-          <img
-            src={darkMode ? "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People%20with%20professions/Woman%20Teacher%20Dark%20Skin%20Tone.png" : "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People%20with%20professions/Woman%20Teacher%20Light%20Skin%20Tone.png"}
-            alt={darkMode ? "Dark Emoji" : "Light Emoji"}
-            width="100"
-            height="100"
-            style={{
-              borderRadius: "50%",
-              position:'relative',
-              top:0,
-              left:'47%'
-            }}
-          />
-          <div style={{position:'absolute', top:-10,left:10}}>
-            <div className="mt-3">
-              <div className="d-flex justify-content-center">
-                <b className="fs-6">Today</b>
-                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Tear%20Off%20Calendar.webp" alt="Tear Off Calendar" width="25" height="25" />
-              </div>
-            </div>
-              <div style={{fontSize:'12px'}}>
-              Month: {currentMonth}
-              </div>
-              <div style={{fontSize:'12px'}}>
-                Day: {currentWeekday}
-              </div>
-              <div style={{fontSize:'12px'}}>
-                Time: {currentTime}
-              </div>
+      <Container sx={{paddingTop:9}}>
+        <TimetableContainer>
+          <TimetableHeader>
+          <div style={{ textAlign: 'left' }}>
+            <img
+              src={darkMode ? "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People%20with%20professions/Woman%20Teacher%20Dark%20Skin%20Tone.png" : "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People%20with%20professions/Woman%20Teacher%20Light%20Skin%20Tone.png"}
+              alt={darkMode ? "Dark Emoji" : "Light Emoji"}
+              style={{
+                width: '30%',  // Adjust the width as needed
+                maxWidth: '100px',  // Set a max width if necessary
+                borderRadius: "50%",
+                float: 'left',  // Align the image to the left
+                marginRight: '10px',  // Add some margin if needed
+              }}
+            />
           </div>
-            {/* {timetableData.length > 0 ? timetableData[0].fullname : "Unknown"} */}
+            <div className="mt-3 text-start">
+              <b className="fs-6">Today</b>
+              <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Tear%20Off%20Calendar.webp" alt="Tear Off Calendar" width="25" height="25" />
+            </div>
+            <div className="text-start" style={{ fontSize: '14px' }}>
+              <span className="fw-bold">Month:</span>  {currentMonth}
+            </div>
+            <div className="text-start" style={{ fontSize: '14px' }}>
+              <span className="fw-bold">Day:</span> {currentWeekday}
+            </div>
+            <div className="text-start" style={{ fontSize: '14px' }}>
+              <span className="fw-bold">Time:</span> {currentTime}
+            </div>
           </TimetableHeader>
-        <TimetableContainerIn>
-          <ScrollableTableContainer>
-            <TimetableTable>
-              <thead>
-                <tr>
-                  <TimetableTh>
-                    <b>Day/Period</b>
-                  </TimetableTh>
-                  {headerTimeSlots.map((timeSlot) => (
-                    <TimetableTimeSlot key={timeSlot.start}>
-                      <b>{`${timeSlot.start} - ${timeSlot.end}`}</b>
-                    </TimetableTimeSlot>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>{generateTimetableRows()}</tbody>
-            </TimetableTable>
-          </ScrollableTableContainer>
-        </TimetableContainerIn>
-      </TimetableContainer>
-      </div>
+          <TimetableContainerIn>
+            <ScrollableTableContainer>
+              <TimetableTable>
+                <thead>
+                  <tr>
+                    <TimetableTh>
+                      <b>Day/Period</b>
+                    </TimetableTh>
+                    {headerTimeSlots.map((timeSlot) => (
+                      <TimetableTimeSlot key={timeSlot.start}>
+                        <b>{`${timeSlot.start} - ${timeSlot.end}`}</b>
+                      </TimetableTimeSlot>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>{generateTimetableRows()}</tbody>
+              </TimetableTable>
+            </ScrollableTableContainer>
+          </TimetableContainerIn>
+        </TimetableContainer>
+      </Container>
+
+
     </div>
   );
 };
