@@ -192,7 +192,7 @@ const renderStatusRow = (status: string, color: StatusColor) => {
                         <Tbody 
                         sx={{ width:'100%', minWidth: 650 }}
                         >
-                            {renderStatusRow("Success", "success")}
+                            {renderStatusRow("Approve", "success")}
                             {renderStatusRow("In progress", "warning")}
                             {renderStatusRow("Cancel", "danger")}
                         </Tbody>

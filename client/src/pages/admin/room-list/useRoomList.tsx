@@ -3,6 +3,7 @@ import RoomService from "../../../auth/service/RoomService";
 import useRoomState from "../../../auth/model/useRoomState";
 import { RoomListActionItem, RoomListItem } from "../../../auth/model/room-list";
 import axiosInstance from "../../../environments/axiosInstance";
+import { toast } from 'sonner'
 
 const useRoomList = () => {
   const [listItems, setListItems] = useState<RoomListItem[]>([]);
@@ -137,10 +138,13 @@ const useRoomList = () => {
       await fetchRoomList();
       await fetchFacilities();
       window.location.reload();
+      toast.success("Room added successfully");
     } catch (error) {
       console.error("Error adding room:", error);
+      toast.error("Error adding room. Please try again.");
     }
   };
+  
 
   const handleCloseDeleteDialog = () => {
     setDeleteDialogOpen(false);

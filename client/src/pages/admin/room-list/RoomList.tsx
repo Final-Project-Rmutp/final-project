@@ -63,7 +63,7 @@ const RoomList: React.FC = () => {
     fetchRoomList();
     fetchFacilities();
   }, [fetchRoomList,fetchFacilities,page, rowsPerPage]);
-  
+  const hardcodedRoomTypes = ["ห้องเทส", "ห้องปฎิบัติการ", "ห้องประชุม"];
   const [roomTypes, setRoomTypes] = useState<string[]>([]);
   const [roomnumber, setRoomnumber] = useState<{ room_id: string; room_number: string }[]>([]);
   const [selectedFloor, setSelectedFloor] = useState<string | null>(null);
@@ -100,19 +100,21 @@ const RoomList: React.FC = () => {
   // useEffect(() => {
   //     fetchUserOptions();
   // }, []);
-  useEffect(() => {
-    const fetchRoomTypes = async () => {
-      try {
-        const response = await axiosInstance.get(`/admin/room/getroomtype/{roomtype_id}`);
-        setRoomTypes(response.data.room_types);
-      } catch (error) {
-        console.error('Error fetching room types:', error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchRoomTypes = async () => {
+  //     try {
+  //       const response = await axiosInstance.get(`/admin/room/getroomtype/{roomtype_id}`);
+  //       setRoomTypes(response.data.room_types);
+  //     } catch (error) {
+  //       console.error('Error fetching room types:', error);
+  //     }
+  //   };
     
-    fetchRoomTypes();
-  }, []); 
-
+  //   fetchRoomTypes();
+  // }, []); 
+  useEffect(() => {
+    setRoomTypes(hardcodedRoomTypes);
+}, []);
 
   
   return (

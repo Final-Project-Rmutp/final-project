@@ -198,7 +198,7 @@ const UserReportList: React.FC = () => {
               </tr>
             </Theader>
             <Tbody>
-              {renderStatusRow("Success", "success")}
+              {renderStatusRow("Approve", "success")}
               {renderStatusRow("In progress", "warning")}
               {renderStatusRow("Cancel", "danger")}
             </Tbody>

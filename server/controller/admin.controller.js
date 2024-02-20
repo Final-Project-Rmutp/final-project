@@ -15,13 +15,6 @@ async function adduser(req, res) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
-  const pinRegex = /^\d{12}-\d$/; // Regex to match "000000000000-0" format
-  if (!pinRegex.test(pin) || isNaN(citizen_id)) {
-    return res.status(400).json({
-      message: "ID and Citizen ID must be numbers in the correct format",
-    });
-  }
-
   try {
     const pinCheckQuery = `SELECT id FROM "user" WHERE pin = $1`;
     const pinCheckResult = await client.query(pinCheckQuery, [pin]);

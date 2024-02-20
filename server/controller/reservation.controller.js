@@ -262,7 +262,8 @@ async function getreservation(req, res) {
     FROM reservations rs
     LEFT JOIN "user" u ON rs.user_id = u.id
     LEFT JOIN rooms r ON rs.room_id = r.room_id
-    ORDER BY account_type, reservation_date
+	WHERE reservation_status = 1
+    ORDER BY timestamp desc
     LIMIT $1 OFFSET $2`;
       const values = [pageSize,offset];
       const result = await client.query(query, values);

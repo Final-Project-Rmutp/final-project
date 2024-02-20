@@ -4,28 +4,36 @@ const { logging } = require("../middleware/loggingMiddleware.js");
 // Read RoomSchedule
 async function getClassSchedule(req, res) {
     try {
-        const { user_id } = req.query;
-        let reservationsQuery = `
-            SELECT
-                c.class_id AS reservation_id,
-                s.subject_name,
-                CONCAT(u.firstname, ' ', u.lastname) AS fullname,
-                r.room_number,
-                c.day_of_week,
-                c.start_time,
-                c.end_time
-            FROM class c
-            LEFT JOIN rooms r ON c.room_id = r.room_id
-            LEFT JOIN subjects s ON c.subject_id = s.subject_id
-            LEFT JOIN "user" u ON s.user_id = u.id
-        `;
+            const { user_id, room_number } = req.query;
+            let reservationsQuery = `
+                SELECT
+                    c.class_id AS reservation_id,
+                    s.subject_name,
+                    CONCAT(u.firstname, ' ', u.lastname) AS fullname,
+                    r.room_number,
+                    c.day_of_week,
+                    c.start_time,
+                    c.end_time
+                FROM class c
+                LEFT JOIN rooms r ON c.room_id = r.room_id
+                LEFT JOIN subjects s ON c.subject_id = s.subject_id
+                LEFT JOIN "user" u ON s.user_id = u.id
+            `;
 
-        if (user_id) {
-            reservationsQuery += ` WHERE s.user_id = $1;`;
-        }
-        
-        const queryValues = user_id ? [user_id] : [];
-        const reservationsResult = await client.query(reservationsQuery, queryValues);
+            const queryConditions = [];
+            const queryValues = [];
+
+            if (user_id) {
+                queryConditions.push(` WHERE s.user_id = $1;`);
+                queryValues.push(user_id);
+            }
+
+            if (room_number) {
+                queryConditions.push(` WHERE room_number = $2;`);
+                queryValues.push(room_number);
+            }
+            
+            const reservationsResult = await client.query(reservationsQuery, queryValues);
         
         // Split reservations if duration is greater than 1 hour
         const formattedReservations = [];
