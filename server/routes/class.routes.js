@@ -19,6 +19,11 @@ const classController = require('../controller/class.controller.js');
  *         description: User ID to fetch
  *         schema:
  *           type: string
+ *       - in: query
+ *         name: room_numner
+ *         description: Room number
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: Successful response. Returns the class schedule for rooms.
