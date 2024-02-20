@@ -73,6 +73,78 @@ async function getClassSchedule(req, res) {
     }
 }
 
+// Read RoomSchedule
+async function getClassScheduleroom(req, res) {
+    try {
+            const { user_id, room_number } = req.query;
+            let reservationsQuery = `
+                SELECT
+                    c.class_id AS reservation_id,
+                    s.subject_name,
+                    CONCAT(u.firstname, ' ', u.lastname) AS fullname,
+                    r.room_number,
+                    c.day_of_week,
+                    c.start_time,
+                    c.end_time
+                FROM class c
+                LEFT JOIN rooms r ON c.room_id = r.room_id
+                LEFT JOIN subjects s ON c.subject_id = s.subject_id
+                LEFT JOIN "user" u ON s.user_id = u.id
+            `;
+            
+            const queryConditions = [];
+            const queryValues = [];
+            if (user_id && !room_number) {
+                queryConditions.push(`s.user_id = $${queryValues.length + 1}`);
+                queryValues.push(user_id);
+            } else if (room_number && !user_id) {
+                queryConditions.push(`room_number = $${queryValues.length + 1}`);
+                queryValues.push(room_number);
+            } else {
+                res.status(400).send("Provide either user_id or room_number, not both");
+                return;
+            }
+    
+            if (queryConditions.length > 0) {
+                reservationsQuery += ` WHERE ${queryConditions.join(' AND ')}`;
+            }
+            
+            const reservationsResult = await client.query(reservationsQuery, queryValues);
+        
+        // Split reservations if duration is greater than 1 hour
+        const formattedReservations = [];
+        reservationsResult.rows.forEach(reservation => {
+            const { start_time, end_time } = reservation;
+            
+            const startTime = new Date(`1970-01-01T${start_time}`);
+            const endTime = new Date(`1970-01-01T${end_time}`);
+            const durationInHours = (endTime - startTime) / (1000 * 60 * 60);
+            if (durationInHours > 1) {
+                let currentStartTime = startTime;
+                while (currentStartTime < endTime) {
+                    const currentEndTime = new Date(currentStartTime.getTime() + (60 * 60 * 1000));
+                    if (currentEndTime > endTime) {
+                        currentEndTime = endTime;
+                    }
+                    formattedReservations.push({
+                        ...reservation,
+                        start_time: currentStartTime.toLocaleTimeString('en-US', {hour12: false}),
+                        end_time: currentEndTime.toLocaleTimeString('en-US', {hour12: false})
+                    });
+                    currentStartTime = currentEndTime;
+                }
+            } else {
+                formattedReservations.push(reservation);
+            }
+        });
+
+        res.status(200).json(formattedReservations);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
 
 // Function to check if a room is available for a class at a given time
 async function isClassAvailable(roomId, dayOfWeek, startTime, endTime) {
@@ -278,4 +350,4 @@ async function getSchedule(req, res) {
     }
   }
 
-module.exports = { getClassSchedule, addclass, deleteclass, updateclass, createClassTest,getSchedule };
+module.exports = { getClassSchedule, addclass, deleteclass, updateclass, createClassTest,getSchedule, getClassScheduleroom };

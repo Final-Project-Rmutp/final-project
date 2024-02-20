@@ -146,6 +146,12 @@ const RoomService = {
         });
         return response.data;
     },
+    getClassScheduleRoom: async (roomId: string): Promise<ClassScheduleItem[]> => {
+        const response = await axiosInstance.get('/class/getClassSchedule', {
+            params: { room_number: roomId },
+        });
+        return response.data;
+    },
     deleteClass: async (classId: string) => {
         const response = await axiosInstance.delete(`/class/deleteclass/${classId}`);
         return response.data;

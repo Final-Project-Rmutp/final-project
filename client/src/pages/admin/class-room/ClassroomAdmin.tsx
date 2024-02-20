@@ -27,7 +27,9 @@ import {
     DialogTitle,
     Typography,
     Select,
-    Tooltip
+    Tooltip,
+    Grid,
+    FormLabel,
   } from "@mui/joy";
 import CustomPagination from "../../../shared/components/pagination/Pagination";
 import { styled } from '@mui/system'; 
@@ -173,6 +175,7 @@ const ClassRoomAdmin: React.FC = () => {
         timetableData,
         teacherIds,
         selectedUserId,
+        selectedRoomId,
         selectAll,
         // editClass,
         deleteDialogOpen,
@@ -192,7 +195,17 @@ const ClassRoomAdmin: React.FC = () => {
         handleChangePage,
         handleChangeRowsPerPage,
         // handleInputEditChangeClass
+
+        handleRoomNumberChange,
+        roomnumber,
+        setSelectedFloor,
+        availableFloorsApi,
+        handleFetchClassScheduleRoom
     }=  useClassroomAdmin();
+
+
+
+
     const [dayColors, setDayColors] = useState<{ [key: string]: string }>({
       Monday: "#FFFF99",
       Tuesday: "#FFC0CB",
@@ -238,6 +251,7 @@ const ClassRoomAdmin: React.FC = () => {
     };
         const timeSlotsBody = generateTimeSlots();
         const headerTimeSlots = generateHeaderTimeSlots();
+        const headerTimeSlotsRoom = generateHeaderTimeSlots();
         const generateTimetableRows = () => {
           const daysOfWeek = [
             "Monday",
@@ -248,7 +262,60 @@ const ClassRoomAdmin: React.FC = () => {
             "Saturday",
             "Sunday",
           ];
-        
+          
+          return (
+            <>
+              {daysOfWeek.map((day) => (
+                <tr key={day} >
+                  <TimetableDaysColumn day={day} key={day} style={{height:'50px',padding:'10px'}}>
+                    <b >{day}</b>
+                  </TimetableDaysColumn>
+                  {timeSlotsBody.map((timeSlot) => {
+                    const itemsInTimeSlot = timetableData.filter((item) => item.day_of_week === day && item.start_time === timeSlot.start);
+                    const colspan = itemsInTimeSlot.length;
+      
+                    return (
+                      <TimetableTd colSpan={colspan > 0 ? colspan : 1} key={`${day}-${timeSlot.start}`}>
+                        {itemsInTimeSlot.map((item) => (
+                          <div
+                          className="d-flex justify-content-center align-items-center flex-column"
+                            key={item.reservation_id}
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              backgroundColor: dayColors[item.day_of_week],
+                              textAlign:'center',
+                              padding:5
+                            }}
+                          >
+                            <div style={{ width: "120px"}}>
+                              <span className="text-dark fw-bold" style={{ fontSize: "12px"}}>วิชา : {item.subject_name}</span>
+                            </div>
+                            <div style={{ width: "120px" }}>
+                              <span className="text-dark fw-bold" style={{ fontSize: "12px"}}>ห้อง : {item.room_number}</span>
+                            </div>
+                          </div>
+                        ))}
+                      </TimetableTd>
+                    );
+                  })}
+                </tr>
+              ))}
+      
+            </>
+          );
+        };
+        const generateTimetableRowsRoom = () => {
+          const daysOfWeek = [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday",
+          ];
+          
           return (
             <>
               {daysOfWeek.map((day) => (
@@ -320,8 +387,98 @@ const ClassRoomAdmin: React.FC = () => {
               return "#f2f2f2";
           }
         };
+        
+        const handleInputChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+          const { name, value } = event.target;
+          ((prevUser: any) => ({
+            ...prevUser,
+            [name]: value,
+          }));
+        };
+      
+        interface TimetableTableProps {
+          generateTimetableRows: () => React.ReactNode;
+          headerTimeSlots: { start: string; end: string }[];
+        }
+
+        const TimetableTableComponent: React.FC<TimetableTableProps> = ({ generateTimetableRows, headerTimeSlots }) => {
+          return (
+            <TimetableTable>
+              <thead>
+                <tr>
+                  <TimetableTh>
+                    <b>Day/Period</b>
+                  </TimetableTh>
+                  {headerTimeSlots.map((timeSlot) => (
+                    <TimetableTimeSlot key={timeSlot.start}>
+                      <b>{`${timeSlot.start} - ${timeSlot.end}`}</b>
+                    </TimetableTimeSlot>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>{generateTimetableRows()}</tbody>
+            </TimetableTable>
+          );
+        };
+        
     return (
         <>
+        <TimetableContainer>
+          <div style={{width:'100%',display:'flex',justifyContent:'center', alignItems:'center', flexDirection:'column', gap:10}}>
+            <TimetableHeader>{timetableData.length > 0 ? timetableData[0].fullname : '-'}</TimetableHeader>
+            <div style={{width:"100%",marginBottom:10}} className='d-flex justify-center align-items-center gap-4'>
+            <Typography level="title-md">Select User: </Typography>
+            <Grid>
+                <FormLabel>ชั้น</FormLabel>
+                <Select
+                  style={{width:"100%"}}
+                  placeholder="ชั้น"
+                  onChange={(_, value) => {
+                    handleInputChange({
+                      target: { name: "room_level", value },
+                    } as React.ChangeEvent<HTMLInputElement>);
+                    setSelectedFloor(value as string | null);
+                  }}
+                >
+                  {availableFloorsApi.map((floor) => (
+                    <OptionStyle key={floor} value={floor}>
+                      {floor}
+                    </OptionStyle>
+                  ))}
+                </Select>
+              </Grid>
+              <Grid>
+                <FormLabel>ห้อง</FormLabel>
+                <Select
+                  style={{width:"100%"}}
+                  placeholder="ห้อง"
+                  value={selectedRoomId} 
+                  onChange={handleRoomNumberChange}
+                >
+                  {roomnumber.map((room) => (
+                  <OptionStyle key={room?.room_id} value={room.room_number}>
+                    {room.room_number}
+                  </OptionStyle>
+                ))}
+
+                </Select>
+              </Grid>
+            <Button onClick={handleFetchClassScheduleRoom}>Fetch Class Schedule</Button>
+            </div>
+          </div>
+          <ScrollableTableContainer>
+            <TimetableContainerIn>
+              <ScrollableTableContainer>
+              <TimetableTableComponent
+                generateTimetableRows={generateTimetableRowsRoom}
+                headerTimeSlots={headerTimeSlots}
+              />
+              </ScrollableTableContainer>
+            </TimetableContainerIn>
+          </ScrollableTableContainer>
+        </TimetableContainer>
+
+        
         <TimetableContainer>
           <div style={{width:'100%',display:'flex',justifyContent:'center', alignItems:'center', flexDirection:'column', gap:10}}>
             <TimetableHeader>{timetableData.length > 0 ? timetableData[0].fullname : '-'}</TimetableHeader>
@@ -345,21 +502,10 @@ const ClassRoomAdmin: React.FC = () => {
           <ScrollableTableContainer>
             <TimetableContainerIn>
               <ScrollableTableContainer>
-                <TimetableTable>
-                  <thead>
-                    <tr>
-                      <TimetableTh>
-                        <b>Day/Period</b>
-                      </TimetableTh>
-                      {headerTimeSlots.map((timeSlot) => (
-                        <TimetableTimeSlot key={timeSlot.start}>
-                          <b>{`${timeSlot.start} - ${timeSlot.end}`}</b>
-                        </TimetableTimeSlot>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>{generateTimetableRows()}</tbody>
-                </TimetableTable>
+              <TimetableTableComponent
+                generateTimetableRows={generateTimetableRows}
+                headerTimeSlots={headerTimeSlots}
+              />
               </ScrollableTableContainer>
             </TimetableContainerIn>
           </ScrollableTableContainer>

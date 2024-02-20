@@ -194,6 +194,7 @@ const classController = require('../controller/class.controller.js');
 
 
 router.get('/getClassSchedule', authMiddleware.isAdmin, classController.getClassSchedule);
+router.get('/getClassScheduleroom', authMiddleware.isAdmin, classController.getClassScheduleroom);
 
 /**
  * @swagger
