@@ -24,12 +24,12 @@ async function getClassSchedule(req, res) {
             const queryValues = [];
 
             if (user_id) {
-                queryConditions.push(`s.user_id = $${queryValues.length + 1}`);
+                queryConditions.push(`WHERE s.user_id = $${queryValues.length + 1}`);
                 queryValues.push(user_id);
             }
 
             if (room_number) {
-                queryConditions.push(`room_number = $${queryValues.length + 1}`);
+                queryConditions.push(`WHERE room_number = $${queryValues.length + 1}`);
                 queryValues.push(room_number);
             }
             
