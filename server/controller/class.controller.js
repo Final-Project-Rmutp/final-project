@@ -19,18 +19,22 @@ async function getClassSchedule(req, res) {
                 LEFT JOIN subjects s ON c.subject_id = s.subject_id
                 LEFT JOIN "user" u ON s.user_id = u.id
             `;
-
+            
             const queryConditions = [];
             const queryValues = [];
-
-            if (user_id) {
-                queryConditions.push(`WHERE s.user_id = $${queryValues.length + 1}`);
+            if (user_id && !room_number) {
+                queryConditions.push(`s.user_id = $${queryValues.length + 1}`);
                 queryValues.push(user_id);
-            }
-
-            if (room_number) {
-                queryConditions.push(`WHERE room_number = $${queryValues.length + 1}`);
+            } else if (room_number && !user_id) {
+                queryConditions.push(`room_number = $${queryValues.length + 1}`);
                 queryValues.push(room_number);
+            } else {
+                res.status(400).send("Provide either user_id or room_number, not both");
+                return;
+            }
+    
+            if (queryConditions.length > 0) {
+                reservationsQuery += ` WHERE ${queryConditions.join(' AND ')}`;
             }
             
             const reservationsResult = await client.query(reservationsQuery, queryValues);

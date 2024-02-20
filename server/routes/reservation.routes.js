@@ -274,6 +274,16 @@ router.post("/reserve", authMiddleware.authenticateToken, reservationController.
  *       - Authorization: []
  *     parameters:
  *       - in: query
+ *         name: reservation_status
+ *         description: reservation_status
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: reservation_date
+ *         description: reservation_date
+ *         schema:
+ *           type: string
+ *       - in: query
  *         name: page
  *         required: false
  *         schema:

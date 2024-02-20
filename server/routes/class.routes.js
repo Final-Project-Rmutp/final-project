@@ -20,7 +20,7 @@ const classController = require('../controller/class.controller.js');
  *         schema:
  *           type: string
  *       - in: query
- *         name: room_numner
+ *         name: room_number
  *         description: Room number
  *         schema:
  *           type: string

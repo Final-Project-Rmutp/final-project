@@ -235,49 +235,67 @@ async function reservation(req, res) {
   }
 
   // Get current reservation
-async function getreservation(req, res) {
+  async function getreservation(req, res) {
     try {
-      const page = parseInt(req.query.page) || 1;
-      const pageSize = parseInt(req.query.pageSize) || 10;
-      const offset = (page - 1) * pageSize;
-  
-      if (page < 1 || pageSize < 1 || pageSize > 100) {
-        return res.status(400).json({
-          message:
-            "Page number must be 1 or greater, pageSize must be greater than 0, and not exceed 100",
-        });
-      }
-  
-      const query = `SELECT
-      rs.reservation_id,
-      CONCAT(u.firstname, ' ', u.lastname) AS fullname,
-      u.account_type,
-      r.room_number,
-      rs.reservation_reason,
-      rs.reservation_status,
-      rs.reservation_date,
-      rs.timestamp,
-      rs.start_time,
-      rs.end_time
-    FROM reservations rs
-    LEFT JOIN "user" u ON rs.user_id = u.id
-    LEFT JOIN rooms r ON rs.room_id = r.room_id
-	WHERE reservation_status = 1
-    ORDER BY timestamp desc
-    LIMIT $1 OFFSET $2`;
-      const values = [pageSize,offset];
-      const result = await client.query(query, values);
-      const transformedRows = result.rows.map(row => ({
-        ...row,
-        reservation_status: transformReservationStatus(row.reservation_status),
-      }));
-      const totalreserve = result.rowCount;
-      res.status(200).json({ totalreserve, reservelist: transformedRows });
+        const { reservation_status, reservation_date } = req.query;
+        const page = parseInt(req.query.page) || 1;
+        const pageSize = parseInt(req.query.pageSize) || 10;
+        const offset = (page - 1) * pageSize;
+
+        if (page < 1 || pageSize < 1 || pageSize > 100) {
+            return res.status(400).json({
+                message:
+                    "Page number must be 1 or greater, pageSize must be greater than 0, and not exceed 100",
+            });
+        }
+
+        const whereConditions = [];
+        const values = [pageSize, offset];
+
+        if (reservation_status) {
+            whereConditions.push(`rs.reservation_status = $${values.length + 1}`);
+            values.push(reservation_status);
+        }
+
+        if (reservation_date) {
+            whereConditions.push(`rs.reservation_date = $${values.length + 1}`);
+            values.push(reservation_date);
+        }
+
+        const whereClause = whereConditions.length > 0 ? `WHERE ${whereConditions.join(' AND ')}` : '';
+
+        const query = `
+            SELECT
+                rs.reservation_id,
+                CONCAT(u.firstname, ' ', u.lastname) AS fullname,
+                u.account_type,
+                r.room_number,
+                rs.reservation_reason,
+                rs.reservation_status,
+                rs.reservation_date,
+                rs.timestamp,
+                rs.start_time,
+                rs.end_time
+            FROM reservations rs
+            LEFT JOIN "user" u ON rs.user_id = u.id
+            LEFT JOIN rooms r ON rs.room_id = r.room_id
+            ${whereClause}
+            ORDER BY timestamp DESC
+            LIMIT $1 OFFSET $2`;
+
+        const result = await client.query(query, values);
+        const transformedRows = result.rows.map(row => ({
+            ...row,
+            reservation_status: transformReservationStatus(row.reservation_status),
+        }));
+        const totalreserve = result.rowCount;
+        res.status(200).json({ totalreserve, reservelist: transformedRows });
     } catch (err) {
-      console.error(err.message);
-      res.status(500).json({ message: "Error fetching reports" });
+        console.error(err.message);
+        res.status(500).json({ message: "Error fetching reports" });
     }
-  }
+}
+
 
   // Function to transform reservation_status values
 function transformReservationStatus(status) {
