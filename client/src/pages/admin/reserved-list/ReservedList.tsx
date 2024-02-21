@@ -1,92 +1,99 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {   
   Button,
   Sheet,
   Table,
   Checkbox,
   Chip,
-  Tooltip
+  Tooltip,
+  Select,
+  Container,
+  Grid,
+  FormLabel,
+  Typography 
 } from "@mui/joy";
 import {
   Tbody,
   Theader,
   HeadList,
   TableContainer,
+  OptionStyle,
+  DateTime
 } from "../student-list/StudentListStyled";
 import CustomPagination from "../../../shared/components/pagination/Pagination";
 import useReservedList from "./useReservedList"
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import "dayjs/locale/th";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+
 const ReservedList: React.FC = () => {
     const { 
-        page,
-        rowsPerPage,
-        handleChangePage,
-        handleChangeRowsPerPage,
-        reservedtList, 
-        fetchReservedList,
-        // reserveRoom,
-        // setReservationData,
-        // reservationData,
-        updateReservationStatus
+      page,
+      rowsPerPage,
+      reservedtList,
+      reservationStatus,
+      reservationDate,
+      selectAllChecked,
+      selectedItems,
+      handleChangePage,
+      handleChangeRowsPerPage,
+      handleToggleCheckbox,
+      handleToggleSelectAll,
+      handleCancel,
+      handleApprove,
+      handleInProgress,
+      handleDateChange,
+      handleStatusChange,
+      fetchReservedList
     } = useReservedList();
 
-    // const [isModalOpen, setIsModalOpen] = useState(false);
+    useEffect(() => {
+      fetchReservedList();
+    }, [page, rowsPerPage, reservationStatus, reservationDate, fetchReservedList]);
+      
+    
+    
 
-    // const handleOpenModal = () => {
-    //   setIsModalOpen(true);
-    // };
+    
   
-    // const handleCloseModal = () => {
-    //   setIsModalOpen(false);
-    // };
-    // const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //   const { name, value } = event.target;
-    //   setReservationData((prevUser) => ({
-    //     ...prevUser,
-    //     [name]: value,
-    //   }));
-    // };
-    const [selectedItems, setSelectedItems] = React.useState<string[]>([]);
-    const [selectAllChecked, setSelectAllChecked] = React.useState(false);
-
-    const handleToggleCheckbox = (reservationId: string) => {
-      const updatedSelection = selectedItems.includes(reservationId)
-        ? selectedItems.filter((id) => id !== reservationId)
-        : [...selectedItems, reservationId];
-      setSelectedItems(updatedSelection);
-    };
-    const handleToggleSelectAll = () => {
-      const allIds = reservedtList.map((item) => item.reservation_id);
-      const updatedSelection = selectAllChecked ? [] : allIds;
-      setSelectedItems(updatedSelection);
-      setSelectAllChecked(!selectAllChecked);
-    };
-    
-
-    const handleCancel = async () => {
-        for (const reservationId of selectedItems) {
-            await updateReservationStatus("0", reservationId);
-        }
-        await fetchReservedList();
-        setSelectedItems([]);
-    };
-    const handleApprove = async () => {
-      for (const reservationId of selectedItems) {
-        await updateReservationStatus("2", reservationId);
-      }
-      await fetchReservedList();
-      setSelectedItems([]);
-    };
-    
-    const handleInProgress = async () => {
-        for (const reservationId of selectedItems) {
-            await updateReservationStatus("1", reservationId);
-        }
-        await fetchReservedList();
-        setSelectedItems([]);
-    };
-    
     return (
-        <HeadList>
+      <Container>
+        <Grid container spacing={2} sx={{ flexGrow: 1 }}>
+        <Grid>
+                <FormLabel>Select Status</FormLabel>
+                        <Select
+                          placeholder="Select status"
+                          value={reservationStatus}
+                          onChange={handleStatusChange}
+                        >
+                          <OptionStyle value="">All</OptionStyle>
+                          <OptionStyle value="2">Approve</OptionStyle>
+                          <OptionStyle value="1">In Progress</OptionStyle>
+                          <OptionStyle value="0">Cancel</OptionStyle>
+                        </Select>
+              </Grid>
+              <Grid>
+              <FormLabel>Select Date</FormLabel>
+              <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="th">
+                          <DateTime style={{position:'relative'}}
+                          >
+                            <DatePicker
+                              className="datetime-picker"
+                              format="DD MMMM YYYY"
+                              value={reservationDate}
+                              onChange={handleDateChange}
+                            />
+                            <img className="position-absolute top-0 right-0"
+                            style={{pointerEvents:'none', transform:'translate(-50%,20%)',}}
+                            src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Tear-Off%20Calendar.png" alt="Stopwatch" width="25" height="25" />
+                          </DateTime>
+                        </LocalizationProvider>
+              </Grid>
+        </Grid>
+
+
+            <HeadList>
             <TableContainer>
                 <Sheet
                     sx={{
@@ -127,12 +134,12 @@ const ReservedList: React.FC = () => {
                     <Theader>
                       <tr>
                         <th style={{ width: 150 }}>No</th>
+                        <th style={{ width: 150 }}>Status</th>
+                        <th style={{ width: 250 }}>Reservation Date</th>
                         <th style={{ width: 200 }}>Name</th>
                         <th style={{ width: 150 }}>Room</th>
                         <th style={{ width: 150 }}>Account Type</th>
                         <th style={{ width: 150 }}>Reason</th>
-                        <th style={{ width: 150 }}>Status</th>
-                        <th style={{ width: 150 }}>Reservation Date</th>
                         {/* <th>Date Time</th> */}
                         <th style={{ width: 150 }}>Start Time</th>
                         <th style={{ width: 150 }}>End Time</th>
@@ -144,10 +151,15 @@ const ReservedList: React.FC = () => {
                         <th></th>
                         <th></th>
                         <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
+                        <th>
+
+                        </th>
+                        <th>
+                        </th>
+                        <th>
+                        </th>
+                        <th>
+                        </th>
                         <th>
                           <Checkbox
                             checked={selectAllChecked}
@@ -160,9 +172,31 @@ const ReservedList: React.FC = () => {
                       </tr>
                     </Theader>
                     <Tbody>
+                    {Array.isArray(reservedtList) && reservedtList.length === 0 && (
+                          <tr>
+                              <th colSpan={5}><Typography>No reservations found</Typography></th>
+                          </tr>
+                      )}
                         {Array.isArray(reservedtList) && reservedtList.map((item, index) => (
                             <tr className="text-center" key={item.id || index}>
                             <th>{(page - 1) * rowsPerPage + index + 1}</th>
+                            <th>
+                            <Tooltip  title={item.reservation_status} arrow>
+                                <span>
+                                  <Chip color={item.reservation_status === "Cancel" ? "danger" :
+                                    item.reservation_status === "In progress"? "warning": "success"}
+                                    variant="solid" 
+                                    size="lg">
+                                    {item.reservation_status}
+                                  </Chip>
+                                </span>
+                            </Tooltip >
+                            </th>
+                            <th>
+                            <Tooltip  title={formatTimestamp(item.reservation_date)} arrow>
+                                            <span>{formatTimestamp(item.reservation_date)}</span>
+                            </Tooltip >
+                            </th>
                             <th>
                             <Tooltip  title={item.fullname} arrow>
                                             <span>{item.fullname}</span>
@@ -183,24 +217,6 @@ const ReservedList: React.FC = () => {
                                             <span>{item.reservation_reason}</span>
                             </Tooltip >
                             </th>
-                            <th>
-                            <Tooltip  title={item.reservation_status} arrow>
-                                <span>
-                                  <Chip color={item.reservation_status === "Cancel" ? "danger" :
-                                    item.reservation_status === "In progress"? "warning": "success"}
-                                    variant="solid" 
-                                    size="lg">
-                                    {item.reservation_status}
-                                  </Chip>
-                                </span>
-                            </Tooltip >
-                            </th>
-                            <th>
-                            <Tooltip  title={formatTimestamp(item.reservation_date)} arrow>
-                                            <span>{formatTimestamp(item.reservation_date)}</span>
-                            </Tooltip >
-                            </th>
-                            {/* <th>{formatTimestamp(item.timestamp)}</th> */}
                             <th>
                             <Tooltip  title={item.start_time} arrow>
                                             <span>{item.start_time}</span>
@@ -252,71 +268,9 @@ const ReservedList: React.FC = () => {
                       Cancel
                       </Button>
               </div>
-                    {/* <Modal open={isModalOpen} onClose={handleCloseModal}>
-                      <ModalDialog
-                        size="lg"
-                        variant="outlined"
-                        layout="center"
-                        color="primary"
-                      >
-                      <DialogTitle></DialogTitle>
-                      <Stack>
-                        <DialogContent>
-                          <FormControl>
-                            <FormLabel></FormLabel>
-                            <Input
-                              required
-                              value={reservationData.reservation_date}
-                              onChange={handleInputChange}
-                              fullWidth
-                              size="lg"
-                            />
-                          </FormControl>
-                          <FormControl>
-                            <FormLabel></FormLabel>
-                            <Input
-                              required
-                              value={reservationData.start_time}
-                              onChange={handleInputChange}
-                              fullWidth
-                              size="lg"
-                            />
-                          </FormControl>
-                          <FormControl>
-                            <FormLabel></FormLabel>
-                            <Input
-                              required
-                              value={reservationData.end_time}
-                              onChange={handleInputChange}
-                              fullWidth
-                              size="lg"
-                            />
-                          </FormControl>
-                          <FormControl>
-                            <FormLabel></FormLabel>
-                            <Input
-                              required
-                              value={reservationData.reservation_reason}
-                              onChange={handleInputChange}
-                              fullWidth
-                              size="lg"
-                            />
-                          </FormControl>
-                        </DialogContent>
-                        <DialogActions>
-                        <DialogActions>
-                          <Button type="cancel" onClick={handleCloseEditDialog}>
-                            Cancel
-                          </Button>
-                          <Button type="submit" onClick={handleEditConfirmed}>
-                            Confirm
-                          </Button>
-                        </DialogActions>
-                        </DialogActions>
-                      </Stack>
-                      </ModalDialog>
-                    </Modal> */}
         </HeadList>
+      </Container>
+
         
     );
 };
@@ -328,8 +282,6 @@ const formatTimestamp = (timestamp: string | number): string => {
   const year = date.getFullYear();
   const month = (date.getMonth() + 1).toString().padStart(2, '0');
   const day = date.getDate().toString().padStart(2, '0');
-  const hours = date.getHours().toString().padStart(2, '0');
-  const minutes = date.getMinutes().toString().padStart(2, '0');
-  return `${day}/${month}/${year} ${hours}:${minutes}`;
+  return `${day}/${month}/${year}`;
 }
 

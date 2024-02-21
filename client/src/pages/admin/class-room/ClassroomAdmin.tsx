@@ -172,6 +172,7 @@ const ClassRoomAdmin: React.FC = () => {
     const{
         page,
         rowsPerPage,
+        timetableDataRoom,
         timetableData,
         teacherIds,
         selectedUserId,
@@ -250,6 +251,7 @@ const ClassRoomAdmin: React.FC = () => {
     return newDate.toTimeString().slice(0, 8);
     };
         const timeSlotsBody = generateTimeSlots();
+        const timeSlotsBodyRoom = generateTimeSlots();
         const headerTimeSlots = generateHeaderTimeSlots();
         const headerTimeSlotsRoom = generateHeaderTimeSlots();
         const generateTimetableRows = () => {
@@ -323,13 +325,13 @@ const ClassRoomAdmin: React.FC = () => {
                   <TimetableDaysColumn day={day} key={day} style={{height:'50px',padding:'10px'}}>
                     <b >{day}</b>
                   </TimetableDaysColumn>
-                  {timeSlotsBody.map((timeSlot) => {
-                    const itemsInTimeSlot = timetableData.filter((item) => item.day_of_week === day && item.start_time === timeSlot.start);
-                    const colspan = itemsInTimeSlot.length;
+                  {timeSlotsBodyRoom.map((timeSlot) => {
+                    const itemsInTimeSlotRoom = timetableDataRoom.filter((item) => item.day_of_week === day && item.start_time === timeSlot.start);
+                    const colspan = itemsInTimeSlotRoom.length;
       
                     return (
                       <TimetableTd colSpan={colspan > 0 ? colspan : 1} key={`${day}-${timeSlot.start}`}>
-                        {itemsInTimeSlot.map((item) => (
+                        {itemsInTimeSlotRoom.map((item) => (
                           <div
                           className="d-flex justify-content-center align-items-center flex-column"
                             key={item.reservation_id}
@@ -364,8 +366,20 @@ const ClassRoomAdmin: React.FC = () => {
             newDayColors[item.day_of_week] = getDayColor(item.day_of_week);
           });
           setDayColors(newDayColors);
+          console.log("test",timetableData);
+          
         // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [timetableData]);
+        useEffect(() => {
+          const newDayColors = { ...dayColors };
+          timetableDataRoom.forEach((item) => {
+            newDayColors[item.day_of_week] = getDayColor(item.day_of_week);
+          });
+          setDayColors(newDayColors);
+          console.log("test",timetableData);
+          
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, [timetableDataRoom]);
 
         const getDayColor = (day: string): string => {
           switch (day) {
@@ -390,42 +404,18 @@ const ClassRoomAdmin: React.FC = () => {
         
         const handleInputChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
           const { name, value } = event.target;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           ((prevUser: any) => ({
             ...prevUser,
             [name]: value,
           }));
         };
       
-        interface TimetableTableProps {
-          generateTimetableRows: () => React.ReactNode;
-          headerTimeSlots: { start: string; end: string }[];
-        }
-
-        const TimetableTableComponent: React.FC<TimetableTableProps> = ({ generateTimetableRows, headerTimeSlots }) => {
-          return (
-            <TimetableTable>
-              <thead>
-                <tr>
-                  <TimetableTh>
-                    <b>Day/Period</b>
-                  </TimetableTh>
-                  {headerTimeSlots.map((timeSlot) => (
-                    <TimetableTimeSlot key={timeSlot.start}>
-                      <b>{`${timeSlot.start} - ${timeSlot.end}`}</b>
-                    </TimetableTimeSlot>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>{generateTimetableRows()}</tbody>
-            </TimetableTable>
-          );
-        };
-        
     return (
         <>
         <TimetableContainer>
           <div style={{width:'100%',display:'flex',justifyContent:'center', alignItems:'center', flexDirection:'column', gap:10}}>
-            <TimetableHeader>{timetableData.length > 0 ? timetableData[0].fullname : '-'}</TimetableHeader>
+            <TimetableHeader></TimetableHeader>
             <div style={{width:"100%",marginBottom:10}} className='d-flex justify-center align-items-center gap-4'>
             <Typography level="title-md">Select User: </Typography>
             <Grid>
@@ -469,10 +459,21 @@ const ClassRoomAdmin: React.FC = () => {
           <ScrollableTableContainer>
             <TimetableContainerIn>
               <ScrollableTableContainer>
-              <TimetableTableComponent
-                generateTimetableRows={generateTimetableRowsRoom}
-                headerTimeSlots={headerTimeSlots}
-              />
+                <TimetableTable>
+                  <thead>
+                    <tr>
+                      <TimetableTh>
+                        <b>Day/Period</b>
+                      </TimetableTh>
+                      {headerTimeSlotsRoom.map((timeSlot) => (
+                        <TimetableTimeSlot key={timeSlot.start}>
+                          <b>{`${timeSlot.start} - ${timeSlot.end}`}</b>
+                        </TimetableTimeSlot>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>{generateTimetableRowsRoom()}</tbody>
+                </TimetableTable>
               </ScrollableTableContainer>
             </TimetableContainerIn>
           </ScrollableTableContainer>
@@ -502,10 +503,21 @@ const ClassRoomAdmin: React.FC = () => {
           <ScrollableTableContainer>
             <TimetableContainerIn>
               <ScrollableTableContainer>
-              <TimetableTableComponent
-                generateTimetableRows={generateTimetableRows}
-                headerTimeSlots={headerTimeSlots}
-              />
+                <TimetableTable>
+                  <thead>
+                    <tr>
+                      <TimetableTh>
+                        <b>Day/Period</b>
+                      </TimetableTh>
+                      {headerTimeSlots.map((timeSlot) => (
+                        <TimetableTimeSlot key={timeSlot.start}>
+                          <b>{`${timeSlot.start} - ${timeSlot.end}`}</b>
+                        </TimetableTimeSlot>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>{generateTimetableRows()}</tbody>
+                </TimetableTable>
               </ScrollableTableContainer>
             </TimetableContainerIn>
           </ScrollableTableContainer>
@@ -733,87 +745,9 @@ const ClassRoomAdmin: React.FC = () => {
             </Button>
             </div>
         </div>
-        {/* <Modal open={editDialogOpen} onClose={handleCloseEditDialog}>
-            <ModalDialog    
-            size="lg"
-            variant="outlined"
-            layout="center"
-            color="primary"
-            sx={{ width: 450 }}
-            >
-            <DialogTitle>Edit Class Schedule</DialogTitle>
-            <form
-                onSubmit={(event) => {
-                    event.preventDefault();
-                }}
-                >
-                <Stack spacing={3}>
-                    <FormControl>
-                    <FormLabel>Day of Week</FormLabel>
-                    <Input
-                        autoFocus
-                        required
-                        name="day_of_week"
-                        value={editClass.day_of_week}
-                        onChange={handleInputEditChangeClass}
-                        fullWidth
-                        size="lg"
-                    />
-                    </FormControl>
-                    <FormControl>
-                    <FormLabel>Start Time</FormLabel>
-                    <Input
-                        required
-                        name="start_time"
-                        value={editClass.start_time}
-                        onChange={handleInputEditChangeClass}
-                        fullWidth
-                        size="lg"
-                    />
-                    </FormControl>
-                    <FormControl>
-                    <FormLabel>End Time</FormLabel>
-                    <Input
-                        required
-                        name="end_time"
-                        value={editClass.end_time}
-                        onChange={handleInputEditChangeClass}
-                        fullWidth
-                        size="lg"
-                    />
-                    </FormControl>
-                    <FormControl>
-                    <FormLabel>Subject</FormLabel>
-                    <Input
-                        required
-                        name="subject_id"
-                        value={editClass.subject_id}
-                        onChange={handleInputEditChangeClass}
-                        fullWidth
-                        size="lg"
-                    />
-                    </FormControl>
-                </Stack>
-                <DialogActions>
-                    <Button type="cancel" onClick={handleCloseEditDialog}>
-                    Cancel
-                    </Button>
-                    <Button type="submit" onClick={handleEditConfirmed}>
-                    Confirm
-                    </Button>
-                </DialogActions>
-                </form>
-            </ModalDialog>
-            </Modal> */}
         </HeadList>
         </>
     );
   };
 
 export default ClassRoomAdmin;
-// function formatTimeThai(time: string) {
-//     const [hour, minute] = time.split(':').map(Number);
-//     const formattedHour = String(hour).padStart(2, '0');
-//     const formattedMinute = String(minute).padStart(2, '0');
-//     return `${formattedHour}:${formattedMinute}`;
-// }

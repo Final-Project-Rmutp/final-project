@@ -4,6 +4,7 @@ import { styled } from "@mui/system";
 import { useNavigate } from "react-router-dom";
 import HomeStyle from "./Homestyle";
 import React from "react";
+import "./index.scss"
 import { InfiniteMovingCards } from "../../components/ui/infinite-moving-cards";
 export function InfiniteMovingCardsDemo() {
   return (

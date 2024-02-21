@@ -1,7 +1,9 @@
-import {useCallback, useEffect, useState } from "react";
+import React,{useCallback, useEffect, useState } from "react";
 import axiosInstance from "../../../environments/axiosInstance";
-import RoomService from "../../../auth/service/RoomService";
+import RoomService, { GetAllReservationParams } from "../../../auth/service/RoomService";
 import { toast } from 'sonner'
+import dayjs from "dayjs";
+
 
 export class reservedList {
     id!:string;
@@ -27,17 +29,118 @@ const useReservedList = () => {
       end_time: "",
       reservation_reason: "",
     });
+    const [reservationStatus, setReservationStatus] = useState("");
+    const [reservationDate, setSelectedDate] = useState<dayjs.Dayjs | null>(null);
+
+    const [selectedItems, setSelectedItems] = React.useState<string[]>([]);
+    const [selectAllChecked, setSelectAllChecked] = React.useState(false);
+
+    const handleToggleCheckbox = (reservationId: string) => {
+      const updatedSelection = selectedItems.includes(reservationId)
+        ? selectedItems.filter((id) => id !== reservationId)
+        : [...selectedItems, reservationId];
+      setSelectedItems(updatedSelection);
+    };
+    const handleToggleSelectAll = () => {
+      const allIds = reservedtList.map((item) => item.reservation_id);
+      const updatedSelection = selectAllChecked ? [] : allIds;
+      setSelectedItems(updatedSelection);
+      setSelectAllChecked(!selectAllChecked);
+    };
+    const handleCancel = async () => {
+      for (const reservationId of selectedItems) {
+          await updateReservationStatus("0", reservationId);
+      }
+      await fetchReservedList();
+      setSelectedItems([]);
+  };
+  const handleApprove = async () => {
+    for (const reservationId of selectedItems) {
+      await updateReservationStatus("2", reservationId);
+    }
+    await fetchReservedList();
+    setSelectedItems([]);
+  };
+  
+  const handleInProgress = async () => {
+      for (const reservationId of selectedItems) {
+          await updateReservationStatus("1", reservationId);
+      }
+      await fetchReservedList();
+      setSelectedItems([]);
+  };
+    const updateReservationStatusForSelectedItems = async (
+      status: string
+    ) => {
+      for (const reservationId of selectedItems) {
+        await updateReservationStatus(status, reservationId);
+      }
+      await fetchReservedList();
+      setSelectedItems([]);
+    };
+      
+    
+    
+    
+  
+    const handleStatusChange = async (
+      _event: React.MouseEvent<Element, MouseEvent> | React.KeyboardEvent<Element> | React.FocusEvent<Element, Element> | null,
+      value: string | null
+    ) => {
+      const selectedStatus = value as string;
+      setReservationStatus(selectedStatus);
+      await updateReservationStatusForSelectedItems(selectedStatus);
+    };
+    
+    
+  
+    const handleDateChange = (value: dayjs.Dayjs | null) => {
+      setSelectedDate(value);
+    
+      // Clear reservation status when the date is cleared
+      if (value === null) {
+        setReservationStatus("");
+      }
+    };
+
     const fetchReservedList = useCallback(async () => {
-        const response = await RoomService.getReservationList({ page, pageSize: rowsPerPage });
-        setListItems(response.reservelist);
+      try {
+        const params: GetAllReservationParams = {
+          page: page,
+          pageSize: rowsPerPage,
+        };
+    
+        if (reservationStatus !== "") {
+          params.reservation_status = reservationStatus;
+        }
+    
+        if (reservationDate !== null) {
+          params.reservation_date = reservationDate.toISOString();
+        }
+    
+        const response = await RoomService.getReservationList(params);
+        console.log(response);
+    
+        if (Array.isArray(response.reservelist)) {
+          setListItems(response.reservelist);
+        } else {
+          console.error("Invalid data structure:", response.data);
+        }
+    
         return response.data;
-    }, [page, rowsPerPage]);
+      } catch (error) {
+        console.error("Error fetching reservation data:", error);
+        throw error;
+      }
+    }, [page, rowsPerPage, reservationStatus, reservationDate]);
+    
     
     
 
     useEffect(() => {
       fetchReservedList();
-    }, [fetchReservedList,page, rowsPerPage]);
+    }, [fetchReservedList, page, rowsPerPage]);
+    
 
     const searchRoom = async () => {
         const response = await axiosInstance.post("/reservation/searchroom", {
@@ -100,13 +203,25 @@ const useReservedList = () => {
         rowsPerPage,
         reservationData,
         reservedtList,
+        reservationStatus,
+        reservationDate,
+        selectAllChecked,
+        selectedItems,
         handleChangePage,
         handleChangeRowsPerPage,
         fetchReservedList,
         updateReservationStatus,
         reserveRoom,
         searchRoom,
-        setReservationData
+        setReservationData,
+        setListItems,
+        handleToggleCheckbox,
+        handleToggleSelectAll,
+        handleCancel,
+        handleApprove,
+        handleInProgress,
+        handleDateChange,
+        handleStatusChange
     };
 };
 

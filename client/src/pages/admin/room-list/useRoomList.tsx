@@ -229,6 +229,7 @@ const useRoomList = () => {
     handleEditConfirmed,
     fetchFacilities,
     setAddRoom,
+    setListItems
   };
 };
 

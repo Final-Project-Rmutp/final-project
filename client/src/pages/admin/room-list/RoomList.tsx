@@ -55,7 +55,7 @@ const RoomList: React.FC = () => {
     setAddRoom,
     fetchRoomList,
     fetchFacilities,
-    facilities
+    facilities,
   } = useRoomList();
 
   
@@ -97,28 +97,15 @@ const RoomList: React.FC = () => {
       fetchRoomNumber();
     }
   }, [selectedFloor]);
-  // useEffect(() => {
-  //     fetchUserOptions();
-  // }, []);
-  // useEffect(() => {
-  //   const fetchRoomTypes = async () => {
-  //     try {
-  //       const response = await axiosInstance.get(`/admin/room/getroomtype/{roomtype_id}`);
-  //       setRoomTypes(response.data.room_types);
-  //     } catch (error) {
-  //       console.error('Error fetching room types:', error);
-  //     }
-  //   };
-    
-  //   fetchRoomTypes();
-  // }, []); 
   useEffect(() => {
     setRoomTypes(hardcodedRoomTypes);
 }, []);
 
-  
+
   return (
+ 
           <HeadList>
+
             <TableContainer>
               <Sheet
                     sx={{
@@ -173,8 +160,12 @@ const RoomList: React.FC = () => {
                         <th></th>
                         <th></th>
                         <th></th>
-                        <th></th>
-                        <th></th>
+                        <th>
+                        
+                        </th>
+                        <th>
+
+                        </th>
                         <th></th>
                         <th>
                         <Checkbox

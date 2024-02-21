@@ -118,4 +118,28 @@ export const VisuallyHiddenInput = styled('input')`
   white-space: nowrap;
   width: 1px;
 `;
+export const DateTime = styled(Sheet)`
+    border-radius: 12px;
+    color: ${({ theme }) => theme.palette.common.white};
+    border-color: ${({ theme }) => theme.palette.common.white};
+    background-color: ${({ theme }) => theme.palette.background.backdrop};
 
+    width: 200px;
+    height: 38px;
+
+    .MuiInputBase-root {
+        border-radius: 12px;
+        height: 38px;
+        color: ${({ theme }) => theme.palette.pf.color};
+    }
+    
+    .MuiSvgIcon-root {
+        // background-image: url('https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Tear-Off%20Calendar.png');
+        background-size: cover;
+        width: 25px;
+        height: 25px;
+        path {
+            display: none;
+        }
+    }
+`;

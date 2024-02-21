@@ -8,6 +8,13 @@ interface GetAllRoomsParams {
     pageSize: number;
     offset?: number
 }
+export class GetAllReservationParams {
+    reservation_status?: string;
+    reservation_date?: string;
+    page!: number;
+    pageSize!: number;
+    offset?: number
+}
 export class SearchRoomParams {
     id!:string;
     room_id!:string;
@@ -41,6 +48,18 @@ export interface AddClassParams {
 
 
 export interface ClassScheduleItem {
+    id:string;
+    class_id:string;
+    subject_id: string;
+    reservation_id: string;
+    subject_name: string;
+    fullname: string;
+    room_number: string;
+    day_of_week: string;
+    start_time: string;
+    end_time: string;
+}
+export interface ClassScheduleItemRoom {
     id:string;
     class_id:string;
     subject_id: string;
@@ -93,9 +112,9 @@ const RoomService = {
         const response = await axiosInstance.post('/reservation/searchroom', searchRoom);
         return response.data;
     },
-    getReservationList: async ({ page, pageSize }: GetAllRoomsParams) => {
+    getReservationList: async ({ reservation_status,reservation_date,page, pageSize }: GetAllReservationParams) => {
         const response = await axiosInstance.get('/reservation/getreservation',{
-            params: { page, pageSize },
+            params: { reservation_status,reservation_date,page, pageSize },
         });
         return response.data;
     },
@@ -146,8 +165,8 @@ const RoomService = {
         });
         return response.data;
     },
-    getClassScheduleRoom: async (roomId: string): Promise<ClassScheduleItem[]> => {
-        const response = await axiosInstance.get('/class/getClassSchedule', {
+    getClassScheduleRoom: async (roomId: string): Promise<ClassScheduleItemRoom[]> => {
+        const response = await axiosInstance.get('/class/getClassScheduleroom', {
             params: { room_number: roomId },
         });
         return response.data;

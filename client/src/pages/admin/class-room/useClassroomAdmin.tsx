@@ -1,5 +1,5 @@
 import RoomService, {
-  ClassScheduleItem,
+  ClassScheduleItem, ClassScheduleItemRoom,
 } from "../../../auth/service/RoomService";
 import axiosInstance from "../../../environments/axiosInstance";
 import { useEffect, useState } from "react";
@@ -10,6 +10,7 @@ const useClassroomAdmin = () => {
     const [selectedItems, setSelectedItems] = useState<string[]>([]);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [timetableData, setTimetableData] = useState<ClassScheduleItem[]>([]);
+    const [timetableDataRoom, setTimetableDataRoom] = useState<ClassScheduleItemRoom[]>([]);
     const [editDialogOpen, setEditDialogOpen] = useState(false);
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -122,7 +123,7 @@ const useClassroomAdmin = () => {
             if (selectedRoomId) {
                 const classScheduleResponseRoom = await RoomService.getClassScheduleRoom(selectedRoomId);
                 console.log("Class schedule response:", classScheduleResponseRoom);
-                setTimetableData(classScheduleResponseRoom);
+                setTimetableDataRoom(classScheduleResponseRoom);
             }
         } catch (error) {
             console.error("Error fetching class schedule:", error);
@@ -306,7 +307,7 @@ const useClassroomAdmin = () => {
         handleChangeRowsPerPage,
         handleInputEditChangeClass,
         handleRoomNumberChange,
-
+        timetableDataRoom,
         roomnumber,
         setSelectedFloor,
 

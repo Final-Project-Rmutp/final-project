@@ -85,7 +85,6 @@ const UserService = {
     let response;
 
     if (userData instanceof FormData) {
-      // If userData is FormData (contains an image), send as multipart/form-data
       response = await axiosInstance.patch(
         `/admin/user/updateuser/${userId}`,
         userData,
@@ -96,7 +95,6 @@ const UserService = {
         }
       );
     } else {
-      // If userData is UserData (no image), send as JSON
       response = await axiosInstance.patch(
         `/admin/user/updateuser/${userId}`,
         userData
